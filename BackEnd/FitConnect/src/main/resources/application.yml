@@ -1,7 +1,7 @@
 server:
-  port: 9999
+  port: 8888
   servlet:
-    context-path: /fitconnect
+#    context-path: /fitconnect
     session:
       tracking-modes: cookie
 
@@ -16,6 +16,23 @@ spring:
     multipart:
       max-file-size: 50MB
       max-request-size: 100MB
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${{ secrets.GOOGLE_CLIENT_ID }}
+            client-secret: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+            redirect-uri: http://localhost:8888/login/oauth2/code/google
+            scope:
+            - email
+            - profile
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+
 # mybatis 설정
 mybatis:
   mapper-locations: classpath:mapper/*.xml
