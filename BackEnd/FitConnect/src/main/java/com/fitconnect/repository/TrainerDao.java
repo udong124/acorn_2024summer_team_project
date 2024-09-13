@@ -4,18 +4,11 @@ import java.util.List;
 
 import com.fitconnect.dto.TrainerDto;
 
-
-
 public interface TrainerDao {
-	
-	public void create(TrainerDto dto);
-	public TrainerDto getData(int userNum);
-	public List<TrainerDto> getList(TrainerDto dto);
-	public void update(TrainerDto dto);
-	public void delete(int trainerNum);
-	public int getTrinerNum(String userId);
-	public TrainerDto getInfo(int trinerNum);
-
-
+	public List<TrainerDto> getList();
+	public TrainerDto getData(int trainer_num);
+	public void insert(TrainerDto dto);
+	public void updateInfo(TrainerDto dto);
+	public void updateGymInfo(TrainerDto dto);
+	public void delete(int trainer_num);
 }
-

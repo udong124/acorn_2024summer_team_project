@@ -15,12 +15,12 @@ public class MemberDaoImpl implements MemberDao{
 
 	@Override
 	public List<MemberDto> getList() {
-		return session.selectList("user.getList");
+		return session.selectList("member.getList");
 	}
 
 	@Override
 	public MemberDto getData(int member_num) {
-		return session.selectOne("user.getData", member_num);
+		return session.selectOne("member.getData", member_num);
 	}
 
 	@Override

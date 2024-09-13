@@ -13,10 +13,10 @@ import com.fitconnect.repository.UserDao;
 public class MemberServiceImpl implements MemberService{
 
 	@Autowired
-	UserDao userDao;
+	private UserDao userDao;
 	
 	@Autowired
-	MemberDao memberDao;
+	private MemberDao memberDao;
 	
 	@Override
 	public MemberDto addMember(MemberDto dto) {
