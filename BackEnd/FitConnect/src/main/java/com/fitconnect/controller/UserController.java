@@ -70,6 +70,21 @@ public class UserController {
 		return true;
 	}
 
+	@DeleteMapping("/user")
+	public boolean delete() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
+		userDao.delete(userName);
+		return true;
+	}
+
+	@GetMapping("/user")
+	public UserDto getUser() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
+        return userDao.getData(userName);
+	}
+
 	@PatchMapping("/user/update/info")
 	public UserDto updateInfo(@RequestBody UserDto dto) {
 		userDao.updateInfo(dto);
@@ -96,21 +111,6 @@ public class UserController {
 			dto.setRole("FALSE");
 		}
 		return dto;
-	}
-
-	@DeleteMapping("/user")
-	public boolean delete() {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userName = authentication.getName();
-		userDao.delete(userName);
-		return true;
-	}
-
-	@GetMapping("/user")
-	public UserDto getUser() {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userName = authentication.getName();
-        return userDao.getData(userName);
 	}
 	
 }

@@ -27,8 +27,8 @@ CREATE TABLE MEMBER_INFO (
 public class MemberDto {
 	private int member_num;
 	private int trainer_num;
-	private int member_height;
-	private int member_weight;
+	private float member_height;
+	private float member_weight;
 	private String member_gender;
 	private String plan;
 	private String weeklyplan;

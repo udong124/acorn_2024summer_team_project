@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -25,9 +27,27 @@ public class MemberController {
 	@Autowired private MemberService service;
 
 	//회원의 정보를 추가하는 API 
-	@PostMapping ("/member/setup")
+	@PostMapping ("/member")
 	public MemberDto memberSetup(@RequestBody MemberDto dto) {
 		return service.addMember(dto);
+	}
+
+	//회원의 정보를 삭제하는 API
+	@DeleteMapping("/member")
+	public Map<String, Object> memberDelete(){
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
+		service.deleteMember(userName);
+		Map<String, Object> map=new HashMap<>();
+		map.put("isSuccess", true);
+		return map;
+	}
+	
+	@GetMapping("/member")
+	public MemberDto getMember() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
+		return service.selectOne(userName);
 	}
 		
 	//회원의 정보를 수정(업데이트) 하는 API
@@ -44,20 +64,6 @@ public class MemberController {
 	@PatchMapping("/member/update/trainer")
 	public void memberUpdateTrainer(@RequestBody MemberDto dto) {
 		service.updateMemberTrainer(dto);
-	}
-
-	//회원의 정보를 삭제하는 API
-	@DeleteMapping("/member/delete")
-	public Map<String, Object> memberDelete(String userName){
-		service.deleteMember(userName);
-		Map<String, Object> map=new HashMap<>();
-		map.put("isSuccess", true);
-		return map;
-	}
-	
-	@GetMapping("/member")
-	public MemberDto getMember(String userName) {
-		return service.selectOne(userName);
 	}
 
 	@GetMapping("/member/list")
