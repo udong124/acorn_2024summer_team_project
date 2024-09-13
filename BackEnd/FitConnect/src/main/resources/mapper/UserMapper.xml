@@ -9,13 +9,13 @@
 
 	<update id="updateInfo" parameterType="UserDto">
 		UPDATE user_info
-		SET name=#{name}, email=#{email}, <if test="profile != null">, profile=#{profile}</if>
+		SET name=#{name}, email=#{email} <if test="profile != null">, profile=#{profile}</if>
 		WHERE userName=#{userName}
 	</update>
 
 	<update id="updatePwd" parameterType="UserDto">
 		UPDATE user_info
-		SET password=#{newPassword}
+		SET password=#{password}
 		WHERE userName=#{userName}
 	</update>
 
