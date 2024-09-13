@@ -6,8 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -32,6 +35,8 @@ import org.springframework.web.bind.annotation.RequestPart;
 public class ExerciseController {
 
 	@Autowired private ExerciseService service;
+	
+	
 	
 	@ApiResponses({
         @ApiResponse(responseCode = "200", description = "성공"),
@@ -64,7 +69,21 @@ public class ExerciseController {
 	@Operation(summary = "운동 리스트 내 특정 운동의 상세 정보", description = "파라미터로 받은 운동 아이디를 이용한 특정 운동의 상세 정보 가져오기")
 	@GetMapping("/exerciselist/detail/{exercise_id}")
 	public ExerciseListDto exerciseDatil(@PathVariable("exercise_id") int exercise_id) {
-		return service.ExerDetail(exercise_id);
+		return service.exerDetail(exercise_id);
+	}
+	
+	
+	@ApiResponses({
+        @ApiResponse(responseCode = "200", description = "성공"),
+        @ApiResponse(responseCode = "400", description = "실패")
+	})
+	@Operation(summary = "운동 리스트 등록(관리자용)", description = "관리자 권한으로 운동 리스트 목록 추가하기")
+	@PostMapping(value="/exerciselist", consumes = {MediaType. APPLICATION_JSON_VALUE, MediaType. MULTIPART_FORM_DATA_VALUE})
+	public Map<String, Object> addExerList(@ModelAttribute ExerciseListDto dto){
+		
+		boolean isSuccess = service.addExerList(dto);
+		
+		return Map.of("isSuccess",isSuccess);
 	}
 	
 	@ApiResponses({
@@ -76,7 +95,7 @@ public class ExerciseController {
 	public Map<String, Object> getExerJurnalMember(@PathVariable("m_calendar_id")int m_calendar_id, ExerciseJournalDto dto){
 		dto.setM_calendar_id(m_calendar_id);
 		Map<String, Object> map=new HashMap<>();
-		map.put("exerJournalList", service.SelectJournalAll(m_calendar_id));
+		map.put("exerJournalList", service.selectJournalAll(m_calendar_id));
 		return map;
 	}
 	
@@ -93,6 +112,19 @@ public class ExerciseController {
 		return map;
 	}
 	
+	@ApiResponses({
+        @ApiResponse(responseCode = "200", description = "성공"),
+        @ApiResponse(responseCode = "400", description = "실패")
+	})
+	@Operation(summary = "운동 일지 등록", description = "특정 날짜에 운동일지 등록하기")
+	@PostMapping("/exercisejournal/{m_calendar_id}")
+	public Map<String, Object> addExerJournal(@PathVariable("m_calendar_id")int m_calendar_id,@RequestBody List<ExerciseJournalDto> exerJournalList){
+		
+		boolean isSuccess = service.addExercise(exerJournalList);
+		
+		return Map.of("isSuccess", isSuccess);
+	}
+	
 	
 	
 	@ApiResponses({
@@ -103,7 +135,7 @@ public class ExerciseController {
 	@PutMapping("/exercisejournal/{e_journal_id}")
 	public Map<String, Object> updateExer(@PathVariable("e_journal_id") int e_journal_id, ExerciseJournalDto dto){
 		dto.setE_journal_id(e_journal_id);
-		Boolean isSuccess = service.update(dto);
+		boolean isSuccess = service.update(dto);
 		
 		return Map.of("isSuccess",isSuccess);
 	}
@@ -133,20 +165,6 @@ public class ExerciseController {
 		return Map.of("isSuccess", isSuccess);
 	}
 	
-	
-	
-	@ApiResponses({
-        @ApiResponse(responseCode = "200", description = "성공"),
-        @ApiResponse(responseCode = "400", description = "실패")
-	})
-	@Operation(summary = "운동 일지 등록", description = "특정 날짜에 운동일지 등록하기")
-	@PostMapping("/exercisejournal/{m_calendar_id}")
-	public Map<String, Object> addExerJournal(@PathVariable("m_calendar_id")int m_calendar_id,@RequestBody List<ExerciseJournalDto> exerJournalList){
-		
-		boolean isSuccess = service.addExercise(exerJournalList);
-		
-		return Map.of("isSuccess", isSuccess);
-	}
 	
 	
 	

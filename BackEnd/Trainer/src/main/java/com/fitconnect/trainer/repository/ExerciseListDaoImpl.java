@@ -28,4 +28,15 @@ public class ExerciseListDaoImpl implements ExerciseListDao {
 		return session.selectList("ExerciseList.getCategory", exercise_category);
 	}
 
+	@Override
+	public boolean insertExetList(ExerciseListDto dto) {
+		int rowCount=session.insert("ExerciseList.insertList", dto);
+		if(rowCount>0) {
+			return true;
+		}else {
+			return false;
+		}
+		
+	}
+
 }

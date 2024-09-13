@@ -19,4 +19,9 @@
 		FROM exerciselist
 		WHERE exercise_category=#{exercise_category}
 	</select>
+	<insert id="insertList" parameterType="exerciseListDto">
+		INSERT INTO exerciselist
+		(exercise_id, exercise_name, exercise_category, exercise_info, exercise_image)
+		VALUES(#{exercise_id}, #{exercise_name}, #{exercise_category}, #{exercise_info}, #{exercise_image})
+	</insert>
 </mapper>
