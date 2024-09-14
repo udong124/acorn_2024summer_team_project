@@ -31,7 +31,7 @@ public class MemberController {
 	public MemberDto memberSetup(@RequestBody MemberDto dto) {
 		return service.addMember(dto);
 	}
-
+	
 	//회원의 정보를 삭제하는 API
 	@DeleteMapping("/member")
 	public Map<String, Object> memberDelete(){
