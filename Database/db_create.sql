@@ -37,20 +37,23 @@ CREATE TABLE MEMBER_INFO (
 );
 
 -- SET LINESIZE 200;
--- COLUMN trainer_num FORMAT A10;
--- COLUMN member_height FORMAT A10;
--- COLUMN member_weight FORMAT A10;
 -- COLUMN member_gender FORMAT A10;
--- COLUMN plan FORMAT A70;
--- COLUMN weeklyplan FORMAT A70;
+-- COLUMN plan FORMAT A50;
+-- COLUMN weeklyplan FORMAT A50;
 
-CREATE TABLE TRAINERINFO (
+CREATE TABLE TRAINER_INFO (
   trainer_num NUMBER PRIMARY KEY,
   trainer_insta VARCHAR2(500),
   trainer_intro VARCHAR2(500),
   gym_name VARCHAR2(100),
   gym_link VARCHAR2(500)
 );
+
+-- SET LINESIZE 200;
+-- COLUMN trainer_insta FORMAT A50;
+-- COLUMN trainer_intro FORMAT A50;
+-- COLUMN gym_name FORMAT A10;
+-- COLUMN gym_link FORMAT A50;
 
 CREATE TABLE MEMBERCALENDAR (
   m_calendar_id NUMBER PRIMARY KEY,
