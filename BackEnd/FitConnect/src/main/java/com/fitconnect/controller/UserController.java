@@ -1,5 +1,8 @@
 package com.fitconnect.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fitconnect.dto.MemberDto;
 import com.fitconnect.dto.UserDto;
 import com.fitconnect.repository.UserDao;
 import com.fitconnect.util.JwtUtil;
@@ -59,23 +61,34 @@ public class UserController {
 	}
 	
 	@PostMapping("/user")
-	public boolean signup(@RequestBody UserDto dto) {
+	public Map<String, Object> signup(@RequestBody UserDto dto) {
 		String rawPassword = dto.getPassword();
 		String encPassword = passwordEncoder.encode(rawPassword);
 		dto.setPassword(encPassword);
+		Map<String, Object> map=new HashMap<>();
 		if(userDao.getData(dto.getUserName()) != null) {
-			return false;
+			map.put("isSuccess", false);
 		}
-		userDao.insert(dto);
-		return true;
+		else {
+			map.put("isSuccess", true);
+			userDao.insert(dto);
+		}
+		return map;
 	}
 
 	@DeleteMapping("/user")
-	public boolean delete() {
+	public Map<String, Object> delete() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userName = authentication.getName();
-		userDao.delete(userName);
-		return true;
+		Map<String, Object> map=new HashMap<>();
+		if(userDao.getData(userName) == null) {
+			map.put("isSuccess", false);
+		}
+		else {
+			map.put("isSuccess", true);
+			userDao.delete(userName);
+		}
+		return map;
 	}
 
 	@GetMapping("/user")

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fitconnect.dto.MemberDto;
+import com.fitconnect.repository.UserDao;
 import com.fitconnect.service.MemberService;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -24,11 +25,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RestController
 public class MemberController {
 	
+	@Autowired private UserDao userDao;
+
 	@Autowired private MemberService service;
 
 	//회원의 정보를 추가하는 API 
 	@PostMapping ("/member")
-	public MemberDto memberSetup(@RequestBody MemberDto dto) {
+	public MemberDto memberSignUp(@RequestBody MemberDto dto) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
+        if(userDao.getData(userName).getId() != dto.getMember_num()) {
+        	return null;
+        }
 		return service.addMember(dto);
 	}
 	

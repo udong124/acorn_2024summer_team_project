@@ -15,16 +15,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fitconnect.dto.TrainerDto;
+import com.fitconnect.repository.UserDao;
 import com.fitconnect.service.TrainerService;
 
 @RestController
 public class TrainerController {
 	
+	@Autowired private UserDao userDao;
+	
 	@Autowired private TrainerService service;
 	
 	//회원의 정보를 추가하는 API 
 	@PostMapping ("/trainer")
-	public TrainerDto trainerSetup(@RequestBody TrainerDto dto) {
+	public TrainerDto trainerSignUp(@RequestBody TrainerDto dto) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
+        if(userDao.getData(userName).getId() != dto.getTrainer_num()) {
+        	return null;
+        }
 		return service.addTrainer(dto);
 	}
 
