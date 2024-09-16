@@ -158,3 +158,6 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/java,eclipse,windows,web,maven
+
+#node_modules 폴더 무시
+node_modules/

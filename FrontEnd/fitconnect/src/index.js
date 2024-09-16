@@ -1,15 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-// App.js 를 import 해서 
 import App from './App';
+import { Provider } from 'react-redux';
+import { legacy_createStore as createStore } from 'redux';
+import rootReducer from './reducers';
 import reportWebVitals from './reportWebVitals';
 
-//id 가 root 인 곳에 UI 출력하기 
+// src/router/router.js 를 import
+
+import { BrowserRouter } from 'react-router-dom';
+
+const store=createStore(rootReducer);
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+    <Provider store={store}>
+      <BrowserRouter>
     <App />
+    </BrowserRouter>
+    </Provider>
   </React.StrictMode>
 );
 
