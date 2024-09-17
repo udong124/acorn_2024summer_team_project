@@ -1,4 +1,4 @@
-package com.fitconnect.trainer.controller;
+package com.fitconnect.controller;
 
 import java.io.File;
 import java.io.FileInputStream;

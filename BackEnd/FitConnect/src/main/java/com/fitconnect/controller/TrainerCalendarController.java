@@ -1,4 +1,4 @@
-package com.fitconnect.trainer.controller;
+package com.fitconnect.controller;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,11 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
-import com.fitconnect.trainer.dto.ExerciseJournalDto;
-import com.fitconnect.trainer.dto.MemberDto;
-import com.fitconnect.trainer.dto.TrainerCalendarDto;
-import com.fitconnect.trainer.service.TrainerCalendarService;
+import com.fitconnect.dto.MemberDto;
+import com.fitconnect.dto.TrainerCalendarDto;
+import com.fitconnect.service.TrainerCalendarService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

@@ -1,4 +1,4 @@
-package com.fitconnect.trainer.service;
+package com.fitconnect.service;
 
 import java.util.List;
 import java.util.Map;
@@ -7,11 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-
-import com.fitconnect.trainer.dto.ExerciseJournalDto;
-import com.fitconnect.trainer.dto.MemberDto;
-import com.fitconnect.trainer.dto.TrainerCalendarDto;
-import com.fitconnect.trainer.repository.TrainerCalendarDao;
+import com.fitconnect.dto.ExerciseJournalDto;
+import com.fitconnect.dto.MemberDto;
+import com.fitconnect.dto.TrainerCalendarDto;
+import com.fitconnect.repository.TrainerCalendarDao;
 
 @Service
 public class TrainerCalendarServiceImpl implements TrainerCalendarService  {

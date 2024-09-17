@@ -1,4 +1,4 @@
-package com.fitconnect.trainer.repository;
+package com.fitconnect.repository;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.fitconnect.trainer.dto.ExerciseListDto;
+import com.fitconnect.dto.ExerciseListDto;
 
 @Repository
 public class ExerciseListDaoImpl implements ExerciseListDao {

@@ -1,8 +1,8 @@
-package com.fitconnect.trainer.repository;
+package com.fitconnect.repository;
 
 import java.util.List;
 
-import com.fitconnect.trainer.dto.ExerciseListDto;
+import com.fitconnect.dto.ExerciseListDto;
 
 public interface ExerciseListDao {
 	public List<ExerciseListDto> getExerList();

@@ -1,9 +1,9 @@
-package com.fitconnect.trainer.repository;
+package com.fitconnect.repository;
 
 import java.util.List;
 import java.util.Map;
 
-import com.fitconnect.trainer.dto.ExerciseJournalDto;
+import com.fitconnect.dto.ExerciseJournalDto;
 
 public interface ExerciseJournalDao {
 	

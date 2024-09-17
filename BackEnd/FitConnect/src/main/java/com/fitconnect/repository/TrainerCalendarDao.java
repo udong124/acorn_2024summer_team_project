@@ -1,11 +1,10 @@
-package com.fitconnect.trainer.repository;
+package com.fitconnect.repository;
 
 import java.util.List;
 
-
-import com.fitconnect.trainer.dto.ExerciseJournalDto;
-import com.fitconnect.trainer.dto.MemberDto;
-import com.fitconnect.trainer.dto.TrainerCalendarDto;
+import com.fitconnect.dto.ExerciseJournalDto;
+import com.fitconnect.dto.MemberDto;
+import com.fitconnect.dto.TrainerCalendarDto;
 
 public interface TrainerCalendarDao {
 	public List<TrainerCalendarDto> getCalenList(int user_id);

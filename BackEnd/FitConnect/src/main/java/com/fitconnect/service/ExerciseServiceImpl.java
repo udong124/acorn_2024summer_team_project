@@ -1,4 +1,4 @@
-package com.fitconnect.trainer.service;
+package com.fitconnect.service;
 
 import java.io.File;
 import java.sql.Date;
@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fitconnect.trainer.dto.ExerciseJournalDto;
-import com.fitconnect.trainer.dto.ExerciseListDto;
-import com.fitconnect.trainer.repository.ExerciseJournalDao;
-import com.fitconnect.trainer.repository.ExerciseListDao;
+import com.fitconnect.dto.ExerciseJournalDto;
+import com.fitconnect.dto.ExerciseListDto;
+import com.fitconnect.repository.ExerciseJournalDao;
+import com.fitconnect.repository.ExerciseListDao;
 
 @Service
 public class ExerciseServiceImpl implements ExerciseService {

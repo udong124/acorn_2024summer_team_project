@@ -1,12 +1,12 @@
-package com.fitconnect.trainer.service;
+package com.fitconnect.service;
 
 
 import java.util.List;
 import java.util.Map;
 
-import com.fitconnect.trainer.dto.ExerciseJournalDto;
-import com.fitconnect.trainer.dto.ExerciseListDto;
-import com.fitconnect.trainer.repository.ExerciseListDao;
+import com.fitconnect.dto.ExerciseJournalDto;
+import com.fitconnect.dto.ExerciseListDto;
+import com.fitconnect.repository.ExerciseListDao;
 
 public interface ExerciseService {
 	//특정 날짜의 전체 운동 일지 기록 조회

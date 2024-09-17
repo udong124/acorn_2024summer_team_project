@@ -1,4 +1,4 @@
-package com.fitconnect.trainer.dto;
+package com.fitconnect.dto;
 
 
 import org.apache.ibatis.type.Alias;
