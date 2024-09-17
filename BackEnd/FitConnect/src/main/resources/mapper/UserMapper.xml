@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="user">
+
+	<delete id="delete" parameterType="string">
+		DELETE FROM user_info
+		WHERE userName=#{userName}
+	</delete>
+
+	<update id="updateInfo" parameterType="UserDto">
+		UPDATE user_info
+		SET email=#{email} <if test="profile != null">, profile=#{profile}</if>
+		WHERE userName=#{userName}
+	</update>
+
+	<update id="updatePwd" parameterType="UserDto">
+		UPDATE user_info
+		SET password=#{newPassword}
+		WHERE userName=#{userName}
+	</update>
+
+	<update id="updateRole" parameterType="UserDto">
+		UPDATE user_info
+		SET role=#{role}
+		WHERE userName=#{userName}
+	</update>
+
+	<insert id="insert" parameterType="UserDto">
+		INSERT INTO user_info
+		(id, userName, password, email, role, regdate, provider)
+		VALUES(user_info_seq.NEXTVAL, #{userName}, #{password}, #{email}, #{role}, SYSDATE, #{provider})
+	</insert>
+
+	<select id="getData" parameterType="string" resultType="UserDto">
+		SELECT id, userName, password, email, role, profile, regdate, provider, providerid
+		FROM user_info
+		WHERE userName=#{userName}
+	</select>
+
+</mapper>
