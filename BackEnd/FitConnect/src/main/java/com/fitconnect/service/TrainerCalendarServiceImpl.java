@@ -5,11 +5,14 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.fitconnect.dto.ExerciseJournalDto;
 import com.fitconnect.dto.MemberDto;
 import com.fitconnect.dto.TrainerCalendarDto;
+import com.fitconnect.handler.AuthSuccessHandler;
 import com.fitconnect.repository.TrainerCalendarDao;
 
 @Service
@@ -22,7 +25,7 @@ public class TrainerCalendarServiceImpl implements TrainerCalendarService  {
 	@Override
 	public List<TrainerCalendarDto> selectCalenList() {
 		//토큰에 저장된 user_id을 user_id이라는 key 값에 담기
-		int user_id=1;//토큰 값으로 수정 예정
+		String user_id = SecurityContextHolder.getContext().getAuthentication().getName();
 		
 		return calDao.getCalenList(user_id);
 	}
@@ -69,7 +72,7 @@ public class TrainerCalendarServiceImpl implements TrainerCalendarService  {
 	@Override
 	public List<MemberDto> selectMemberList() {
 		//토큰에 저장된 user_num을 user_num이라는 key 값에 담기
-		int user_id=1;//토큰 값으로 수정 예정
+		String user_id = SecurityContextHolder.getContext().getAuthentication().getName();
 		return calDao.getMemberList(user_id);
 	}
 

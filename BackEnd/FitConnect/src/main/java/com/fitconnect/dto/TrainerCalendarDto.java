@@ -20,5 +20,5 @@ public class TrainerCalendarDto {
 	private String name;
 	private String regdate;
 	private int member_num;
-	private int user_id;
+	private String user_id;
 }
