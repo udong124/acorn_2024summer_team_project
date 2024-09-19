@@ -6,12 +6,15 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.fitconnect.auth.PrincipalDetails;
 import com.fitconnect.dto.ExerciseJournalDto;
 import com.fitconnect.dto.MemberDto;
 import com.fitconnect.dto.TrainerCalendarDto;
+import com.fitconnect.dto.UserDto;
 import com.fitconnect.handler.AuthSuccessHandler;
 import com.fitconnect.repository.TrainerCalendarDao;
 
@@ -25,9 +28,10 @@ public class TrainerCalendarServiceImpl implements TrainerCalendarService  {
 	@Override
 	public List<TrainerCalendarDto> selectCalenList() {
 		//토큰에 저장된 user_id을 user_id이라는 key 값에 담기
-		String user_id = SecurityContextHolder.getContext().getAuthentication().getName();
+	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    UserDto userDto = ((PrincipalDetails)authentication.getPrincipal()).getDto();
 		
-		return calDao.getCalenList(user_id);
+		return calDao.getCalenList(userDto.getId());
 	}
 
 	//트레이너의 특정 일자 일정
@@ -72,8 +76,9 @@ public class TrainerCalendarServiceImpl implements TrainerCalendarService  {
 	@Override
 	public List<MemberDto> selectMemberList() {
 		//토큰에 저장된 user_num을 user_num이라는 key 값에 담기
-		String user_id = SecurityContextHolder.getContext().getAuthentication().getName();
-		return calDao.getMemberList(user_id);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    UserDto userDto = ((PrincipalDetails)authentication.getPrincipal()).getDto();
+		return calDao.getMemberList(userDto.getId());
 	}
 
 	@Override

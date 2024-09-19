@@ -17,7 +17,7 @@ public class TrainerCalendarDaoImpl implements TrainerCalendarDao {
 	@Autowired private SqlSession session;
 
 	@Override
-	public List<TrainerCalendarDto> getCalenList(String user_id) {
+	public List<TrainerCalendarDto> getCalenList(int user_id) {
 		
 		return session.selectList("TrainerCalendar.getList", user_id);
 	}
@@ -65,7 +65,7 @@ public class TrainerCalendarDaoImpl implements TrainerCalendarDao {
 	}
 
 	@Override
-	public List<MemberDto> getMemberList(String user_id) {
+	public List<MemberDto> getMemberList(int user_id) {
 		return session.selectList("TrainerCalendar.getMemberAll", user_id);
 	}
 	
