@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="trainer">
+
+	<delete id="delete" parameterType="int">
+		DELETE FROM trainer_info
+		WHERE trainer_num=#{trainer_num}
+	</delete>
+
+	<insert id="insert" parameterType="TrainerDto">
+		INSERT INTO trainer_info
+		(trainer_num, trainer_insta, trainer_intro, gym_name, gym_link)
+		VALUES(#{trainer_num}, #{trainer_insta}, #{trainer_intro}, #{gym_name}, #{gym_link})
+	</insert>
+
+	<update id="updateInfo" parameterType="TrainerDto">
+		UPDATE trainer_info
+		SET trainer_insta=#{trainer_insta}, trainer_intro=#{trainer_intro}
+		WHERE trainer_num=#{trainer_num}
+	</update>
+
+	<update id="updateGymInfo" parameterType="TrainerDto">
+		UPDATE trainer_info
+		SET gym_name=#{gym_name}, gym_link=#{gym_link}
+		WHERE trainer_num=#{trainer_num}
+	</update>
+
+	<select id="getData" parameterType="int" resultType="TrainerDto">
+		SELECT trainer_num, trainer_insta, trainer_intro, gym_name, gym_link
+		FROM trainer_info
+		WHERE trainer_num=#{trainer_num}
+	</select>
+
+	<select id="getList" resultType="TrainerDto">
+		SELECT *
+		FROM trainer_info
+		ORDER BY trainer_num ASC
+	</select>
+
+</mapper>
