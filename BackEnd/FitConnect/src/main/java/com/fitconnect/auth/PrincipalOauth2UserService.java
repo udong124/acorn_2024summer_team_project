@@ -34,6 +34,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService{
 		String providerid = oauth2User.getAttribute("sub");
 		String userName = (provider+"_"+providerid); // google_192848124912849248
 		String password = userName;
+		String name = oauth2User.getAttribute("name");
 		String email = oauth2User.getAttribute("email");
 		String profile = oauth2User.getAttribute("picture");
 		String role = "USER";
@@ -44,6 +45,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService{
 			UserDto newDto = UserDto.builder()
 					.userName(userName)
 					.password(password)
+					.name(name)
 					.email(email)
 					.profile(profile)
 					.role(role)

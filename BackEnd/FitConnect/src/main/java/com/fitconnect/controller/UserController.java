@@ -1,10 +1,17 @@
 package com.fitconnect.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -53,65 +60,70 @@ public class UserController {
 		return "Bearer+"+token;
 	}
 	
-	@PostMapping("/signup")
-	public boolean signup(@RequestBody UserDto dto) {
-		//System.out.println(dto);
+	@PostMapping("/user")
+	public Map<String, Object> signup(@RequestBody UserDto dto) {
 		String rawPassword = dto.getPassword();
 		String encPassword = passwordEncoder.encode(rawPassword);
 		dto.setPassword(encPassword);
+		Map<String, Object> map=new HashMap<>();
 		if(userDao.getData(dto.getUserName()) != null) {
-			return false;
+			map.put("isSuccess", false);
 		}
-		userDao.insert(dto);
-		return true;
+		else {
+			map.put("isSuccess", true);
+			userDao.insert(dto);
+		}
+		return map;
 	}
 
-	@PostMapping("/update/info")
+	@DeleteMapping("/user")
+	public Map<String, Object> delete() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
+		Map<String, Object> map=new HashMap<>();
+		if(userDao.getData(userName) == null) {
+			map.put("isSuccess", false);
+		}
+		else {
+			map.put("isSuccess", true);
+			userDao.delete(userName);
+		}
+		return map;
+	}
+
+	@GetMapping("/user")
+	public UserDto getUser() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
+        return userDao.getData(userName);
+	}
+
+	@PatchMapping("/user/update/info")
 	public UserDto updateInfo(@RequestBody UserDto dto) {
 		userDao.updateInfo(dto);
 		return dto;
 	}
 	
-	@PostMapping("/update/password")
+	@PatchMapping("/user/update/password")
 	public UserDto updatePassword(@RequestBody UserDto dto) {
-		//System.out.println(dto);
 		String rawPassword = dto.getNewPassword();
 		String encPassword = passwordEncoder.encode(rawPassword);
 		dto.setPassword(encPassword);
 		userDao.updatePwd(dto);
+		dto.setNewPassword(null);
 		return dto;
 	}
 	
-	@PostMapping("/update/role/admin")
+	@PatchMapping("/user/update/role")
 	public UserDto updateRoleAdmin(@RequestBody UserDto dto) {
-		//System.out.println(dto);
-		dto.setRole("ADMIN");
-		userDao.updateRole(dto);
+		String role = dto.getRole();
+		if(role.equals("ADMIN") || role.equals("MEMBER") || role.equals("TRAINER")) {
+			userDao.updateRole(dto);
+		}
+		else {
+			dto.setRole("FALSE");
+		}
 		return dto;
-	}
-	
-	@PostMapping("/update/role/member")
-	public UserDto updateRoleMember(@RequestBody UserDto dto) {
-		//System.out.println(dto);
-		dto.setRole("MEMBER");
-		userDao.updateRole(dto);
-		return dto;
-	}
-
-	@PostMapping("/update/role/trainer")
-	public UserDto updateRoleTrainer(@RequestBody UserDto dto) {
-		//System.out.println(dto);
-		dto.setRole("TRAINER");
-		userDao.updateRole(dto);
-		return dto;
-	}
-
-	@PostMapping("/delete")
-	public boolean delete(@RequestBody UserDto dto) {
-		//System.out.println(dto);
-		//보안기능 추가 필요?
-		userDao.delete(dto.getUserName());
-		return true;
 	}
 
 	

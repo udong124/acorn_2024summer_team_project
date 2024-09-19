@@ -9,13 +9,13 @@
 
 	<update id="updateInfo" parameterType="UserDto">
 		UPDATE user_info
-		SET email=#{email} <if test="profile != null">, profile=#{profile}</if>
+		SET name=#{name}, email=#{email} <if test="profile != null">, profile=#{profile}</if>
 		WHERE userName=#{userName}
 	</update>
 
 	<update id="updatePwd" parameterType="UserDto">
 		UPDATE user_info
-		SET password=#{newPassword}
+		SET password=#{password}
 		WHERE userName=#{userName}
 	</update>
 
@@ -27,12 +27,12 @@
 
 	<insert id="insert" parameterType="UserDto">
 		INSERT INTO user_info
-		(id, userName, password, email, role, regdate, provider)
-		VALUES(user_info_seq.NEXTVAL, #{userName}, #{password}, #{email}, #{role}, SYSDATE, #{provider})
+		(id, userName, password, name, email, role, regdate, provider)
+		VALUES(user_info_seq.NEXTVAL, #{userName}, #{password}, #{name}, #{email}, #{role}, SYSDATE, #{provider})
 	</insert>
 
 	<select id="getData" parameterType="string" resultType="UserDto">
-		SELECT id, userName, password, email, role, profile, regdate, provider, providerid
+		SELECT id, userName, password, name, email, role, profile, regdate, provider, providerid
 		FROM user_info
 		WHERE userName=#{userName}
 	</select>
