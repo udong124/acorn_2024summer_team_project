@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dietList">
+
+	<select id="getList" parameterType="DietListDto" resultType="DietListDto">
+		
+		SELECT "diet_id", "food", "calories", "carbs", "protein", "fat"
+		FROM dietlist
+		WHERE "food" LIKE '%'||#{keyword}||'%'
+		ORDER BY "food" asc
+	</select>
+		
+	<insert id="insert">
+		INSERT INTO dietlist("diet_id", "food", "calories", "carbs", "protein", "fat")
+		VALUES (diet_id_seq.NEXTVAL, #{food}, #{calories}, #{carbs}, #{protein}, #{fat})
+	</insert>
+	
+</mapper>
