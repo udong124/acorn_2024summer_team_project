@@ -2,7 +2,6 @@ import { useOutlet } from 'react-router';
 import './App.css'
 import Navbar from './layout/Navbar';
 import Sidebar from './layout/Sidebar';
-import Footer from './layout/Footer';
 
 
 
@@ -16,7 +15,7 @@ function App() {
     <>
       <Navbar/>
       <div className='content-area'>
-        <Sidebar/>
+       <Sidebar/>
         <div className='maincontent'>{currentOutlet}</div>
       </div>
     </>

@@ -9,6 +9,7 @@
 .content-area {
   display: flex;
   flex: 1;
+  background-color: rgba(185, 185, 185, 0.26);
 }
 
 .maincontent {

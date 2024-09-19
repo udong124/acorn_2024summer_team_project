@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import './css/Mypage.css';
-import { Card } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 
 const MyPage = () => {
   const [trainerInfo, setTrainerInfo] = useState({
@@ -38,21 +38,15 @@ const MyPage = () => {
   // };
 
   return (
-    <div>
-      <h1>Mypage</h1>
-      <Card style={{ width: '18rem'}} className='myPageLeft'>
-        <Card.Header></Card.Header>
-        <Card.Body>
-          <div className='myPage_left'>
+      <Container>
+       <h1>Mypage</h1>
+       <Row>
+          <Col className='leftside'>
             <p><img src="{trainerInfo.profile_image_url}" alt="" /></p>
               <p>이름: {trainerInfo.name}</p>
               <p>자기소개: {trainerInfo.trainer_intro}</p>
-          </div>
-        </Card.Body>
-       </Card>
-       <Card>
-        <Card.Body>
-          <div className='myPageRight'>
+          </Col>
+          <Col className='rightside'>
               <p>고유 인식번호: {trainerInfo.trainer_num}</p>
               <p>아이디: {trainerInfo.user_id}</p>
               <p>이메일: {trainerInfo.email}</p>
@@ -61,12 +55,10 @@ const MyPage = () => {
               <p>트레이너 SNS: {trainerInfo.trainer_insta}</p>
 
               <p>헬스장이름: {trainerInfo.gym_name}</p>
-              <p>헬스장위치: {trainerInfo.gym_link}</p>
-              
-            </div>
-          </Card.Body>
-       </Card>
-
+              <p>헬스장위치: {trainerInfo.gym_link}dd</p>
+            </Col>
+          </Row>
+            
       {/* {trainerInfo.profile_image_url && (
         <img
           src={trainerInfo.profile_image_url}
@@ -84,7 +76,7 @@ const MyPage = () => {
           ref={imgRef}
         />
       </form> */}
-    </div>
+      </Container>
   );
 };
 
