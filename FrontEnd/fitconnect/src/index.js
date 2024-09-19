@@ -1,15 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-// App.js 를 import 해서 
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter, RouterProvider } from 'react-router-dom';
+import router from './router/router';
 
-//id 가 root 인 곳에 UI 출력하기 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <RouterProvider router={router}/>
   </React.StrictMode>
 );
 

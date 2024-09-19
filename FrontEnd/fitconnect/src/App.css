@@ -1,0 +1,19 @@
+/* src/App.css */
+.App {
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.content-area {
+  display: flex;
+  flex: 1;
+}
+
+.maincontent {
+  margin-left: 100px;
+  margin-top: 30px;
+}
+
+

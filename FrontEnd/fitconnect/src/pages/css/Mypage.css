@@ -1,0 +1,10 @@
+.mypage mypageleft{
+  width: 18px;
+  height: 18px;
+  background-color: brown;
+}
+
+.mypage mypageright{
+  background-color: aqua;
+  color: aquamarine;
+}

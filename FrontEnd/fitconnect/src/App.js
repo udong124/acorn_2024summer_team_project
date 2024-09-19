@@ -1,16 +1,26 @@
-// App.css 적용하기 (내부 css)
+import { useOutlet } from 'react-router';
 import './App.css'
+import Navbar from './layout/Navbar';
+import Sidebar from './layout/Sidebar';
+import Footer from './layout/Footer';
 
-//함수형 component
+
+
+
 function App() {
 
+  //현재 route 된 정보를 출력해주는 hook
+  const currentOutlet = useOutlet()
   return (
-    <div className="container">
-      <h1>인덱스 페이지 입니다</h1>
-      
-    </div>
+
+    <>
+      <Navbar/>
+      <div className='content-area'>
+        <Sidebar/>
+        <div className='maincontent'>{currentOutlet}</div>
+      </div>
+    </>
   );
 }
 
-//외부에서 App.js 를 import 하면 App 함수를 사용할수 있다. (src/index.js)
 export default App;
