@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,4 +35,12 @@ public class DietListController {
 		
 		return Map.of("isSuccess", true);
 	}
+	
+	@PostMapping("/dietlist/manager")
+	public Map<String, Object> ManagerInsert(DietListDto dto){
+		
+		service.insert(dto);
+		return Map.of("isSuccess", true);
+	}
+	
 }

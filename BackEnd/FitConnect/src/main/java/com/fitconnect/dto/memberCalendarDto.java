@@ -18,8 +18,7 @@ import lombok.Setter;
 public class memberCalendarDto {
 	private int m_calendar_id;
 	private int member_num;
-	private String date;
+	private String regdate;
 	private String memo;
 	
-	private String user_id="";
 }

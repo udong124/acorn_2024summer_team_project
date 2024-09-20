@@ -4,59 +4,59 @@
 
 	<select id="getList" parameterType="DietJournalDto" resultType="DietJournalDto">
 		SELECT 
-			a."member_num" as "member_num",
-			b."d_journal_id" as "d_journal_id",
-			b."m_calendar_id" as "m_calendar_id",
-			b."diet_id" as "diet_id",
-			b."diet_type" as "diet_type",
-			b."foodCount" as "foodCount",
-			c."food" as "food",
-			c."calories" as "calories",
-			c."carbs" as "carbs",
-			c."protein" as "protein",
-			c."fat" as "fat"
+			a.member_num as member_num,
+			b.d_journal_id as d_journal_id,
+			b.m_calendar_id as m_calendar_id,
+			b.diet_id as diet_id,
+			b.diet_type as diet_type,
+			b.foodCount as foodCount,
+			c.food as food,
+			c.calories as calories,
+			c.carbs as carbs,
+			c.protein as protein,
+			c.fat as fat
 		FROM
 			dietjournal b 
-			join dietlist c ON b."diet_id" = c."diet_id"
-			join membercalendar a ON a."m_calendar_id" = b."m_calendar_id"
-		WHERE b."m_calendar_id" = #{ m_calendar_id} AND "member_num" = #{ member_num}
+			join dietlist c ON b.diet_id = c.diet_id
+			join membercalendar a ON a.m_calendar_id = b.m_calendar_id
+		WHERE b.m_calendar_id = #{ m_calendar_id} AND member_num = #{ member_num}
 	</select>
 	
 	<insert id="insert" parameterType="DietJournalDto">
-		INSERT INTO dietjournal("d_journal_id", "m_calendar_id", "diet_id", "diet_type", "foodCount")
-		VALUES (djournalid_seq.NEXTVAL, #{ m_calendar_id}, #{ diet_id}, #{ diet_type}, #{ foodCount})
+		INSERT INTO dietjournal(d_journal_id, m_calendar_id, diet_id, diet_type, foodCount)
+		VALUES (d_journal_id_seq.NEXTVAL, #{ m_calendar_id}, #{ diet_id}, #{ diet_type}, #{ foodCount})
 	</insert>
 	
 	<update id="update" parameterType="DietJournalDto">
 		UPDATE 
-			(SELECT a."member_num" as "member_num",
-					b."d_journal_id" as "d_journal_id",
-					b."m_calendar_id" as "m_calendar_id",
-					b."diet_id" as "diet_id",
-					b."diet_type" as "diet_type",
-					b."foodCount" as "foodCount"
-			 FROM membercalendar a join dietjournal b ON a."m_calendar_id" = b."m_calendar_id")
-		SET "diet_type" = #{ diet_type}, "foodCount" = #{ foodCount}
-		WHERE "d_journal_id" = #{ d_journal_id} AND "member_num" = #{ member_num}
+			(SELECT a.member_num as member_num,
+					b.d_journal_id as d_journal_id,
+					b.m_calendar_id as m_calendar_id,
+					b.diet_id as diet_id,
+					b.diet_type as diet_type,
+					b.foodCount as foodCount
+			 FROM membercalendar a join dietjournal b ON a.m_calendar_id = b.m_calendar_id)
+		SET diet_type = #{ diet_type}, foodCount = #{ foodCount}
+		WHERE d_journal_id = #{ d_journal_id} AND member_num = #{ member_num}
 	</update>
 	
 	<delete id="deleteOne" parameterType="int">
 		DELETE FROM 
-			(SELECT a."member_num" as "member_num",
-					a."m_calendar_id" as m_calendar_id,
-					b."d_journal_id" as "d_journal_id"
-			 FROM membercalendar a join dietjournal b ON a."m_calendar_id" = b."m_calendar_id"
-			 WHERE "member_num" = #{ member_num})
-		WHERE "d_journal_id" = #{ d_journal_id}
+			(SELECT a.member_num as member_num,
+					a.m_calendar_id as m_calendar_id,
+					b.d_journal_id as d_journal_id
+			 FROM membercalendar a join dietjournal b ON a.m_calendar_id = b.m_calendar_id
+			 WHERE member_num = #{ member_num})
+		WHERE d_journal_id = #{ d_journal_id}
 			
 	</delete>
 	
 	<delete id="deleteAll" parameterType="int">
 		DELETE FROM
-			(SELECT a."member_num" as "member_num",
-					b."m_calendar_id" as "m_calendar_id"
-			 FROM membercalendar a join dietjournal b ON a."m_calendar_id" = b."m_calendar_id"
-			 WHERE "member_num" = #{ member_num})
-		WHERE "m_calendar_id" = #{ m_calendar_id}
+			(SELECT a.member_num as member_num,
+					b.m_calendar_id as m_calendar_id
+			 FROM membercalendar a join dietjournal b ON a.m_calendar_id = b.m_calendar_id
+			 WHERE member_num = #{ member_num})
+		WHERE m_calendar_id = #{ m_calendar_id}
 	</delete>
 </mapper>

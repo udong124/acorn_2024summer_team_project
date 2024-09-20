@@ -4,15 +4,19 @@
 
 	<select id="getList" parameterType="DietListDto" resultType="DietListDto">
 		
-		SELECT "diet_id", "food", "calories", "carbs", "protein", "fat"
+		SELECT diet_id, food, calories, carbs, protein, fat
 		FROM dietlist
-		WHERE "food" LIKE '%'||#{keyword}||'%'
-		ORDER BY "food" asc
+		WHERE food LIKE '%'||#{keyword}||'%'
+		ORDER BY food asc
 	</select>
 		
 	<insert id="insert">
-		INSERT INTO dietlist("diet_id", "food", "calories", "carbs", "protein", "fat")
+		INSERT INTO dietlist(diet_id, food, calories, carbs, protein, fat)
 		VALUES (diet_id_seq.NEXTVAL, #{food}, #{calories}, #{carbs}, #{protein}, #{fat})
 	</insert>
 	
+	<insert id="ManagerInsert">
+		INSERT INTO dietList(diet_id, food, calories, carbs, protein, fat)
+		VALUES (diet_id_seq.NEXTVAL, #{food}, #{calories}, #{carbs}, #{protein}, #{fat})
+	</insert>
 </mapper>

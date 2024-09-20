@@ -26,4 +26,10 @@ public class DietListDaoImpl implements DietListDao{
 		session.insert("dietList.insert", dto);
 	}
 
+	@Override
+	public void ManagerInsert(DietListDto dto) {
+		
+		session.insert("dietList.ManagerInsert", dto);
+	}
+
 }

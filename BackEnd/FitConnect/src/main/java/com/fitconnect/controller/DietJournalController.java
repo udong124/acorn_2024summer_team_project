@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fitconnect.auth.PrincipalDetails;
@@ -42,10 +43,13 @@ public class DietJournalController {
 	@PostMapping("/dietjournal/{m_calendar_id}")
 	public Map<String, Object> insert(
 			@PathVariable("m_calendar_id") int m_calendar_id,
-			DietJournalDto dto){
+			@RequestBody List<DietJournalDto> dietjournalList){
 		
-		dto.setM_calendar_id(m_calendar_id);
-		service.insert(dto);
+		for (DietJournalDto dto : dietjournalList) {
+	        dto.setM_calendar_id(m_calendar_id);
+	    }
+		
+	    service.insert(dietjournalList);
 		return Map.of("isSuccess", true);
 	}
 	

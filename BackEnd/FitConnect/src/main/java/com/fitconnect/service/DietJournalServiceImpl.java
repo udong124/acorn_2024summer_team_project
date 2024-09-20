@@ -1,8 +1,10 @@
 package com.fitconnect.service;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.catalina.mapper.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,12 +29,11 @@ public class DietJournalServiceImpl implements DietJournalService{
 	}
 
 	@Override
-	public void insert(DietJournalDto dto) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		int user_num = ((PrincipalDetails) authentication.getPrincipal()).getDto().getId();
+	public void insert(List<DietJournalDto> dietjournalList) {
 		
-		dto.setMember_num(user_num);
-		dao.insert(dto);
+		for (DietJournalDto dto : dietjournalList) {
+			dao.insert(dto);
+		}
 	}
 
 	@Override
