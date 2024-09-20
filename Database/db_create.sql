@@ -58,7 +58,7 @@ CREATE TABLE TRAINER_INFO (
 CREATE TABLE MEMBERCALENDAR (
   m_calendar_id NUMBER PRIMARY KEY,
   member_num NUMBER,
-  date DATE NOT NULL,
+  regdate DATE NOT NULL,
   memo VARCHAR2(500)
 );
 
@@ -103,14 +103,15 @@ CREATE TABLE MESSAGE (
   trainer_num NUMBER,
   content VARCHAR2(1000),
   send_type VARCHAR2(100) NOT NULL,
-  timestamp TIMESTAMP
+  times TIMESTAMP
 );
 
 CREATE TABLE TRAINERCALENDAR (
   t_calendar_id NUMBER PRIMARY KEY,
   trainer_num NUMBER,
   member_num NUMBER,
-  date DATE NOT NULL
+  regdate DATE NOT NULL
+);
 
 COMMIT;
 
