@@ -116,8 +116,8 @@ public class ExerciseController {
         @ApiResponse(responseCode = "400", description = "실패")
 	})
 	@Operation(summary = "운동 일지 등록", description = "특정 날짜에 운동일지 등록하기")
-	@PostMapping("/exercisejournal/{m_calendar_id}")
-	public Map<String, Object> addExerJournal(@PathVariable("m_calendar_id")int m_calendar_id,@RequestBody List<ExerciseJournalDto> exerJournalList){
+	@PostMapping("/exercisejournal")
+	public Map<String, Object> addExerJournal(@RequestBody List<ExerciseJournalDto> exerJournalList){
 		
 		boolean isSuccess = service.addExercise(exerJournalList);
 		
