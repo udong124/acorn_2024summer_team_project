@@ -8,13 +8,15 @@
 
 .content-area {
   display: flex;
-  flex: 1;
+  height: 100vh;
   background-color: rgba(185, 185, 185, 0.26);
 }
 
 .maincontent {
-  margin-left: 100px;
-  margin-top: 30px;
+  flex-grow: 1; /* Sidebar 외의 남은 공간을 차지 */
+  padding: 20px; /* 내부 여백 */
+  background-color: #fff; /* Maincontent 배경색 */
+  overflow-y: auto; /* 내용이 길어지면 스크롤 */
 }
 
 

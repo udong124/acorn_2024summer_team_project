@@ -8,32 +8,33 @@ import { useEffect, useState } from "react";
 
 function Members() {
   const [members, setMembers] = useState([]); // 서버에서 받아온 회원목록을 저장하는 state
+  const [exerciseJournal, setExerciseJournal] = useState([]); // 서버에서 받아온 운동일지를 저장하는 state
  
   // 서버에서 회원 데이터를 가져오는 함수
-  const refresh = ()=>{
-
+  const getMembers = ()=>{
       axios.get('/members')  // API 경로
         .then(res=>setMembers(res.data))  
         .catch (err=>console.log('err'))
   }
 
+  const getExerciseJournal =()=>{
+    axios.get('/exerciseJournal')
+    .then(res=>setExerciseJournal(res.data))
+    .catach (err=>console.log('err'))
+  }
+
+
   // 삭제 버튼을 눌렀을때 호출되는 함수
   const handleDelete = (num)=>{
     axios.delete('/members/'+num)
-    .thent(res=>{
-        refresh()
-    })
+    .thent(res=>getMembers())
     .catch(err=>console.console.log(err))
   }
-
   useEffect(()=>{
-    refresh()
+    getMembers()
   }, [])
   
-  useEffect(()=>{
-    //해당 component 에서 필요한 준비 작업을 여기서 하면된다. 
-    refresh()
-}, [])
+
 
   return (
     <div>
