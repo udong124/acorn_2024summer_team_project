@@ -23,6 +23,6 @@ public class ExerciseJournalDto {
 	private int exercise_id;
 	private int exercise_set;
 	private int exercise_count;
-	private int exercise_weight;
+	private float exercise_weight;
 	
 }
