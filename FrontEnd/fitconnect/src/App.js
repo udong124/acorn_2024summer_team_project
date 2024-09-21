@@ -3,18 +3,14 @@ import 'bootstrap/dist/css/bootstrap.css';
 import Header from './layout/Header';
 import Footer from './layout/Footer';
 
-import { Link, Route, Routes, useLocation } from 'react-router-dom';
-import UserLogin from './pages/UserLogin';
-import UserSignup from './pages/UserSignup';
-import MemberInfo from './pages/MemberInfo';
-import TrainerInfo from './pages/TrainerInfo';
-import Trainer from './pages/Trainer';
-
+import { Link, useLocation, useOutlet } from 'react-router-dom';
 
 
 function App() {
-//메인페이지에만 비디오 배경을 보여주게끔
-const location=useLocation();
+  //메인페이지에만 비디오 배경을 보여주게끔
+  const location=useLocation();
+
+  const currentOutlet = useOutlet()
 
   return (
     <div className="MainContainer">
@@ -33,30 +29,23 @@ const location=useLocation();
           <br/>
           <ul>
             <li>
-              <Link to="/signup">사용자 회원가입</Link>
+              <Link to="/user">사용자 회원가입</Link>
             </li>
             <li>
               <Link to="/auth">사용자 로그인</Link>
             </li>
             <li>
-              <Link to="/memberInfo/{member_num}/setup">회원 기본 설정</Link>
+              <Link to="/member">회원 기본 설정</Link>
             </li>
             <li>
-              <Link to="/trainerInfo/{trainer_num}/setup">트레이너 기본 설정</Link>
+              <Link to="/trainer">트레이너 기본 설정</Link>
             </li>
             <li>
-              <Link to="/trainer/search">트레이너 검색기능</Link>
+              <Link to="/member/update/trainer">트레이너 Id 검색</Link>
             </li>
             </ul>
           </nav>
-        <Routes>
-        <Route path="/" element={<div>메인 페이지 입니다. 여기는 기본 App.js 화면입니다.</div>} />
-        <Route path="/auth" element={<UserLogin />} />
-        <Route path="/signup" element={<UserSignup />} />
-        <Route path="/memberInfo/:member_num/setup" element={<MemberInfo />} />
-        <Route path="/trainerInfo/:trainer_num/setup" element={<TrainerInfo />} />
-        <Route path="/trainer/search" element={<Trainer />} />
-        </Routes>
+          <div className='maincontent'>{currentOutlet}</div>
         <div className="Footer"><Footer/></div>
       </div>
   );

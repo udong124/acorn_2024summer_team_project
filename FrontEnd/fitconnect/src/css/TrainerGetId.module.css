@@ -1,0 +1,68 @@
+/* Container 관련 css */
+.trainerContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+/* Inner Div 관련 css */
+.trainerBox {
+    border: 1px solid #007bff; /* Primary color */
+    border-radius: 5px;
+    padding: 40px;
+    position: relative;
+    min-height: 300px;
+    width: 75%; 
+    background-color: #fff; 
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+/* Text 관련 css */
+.textCenter {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+/* Form Control 관련 css */
+.formControl {
+    padding: 1rem;
+    font-size: 1.1rem;
+    border: 1px solid #000;
+}
+
+.mt3 {
+    margin-top: 1rem;
+}
+
+.w100 {
+    width: 100%;
+}
+
+.w25 {
+    width: 25%;
+}
+
+/* 버튼 관련 css */
+.btnPrimary {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+    padding: 1rem;
+    font-size: 1rem;
+    width: 100%;
+}
+
+.btnPrimaryAbsolute {
+    position: absolute;
+    right: 30px;
+    width: 25%;
+    padding: 1rem;
+    font-size: 1rem;
+}
+
+.marginBottom {
+    margin-bottom: 150px;
+}

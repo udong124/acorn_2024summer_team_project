@@ -1,0 +1,65 @@
+/* Center container css */
+.centerContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+/* Form 관련 css */
+.signupForm {
+    max-width: 500px;
+    width: 100%;
+    padding: 20px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+/* 프로필이미지 */
+.profileContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.profileImgPreview {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #ddd;
+}
+
+.uploadBtn {
+    cursor: pointer;
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f8f9fa;
+    color: #333;
+    display: inline-block;
+}
+
+/* 버튼 */
+.mt3 {
+    margin-top: 1rem;
+}
+
+.w100 {
+    width: 100%;
+}
+
+/* 글 정렬 */
+.textCenter {
+    text-align: center;
+}
+
+.mb4 {
+    margin-bottom: 1.5rem;
+}
+
+.dNone {
+    display: none;
+}

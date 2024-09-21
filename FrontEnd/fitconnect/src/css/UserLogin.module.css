@@ -1,0 +1,104 @@
+/* Container 관련 css */
+.loginContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #ffffff;
+}
+
+/* 폼 관련 css */
+.loginForm {
+    max-width: 500px;
+    width: 100%;
+    padding: 20px;
+    border-radius: 5px;
+    border: 1px solid #000; 
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.15);
+    background-color: #ffffff; 
+}
+
+.formControl {
+    padding: 1rem;
+    font-size: 1.1rem;
+    border: 1px solid #000; 
+    color: #000;
+}
+
+/* 글 정렬 css */
+.textCenter {
+    text-align: center;
+}
+
+.fwBold {
+    font-weight: bold;
+}
+
+.textMuted {
+    color: #333; 
+}
+
+.mb3 {
+    margin-bottom: 1rem;
+}
+
+.mb4 {
+    margin-bottom: 1.5rem;
+}
+
+/* 제목 관련 css */
+.title {
+    font-size: 2.5rem;
+    color: #000;
+    text-align: center;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: #333;
+    text-align: center;
+}
+
+/* 버튼 관련 css */
+.btnPrimary {
+    background-color: #000;
+    border-color: #007bff;
+    padding: 1rem;
+    font-size: 1.2rem;
+    color: #fff;
+    width: 100%;
+}
+
+.btnOutlineDark {
+    padding: 1rem;
+    font-size: 1.2rem;
+    border-color: #000;
+    color: #000;
+    width: 100%;
+    background-color: #fff;
+}
+
+.shadowSm {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+/* 반응형 관련 */
+@media (max-width: 768px) {
+    .loginForm {
+        padding: 15px;
+    }
+    .title {
+        font-size: 2rem;
+    }
+    .subtitle {
+        font-size: 1rem;
+    }
+    .btnPrimary, .btnOutlineDark {
+        padding: 0.8rem;
+        font-size: 1rem;
+    }
+    .formControl {
+        padding: 0.8rem;
+        font-size: 1rem;
+    }
+}

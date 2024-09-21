@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { Button, Form, Container } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import styles from '../styles/style.module.css';
+import styles from '../css/TrainerSignUp.module.css'; 
+import classNames from 'classnames/bind';
+
+//cx함수 만들기
+const cx=classNames.bind(styles);
 
 
-const TrainerInfo = () => {
+const TrainerSignUp = () => {
   const [step, setStep]= useState(1);
   const [profile, setProfile] = useState(null);
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
   const [trainer_insta, setTrainer_insta] = useState('');
   const [trainer_intro, setTrainer_intro] = useState('');
   const [gym_link, setGym_link] = useState('');
@@ -18,87 +20,85 @@ const TrainerInfo = () => {
   const navigate = useNavigate();
 
 
-  
   const handleNext= ()=>{
     setStep(step +1);
   }
 
   const handleImageChange = (e) => {
     const selectedFile = e.target.files[0];
-    if(selectedFile) {
+    if (selectedFile) {
       setFile(selectedFile);
       setProfile(URL.createObjectURL(selectedFile));
     }
-    };
-  
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const data = { profile, name, email, trainer_insta, trainer_intro, gym_link , gym_name };
 
-    axios.post(`/trainerInfo/{trainer_num}/setup`, data)
+    const token = sessionStorage.getItem('token');
+
+    const formData = new FormData();
+    formData.append('trainer_insta', trainer_insta);
+    formData.append('trainer_intro', trainer_intro);
+    formData.append('gym_name', gym_name);
+    formData.append('gym_link', gym_link);
+
+    if (file) {
+      formData.append('profile', file);  
+    }
+
+    axios.post(`/trainer`, formData,{
+      headers: {
+        'Content-Type': 'multipart/form-data',  
+        'Authorization': `Bearer ${token}`  
+      }
+    })
       .then(response => {
         console.log(response.data);
         navigate(`/`);
       })
       .catch(error => {
-        console.error("프로필 등록 실패:", error);
+        if (error.response && error.response.data) {
+          console.error("서버 응답 오류:", error.response.data.message); 
+        } else {
+          console.error("프로필 등록 실패:", error.message);  
+        }
       });
   };
 
+
+
   return (
-    <Container className="d-flex align-items-center justify-content-center" 
-    style={{ minHeight: '100vh'}}>
-      <div className="border border-primary border-1 rounded-3 p-5 w-75" >
-      <p className="text-center"> 트레이너 기본 설정 </p>
+    <Container className={cx('centerContainer')}>
+      <div className={cx('signupForm')}>
+        <h4 className={cx('textCenter')}> 트레이너 기본 설정 </h4>
 
       {step === 1 && (
         <Form>
-          <Form.Group>
+          <Form.Group className={cx('textCenter', 'mb4')}>
            <Form.Label>프로필 이미지 업로드</Form.Label>
-           <div style={{marginBottom: '40px'}}></div>
-           <div className='profileImgContainer'>
+           <div className={cx('profileContainer')}>
             {profile ? (
               <img
-                src={profile}
+                src={profile} 
                 alt='Profile Preview'
-                className={styles.profileImgPreview}
+                className={cx('profileImgPreview')}
                 />
             ) : (
-                <label htmlFor="profileImg" className={styles.uploadBtn}>프로필 이미지 추가</label>
+                <label htmlFor="profileImg" Image src="holder.js/171x180" roundedCircle className={cx('uploadBtn')}>프로필 이미지 추가</label>
             )}
             <input
               type="file"
               id="profileImg"
-              className='d-none'
+              className={cx('dNone')}
               onChange={handleImageChange}
               accept='image/*'
             />
             </div>
         </Form.Group>
-        <Form.Group>
-           <Form.Label>이름</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="이름을 입력해 주세요"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-        </Form.Group>
-        <Form.Group>
-           <Form.Label>이메일</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder="이메일을 입력해 주세요"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </Form.Group>
-       <Button variant='primary' className='mt-3' onClick={handleNext}>다음</Button>
+      
+       <Button variant='primary' className={cx('mt3')} onClick={handleNext}>다음</Button>
         </Form>
-        
       )}
 
       {step === 2 && (
@@ -125,16 +125,6 @@ const TrainerInfo = () => {
           />
         </Form.Group>
         <Form.Group>
-          <Form.Label>체육관 링크</Form.Label>
-          <Form.Control
-            type="text"
-             placeholder="체육관 링크를 첨부해 주세요"
-            value={gym_link}
-            onChange={(e) => setGym_link(e.target.value)}
-            required
-          />
-        </Form.Group>
-        <Form.Group>
           <Form.Label>체육관 이름</Form.Label>
           <Form.Control
             type="text"
@@ -144,7 +134,17 @@ const TrainerInfo = () => {
             required
           />
         </Form.Group>
-        <Button variant="primary" type="submit" className="w-100 mt-3" as={Link} to="/">
+        <Form.Group>
+          <Form.Label>체육관 링크</Form.Label>
+          <Form.Control
+            type="text"
+             placeholder="체육관 링크를 첨부해 주세요"
+            value={gym_link}
+            onChange={(e) => setGym_link(e.target.value)}
+            required
+          />
+        </Form.Group>
+        <Button variant="primary" type="submit" className={cx('w100', 'mt3')} onClick={handleSubmit}>
         완료</Button>
       </Form>
       )}
@@ -153,4 +153,4 @@ const TrainerInfo = () => {
   );
 };
 
-export default TrainerInfo;
+export default TrainerSignUp;
