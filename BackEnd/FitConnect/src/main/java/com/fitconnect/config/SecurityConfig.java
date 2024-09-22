@@ -41,7 +41,6 @@ public class SecurityConfig {
 	@Bean //메소드에서 리턴되는 SecurityFilterChain 을 bean 으로 만들어준다.
 	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
 		//화이트 리스트를 미리 배열에 넣어두기
-
 		String[] whiteList= {"/**", "/auth", "/signup", "/user/**", "/member/**", "/trainer/**"};
 
 
