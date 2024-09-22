@@ -5,6 +5,7 @@ import Calendar from "../pages/Calendar"
 import Message from "../pages/Message"
 import Members from "../pages/Members"
 import Mypage from "../pages/Mypage"
+import MypageDetail from "../pages/MypageDetail"
 const { createBrowserRouter } = require("react-router-dom")
 
 //라우트 정보를 배열에 저장
@@ -13,8 +14,8 @@ const routes=[
     {path:"/calendar", element: <Calendar/>},
     {path:"/message", element: <Message/>},
     {path:"/members", element: <Members/>},
-    {path:"/mypage", element: <Mypage/>}
-    
+    {path:"/mypage", element: <Mypage/>},
+    {path:"/mypagedetail", element: <MypageDetail/>}
 ]
 
 //BrowserRouter 를 만들기
