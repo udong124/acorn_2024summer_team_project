@@ -2,14 +2,13 @@ import React, { useState } from 'react';
 import { Button, Form, Container } from 'react-bootstrap';
 import axios from 'axios';
 import { useNavigate} from 'react-router-dom';
-import styles from "../css/TrainerGetId.module.css";
+import styles from "../css/TrainerGetList.module.css";
 import classNames from "classnames/bind";
 
 //cx함수 만들기
 const cx = classNames.bind(styles);
 
-
-const TrainerGetId = () => {
+const TrainerGetList = () => {
   
   const [trainerId, setTrainerId] = useState('');
   const [member_num, setMember_num] = useState('');
@@ -17,7 +16,6 @@ const TrainerGetId = () => {
   const navigate= useNavigate();
 
   
-
   const handleTrainerID = (e) => {
     e.preventDefault();
     const data = {trainer_num, member_num};
@@ -36,8 +34,6 @@ const TrainerGetId = () => {
         console.error("트레이너 아이디 등록 실패:", error);
       });
   };
-
-
 
 
   return (
@@ -69,4 +65,7 @@ const TrainerGetId = () => {
   );
 };
 
-export default TrainerGetId;
+// 이 컴포넌트는 member만 접근 가능하도록 설정
+TrainerGetList.allowedRoles = ['member'];
+
+export default TrainerGetList;

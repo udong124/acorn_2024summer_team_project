@@ -41,7 +41,7 @@ function App() {
               <Link to="/trainer">트레이너 기본 설정</Link>
             </li>
             <li>
-              <Link to="/member/update/trainer">트레이너 Id 검색</Link>
+              <Link to="/trainer/list">트레이너 정보 목록 요청</Link>
             </li>
             </ul>
           </nav>
