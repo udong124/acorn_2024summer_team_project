@@ -32,4 +32,5 @@ public class MemberDto {
 	private String member_gender;
 	private String plan;
 	private String weeklyplan;
+	private String name;
 }

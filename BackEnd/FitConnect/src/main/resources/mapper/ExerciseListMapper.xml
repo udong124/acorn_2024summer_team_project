@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ExerciseList">
+	<sql id="column">
+		exercise_id, exercise_name, exercise_category, exercise_info, exercise_image 
+	</sql>
+	<select id="getAll" resultType="exerciseListDto">
+		SELECT <include refid="column"/>
+		From exerciseList
+		ORDER BY exercise_id ASC
+	</select>
+	<select id="getDetail" resultType="exerciseListDto" parameterType="int">
+		SELECT <include refid="column"/>
+		FROM exerciselist
+		WHERE exercise_id =#{exercise_id}
+	</select>
+	<select id="getCategory" resultType="exerciseListDto" parameterType="String">
+		SELECT <include refid="column"/>
+		FROM exerciselist
+		WHERE exercise_category=#{exercise_category}
+	</select>
+	<insert id="insertList" parameterType="exerciseListDto">
+		INSERT INTO exerciselist
+		(exercise_id, exercise_name, exercise_category, exercise_info, exercise_image)
+		VALUES(#{exercise_id}, #{exercise_name}, #{exercise_category}, #{exercise_info}, #{exercise_image})
+	</insert>
+</mapper>

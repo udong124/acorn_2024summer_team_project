@@ -46,4 +46,5 @@ public class UserDto {
 	private MultipartFile image;
 	private String provider; //google | normal
 	private String providerid; //sub
+
 }

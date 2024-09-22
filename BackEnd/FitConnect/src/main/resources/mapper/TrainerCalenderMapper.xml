@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TrainerCalendar">
+	<sql id="column">
+		t_calrendar_id, member_num, TO_CHAR(date, 'YYYY-MM-DD HH24:MI') as regdate
+	</sql>
+	<sql id="memberColumn">
+		member_num, member_height, member_weight, member_gender, member_plan, weeklyplan
+	</sql>
+
+	<select id="getList" resultType="trainerCalendarDto" parameterType="int">
+		SELECT tc.t_calendar_id, tc.member_num, tc.trainer_num, TO_CHAR(regdate, 'YYYY-MM-DD HH24:MI') as regdate, ui.name
+		FROM trainercalendar tc, user_info ui
+		WHERE tc.member_num=ui.id
+		AND trainer_num=#{user_id}
+	</select>
+	<select id="getSchedule" resultType="trainerCalendarDto" parameterType="int">
+		SELECT tc.t_calendar_id, tc.member_num, tc.trainer_num, TO_CHAR(regdate, 'YYYY-MM-DD HH24:MI') as regdate, ui.name
+		FROM trainercalendar tc, user_info ui
+		WHERE tc.member_num=ui.id
+		AND t_calendar_id=#{t_calendar_id}
+	</select>
+	<insert id="insert" parameterType="trainerCalendarDto">
+		INSERT INTO trainercalendar
+		(t_calendar_id, member_num, regdate)
+		VALUES(#{t_calendar_id}, #{member_num}, TO_DATE(#{regdate}, 'YYYY-MM-DD HH24:MI'))
+	</insert>
+	<update id="update" parameterType="trainerCalendarDto">
+		UPDATE trainercalendar
+		SET member_num=#{member_num}, regdate=TO_DATE(#{regdate}, 'YYYY-MM-DD HH24:MI')
+		WHERE t_calendar_id=#{t_calendar_id}
+	</update>
+	<delete id="delete" parameterType="trainerCalendarDto">
+		DELETE FROM trainercalendar
+		WHERE t_calendar_id=#{t_calendar_id}
+		AND member_num=#{member_num}
+	</delete>
+	
+	
+	
+	
+	<select id="getMember" resultType="memberDto" parameterType="int">
+		SELECT mi.member_num, mi.member_height, mi.member_weight, mi.member_gender, mi.plan, mi.weeklyplan, ui.name
+		FROM member_info mi, user_info ui
+		WHERE mi.member_num = ui.id
+		and member_num=#{member_num}
+	</select>
+	<select id="getMemberAll" resultType="memberDto" parameterType="int" >
+		SELECT mi.member_num, ui.name
+		FROM memberinfo mi, user_info ui
+		WHERE mi.member_num = ui.id
+		and trainer_num=#{user_id}
+		ORDER BY name ASC
+	</select>
+	
+	<update id="disconnect" parameterType="int" >
+		UPDATE member_info
+		SET trainer_num=null
+		WHERE member_num=#{member_num}
+	</update>
+</mapper>
