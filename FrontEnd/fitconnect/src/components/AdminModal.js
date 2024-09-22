@@ -10,7 +10,7 @@ const AdminModal = ({ isOpen, onClose }) => {
         <Modal.Title>관리자 전용 페이지</Modal.Title>
       </Modal.Header>
       <ModalBody>
-        해당 페이지는 트레이너만 접근가능합니다.
+        해당 페이지는 관리자만 접근가능합니다.
       </ModalBody>
       <Modal.Footer>
         <Button variant="primary" onClick={onClose}>
