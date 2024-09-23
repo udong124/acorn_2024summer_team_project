@@ -25,6 +25,13 @@ public class TrainerController {
 	
 	@Autowired private TrainerService service;
 	
+	@GetMapping("/trainer/userinfo")
+	public Map<String, Object> trainerGetUserInfo() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
+		return service.selectOneUserInfo(userName);
+	}
+	
 	//회원의 정보를 추가하는 API 
 	@PostMapping ("/trainer")
 	public TrainerDto trainerSignUp(@RequestBody TrainerDto dto) {

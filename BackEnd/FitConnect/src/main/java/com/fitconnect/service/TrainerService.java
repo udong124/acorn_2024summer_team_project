@@ -1,6 +1,7 @@
 package com.fitconnect.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.fitconnect.dto.TrainerDto;
 
@@ -10,5 +11,6 @@ public interface TrainerService {
 	public void updateTrainerGymInfo(TrainerDto dto);
 	public void deleteTrainer(String userName);
 	public TrainerDto selectOne(String userName);
+	public Map<String, Object> selectOneUserInfo(String userName);
 	public List<TrainerDto> selectList();
 }
