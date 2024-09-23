@@ -15,7 +15,6 @@ function App() {
     <>
       <Navbar/>
       <div className='content-area'>
-       <Sidebar/>
         <div className='maincontent'>{currentOutlet}</div>
       </div>
     </>

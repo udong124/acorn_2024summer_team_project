@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="member">
+
+	<delete id="delete" parameterType="int">
+		DELETE FROM member_info
+		WHERE member_num=#{member_num}
+	</delete>
+
+	<insert id="insert" parameterType="MemberDto">
+		INSERT INTO member_info
+		(member_num, trainer_num, member_height, member_weight, member_gender, plan, weeklyplan)
+		VALUES(#{member_num}, #{trainer_num}, #{member_height}, #{member_weight}, #{member_gender}, #{plan}, #{weeklyplan})
+	</insert>
+
+	<update id="updateInfo" parameterType="MemberDto">
+		UPDATE member_info
+		SET member_height=#{member_height}, member_weight=#{member_weight}, member_gender=#{member_gender}
+		WHERE member_num=#{member_num}
+	</update>
+
+	<update id="updatePlan" parameterType="MemberDto">
+		UPDATE member_info
+		SET plan=#{plan}, weeklyplan=#{weeklyplan}
+		WHERE member_num=#{member_num}
+	</update>
+
+	<update id="updateTrainer" parameterType="MemberDto">
+		UPDATE member_info
+		SET trainer_num=#{trainer_num}
+		WHERE member_num=#{member_num}
+	</update>
+
+	<select id="getData" parameterType="int" resultType="MemberDto">
+		SELECT member_num, trainer_num, member_height, member_weight, member_gender, plan, weeklyplan
+		FROM member_info
+		WHERE member_num=#{member_num}
+	</select>
+
+	<select id="getList" resultType="MemberDto">
+		SELECT *
+		FROM member_info
+		ORDER BY member_num ASC
+	</select>
+
+</mapper>

@@ -7,13 +7,12 @@ const Message= () => {
   const [selectedMembers, setSelectedMembers] = useState(null); // 현재 선택된 회원정보를 저장하는 state
   const [newMessage, setNewMessage] = useState(''); // 사용자가 입력한 새로운 메세지를 저장하는 state
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   // 서버에서 회원 목록과 메시지 목록을 가져오는 함수
   useEffect(() => {
     const fetchMembers = async () => {
       try {
-        const response = await axios.get('/members');  
+        const response = await axios.get(`/members`);  
         setMembers(members.data);
         setLoading(false);
       } catch (error) {

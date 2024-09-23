@@ -1,36 +1,83 @@
-/* src/pages/Navbar.css */
-
-.navbar{
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+/* Navbar 기본 스타일 */
+.navbar {
+    background-color: #1f1e1e; /* 배경색 */
+    padding: 22px 200px; /* 내외부 간격 */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: white;
-    color: black;
-    padding: 40px;
-}
-
-.navbar li.mypage{
-    position: absolute;
-    right: 250px;
-}
-
-.navbar li.logout{
-    position: absolute;
-    right:150px;
-}
-
-.navbar ul{
-    display: flex;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+  }
+  
+  .navbar ul {
     list-style: none;
-}
-
-.navbar a{
-    color:black;
-    text-decoration: none;
-}
-
-.navbar a:hover{
-    text-decoration: underline;
-}
+    display: flex;
+    gap: 20px; /* 메뉴 항목 간격 */
+    margin: 0;
+    padding: 0;
+  }
+  
+  .navbar li {
+    display: inline;
+  }
+  
+  .navbar a {
+    color: #fff; /* 텍스트 색상 */
+    text-decoration: none; /* 밑줄 제거 */
+    font-size: 18px; /* 글꼴 크기 */
+    font-weight: 500;
+    padding: 10px 15px;
+    transition: color 0.3s ease;
+  }
+  
+  /* 메뉴 hover 효과 */
+  .navbar a:hover {
+    color: #f0a500; /* hover 시 텍스트 색상 변경 */
+  }
+  
+  .mypage a {
+    border-radius: 20px; /* 둥근 모서리 */
+    padding: 8px 16px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .mypage a:hover {
+    background-color: #f0a500;
+    color: #333;
+  }
+  
+  .logout {
+    cursor: pointer;
+    color: #f0a500;
+    font-weight: 600;
+    padding: 8px 16px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .logout:hover {
+    background-color: #f0a500;
+    color: #333;
+    border-radius: 20px;
+  }
+  
+  /* 반응형 디자인 */
+  @media (max-width: 768px) {
+    .navbar ul {
+      flex-direction: column;
+      gap: 10px; /* 모바일에서는 간격을 좁게 */
+      align-items: flex-start;
+    }
+  
+    .navbar {
+      padding: 15px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .navbar a {
+      font-size: 16px;
+    }
+  }
   
