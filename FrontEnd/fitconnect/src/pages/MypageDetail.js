@@ -6,11 +6,20 @@ import { useNavigate } from 'react-router-dom';
 
 const MyPageEdit = () => {
   const [trainerInfo, setTrainerInfo] = useState({
+<<<<<<< HEAD
     name:'',
     id: '',
     email: '',
     regdate: '',
     profile: '',
+=======
+    trainer_num: '',
+    name:'',
+    user_id: '',
+    email: '',
+    trainer_created_at: '',
+    profile_image_url: '',
+>>>>>>> 37d074d8e358ea5494d1f977b0fc02624b04a010
     trainer_insta: '',
     trainer_intro: '',
     gym_name: '',
@@ -57,10 +66,17 @@ const MyPageEdit = () => {
               <Form.Control 
                 type="text"
                 name="profile_image_url"
+<<<<<<< HEAD
                 value={trainerInfo.profile}
                 onChange={handleChange}
               />
               <img src={trainerInfo.profile}/>
+=======
+                value={trainerInfo.profile_image_url}
+                onChange={handleChange}
+              />
+              <img src={trainerInfo.profile_image_url}/>
+>>>>>>> 37d074d8e358ea5494d1f977b0fc02624b04a010
             </Form.Group>
 
             <Form.Group>
