@@ -1,10 +1,76 @@
-.mypage mypageleft{
-  width: 18px;
-  height: 18px;
-  background-color: brown;
+
+.container {
+  margin-top: 50px;
+  max-width: 1000px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
 }
 
-.mypage mypageright{
-  background-color: aqua;
-  color: aquamarine;
+
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 28px;
+  color: #333;
+  font-weight: bold;
+}
+
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+
+.leftside, .rightside {
+  padding: 20px;
+}
+
+.leftside {
+  width: 40%;
+  text-align: center;
+  border-right: 1px solid #ddd;
+}
+
+.rightside {
+  width: 55%;
+}
+
+
+.leftside img, .rightside img {
+  max-width: 100%;
+  border-radius: 50%;
+  height: auto;
+  margin-bottom: 15px;
+}
+
+.rightside img {
+  border-radius: 8px;
+}
+
+
+.leftside p, .rightside p {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+
+button {
+  display: block;
+  margin: 0 auto;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
 }
