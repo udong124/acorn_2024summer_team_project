@@ -11,7 +11,7 @@ import { legacy_createStore as createStore } from 'redux';
 
 // token 이 존재 한다면 token 에서 값을 읽어와서 저장할 변수 만들기
 let userName=null
-localStorage.token="Bearer+eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJxd2VyIiwiaWQiOjEsImV4cCI6MTcyNzA4NDQ1NywiaWF0IjoxNzI3MDgwODU3fQ.2uVHLYIvxIfivT7XLhNWFOxmrfct2h0hPK3zzWo1N_A"
+localStorage.token="Bearer+eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTAwNzAwMjE5MTE4NDUxNjY2NjM4IiwiaWQiOjMsImV4cCI6MTcyNzE3Njc5MiwiaWF0IjoxNzI3MTczMTkyfQ.0vN54kBKzlgjR3fVhWjTEjl_olmelzVTnS-Ad8jRkow"
 //만일 토큰이 존재한다면
 if(localStorage.token){
   //토큰을 디코딩 ( 앞에 7 자리를 제거한 , Bearer+ 를 제거한 문자열을 디코딩)

@@ -1,107 +1,117 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useState } from 'react';
+import { useRef } from 'react';
+import { useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+import ChatMessage from '../components/ChatMessage';
+import mqtt from 'mqtt';
 
-const Message= () => {
-  const [members, setMembers] = useState([]); // 서버에서 가져온 회원목록을 저장하는 state
-  const [messages, setMessages] = useState([]); // 서버에서 가져온 메세지를 저장하는 state
-  const [selectedMembers, setSelectedMembers] = useState(null); // 현재 선택된 회원정보를 저장하는 state
-  const [newMessage, setNewMessage] = useState(''); // 사용자가 입력한 새로운 메세지를 저장하는 state
-  const [loading, setLoading] = useState(true);
+const App = () => {
+  // 페이지 전환하면서 useNavigate 로 얻어오는 변수들
+  // const location = useLocation();
+  // const { member_num, trainer_num, send_type, topic } = location.state;
 
-  // 서버에서 회원 목록과 메시지 목록을 가져오는 함수
+  const [state, setState] = useState({
+    member_num: 1,
+    trainer_num: 2,
+    send_type: "member", //보내는 사람 type
+    topic: "mytopic" //채팅창 고유 번호
+  });
+
+  const [message, setMessage] = useState({
+    send_type: state.send_type, 
+    content: ""
+  })
+
+  const [messages, setMessages] = useState([]);
+  const messagesEndRef = useRef(null);
+  const encoder = new TextEncoder();
+  const decoder = new TextDecoder('utf-8');
+  const navigate = useNavigate();
+
+  const client = mqtt.connect('ws://localhost:9001'); //mqtt 연결 설정 코드
+
+  const refresh = ()=>{
+    //api 주소?
+    axios.get("/message")
+    .then(res=>{
+        console.log(res.data)
+        setMessages(res.data)
+    })
+    .catch(error=>{
+      console.log(error)
+    })
+  }
+
   useEffect(() => {
-    const fetchMembers = async () => {
-      try {
-        const response = await axios.get(`/members`);  
-        setMembers(members.data);
-        setLoading(false);
-      } catch (error) {
-        console.error('데이터 로딩에 실패했습니다');
-        setLoading(false);
-      }
-    };
-
-    fetchMembers();
+    refresh();
+    client.subscribe(state.topic);
+    client.on('message', function (topic, message) {
+      const decodedMessage = JSON.parse(decoder.decode(new Uint8Array(message)));
+      console.log(decodedMessage);
+      setMessages((prevMessages) => [...prevMessages, decodedMessage]);
+    });
   }, []);
 
-  useEffect(() => {
-    if (selectedMembers) {
-      const fetchMessages = async () => {
-        try {
-          const response = await axios.get(`/messages/${selectedMembers.id}`); 
-          setMessages(response.data);
-        } catch (error) {
-          console.error('데이터 로딩에 실패했습니다');
-        }
-      };
+  const sendMessageHandle = (e) => {
+    e.preventDefault();
+    if(message.content != "") {
+      client.publish(state.topic, JSON.stringify(message), { qos: 0, retain: false });
 
-      fetchMessages();
-    }
-  }, [selectedMembers]);
+      axios.post("/message", message)
+      .then(res=>{
+        console.log(res.data)
+      })
+      .catch(error=>{
+        console.log(error)
+      })
 
-  const handleSendMessage = async () => {
-    if (newMessage.trim() !== '' && selectedMembers) {
-      try {
-        await axios.post(`/api/messages/${selectedMembers.id}`, {
-          message: newMessage,
-          timestamp: new Date().toISOString()
-        });
-        setMessages([...messages, { message: newMessage, timestamp: new Date().toISOString(), sender: 'me' }]);
-        setNewMessage('');
-      } catch (error) {
-        console.error('데이터 로딩에 실패했습니다');
-      }
+      setMessage({
+        send_type: state.send_type,
+        content: ""
+      });
     }
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-// if (error) {
-  //   return <p>{error}</p>;
-  // }
+  //메세지 종료시 navigate설정
+  const ExitHandle = () => {
+    client.end();
+    navigate("/");
+  };
+
+  //채팅창 제일 아래로 
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   return (
-    <div className="messenger">
-      <div className="members-list">
-        <h2>Message</h2>
-        <ul>
-          {members.map(member => (
-            <li key={member.id} onClick={() => setSelectedMembers(member)}>
-              {member.name}
-            </li>
-          ))}
-        </ul>
+    <>
+      <div>
+        <h1>MQTT Chat</h1>
+        <div>
+          <button onClick={ExitHandle}>end</button>
+        </div> 
       </div>
-
-      <div className="message-area">
-        {selectedMembers ? (
-          <div>
-            <h2>{selectedMembers.name}와의 대화</h2>
-            <div className="messages">
-              {messages.map((msg, index) => (
-                <div key={index} className={msg.sender === 'me' ? 'my-message' : 'member-message'}>
-                  <p>{msg.message}</p>
-                  <small>{new Date(msg.timestamp).toLocaleTimeString()}</small>
-                </div>
-              ))}
-            </div>
-            <div className="message_input">
-              <input
-                type="text"
-                value={newMessage}
-                onChange={(e) => setNewMessage(e.target.value)}
-                placeholder="메시지 입력"
-              />
-              <button onClick={handleSendMessage}>전송</button>
-            </div>
-          </div>
-        ) : (
-          <div>.</div>
-        )}
+      {/* 메세지 show */}
+      <div style={{ height: '400px', overflowY: 'scroll', border: '1px solid #ccc', padding: '10px' }}>
+        {messages.map((msg, index) => (
+          <ChatMessage key={index} message={msg.content} isOwnMessage={msg.send_type === state.send_type} />
+        ))}
+        <div ref={messagesEndRef} />
+        {/* 채팅 전송버튼 */}
+        <form onSubmit={sendMessageHandle} style={{ display: 'flex', marginTop: '10px' }}>
+          <input
+            type="text"
+            value={message.content}
+            onChange={(e) => setMessage({...message, content: e.target.value})}
+            style={{ flex: 1, padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
+          />
+          <button type="submit" style={{ padding: '10px', borderRadius: '5px', marginLeft: '10px' }}>send</button>
+        </form>
       </div>
-    </div>
+    </>
   );
 };
 
-export default Message;
+export default App;

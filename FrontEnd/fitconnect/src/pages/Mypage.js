@@ -20,7 +20,7 @@ const MyPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get(`/trainer/userinfo`)
+    axios.get(`/trainer`)
       .then(res => { 
         console.log(res.data)
         setTrainerInfo(res.data)
@@ -31,7 +31,7 @@ const MyPage = () => {
 
 
   return (
-      <Container>
+      <Container className='container'>
        <h1>Mypage</h1>
        <Row>
           <Col className='leftside'>
@@ -40,7 +40,6 @@ const MyPage = () => {
               <p>소갯글: {trainerInfo.trainer_intro}</p>
           </Col>
           <Col className='rightside'>
-              <img src={trainerInfo.profile_image_url} alt="" />
               <p>아이디: {trainerInfo.id}</p>
               <p>이메일: {trainerInfo.email}</p>
               <p>생성일: {trainerInfo.regdate}</p>
@@ -49,7 +48,7 @@ const MyPage = () => {
               <p>헬스장위치: {trainerInfo.gym_link}</p>
             </Col>
           </Row>
-          <button variant="primary" type="submit"  onClick={()=> navigate('/MypageDetail/')}>회원정보수정</button>
+          <button type="submit"  onClick={()=> navigate('/MypageDetail/')}>회원정보수정</button>
       
 
       </Container>

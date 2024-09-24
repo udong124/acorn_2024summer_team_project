@@ -20,10 +20,8 @@ const MyPageDetail = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get(`/trainer/userinfo`)
-      .then(res => {
-        setTrainerInfo(res.data);
-      })
+    axios.get(`/trainer`)
+      .then(res => {setTrainerInfo(res.data)})
       .catch(err => console.log(err));
   }, []);
 
@@ -35,19 +33,20 @@ const MyPageDetail = () => {
     });
   };
 
+
+
   const handleSubmit = (e) => {
-    e.preventDefault();
-    axios.put(`/trainer/updateinfo`, trainerInfo)
-      .then(res => {
-        console.log('Update successful:', res.data);
-        navigate('/Mypage');
+    
+    axios.patch(`/trainer/update/info`, trainerInfo)
+      .then(res => {setTrainerInfo(res.data)
       })
-      .catch(err => console.log('Update error:', err));
+      .catch(err => console.log(err));
+      navigate(`/Mypage`);
   };
 
   return (
     <Container>
-      <h1>Edit My Page</h1>
+      <h1>수정페이지</h1>
       <Form onSubmit={handleSubmit}>
         <Row>
           <Col className='leftside'>
@@ -92,7 +91,7 @@ const MyPageDetail = () => {
             <Form.Group controlId="formEmail">
               <Form.Label>이메일</Form.Label>
               <Form.Control
-                type="email"
+                type="text"
                 name="email"
                 value={trainerInfo.email}
                 onChange={handleInputChange}

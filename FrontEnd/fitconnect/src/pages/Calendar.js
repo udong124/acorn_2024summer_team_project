@@ -13,7 +13,7 @@ function Calendar() {
   // 상태 훅을 사용하여 이벤트, 모달 표시 여부, 새 이벤트 정보, 편집 상태, 현재 이벤트 ID를 관리
   const [events, setEvents] = useState([]); // 캘린더에 표시할 이벤트 목록
   const [showModal, setShowModal] = useState(false); // 모달의 표시 여부
-  const [newEvent, setNewEvent] = useState({ member_num: '', trainer_num: '', name: '', date: '' }); // 새로운 이벤트의 정보 
+  const [newEvent, setNewEvent] = useState({ t_calendar_id:'', member_num: '', trainer_num: '', name: '', date: '' }); // 새로운 이벤트의 정보 
   const [isEditing, setIsEditing] = useState(false); // 편집 모드 여부
   const [currentEventId, setCurrentEventId] = useState(null); // 현재 편집 중인 이벤트의 ID
   const [dateEvents, setDateEvents] = useState([]); //해당 날짜 클릭시 보여줄 이벤트
@@ -22,20 +22,28 @@ function Calendar() {
 
    useEffect(()=>{
      axios.get(`/trainercalendar`)
-     .then(res=>setEvents(res.data))
+     .then(res=>{
+      console.log("dd")
+      console.log(res.data)
+      console.log("dd")
+      setEvents(res.data)})
      .catch(err=>console.log(err))
    }, []);
 
    const saveEvent = (event) => {
     if (isEditing) {
       // 기본 이벤트 업데이트
-      axios.put(`/calendar/${currentEventId}`, event)
+      axios.patch(`/calendar/${currentEventId}`, event)
         .then(res => {setEvents(events.map(evt => evt.id === currentEventId ? res.data : evt))})
         .catch(err => console.log(err));
     } else {
-      // 이벤트 서버에 저장
-      axios.post(`/calendar`, event)
-        .then(res => {setEvents([...events, res.data])})
+      // 서버에 저장
+      axios.post(`/trainercalendar`, event)
+        
+        .then(res => 
+          {
+            console.log(res.data)
+            setEvents([...events, res.data])})
         .catch(err => console.log(err));
     }
   };
@@ -62,6 +70,8 @@ function Calendar() {
   const handleEventClick = (clickInfo) => {
     const event = clickInfo.event; // 이벤트 클릭시
       setNewEvent({
+        // fullcalendar 이벤트 수정 이벤트 객체 속성
+        t_calendar_id: event.extendedProps.t_calendar_id,
         member_num: event.extendedProps.member_num,
         trainer_num: event.extendedProps.trainer_num,
         name: event.extendedProps.name,
@@ -165,12 +175,15 @@ function Calendar() {
               <Form.Group controlId="formEventTitle">
                 <Form.Label>회원 이름</Form.Label>
                 <Form.Select
+                  
                   value={newEvent.name}
                   onChange={(e) => setNewEvent({ ...newEvent, name: e.target.value })}
                 >
                   {/* 해당부분 반목문으로 name 출력 */}
-                  <option value=""></option>
-                </Form.Select>
+                  {events.map(item => (
+                    <option key={item.t_calendar_id} value={item.name}>{item.name}</option>
+                  ))}
+                 </Form.Select>
               </Form.Group>
               <Form.Group controlId="formEventDate">
                 <Form.Label>날짜 및 시간</Form.Label>

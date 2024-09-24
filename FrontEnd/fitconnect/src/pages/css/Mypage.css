@@ -1,7 +1,7 @@
 
-.container {
+.mypage container{
   margin-top: 50px;
-  max-width: 1000px;
+  width: 1200px;
   padding: 20px;
   background-color: #f9f9f9;
   border-radius: 8px;
@@ -9,7 +9,7 @@
 }
 
 
-h1 {
+.mypage h1 {
   text-align: center;
   margin-bottom: 30px;
   font-size: 28px;
@@ -18,48 +18,41 @@ h1 {
 }
 
 
-.row {
+.mypage row {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 30px;
+  margin-bottom: 50px;
 }
 
 
-.leftside, .rightside {
+.mypage leftside, .rightside {
   padding: 20px;
 }
 
-.leftside {
-  width: 40%;
+.mypage leftside {
   text-align: center;
   border-right: 1px solid #ddd;
 }
 
-.rightside {
-  width: 55%;
-}
 
 
-.leftside img, .rightside img {
+.mypage leftside img, .rightside img {
   max-width: 100%;
   border-radius: 50%;
   height: auto;
   margin-bottom: 15px;
 }
 
-.rightside img {
-  border-radius: 8px;
-}
 
 
-.leftside p, .rightside p {
+.mypage leftside p, .rightside p {
   font-size: 16px;
   color: #555;
   margin-bottom: 10px;
 }
 
 
-button {
+.mypage button {
   display: block;
   margin: 0 auto;
   padding: 10px 20px;
@@ -71,6 +64,6 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+.mypage button:hover {
   background-color: #0056b3;
 }
