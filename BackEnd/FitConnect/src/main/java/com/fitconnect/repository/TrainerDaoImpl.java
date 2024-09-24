@@ -21,7 +21,7 @@ public class TrainerDaoImpl implements TrainerDao{
 
 	@Override
 	public List<MemberDto> getTrainerMemberList(int trainer_num) {
-		return session.selectList("member.getTrainerMemberList", trainer_num);
+		return session.selectList("trainer.getTrainerMemberList", trainer_num);
 	}
 
 	@Override

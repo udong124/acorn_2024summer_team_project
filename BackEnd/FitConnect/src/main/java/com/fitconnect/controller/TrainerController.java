@@ -79,7 +79,7 @@ public class TrainerController {
 	}
 
 	@GetMapping("/trainer/list/member")
-	public List<MemberDto> getMemberList(){
+	public List<Map<String, Object>> getMemberList(){
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userName = authentication.getName();
         int id = userDao.getData(userName).getId();

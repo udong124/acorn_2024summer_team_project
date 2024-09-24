@@ -37,4 +37,10 @@
 		WHERE userName=#{userName}
 	</select>
 
+	<select id="getDataByNum" parameterType="int" resultType="UserDto">
+		SELECT id, userName, password, name, email, role, profile, regdate, provider, providerid
+		FROM user_info
+		WHERE id=#{id}
+	</select>
+
 </mapper>

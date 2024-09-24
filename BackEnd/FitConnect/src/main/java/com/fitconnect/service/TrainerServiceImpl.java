@@ -1,5 +1,6 @@
 package com.fitconnect.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,8 +76,26 @@ public class TrainerServiceImpl implements TrainerService{
 	}
 
 	@Override
-	public List<MemberDto> selectTrainerMemberList(int trainer_num) {
-		return trainerDao.getTrainerMemberList(trainer_num);
+	public List<Map<String, Object>> selectTrainerMemberList(int trainer_num) {
+		//name, profile
+		List<Map<String, Object>> resultMapList = new ArrayList<Map<String,Object>>();
+		
+		List<MemberDto> listDto = trainerDao.getTrainerMemberList(trainer_num);
+		listDto.forEach(memberDto -> {
+			UserDto userDto = userDao.getDataByNum(memberDto.getMember_num());
+			Map<String, Object> resultMap = new HashMap<>();
+	        resultMap.put("id", userDto.getId());
+	        resultMap.put("name", userDto.getName());
+	        resultMap.put("profile", userDto.getProfile());
+	        resultMap.put("plan", memberDto.getPlan());
+	        resultMap.put("weeklyplan", memberDto.getWeeklyplan());
+	        resultMap.put("member_height", memberDto.getMember_height());
+	        resultMap.put("member_weight", memberDto.getMember_weight());
+	        resultMap.put("member_gender", memberDto.getMember_gender());
+	        resultMap.put("trainer_num", memberDto.getTrainer_num());
+	        resultMapList.add(resultMap);
+		});
+		return resultMapList;
 	}
 
 }
