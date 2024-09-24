@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fitconnect.dto.MemberDto;
 import com.fitconnect.dto.TrainerDto;
 import com.fitconnect.dto.UserDto;
 import com.fitconnect.repository.TrainerDao;
@@ -17,7 +18,7 @@ public class TrainerServiceImpl implements TrainerService{
 	
 	@Autowired
 	private UserDao userDao;
-	
+
 	@Autowired
 	private TrainerDao trainerDao;
 
@@ -71,6 +72,11 @@ public class TrainerServiceImpl implements TrainerService{
         resultMap.put("gym_name", trainerDto.getGym_name());
         resultMap.put("gym_link", trainerDto.getGym_link());
 		return resultMap;
+	}
+
+	@Override
+	public List<MemberDto> selectTrainerMemberList(int trainer_num) {
+		return trainerDao.getTrainerMemberList(trainer_num);
 	}
 
 }

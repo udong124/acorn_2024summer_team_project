@@ -37,4 +37,11 @@
 		ORDER BY trainer_num ASC
 	</select>
 	
+	<select id="getTrainerMemberList" resultType="MemberDto" parameterType="int">
+		SELECT *
+		FROM member_info
+		WHERE trainer_num=#{trainer_num}
+		ORDER BY member_num ASC
+	</select>
+	
 </mapper>

@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.fitconnect.dto.MemberDto;
 import com.fitconnect.dto.TrainerDto;
 
 @Repository
@@ -16,6 +17,11 @@ public class TrainerDaoImpl implements TrainerDao{
 	@Override
 	public List<TrainerDto> getList() {
 		return session.selectList("trainer.getList");
+	}
+
+	@Override
+	public List<MemberDto> getTrainerMemberList(int trainer_num) {
+		return session.selectList("member.getTrainerMemberList", trainer_num);
 	}
 
 	@Override

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fitconnect.dto.MemberDto;
 import com.fitconnect.dto.TrainerDto;
 import com.fitconnect.repository.UserDao;
 import com.fitconnect.service.TrainerService;
@@ -76,5 +77,12 @@ public class TrainerController {
 	public List<TrainerDto> getTrainerList(){
 		return service.selectList();
 	}
-	
+
+	@GetMapping("/trainer/list/member")
+	public List<MemberDto> getMemberList(){
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
+        int id = userDao.getData(userName).getId();
+		return service.selectTrainerMemberList(id);
+	}
 }
