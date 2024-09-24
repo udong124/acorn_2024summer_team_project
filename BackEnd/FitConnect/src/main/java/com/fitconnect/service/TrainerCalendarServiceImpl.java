@@ -11,11 +11,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.fitconnect.auth.PrincipalDetails;
+import com.fitconnect.dto.ChatRoomDto;
 import com.fitconnect.dto.ExerciseJournalDto;
 import com.fitconnect.dto.MemberDto;
 import com.fitconnect.dto.TrainerCalendarDto;
 import com.fitconnect.dto.UserDto;
 import com.fitconnect.handler.AuthSuccessHandler;
+import com.fitconnect.repository.MessageDao;
 import com.fitconnect.repository.TrainerCalendarDao;
 
 @Service
@@ -23,6 +25,7 @@ public class TrainerCalendarServiceImpl implements TrainerCalendarService  {
 
 	@Autowired private TrainerCalendarDao calDao;
 	
+	@Autowired private MessageDao MsgDao;
 	
 	//트레이너 전체 캘린저 일정 리스트
 	@Override
@@ -83,6 +86,13 @@ public class TrainerCalendarServiceImpl implements TrainerCalendarService  {
 
 	@Override
 	public boolean disconnect(int member_num) {
+		//채팅방 삭제 추가
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    UserDto userDto = ((PrincipalDetails)authentication.getPrincipal()).getDto();
+	    ChatRoomDto chatDto = MsgDao.getChatRoom(userDto.getId());
+	    String topic = chatDto.getTopic();
+		MsgDao.deleteChat(topic);
+		
 		boolean isSuccess = calDao.disconnect(member_num);
 		return isSuccess;
 	}

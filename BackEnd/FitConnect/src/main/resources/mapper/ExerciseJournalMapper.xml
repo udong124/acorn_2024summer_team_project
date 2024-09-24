@@ -25,7 +25,7 @@
 	<insert id="insert" parameterType="exerciseJournalDto">
 		INSERT INTO exercisejournal
 		(e_journal_id, m_calendar_id, exercise_id, exercise_order, exercise_set, exercise_count, exercise_weight)
-		VALUES(#{e_journal_id},#{m_calendar_id}, #{exercise_id}, #{exercise_order}, #{exercise_set}, #{exercise_count}, #{exercise_weight})
+		VALUES(e_journal_id_seq.NEXTVAL ,#{m_calendar_id}, #{exercise_id}, #{exercise_order}, #{exercise_set}, #{exercise_count}, #{exercise_weight})
 		
 	</insert>
 	<update id="update" parameterType="exerciseJournalDto">

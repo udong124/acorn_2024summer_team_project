@@ -1,9 +1,13 @@
 package com.fitconnect.controller;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -11,13 +15,17 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.fitconnect.dto.ChatRoomDto;
 import com.fitconnect.dto.UserDto;
 import com.fitconnect.repository.UserDao;
+import com.fitconnect.service.MessageService;
 import com.fitconnect.util.JwtUtil;
 
 @RestController
@@ -34,6 +42,12 @@ public class UserController {
 	// react js 를 테스트 하기 위한 코딩
 	@Autowired
 	private AuthenticationManager authManager;
+	
+	@Autowired 
+	private MessageService MsgService;
+	
+	@Value("${file.location}")
+	private String fileLocation;
 	
 	@GetMapping("/")
 	public String home() {
@@ -73,6 +87,7 @@ public class UserController {
 			map.put("isSuccess", true);
 			userDao.insert(dto);
 		}
+		
 		return map;
 	}
 
@@ -88,6 +103,11 @@ public class UserController {
 			map.put("isSuccess", true);
 			userDao.delete(userName);
 		}
+		//채팅방 삭제
+		ChatRoomDto chatDto= MsgService.getChatRoom();
+		String topic = chatDto.getTopic();
+		MsgService.deleteChat(topic);
+		
 		return map;
 	}
 
@@ -98,10 +118,36 @@ public class UserController {
         return userDao.getData(userName);
 	}
 
-	@PatchMapping("/user/update/info")
-	public UserDto updateInfo(@RequestBody UserDto dto) {
+	@PatchMapping(value="/user/update/info", consumes = {MediaType. APPLICATION_JSON_VALUE, MediaType. MULTIPART_FORM_DATA_VALUE})
+	public UserDto updateInfo(@ModelAttribute UserDto dto) {
+
+		System.out.println(fileLocation);
+		if(dto.getImage() != null) {
+			MultipartFile image = dto.getImage();
+		
+			String profile=UUID.randomUUID().toString();
+			//저장할 파일의 전체 경로 구성하기 
+			String filePath=fileLocation+File.separator+profile;
+			System.out.println(filePath);
+			try {
+				//업로드된 파일을 이동시킬 목적지 File 객체
+				File f=new File(filePath);
+				image.transferTo(f);
+				
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			dto.setProfile(profile);
+		}
+		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
+        dto.setUserName(userName);
+		
 		userDao.updateInfo(dto);
-		return dto;
+		UserDto userDto = userDao.getData(userName);
+		
+		return userDto;
 	}
 	
 	@PatchMapping("/user/update/password")
