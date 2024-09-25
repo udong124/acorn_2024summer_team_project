@@ -62,7 +62,7 @@
 /* 버튼 관련 css */
 .btnPrimary {
     background-color: #000;
-    border-color: #007bff;
+    border-color: #070708;
     padding: 1rem;
     font-size: 1.2rem;
     color: #fff;
@@ -89,9 +89,11 @@
     }
     .title {
         font-size: 2rem;
+        text-align: center;
     }
     .subtitle {
         font-size: 1rem;
+        text-align: center;
     }
     .btnPrimary, .btnOutlineDark {
         padding: 0.8rem;

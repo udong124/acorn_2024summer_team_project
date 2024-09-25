@@ -1,0 +1,92 @@
+/*
+router는 지금 UserSignUp.js를 해두고 있음
+SignUp.js는 안쓰고 있음
+
+Container 관련 css */
+.centerContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}
+
+/* Form 관련 css */
+.signupForm {
+    max-width: 450px;
+    width: 100%;
+    padding: 20px;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    background-color: #ffffff;
+}
+
+.formControl {
+    padding: 0.75rem;
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+}
+
+.textCenter {
+    text-align: center;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    color: #212529;
+}
+
+.btnPrimary {
+    background-color: #343a40;
+    border-color: #343a40;
+    color: #ffffff;
+    padding: 0.75rem;
+    font-size: 1rem;
+    width: 100%;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.btnPrimary:hover {
+    background-color: #495057;
+}
+
+.btnOutlineDark {
+    background-color: #ffffff;
+    border: 1px solid #343a40;
+    color: #343a40;
+    padding: 0.75rem;
+    font-size: 1rem;
+    width: 100%;
+    margin-top: 0.5rem;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btnOutlineDark:hover {
+    background-color: #343a40;
+    color: #ffffff;
+}
+
+.invalid-feedback {
+    display: block;
+    color: #dc3545;
+    font-size: 0.875rem;
+}
+
+@media (max-width: 576px) {
+    .signupForm {
+        padding: 15px;
+    }
+
+    .btnPrimary,
+    .btnOutlineDark {
+        padding: 0.6rem;
+        font-size: 0.875rem;
+    }
+
+    .formControl {
+        padding: 0.6rem;
+        font-size: 0.875rem;
+    }
+}

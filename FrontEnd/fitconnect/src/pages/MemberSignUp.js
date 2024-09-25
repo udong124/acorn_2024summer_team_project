@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Button, Form, Container } from "react-bootstrap";
+import React, {  useState } from "react";
+import { Button, Form, Container, Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import styles from '../css/MemberSignUp.module.css';
@@ -9,58 +9,48 @@ import classNames from 'classnames/bind';
 const cx = classNames.bind(styles); 
 
 const MemberSignUp = () => {
-  const [step, setStep] = useState(1);
   const [profile, setProfile] = useState(null);
+  const [member_num, setMember_num] = useState("");
+  const [trainer_num, setTrainer_num] =useState("");
   const [member_height, setMember_height] = useState("");
   const [member_weight, setMember_weight] = useState("");
   const [member_gender, setMember_gender] = useState("");
   const [plan, setPlan] = useState("");
   const [weeklyplan, setWeeklyplan] = useState("");
+  const [name, setName] = useState("");
   const [file, setFile] = useState(null);
   const navigate = useNavigate();
 
-  const handleNext = () => {
-    setStep(step + 1);
-  };
-
-  const handleImageChange = (e) => {
-    const selectedFile = e.target.files[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-      setProfile(URL.createObjectURL(selectedFile));
-    }
-  };
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    const token = localStorage.getItem("token");
-
+    
     if (isNaN(member_height) || isNaN(member_weight)) {
       console.error("키와 몸무게는 숫자여야 합니다.");
       return;
     }
 
-    const formData = new FormData();
-    formData.append("member_height", member_height);
-    formData.append("member_gender", member_gender);
-    formData.append("plan", plan);
-    formData.append("weeklyplan", weeklyplan);
+    const formData = new FormData(e.target);
 
-    if (file) {
-      formData.append("profile", file);
-    }
+    //const memberData = {member_height, member_gender, plan, weeklyplan};
+
+    //formData.append('profile', file);
+    //formData.append('memberData', JSON.stringify(memberData));
+    // formData.append('member_num', member_num);
+    // formData.append('trainer_num', trainer_num);
+    // formData.append('member_height', member_height);
+    // formData.append('plan', plan);
+    // formData.append('weeklyplan', weeklyplan);
+    // formData.append('name', name);
+
+    MemberSignUp.mutate(formData);
 
     axios
-      .post(`/member`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      .post(`/member`, formData)
       .then((response) => {
         console.log(response.data);
-        navigate(`/`);
+        navigate(`/`); //member 메인페이지로 바꾸기
       })
       .catch((error) => {
         if (error.response && error.response.data) {
@@ -75,40 +65,6 @@ const MemberSignUp = () => {
     <Container className={cx('centerContainer')}>
       <div className={cx('signupForm')}>
         <h4 className={cx('textCenter')}> 회원 기본 설정 </h4>
-
-        {step === 1 && (
-          <Form>
-            <Form.Group className={cx('textCenter', 'mb4')}>
-              <Form.Label>프로필 이미지 업로드</Form.Label>
-              <div className={cx('profileContainer')}>
-                {profile ? (
-                  <img
-                    src={profile}
-                    alt="Profile Preview"
-                    className={cx('profileImgPreview')}
-                  />
-                ) : (
-                  <label htmlFor="profileImg" className={cx('uploadBtn')}>
-                    프로필 이미지 추가
-                  </label>
-                )}
-                <input
-                  type="file"
-                  id="profileImg"
-                  className={cx('d-none')}
-                  onChange={handleImageChange}
-                  accept="image/*"
-                />
-              </div>
-            </Form.Group>
-
-            <Button variant="primary" className={cx('mt-3')} onClick={handleNext}>
-              다음
-            </Button>
-          </Form>
-        )}
-
-        {step === 2 && (
           <Form>
             <Form.Group>
               <Form.Label>키</Form.Label>
@@ -172,7 +128,7 @@ const MemberSignUp = () => {
               />
             </Form.Group>
             <Button
-              variant="primary"
+              variant="dark"
               type="submit"
               className={cx('w-100', 'mt-3')}
               onClick={handleSubmit}
@@ -180,7 +136,6 @@ const MemberSignUp = () => {
               완료
             </Button>
           </Form>
-        )}
       </div>
     </Container>
   );

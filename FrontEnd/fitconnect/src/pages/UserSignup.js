@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Form, Container } from 'react-bootstrap';
+import { Button, Form, Container, Image } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from "../css/UserSignUp.module.css";
@@ -17,35 +17,44 @@ const UserSignUp = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [role, setRole] = useState('');
+  const [profile, setProfile] = useState(null);
+  const [provider, setProvider] = useState('');
+  const [file, setFile] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
   const [emailErrorMessage, setEmailErrorMessage] = useState('');
   const [isTrainer, setIsTrainer] = useState(false);
   const navigate = useNavigate();
 
-
+ 
   const handleNext = () => {
-  if (!userName || !password || !confirmPassword) {
-    setErrorMessage('모든 필드를 입력해 주세요.');
-    return; 
-  }
-
-  if (password !== confirmPassword) {
-    setErrorMessage('비밀번호가 일치하지 않습니다.');
-    return;
-  }
-  setErrorMessage('');
-  setStep(step + 1);
-};
-
-
-  const handleSignup = (e) => {
-    e.preventDefault();
+    if (!userName || !password || !confirmPassword) {
+      setErrorMessage('모든 필드를 입력해 주세요.');
+      return; 
+    }
 
     if (password !== confirmPassword) {
       setErrorMessage('비밀번호가 일치하지 않습니다.');
-      return;  
+      return;
     }
+    setErrorMessage('');
+    setStep(step + 1);
+  };
+
+
+  const handleImageChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+      setProfile(URL.createObjectURL(selectedFile));
+    }
+  };
+
+  const handleSignup = (e) => {
+    e.preventDefault();
+    console.log("submit!")
+   
   
+    //프로필등록까지 UserSignUp에서 하기 (api   patch  /user) 
     if (!email.includes('@')) {
       setEmailErrorMessage('유효한 이메일 주소를 입력하세요.');
       return;
@@ -59,21 +68,20 @@ const UserSignUp = () => {
       password,
       name,
       email,
+      // profile, //프로필등록 순서 : 회원가입할때 아이디비번비번확인 ->이름 이메일입력, !!프로필이미지등록,role등록 
       role,
       provider: 'normal'
     };
 
-    axios.post('/user', data, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
+
+    axios.post('/user', data)
       .then(response => {
         if (response.data.isSuccess) {
-          navigate(isTrainer ? '/trainer' : '/member');
+          navigate(isTrainer ? '/trainersignup' : '/membersignup');
         } else {
-          setErrorMessage(response.data.message || '회원가입에 실패했습니다.');
+          setErrorMessage('회원가입에 실패했습니다.');
         }
+        console.log(response.data)
       })
       .catch(error => {
         console.error("회원가입 실패:", error);
@@ -81,6 +89,38 @@ const UserSignUp = () => {
       });
   };
  
+
+  const formData = new FormData();
+
+  formData.append('profile', file);
+  formData.append('userName', userName);
+  formData.append('password', password);
+  formData.append('name', name);
+  formData.append('email', email);
+  formData.append('role', role);
+  formData.append('provider', provider);
+
+  UserSignUp.mutate(formData);
+
+  if(file){
+    formData.append("profile", file);
+  }
+
+  axios
+  .patch(`/user/update/info`, formData, {
+    headers:{"Content-Type":"multipart/form-data"}
+  })
+  .then((response) => {
+    console.log(response.data);
+    navigate(`/`);
+  }).catch((error) => {
+    if (error.response && error.response.data) {
+      console.error("서버 응답 오류:", error.response.data.message);
+    } else {
+      console.error("프로필 등록 실패:", error.message);
+    }
+  });
+
 
 
   return (
@@ -157,6 +197,31 @@ const UserSignUp = () => {
             />
              {emailErrorMessage && <p className='text-danger'>{emailErrorMessage}</p>}  
           </Form.Group>
+
+
+          <Form.Group className={cx('textCenter', 'mb4')}>
+              <Form.Label>프로필 이미지 업로드</Form.Label>
+              <div className={cx('profileContainer')}>
+                {profile ? (
+                  <Image
+                    src={profile}
+                    alt="Profile Preview"
+                    className={cx('profileImgPreview')}
+                  />
+                ) : (
+                  <label htmlFor="profileImg" Image src="holder.js/171x180" roundedCircle className={cx('uploadBtn')}>
+                    프로필 이미지 추가
+                  </label>
+                )}
+                <input
+                  type="file"
+                  id="profileImg"
+                  className={cx('dNone')}
+                  onChange={handleImageChange}
+                  accept="image/*"
+                />
+              </div>
+            </Form.Group>
           <Form.Group className={cx('mb3')}>
             <Form.Label className={cx('fwBold')}>사용자 구분</Form.Label>
             <Form.Control as="select"
@@ -178,7 +243,7 @@ const UserSignUp = () => {
       )}
     </div>
   </Container>
-);
+  );
 };
 
 export default UserSignUp;

@@ -29,19 +29,19 @@ function App() {
           <br/>
           <ul>
             <li>
-              <Link to="/user">사용자 회원가입</Link>
+              <Link to="/signup">사용자 회원가입</Link>
             </li>
             <li>
-              <Link to="/auth">사용자 로그인</Link>
+              <Link to="/login">사용자 로그인</Link>
             </li>
             <li>
-              <Link to="/member">회원 기본 설정</Link>
+              <Link to="/membersignup">회원 기본 설정</Link>
             </li>
             <li>
-              <Link to="/trainer">트레이너 기본 설정</Link>
+              <Link to="/trainersignup">트레이너 기본 설정</Link>
             </li>
             <li>
-              <Link to="/trainer/list">트레이너 정보 목록 요청</Link>
+              <Link to="/trainerid">트레이너 검색기능</Link>
             </li>
             </ul>
           </nav>

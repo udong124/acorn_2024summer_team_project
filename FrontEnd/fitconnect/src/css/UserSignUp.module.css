@@ -4,6 +4,7 @@
     align-items: center;
     justify-content: center;
     min-height: 100vh;
+    background-color: #fff;
 }
 
 /* 폼 css */
@@ -54,8 +55,8 @@
 
 /* 버튼 관련 css */
 .btnPrimary {
-    background-color: #007bff;
-    border-color: #007bff;
+    background-color: #1f2224;
+    border-color: #1f2224;
     padding: 1rem;
     font-size: 1.2rem;
     width: 100%;

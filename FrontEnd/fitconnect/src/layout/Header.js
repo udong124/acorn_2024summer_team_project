@@ -9,7 +9,7 @@ function Header() {
         <Container>
           <Navbar.Brand href="#home" as={Link} to={`/`}>Fit Connect</Navbar.Brand>
           <Nav className="ms-auto">
-            <Nav.Link href="#Login" as={Link} to={`/auth`}>Login</Nav.Link>
+            <Nav.Link href="#Login" as={Link} to={`/login`}>Login</Nav.Link>
           </Nav>
         </Container>
       </Navbar>

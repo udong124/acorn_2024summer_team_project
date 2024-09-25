@@ -22,10 +22,7 @@ const UserLogin = () => {
       return;
     }
 
-    axios.post("/auth", { userName, password },
-        {headers: {"Content-Type": "application/json",         
-        },
-        }
+    axios.post("/auth", { userName, password }
       )
       .then((response) => {
         const token = response.data.token;
@@ -82,7 +79,7 @@ const UserLogin = () => {
             Google로 시작하기
           </Button>
           <div className={cx('textCenter')}>
-            <Link to="/user" className={cx('textMuted')}>회원가입</Link>
+            <Link to="/signup" className={cx('textMuted')}>회원가입</Link>
           </div>
         </Form>
       </Col>

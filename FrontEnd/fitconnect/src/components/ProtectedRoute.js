@@ -1,68 +1,89 @@
 // src/components/ProtectedRoute.js
 
-import { Navigate} from 'react-router-dom';
-import { useSelector } from 'react-redux'; 
-import { useState } from 'react';
-import AdminModal from '../components/AdminModal';
-import LoginModal from '../components/LoginModal';
-import MemberModal from '../components/MemberModal';
-import TrainerModal from '../components/TrainerModal';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux'; 
+import { useEffect, useState } from 'react';
+import LoginModal from './LoginModal'; 
+import MemberModal from './MemberModal';
+import TrainerModal from './TrainerModal';
+import AdminModal from './AdminModal';
 
+const ProtectedRoute = ({ children, allowedRoles }) => {
+    const isLogin = useSelector(state => state.userName) ? true : false;
+    const userRole = useSelector(state => state.role); // 현재 사용자의 역할 (member, trainer, admin 등)
 
-const ProtectedRoute = ({ children }) => {
+    const location = useLocation();
+    const navigate = useNavigate(); // useNavigate 훅 추가
+    const dispatch = useDispatch();
+    const [showModal, setShowModal] = useState(false); 
+    const [activeModal, setActiveModal] = useState(null); // 현재 표시될 모달 관리
 
-    const [modalOpen, setModalOpen] = useState(false);
-    const isLogin = useSelector(state=>state.userName) ? true : false;
-    const userRole = useSelector(state=>state.role);
-  
-    const closeModal = () => setModalOpen(false);
-    //자식 컴포넌트에서 allowedRoles를 가져오기
-    const allowedRoles = children.type.allowedRoles || [];
-    
-    if (!isLogin) {
-        setModalOpen(true);
-        return (
-          <LoginModal 
-            isOpen={modalOpen} 
-            onClose={() => {
-              closeModal();
-              return <Navigate to="/auth" />;
-            }} 
-          />
-        );
-      }
-    
-      
-      if (!allowedRoles.includes(userRole)) {
-        setModalOpen(true);
-    
-        const roleAccessModal = () => {
-          switch (userRole) {
-            case 'admin':
-              return <AdminModal isOpen={modalOpen} onClose={() => {
-                closeModal();
-                return <Navigate to="/" />;
-              }} />;
-            case 'member':
-              return <MemberModal isOpen={modalOpen} onClose={() => {
-                closeModal();
-                return <Navigate to="/" />;
-              }} />;
-            case 'trainer':
-              return <TrainerModal isOpen={modalOpen} onClose={() => {
-                closeModal();
-                return <Navigate to="/" />;
-              }} />;
-            default:
-              return <Navigate to="/" />;
-          }
-        };
-    
-        return roleAccessModal();
-      }
-    
-      
-      return children;
+    useEffect(() => {
+        // 로그인이 되어 있지 않은 경우
+        if (!isLogin) {
+            const payload = {
+                show: true,
+                message: "해당 페이지는 로그인이 필요합니다!",
+                url: location.pathname + location.search
+            };
+            dispatch({ type: "LOGIN_MODAL", payload });
+            setActiveModal('login'); // 로그인 모달 활성화
+            setShowModal(true); 
+        } 
+        // 사용자의 role이 allowedRoles에 포함되어 있지 않은 경우
+        else if (allowedRoles && !allowedRoles.includes(userRole)) {
+            const payload = {
+                show: true,
+                message: `해당 페이지는 ${allowedRoles.join(', ')} 전용 페이지입니다!`,
+                url: location.pathname
+            };
+            dispatch({ type: "ACCESS_DENIED_MODAL", payload });
+            setShowModal(true);
+
+            // role에 따라 표시할 모달 설정
+            switch (allowedRoles[0]) {
+                case 'member':
+                    setActiveModal('member');
+                    break;
+                case 'trainer':
+                    setActiveModal('trainer');
+                    break;
+                case 'admin':
+                    setActiveModal('admin');
+                    break;
+                default:
+                    setActiveModal(null);
+                    break;
+            }
+        } else {
+            setShowModal(false); // 올바른 접근 시 모달 비활성화
+        }
+    }, [isLogin, userRole, allowedRoles, location.pathname, location.search, dispatch]); // location.search 추가
+
+    // 모달 닫기 및 메인 페이지로 리다이렉트
+    const handleModalClose = () => {
+        setShowModal(false);
+        dispatch({ type: "HIDE_MODAL" });
+        navigate('/'); // 확인 버튼 클릭 시 메인 페이지로 리다이렉트
     };
-    
+
+    // 모달이 표시되면 children이 렌더링되지 않도록 처리
+    if (showModal) {
+        switch (activeModal) {
+            case 'login':
+                return <LoginModal isOpen={showModal} onClose={handleModalClose} />;
+            case 'member':
+                return <MemberModal isOpen={showModal} onClose={handleModalClose} />;
+            case 'trainer':
+                return <TrainerModal isOpen={showModal} onClose={handleModalClose} />;
+            case 'admin':
+                return <AdminModal isOpen={showModal} onClose={handleModalClose} />;
+            default:
+                return null;
+        }
+    }
+
+    return children;
+};
+
 export default ProtectedRoute;
