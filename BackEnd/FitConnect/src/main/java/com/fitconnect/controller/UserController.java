@@ -75,7 +75,7 @@ public class UserController {
 	}
 	
 	@PostMapping("/user")
-	public Map<String, Object> signup(UserDto dto) {
+	public Map<String, Object> signup(@RequestBody UserDto dto) {
 		String rawPassword = dto.getPassword();
 		String encPassword = passwordEncoder.encode(rawPassword);
 		dto.setPassword(encPassword);
@@ -103,10 +103,6 @@ public class UserController {
 			map.put("isSuccess", true);
 			userDao.delete(userName);
 		}
-		//채팅방 삭제
-		ChatRoomDto chatDto= MsgService.getChatRoom();
-		String topic = chatDto.getTopic();
-		MsgService.deleteChat(topic);
 		
 		return map;
 	}

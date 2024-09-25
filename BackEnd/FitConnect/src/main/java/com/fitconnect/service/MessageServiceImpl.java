@@ -39,7 +39,7 @@ public class MessageServiceImpl implements MessageService {
 
 	//채팅방 불러오기
 	@Override
-	public ChatRoomDto getChatRoom() {
+	public ChatRoomDto getChatRoom(int member_num) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		UserDto userDto = ((PrincipalDetails)authentication.getPrincipal()).getDto();
 		int user_id = userDto.getId();
@@ -83,6 +83,12 @@ public class MessageServiceImpl implements MessageService {
 	public void deleteChat(String topic) {
 		dao.deleteChat(topic);
 		
+		
+	}
+
+	@Override
+	public void deleteTrainerChat(int trainer_num) {
+		dao.deleteTrainerChat(trainer_num);
 		
 	}
 	

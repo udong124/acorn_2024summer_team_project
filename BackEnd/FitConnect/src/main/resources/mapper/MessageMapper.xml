@@ -4,23 +4,24 @@
 	
 	
 	<insert id="insertChat" parameterType="chatRoomDto">
-		INSERT INTO chat_room 
-		(chat_id, member_num, trainer_num, topic) 
-		VALUES (chat_id_seq.NEXTVAL, #{member_num}, #{trainer_num}, #{topic})
+		INSERT INTO chat_room (chat_id, member_num, trainer_num, topic)
+		VALUES (chat_id_seq.NEXTVAL, #{member_num}, #{trainer_num}, TO_CHAR('topic_'||chat_id_seq.CURRVAL))
 
 	</insert>
 	<select id="getChatRoom" resultType="chatRoomDto" parameterType="int">
 		SELECT chat_id, member_num, trainer_num, topic
 		FROM chat_room
-		WHERE member_num=#{user_id} OR trainer_num=#{user_id}
+		WHERE member_num=#{member_num}
 	</select>
+	
 	<select id="getChatAll" resultType="chatRoomDto" parameterType="int">
-		SELECT cr.chat_id, cr.member_num, cr.trainer_num, cr.topic, ui.name, ui.profile, m.content, MAX(to_char(times, 'YYYY-MM-DD HH24:MI')) as times
-		FROM chat_room cr 
-		JOIN user_info ui ON cr.member_num=ui.id
-		JOIN chat_message m ON cr.trainer_num=#{trainer_num}
-		GROUP BY cr.chat_id, cr.member_num, cr.trainer_num, cr.topic, ui.name, ui.profile, m.content
-		ORDER BY times ASC
+		SELECT chat.*,  ui.name, ui.profile
+		FROM
+			(SELECT cr.chat_id, cr.member_num, cr.trainer_num, cr.topic, cm.content, MAX(to_char(cm.times, 'YYYY-MM-DD HH24:MI')) as times
+			FROM chat_room cr, chat_message cm
+			WHERE trainer_num=#{trainer_num}
+			GROUP BY cr.chat_id, cr.member_num, cr.trainer_num, cr.topic, cm.content) chat, user_info ui
+		WHERE chat.member_num=ui.id
 	</select>
 	<select id="getMsgAll" resultType="messageDto" parameterType="string">
 		SELECT message_id, topic, content, send_type, to_char(times, 'YYYY-MM-DD HH24:MI') as times
@@ -31,7 +32,7 @@
 	<insert id="insertMsg" parameterType="messageDto">
 		INSERT INTO chat_message
 		(message_id, topic, content, send_type, times)
-		VALUES (message_id_seq.NEXTVAL, #{topic}, #{content}, #{send_type}, CURRENT_TIMESTAMP)
+		VALUES (message_id_seq.NEXTVAL, #{topic}, #{content}, #{send_type}, SYSTIMESTAMP)
 	</insert>
 	<delete id="deleteMsg" parameterType="int">
 		DELETE FROM chat_message
@@ -46,6 +47,13 @@
 			WHERE topic=#{topic};
 		   END}
 	</delete>
-	
+	<delete id="deleteTrainerChat" parameterType="int">
+		DELETE
+		FROM
+			(SELECT cr.*, cm.*
+			FROM chat_room cr, chat_message cm
+			WHERE cr.topic=cm.topic
+			AND cr.trainer_num=#{trainer_num})
+	</delete>
 	
 </mapper>

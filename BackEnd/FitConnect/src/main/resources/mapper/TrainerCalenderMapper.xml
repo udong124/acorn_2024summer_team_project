@@ -22,8 +22,8 @@
 	</select>
 	<insert id="insert" parameterType="trainerCalendarDto">
 		INSERT INTO trainercalendar
-		(t_calendar_id, member_num, regdate)
-		VALUES(t_calendar_id_seq.NEXTVAL, #{member_num}, TO_DATE(#{regdate}, 'YYYY-MM-DD HH24:MI'))
+		(t_calendar_id, trainer_num, member_num, regdate)
+		VALUES(t_calendar_id_seq.NEXTVAL, #{trainer_num}, #{member_num}, TO_DATE(#{regdate}, 'YYYY-MM-DD HH24:MI'))
 	</insert>
 	<update id="update" parameterType="trainerCalendarDto">
 		UPDATE trainercalendar

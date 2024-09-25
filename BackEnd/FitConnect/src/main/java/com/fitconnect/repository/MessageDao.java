@@ -9,12 +9,13 @@ import com.fitconnect.dto.MessageDto;
 
 public interface MessageDao {
 	public void insertChat(ChatRoomDto dto);
-	public ChatRoomDto getChatRoom(int chat_id);
+	public ChatRoomDto getChatRoom(int member_num);
 	public List<MessageDto> getMessage(String topic);
 	public List<ChatRoomDto> getChatRoomAll(int trainer_num);
 	public void sendMessage(MessageDto dto);
 	public void deleteMsg(int message_id);
 	public void deleteChat(String topic);
+	public void deleteTrainerChat(int trainer_num);
 
 	
 	

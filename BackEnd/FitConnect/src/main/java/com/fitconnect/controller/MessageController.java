@@ -37,7 +37,7 @@ public class MessageController {
 	@Autowired private MessageService service;
 	
 	
-	@Operation(summary = "채팅방 생성", description = "회원과 트레이너의 번호와 mqtt 토큰 값을 받아 채팅방 생성")
+	@Operation(summary = "채팅방 생성", description = "회원과 트레이너의 번호와 mqtt 토픽 값을 받아 채팅방 생성")
 	@PostMapping("/messenger")
 	public void insertChat(ChatRoomDto dto) {
 		service.insertChat(dto);
@@ -45,9 +45,9 @@ public class MessageController {
 	}
 	
 	@Operation(summary = "채팅방 불러오기", description = "특정 채팅방 불러오기")
-	@GetMapping("/messenger/{chat_id}")
-	public ChatRoomDto getChatRoom(@PathVariable("chat_id") int chat_id ) {
-		return service.getChatRoom();
+	@GetMapping("/messenger")
+	public ChatRoomDto getChatRoom(@RequestParam int member_num) {
+		return service.getChatRoom(member_num);
 		
 	}
 	
@@ -89,5 +89,7 @@ public class MessageController {
 	public void deleteChat(@PathVariable("topic") String topic ) {
 		service.deleteChat(topic);
 	}
+	
+	
 	
 }

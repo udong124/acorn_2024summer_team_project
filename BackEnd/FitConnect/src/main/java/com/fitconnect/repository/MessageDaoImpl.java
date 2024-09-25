@@ -22,8 +22,8 @@ public class MessageDaoImpl implements MessageDao {
 
 	//채팅방 불러오기
 	@Override
-	public ChatRoomDto getChatRoom(int chat_id) {
-		return session.selectOne("Message.getChatRoom", chat_id);
+	public ChatRoomDto getChatRoom(int member_num) {
+		return session.selectOne("Message.getChatRoom", member_num);
 	}
 	
 	//채팅방 목록(트레이너용)
@@ -57,6 +57,12 @@ public class MessageDaoImpl implements MessageDao {
 	@Override
 	public void deleteChat(String topic) {
 		session.delete("Message.deleteChat", topic);
+		
+	}
+
+	@Override
+	public void deleteTrainerChat(int trainer_num) {
+		session.delete("Message.deleteTrainerChat", trainer_num);
 		
 	}
 

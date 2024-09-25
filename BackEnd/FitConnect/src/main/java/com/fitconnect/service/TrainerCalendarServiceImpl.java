@@ -33,7 +33,6 @@ public class TrainerCalendarServiceImpl implements TrainerCalendarService  {
 		//토큰에 저장된 user_id을 user_id이라는 key 값에 담기
 	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	    UserDto userDto = ((PrincipalDetails)authentication.getPrincipal()).getDto();
-		System.out.println(userDto.getId()+"service");
 		return calDao.getCalenList(userDto.getId());
 	}
 
@@ -46,7 +45,9 @@ public class TrainerCalendarServiceImpl implements TrainerCalendarService  {
 	//트레이너 일정 등록
 	@Override
 	public boolean addSchedule(TrainerCalendarDto dto) {
-		dto.setT_calendar_id(dto.getT_calendar_id());
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    UserDto userDto = ((PrincipalDetails)authentication.getPrincipal()).getDto();
+		dto.setTrainer_num(userDto.getId());
 		boolean isSuccess = calDao.insert(dto);
 		return isSuccess;
 	}

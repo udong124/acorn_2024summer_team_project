@@ -14,9 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fitconnect.auth.PrincipalDetails;
 import com.fitconnect.dto.MemberDto;
 import com.fitconnect.dto.TrainerDto;
+import com.fitconnect.dto.UserDto;
 import com.fitconnect.repository.UserDao;
+import com.fitconnect.service.MessageService;
 import com.fitconnect.service.TrainerService;
 
 @RestController
@@ -25,6 +28,8 @@ public class TrainerController {
 	@Autowired private UserDao userDao;
 	
 	@Autowired private TrainerService service;
+	
+	@Autowired private MessageService MsgService;
 	
 	@GetMapping("/trainer/userinfo")
 	public Map<String, Object> trainerGetUserInfo() {
@@ -49,6 +54,8 @@ public class TrainerController {
 	public Map<String, Object> trainerDelete(){
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userName = authentication.getName();
+        UserDto userDto = ((PrincipalDetails)authentication.getPrincipal()).getDto();
+        MsgService.deleteTrainerChat(userDto.getId());
 		service.deleteTrainer(userName);
 		Map<String, Object> map=new HashMap<>();
 		map.put("isSuccess", true);
