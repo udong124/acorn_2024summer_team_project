@@ -75,7 +75,7 @@ public class UserController {
 	}
 	
 	@PostMapping("/user")
-	public Map<String, Object> signup(@RequestBody UserDto dto) {
+	public Map<String, Object> signup(UserDto dto) {
 		String rawPassword = dto.getPassword();
 		String encPassword = passwordEncoder.encode(rawPassword);
 		dto.setPassword(encPassword);
