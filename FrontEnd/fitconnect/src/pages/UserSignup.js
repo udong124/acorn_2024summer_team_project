@@ -92,15 +92,11 @@ const UserSignUp = () => {
 
   const formData = new FormData();
 
-  formData.append('profile', file);
+  
   formData.append('userName', userName);
-  formData.append('password', password);
   formData.append('name', name);
   formData.append('email', email);
-  formData.append('role', role);
-  formData.append('provider', provider);
-
-  UserSignUp.mutate(formData);
+  formData.append('profile', file);
 
   if(file){
     formData.append("profile", file);
