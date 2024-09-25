@@ -47,7 +47,7 @@
 	</select>
 	<select id="getMemberAll" resultType="memberDto" parameterType="int" >
 		SELECT mi.member_num, ui.name
-		FROM memberinfo mi, user_info ui
+		FROM member_info mi, user_info ui
 		WHERE mi.member_num = ui.id
 		and trainer_num=#{user_id}
 		ORDER BY name ASC
