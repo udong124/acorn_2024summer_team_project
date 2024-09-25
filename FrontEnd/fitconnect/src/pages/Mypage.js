@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './css/Mypage.css';
+import myCss from './css/Mypage.module.css';
+import binder from 'classnames/bind'
 import { Col, Container, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+
+const cx=binder.bind(myCss)
 
 const MyPage = () => {
   const [trainerInfo, setTrainerInfo] = useState({
@@ -31,15 +34,15 @@ const MyPage = () => {
 
 
   return (
-      <Container className='container'>
+      <Container className={cx('container')}>
        <h1>Mypage</h1>
        <Row>
-          <Col className='leftside'>
+          <Col className={cx("leftside")}>
             <img src={trainerInfo.profile} alt="" />
               <p>이름: {trainerInfo.name}</p>
               <p>소갯글: {trainerInfo.trainer_intro}</p>
           </Col>
-          <Col className='rightside'>
+          <Col className={cx('rightside')}>
               <p>아이디: {trainerInfo.id}</p>
               <p>이메일: {trainerInfo.email}</p>
               <p>생성일: {trainerInfo.regdate}</p>

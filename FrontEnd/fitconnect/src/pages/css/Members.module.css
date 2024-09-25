@@ -1,18 +1,18 @@
-/* Members.css */
+Members.module.css
 
-.members-container {
+.container {
   font-family: Arial, sans-serif;
   background-color: #f4f4f4;
   padding: 0;
 }
 
-.members-container h1 {
+.container h1 {
   text-align: center;
   margin-top: 20px;
   color: #333;
 }
 
-.members-list {
+.container list {
   list-style: none;
   padding: 30px;
   margin: 20px auto;
@@ -40,7 +40,7 @@
   color: #333;
 }
 
-.members-container button {
+.container button {
   background-color: #ff4b5c;
   color: white;
   padding: 8px 12px;
@@ -50,7 +50,7 @@
   transition: background-color 0.3s ease;
 }
 
-.members-container button:hover {
+.container button:hover {
   background-color: #ff7878;
 }
 

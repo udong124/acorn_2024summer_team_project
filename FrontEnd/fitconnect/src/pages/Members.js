@@ -1,10 +1,13 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import './css/Members.css';
+import binder from 'classnames/bind'
+import myCss from './css/Members.module.css';
 
 // 해당 페이지 추가 되어야하는 내용
 // 회원 캘린더 -> 회원 캘린더 내에서 운동일지 , 식단정보 클릭시 상세페이지 이동
 // 회원 옆 버튼으로 회원 상세페이지 이동
+
+const cx=binder.bind(myCss)
 
 function Members() {
 
@@ -56,7 +59,7 @@ function Members() {
 
 
   return (
-    <div className="container">
+    <div className={cx("container")}>
       <h1>회원 목록</h1>
       <ul>
         {members.map(item => (

@@ -8,12 +8,13 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import './css/Calendar.css';
 import { Modal, Button, Form } from 'react-bootstrap';
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 
 function Calendar() {
   // 상태 훅을 사용하여 이벤트, 모달 표시 여부, 새 이벤트 정보, 편집 상태, 현재 이벤트 ID를 관리
   const [events, setEvents] = useState([]); // 캘린더에 표시할 이벤트 목록
   const [showModal, setShowModal] = useState(false); // 모달의 표시 여부
-  const [newEvent, setNewEvent] = useState({ t_calendar_id:'', member_num: '', trainer_num: '', name: '', date: '' }); // 새로운 이벤트의 정보 
+  const [newEvent, setNewEvent] = useState({ t_calendar_id:'', member_num: '', trainer_num: '', name: '', date: '' }); // 새로운 이벤트 의 정보 
   const [isEditing, setIsEditing] = useState(false); // 편집 모드 여부
   const [currentEventId, setCurrentEventId] = useState(null); // 현재 편집 중인 이벤트의 ID
   const [dateEvents, setDateEvents] = useState([]); //해당 날짜 클릭시 보여줄 이벤트
@@ -23,30 +24,49 @@ function Calendar() {
    useEffect(()=>{
      axios.get(`/trainercalendar`)
      .then(res=>{
-      console.log("dd")
-      console.log(res.data)
-      console.log("dd")
-      setEvents(res.data)})
+      const formattedEvents = res.data.calList.map(event =>({
+        id: event.t_calendar_id,
+        title: event.name,
+        start: event.regdate,
+        member_num: event.member_num,
+        trainer_num: event.trainer_num
+      }))
+      setEvents(formattedEvents)})
      .catch(err=>console.log(err))
    }, []);
+
+   
 
    const saveEvent = (event) => {
     if (isEditing) {
       // 기본 이벤트 업데이트
-      axios.patch(`/calendar/${currentEventId}`, event)
-        .then(res => {setEvents(events.map(evt => evt.id === currentEventId ? res.data : evt))})
+      axios.put(`/calendar/${currentEventId}`, event)
+        .then(res => {
+          const updatedEvent = res.data;
+          setEvents(events.map(evt => evt.id === currentEventId ? {
+            ...evt,
+            title: updatedEvent.name, // FullCalendar 필드 업데이트
+            start: updatedEvent.regdate // FullCalendar 필드 업데이트
+          } : evt));
+        })
         .catch(err => console.log(err));
     } else {
-      // 서버에 저장
+      // formData.append('member_num', member_num) formData.append('regdate'. regdate)
+      //axios({ method:'post', url:`/trinaercalendar`, data: formData,})
       axios.post(`/trainercalendar`, event)
-        
-        .then(res => 
-          {
-            console.log(res.data)
-            setEvents([...events, res.data])})
-        .catch(err => console.log(err));
-    }
-  };
+      .then(res => {
+        const newEvent = res.data;
+        setEvents([...events, {
+          id: newEvent.t_calendar_id,
+          title: newEvent.name, // FullCalendar 필드
+          start: newEvent.regdate, // FullCalendar 필드
+          member_num: newEvent.member_num,
+          trainer_num: newEvent.trainer_num
+        }]);
+      })
+      .catch(err => console.log(err));
+  }
+};
 
     // 해당 이벤트 서버에서 삭제
     const deleteEvent = (eventId) => {
@@ -85,11 +105,15 @@ function Calendar() {
 
   //이벤트 저장을 눌렀을때 호출되는 핸들러
   const handleSaveEvent = () => {
-    const eventToSave = { ...newEvent, id: currentEventId || Date.now().toString() };
+    const eventToSave = { 
+      ...newEvent,
+      t_calendar_id: currentEventId || null // 서버가 새 ID를 생성하도록 null 설정
+    };
     saveEvent(eventToSave);
     setShowModal(false);
-    setNewEvent({ member_num: '', trainer_num: '', name: '', date: '' });
+    setNewEvent({ member_num: '', trainer_num: '', name: '', date: '' }); // 상태 초기화
   };
+  
 
    // 이벤트 삭제를 눌렀을때 호출되는 핸들러
    const handleDeleteEvent = (eventId) => {
@@ -179,9 +203,11 @@ function Calendar() {
                   value={newEvent.name}
                   onChange={(e) => setNewEvent({ ...newEvent, name: e.target.value })}
                 >
-                  {/* 해당부분 반목문으로 name 출력 */}
-                  {events.map(item => (
-                    <option key={item.t_calendar_id} value={item.name}>{item.name}</option>
+                {/* 이벤트가 배열인지 확인 후, 배열일 경우만 map 실행 */}
+                  {Array.isArray(events) && events.map(item => (
+                    <option key={uuidv4()} value={item.title}>
+                      {item.title}
+                    </option>
                   ))}
                  </Form.Select>
               </Form.Group>

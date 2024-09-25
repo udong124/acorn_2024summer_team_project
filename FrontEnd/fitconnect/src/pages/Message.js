@@ -11,7 +11,7 @@ const App = () => {
   // 페이지 전환하면서 useNavigate 로 얻어오는 변수들
   // const location = useLocation();
   // const { member_num, trainer_num, send_type, topic } = location.state;
-
+  
   const [state, setState] = useState({
     member_num: 1,
     trainer_num: 2,
