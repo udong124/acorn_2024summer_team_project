@@ -13,8 +13,8 @@ import axios from 'axios';
 
 
 // token 이 존재 한다면 token 에서 값을 읽어와서 저장할 변수 만들기
-let userName=null;
-let userRole = null;
+let userName = null
+let userRole = null
 
 //만일 토큰이 존재한다면
 if(localStorage.token){
@@ -38,6 +38,7 @@ if(localStorage.token){
   }
 
 }
+
 
   const initialState = {
     userName: userName,

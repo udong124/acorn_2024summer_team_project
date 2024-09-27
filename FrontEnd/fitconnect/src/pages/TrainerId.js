@@ -1,137 +1,186 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Form, Container, Card } from 'react-bootstrap';
-import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from "react";
+import axios from "axios";
+import { Form, Button, Card, Row, Col, Container } from "react-bootstrap"; // Bootstrap 적용
 import styles from "../css/TrainerId.module.css";
 import classNames from "classnames/bind";
+import { decodeToken } from "jsontokens";
 
-// cx 함수 만들기
 const cx = classNames.bind(styles);
 
 const TrainerId = () => {
-  
-  const [searchInput, setSearchInput] = useState({
-    condition: "trainer_num", 
-    keyword: ""
-  });
+  const searchKeywordRef = useRef(""); // 검색어 Ref
+  const [searchCondition, setSearchCondition] = useState("gym_name"); // 검색 조건
+  const [trainerList, setTrainerList] = useState([]); // 전체 트레이너 목록
+  const [filteredTrainers, setFilteredTrainers] = useState([]); // 필터링된 트레이너 목록
+  const [selectedTrainer, setSelectedTrainer] = useState(null); // 선택한 트레이너
+  const [memberNum, setMemberNum] = useState(null); // 회원 번호 상태
 
-  const [member_num, setMember_num] = useState(''); 
-  const [trainer_num, setTrainer_num] = useState(''); // trainer_num 
-  const [APIData, setAPIData] = useState([]);
-  const [filteredData, setFilteredData] = useState([]); 
-
+  // 테스트용 데이터-실제 api로 할때는 이 부분 주석 처리하기
   useEffect(() => {
-    axios.get(`trainer/list`)
-      .then((response) => {
-        console.log(response.data); 
-        setAPIData(response.data);
-      })
-      .catch(error => console.error("데이터 로드 실패:", error)); 
+    const testData = [
+      { trainer_num: 1, gym_name: "ABC Gym", trainer_insta: "trainer_abc" },
+      { trainer_num: 2, gym_name: "화이팅 Gym", trainer_insta: "trainer_ddd" },
+      {
+        trainer_num: 3,
+        gym_name: "스파르타 Gym",
+        trainer_insta: "sparta_trainer",
+      },
+      {
+        trainer_num: 4,
+        gym_name: "챔피언 Gym",
+        trainer_insta: "champion_trainer",
+      },
+    ];
+    setTrainerList(testData);
+    setFilteredTrainers(testData);
   }, []);
-  
-  const navigate = useNavigate();
 
-  
+  // //실제 API 데이터를 가져오는 useEffect (필요할 때 주석을 해제하기)
+  // useEffect(() => {
+  //   axios.get('/trainer/list')
+  //     .then(response => {
+  //       const trainerData = response.data.trainerList || [];
+  //       setTrainerList(trainerData);
+  //       setFilteredTrainers(trainerData);
+  //     })
+  //     .catch(error => {
+  //       console.error('트레이너 목록 조회 실패:', error);
+  //     });
+  // }, []);
+
+  // 로그인한 사용자의 member_num 가져오기
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const { payload } = decodeToken(token.substring(7)); 
+        if (payload && payload.id) {
+          setMemberNum(payload.id); // 토큰에서 가져온 id를 member_num으로 설정
+        }
+      } catch (error) {
+        console.error("토큰 처리 중 오류:", error);
+      }
+    }
+  }, []);
+
+  // 검색어 변경에 따라 필터링
   const handleSearch = () => {
-    const filtered = APIData.filter(item => {
-      if (searchInput.condition === "trainer_num") {
-        return item.trainer_num.toString().includes(searchInput.keyword);
-      } else if (searchInput.condition === "trainer_insta") {
-        return item.trainer_insta && item.trainer_insta.toLowerCase().includes(searchInput.keyword.toLowerCase());
+    const keyword = searchKeywordRef.current.value.trim().toLowerCase();
+    if (!keyword) {
+      setFilteredTrainers(trainerList);
+      return;
+    }
+
+    const filteredList = trainerList.filter((trainer) => {
+      if (searchCondition === "gym_name") {
+        return trainer.gym_name.toLowerCase().includes(keyword);
+      } else if (searchCondition === "trainer_insta") {
+        return trainer.trainer_insta.toLowerCase().includes(keyword);
       }
       return false;
     });
-    setFilteredData(filtered);
+
+    setFilteredTrainers(filteredList);
   };
 
-  
-  const handleTrainerInput = (e) => {
-    e.preventDefault();
+  // 트레이너 등록 버튼 클릭 시
+  const handleRegister = () => {
+    if (!selectedTrainer || !memberNum) {
+      alert("트레이너와 회원 정보를 확인하세요.");
+      return;
+    }
 
-    // trainer_num과 member_num 데이터 전송
-    const data = { trainer_num, member_num };
-    axios.patch(`/member/update/trainer`, data)
-      .then(response => {
-        console.log(response.data);
-        navigate(`/`);
+    axios
+      .patch("/member/update/trainer", {
+        member_num: memberNum,
+        trainer_num: selectedTrainer.trainer_num,
       })
-      .catch(error => {
-        console.error("트레이너 아이디 등록 실패:", error);
+      .then((response) => {
+        if (response.data.isSuccess) {
+          alert("트레이너가 성공적으로 등록되었습니다.");
+          setSelectedTrainer(null);
+          setFilteredTrainers(trainerList);
+        } else {
+          alert("트레이너 등록에 실패했습니다.");
+        }
+      })
+      .catch((error) => {
+        console.error("트레이너 등록 실패:", error);
       });
   };
 
   return (
-    <Container className={cx('trainerContainer')}>
-      <div className={cx('trainerBox')}>
-        <p className={cx('textCenter')}>트레이너 검색</p>
-        <Form onSubmit={handleTrainerInput}>
-          <Form.Group className={cx('mb-3')}>
-            <Form.Label>검색 조건 선택</Form.Label>
-            <Form.Control
-              as="select"
-              value={searchInput.condition}
-              onChange={(e) => setSearchInput({ ...searchInput, condition: e.target.value })}
-              className={cx('formControl')}
-            >
-              <option value="trainer_num">트레이너 번호</option>
-              <option value="trainer_insta">트레이너 인스타</option>
-            </Form.Control>
-          </Form.Group>
+    <Container className={cx("container")}>
+      <h3 className={cx("header")}>트레이너 등록</h3>
 
-          <Form.Group className={cx('mb-3')}>
-            <Form.Label>검색 키워드</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="검색어를 입력하세요"
-              value={searchInput.keyword}
-              onChange={(e) => setSearchInput({ ...searchInput, keyword: e.target.value })}
-              className={cx('formControl')}
-            />
-          </Form.Group>
+      <Form className="mb-3">
+        <Row>
+          <Col md={4}>
+            <Form.Group>
+              <Form.Select
+                value={searchCondition}
+                onChange={(e) => setSearchCondition(e.target.value)}
+              >
+                <option value="gym_name">헬스장 이름</option>
+                <option value="trainer_insta">트레이너 인스타그램</option>
+              </Form.Select>
+            </Form.Group>
+          </Col>
+          <Col md={6}>
+            <Form.Group>
+              <Form.Control
+                type="text"
+                placeholder="검색어를 입력하세요"
+                ref={searchKeywordRef}
+              />
+            </Form.Group>
+          </Col>
+          <Col md={2}>
+            <Button onClick={handleSearch} className="w-100">
+              검색
+            </Button>
+          </Col>
+        </Row>
+      </Form>
 
-          <Button variant="dark" onClick={handleSearch} className={cx('btnPrimary', 'mt3')}>
-            검색
-          </Button>
+      {/* 검색된 트레이너 목록을 가로로 보여주기 */}
+      <Row className="mt-3">
+        {filteredTrainers.length > 0 ? (
+          filteredTrainers.map((trainer) => (
+            <Col xs={12} md={12} className="mb-3" key={trainer.trainer_num}>
+              <Card className="h-100 shadow-sm" style={{ width: "100%" }}>
+                <Card.Body>
+                  <Card.Title>{trainer.gym_name}</Card.Title>
+                  <Card.Text>{trainer.trainer_insta}</Card.Text>
+                  <Button
+                    onClick={() => setSelectedTrainer(trainer)}
+                    className="w-100 btn-secondary"
+                  >
+                    선택
+                  </Button>
+                </Card.Body>
+              </Card>
+            </Col>
+          ))
+        ) : (
+          <Col>
+            <p>검색된 트레이너가 없습니다.</p>
+          </Col>
+        )}
+      </Row>
 
-          <div className={cx('mb-3')}>
-            {filteredData.length > 0 ? (
-              filteredData.map((item, index) => (
-                <Card key={index} className={cx('mb-2')}>
-                  <Card.Body>
-                    <Card.Title>트레이너 번호: {item.trainer_num}</Card.Title>
-                    <Card.Text>
-                      인스타그램: {item.trainer_insta} <br />
-                      소개: {item.trainer_intro} <br />
-                      체육관 이름: {item.gym_name} <br />
-                      체육관 링크: {item.gym_link}
-                    </Card.Text>
-                    <Button
-                      variant="outline-primary"
-                      onClick={() => {
-                        setTrainer_num(item.trainer_num); 
-                        setMember_num("회원 번호 입력"); 
-                      }}
-                    >
-                      선택
-                    </Button>
-                  </Card.Body>
-                </Card>
-              ))
-            ) : (
-              <div>검색 결과가 없습니다.</div>
-            )}
-          </div>
-
-          <Button variant="dark" type="submit" className={cx('btnPrimary', 'mt3')}>
+      {/* 선택된 트레이너 정보와 회원 번호 입력 */}
+      {selectedTrainer && (
+        <div className="mt-4">
+          <h4>선택된 트레이너</h4>
+          <p>헬스장: {selectedTrainer.gym_name}</p>
+          <p>인스타그램: {selectedTrainer.trainer_insta}</p>
+          <p>회원 번호: {memberNum ? memberNum : "불러오는 중..."}</p>
+          <Button onClick={handleRegister} className="btn-primary w-100">
             등록
           </Button>
-          <div className={cx('marginBottom')}></div>
-          <Button variant="dark" className={cx('btnPrimaryAbsolute')} as={Link} to="/">
-            완료
-          </Button>
-        </Form>
-        <div className={cx('marginBottom')}></div>
-      </div>
+        </div>
+      )}
     </Container>
   );
 };

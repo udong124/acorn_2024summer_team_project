@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Button, Form, Container, Image } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Button, Form, Container } from 'react-bootstrap';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from '../css/TrainerSignUp.module.css'; 
 import classNames from 'classnames/bind';
@@ -11,43 +11,49 @@ const cx=classNames.bind(styles);
 
 
 const TrainerSignUp = () => {
-  const [trainer_insta, setTrainer_insta] = useState('');
-  const [trainer_intro, setTrainer_intro] = useState('');
-  const [gym_link, setGym_link] = useState('');
-  const [gym_name, setGym_name] = useState('');
+  const [formData, setFormData] = useState({
+    trainer_num: "",
+    trainer_insta: "",
+    trainer_intro: "",
+    gym_name: "",
+    gym_link: ""
+  });
+
   const navigate = useNavigate();
 
+
+  const location = useLocation();
+useEffect(() => {
+  if (location.state && location.state.trainer_num) {
+    setFormData(prevData => ({
+      ...prevData,
+      trainer_num: location.state.trainer_num
+    }));
+  }
+}, [location]);
+
+const handleChange = (e) => {
+  const { name, value } = e.target;
+  setFormData({
+    ...formData,
+    [name]: value,
+  });
+};
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-  
-
-    const formData = new FormData(e.target.value);
-    // formData.append('trainer_insta', trainer_insta);
-    // formData.append('trainer_intro', trainer_intro);
-    // formData.append('gym_name', gym_name);
-    // formData.append('gym_link', gym_link);
-
-    // if (file) {
-    //   formData.append('profile', file);  
-    // }
-
     axios.post(`/trainer`, formData)
       .then(response => {
         console.log(response.data);
-        navigate(`/`);
+        navigate(`/`);  //트레이너 메인페이지로 이동하게끔 통합되면 수정
       })
       .catch(error => {
         if (error.response && error.response.data) {
-          console.error("서버 응답 오류:", error.response.data.message); 
-        } else {
-          console.error("프로필 등록 실패:", error.message);  
+          console.error("서버 응답 오류:", error.response?.data?.message || error.message); 
         }
       });
   };
-
-
 
   return (
     <Container className={cx('centerContainer')}>
@@ -58,41 +64,45 @@ const TrainerSignUp = () => {
           <Form.Label>인스타그램</Form.Label>
           <Form.Control
             type="text"
+            name="trainer_insta"
             placeholder="개인 SNS 링크를 첨부해 주세요"
-            value={trainer_insta}
-            onChange={(e) => setTrainer_insta(e.target.value)}
-            required
+            value={formData.trainer_insta}
+            onChange={handleChange}
+            className={cx("formControl")}
           />
         </Form.Group>
         <Form.Group>
           <Form.Label>자기소개</Form.Label>
           <Form.Control
             as="textarea"
+            name="trainer_intro"
             placeholder="자기소개를 입력해 주세요"
             rows={5}
-            value={trainer_intro}
-            onChange={(e) => setTrainer_intro(e.target.value)}
-            required
+            value={formData.trainer_intro}
+            onChange={handleChange}
+            className={cx("formControl")}
           />
         </Form.Group>
         <Form.Group>
           <Form.Label>체육관 이름</Form.Label>
           <Form.Control
             type="text"
+            name="gym_name"
              placeholder="체육관 이름을 입력해 주세요"
-            value={gym_name}
-            onChange={(e) => setGym_name(e.target.value)}
-            required
+            value={formData.gym_name}
+            onChange={handleChange}
+            className={cx("formControl")}
           />
         </Form.Group>
         <Form.Group>
           <Form.Label>체육관 링크</Form.Label>
           <Form.Control
             type="text"
+            name="gym_link"
              placeholder="체육관 링크를 첨부해 주세요"
-            value={gym_link}
-            onChange={(e) => setGym_link(e.target.value)}
-            required
+            value={formData.gym_link}
+            onChange={handleChange}
+            className={cx("formControl")}
           />
         </Form.Group>
         <Button variant="dark" type="submit" className={cx('w100', 'mt3')} onClick={handleSubmit}>

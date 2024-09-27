@@ -13,7 +13,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
     const userRole = useSelector(state => state.role); // 현재 사용자의 역할 (member, trainer, admin 등)
 
     const location = useLocation();
-    const navigate = useNavigate(); // useNavigate 훅 추가
+    const navigate = useNavigate(); // useNavigate 추가
     const dispatch = useDispatch();
     const [showModal, setShowModal] = useState(false); 
     const [activeModal, setActiveModal] = useState(null); // 현재 표시될 모달 관리

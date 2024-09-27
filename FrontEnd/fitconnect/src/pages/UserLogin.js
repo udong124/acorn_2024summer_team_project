@@ -75,7 +75,7 @@ const UserLogin = () => {
             로그인
           </Button>
           <div className={cx('textCenter', 'mb3')}>또는</div>
-          <Button variant="outline-dark" className={cx('btnOutlineDark', 'mb3')} as={Link} to="http://localhost:8888/oauth2/authorization/google">
+          <Button variant="outline-dark" className={cx('btnOutlineDark', 'mb3')} as={Link} to="http://localhost:8080/oauth2/authorization/google">
             Google로 시작하기
           </Button>
           <div className={cx('textCenter')}>

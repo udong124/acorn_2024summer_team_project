@@ -5,7 +5,9 @@ import { Link } from "react-router-dom";
 import styles from '../css/SignUp.module.css';
 import classNames from 'classnames/bind';
 
-// cx 함수 만들기      SignUp.js는 안쓰고 있음
+//SignUp.js는 지금 안쓰고 있음  `/user/check_username/${value}`api 없음 ->  UserSignUp.js로 쓰고 있음
+
+// cx 함수 만들기      
 const cx = classNames.bind(styles);
 
 // Validation 정규표현식
@@ -13,7 +15,7 @@ const reg_userName = /^[a-zA-Z].{4,9}$/;
 const reg_password = /[\W]/;
 const reg_email = /@/;
 
-function SignUP() {
+function SignUp() {
     const [step, setStep] = useState(1);
 
     const handleNext = () => {
@@ -236,4 +238,5 @@ function SignUP() {
     );
 }
 
-export default SignUP;
+
+export default SignUp;
