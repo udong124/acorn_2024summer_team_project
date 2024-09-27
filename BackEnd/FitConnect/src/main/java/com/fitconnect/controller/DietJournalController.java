@@ -57,7 +57,7 @@ public class DietJournalController {
 	@PutMapping("/dietjournal/{d_journal_id}")
 	public Map<String, Object> update(
 			@PathVariable("d_journal_id") int d_journal_id,
-			DietJournalDto dto){
+			@RequestBody DietJournalDto dto){
 		
 		dto.setD_journal_id(d_journal_id);
 		service.update(dto);

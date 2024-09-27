@@ -43,7 +43,7 @@ public class memberCalendarController {
 	
 	//특정 멤버 캘린더 등록
 	@PostMapping("/membercalendar")
-	public Map<String, Object> insertCal(memberCalendarDto dto) {
+	public Map<String, Object> insertCal(@RequestBody memberCalendarDto dto) {
 		
 		service.insert(dto);
 		
@@ -54,7 +54,7 @@ public class memberCalendarController {
 	@PutMapping("/membercalendar/{m_calendar_id}")
 	public memberCalendarDto updateCal(
 			@PathVariable("m_calendar_id") int m_calendar_id, 
-			memberCalendarDto dto) {
+			@RequestBody memberCalendarDto dto) {
 		dto.setM_calendar_id(m_calendar_id);
 		service.update(dto);
 		

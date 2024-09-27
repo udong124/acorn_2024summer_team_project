@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,14 +31,14 @@ public class DietListController {
 	}
 	
 	@PostMapping("/dietlist")
-	public Map<String, Object> insert(DietListDto dto) {
+	public Map<String, Object> insert(@RequestBody DietListDto dto) {
 		service.insert(dto);
 		
 		return Map.of("isSuccess", true);
 	}
 	
 	@PostMapping("/dietlist/manager")
-	public Map<String, Object> ManagerInsert(DietListDto dto){
+	public Map<String, Object> ManagerInsert(@RequestBody DietListDto dto){
 		
 		service.insert(dto);
 		return Map.of("isSuccess", true);
