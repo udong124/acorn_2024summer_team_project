@@ -28,7 +28,9 @@ public class ExerciseServiceImpl implements ExerciseService {
 	//특정 날짜의 전체 운동 일지 기록 조회
 	@Override
 	public List<ExerciseJournalDto> selectJournalAll(int m_calendar_id) {
-		return journalDao.getExerJournalList(m_calendar_id);
+		List<ExerciseJournalDto> list = journalDao.getExerJournalList(m_calendar_id);
+		
+		return list;
 	}
 
 	// 특정 날짜 내 등록된 운동 일지 내 특정 1개의 운동 기록 조회

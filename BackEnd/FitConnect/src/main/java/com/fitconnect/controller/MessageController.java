@@ -37,10 +37,12 @@ public class MessageController {
 	@Autowired private MessageService service;
 	
 	
-	@Operation(summary = "채팅방 생성", description = "회원과 트레이너의 번호와 mqtt 토픽 값을 받아 채팅방 생성")
+	@Operation(summary = "채팅방 생성", description = "회원과 트레이너의 번호를 받아 채팅방 생성")
 	@PostMapping("/messenger")
-	public void insertChat(ChatRoomDto dto) {
-		service.insertChat(dto);
+	public Map<String, Object> insertChat(@RequestBody ChatRoomDto dto) {
+		
+		boolean isSuccess = service.insertChat(dto);
+		return Map.of("isSuccess", true);
 		
 	}
 	
@@ -70,9 +72,10 @@ public class MessageController {
 	
 	@Operation(summary = "메세지 전송", description = "전송된 메세지 DB에 저장하기")
 	@PostMapping("/messenger/detail")
-	public void sendMessage(MessageDto dto) {
+	public Map<String, Object> sendMessage(MessageDto dto) {
+		boolean isSuccess = service.sendMessage(dto);
+		return Map.of("isSuccess", true);
 		
-		service.sendMessage(dto);
 		
 	}
 	
@@ -80,14 +83,17 @@ public class MessageController {
 	
 	@Operation(summary = "특정 채팅방 내 특정 메세지 삭제", description = "파라미터 값으로 전달받은 메세지 번호를 이용하여 특정 메세지 삭제하기")
 	@DeleteMapping("/messenger/detail/{message_id}")
-	public void deleteMsg(@PathVariable("message_id") int message_id) {
-		service.deleteMsg(message_id);
+	public Map<String, Object> deleteMsg(@PathVariable("message_id") int message_id) {
+		
+		boolean isSuccess = service.deleteMsg(message_id);
+		return Map.of("isSuccess", true);
 	}
 	
 	@Operation(summary = "채팅방 삭제(나가기)", description = "특정 회원과 연결된 채팅방 삭제하기(나가기)")
 	@DeleteMapping("/messenger/{topic}")
-	public void deleteChat(@PathVariable("topic") String topic ) {
+	public Map<String, Object> deleteChat(@PathVariable("topic") String topic ) {
 		service.deleteChat(topic);
+		return Map.of("isSuccess", true); 
 	}
 	
 	

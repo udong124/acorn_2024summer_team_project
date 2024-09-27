@@ -91,10 +91,10 @@ public class ExerciseController {
 	})
 	@Operation(summary = "운동 일지 조회", description = "특정 회원의 특정 날짜 운동 리스트 가져오기")
 	@GetMapping("/exercisejournal/{m_calendar_id}")
-	public Map<String, Object> getExerJurnalMember(@PathVariable("m_calendar_id")int m_calendar_id, ExerciseJournalDto dto){
-		dto.setM_calendar_id(m_calendar_id);
+	public Map<String, Object> getExerJurnalMember(@PathVariable("m_calendar_id")int m_calendar_id){
 		Map<String, Object> map=new HashMap<>();
 		map.put("exerJournalList", service.selectJournalAll(m_calendar_id));
+		
 		return map;
 	}
 	
@@ -104,7 +104,7 @@ public class ExerciseController {
 	})
 	@Operation(summary = "운동일지 내 특정 운동 정보", description = "운동 일지에 등록한 운동 중 특정 운동 정보 가져오기")
 	@GetMapping("/exercisejournal/detail/{e_journal_id}")
-	public Map<String, Object> getJournalOne(@PathVariable("e_journal_id") int e_journal_id, ExerciseJournalDto dto){
+	public Map<String, Object> getJournalOne(@PathVariable("e_journal_id") int e_journal_id){
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("exerJournalDto", service.selectExerJournalOne(e_journal_id));
@@ -132,7 +132,7 @@ public class ExerciseController {
 	})
 	@Operation(summary = "운동 일지 수정", description = "운동 일지 내 등록된 운동 중 특정 운동의 아이디 값을 이용하여 특정 운동 내용 수정하기")
 	@PutMapping("/exercisejournal/{e_journal_id}")
-	public Map<String, Object> updateExer(@PathVariable("e_journal_id") int e_journal_id, ExerciseJournalDto dto){
+	public Map<String, Object> updateExer(@PathVariable("e_journal_id") int e_journal_id, @RequestBody ExerciseJournalDto dto){
 		dto.setE_journal_id(e_journal_id);
 		boolean isSuccess = service.update(dto);
 		

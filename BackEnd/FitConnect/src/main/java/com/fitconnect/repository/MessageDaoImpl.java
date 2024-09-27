@@ -13,11 +13,17 @@ import com.fitconnect.dto.MessageDto;
 public class MessageDaoImpl implements MessageDao {
 
 	@Autowired private SqlSession session;
+	
 
 	//채팅방 생성
 	@Override
-	public void insertChat(ChatRoomDto dto) {
-		session.insert("Message.insertChat", dto);
+	public boolean insertChat(ChatRoomDto dto) {
+		int rowCount=session.insert("Message.insertChat", dto);
+		if(rowCount>0) {
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 	//채팅방 불러오기
@@ -41,15 +47,25 @@ public class MessageDaoImpl implements MessageDao {
 
 	//메세지 전송
 	@Override
-	public void sendMessage(MessageDto dto) {
-		session.insert("Message.insertMsg", dto);
+	public boolean sendMessage(MessageDto dto) {
+		int rowCount=session.insert("Message.insertMsg", dto);
+		if(rowCount>0) {
+			return true;
+		}else{
+			return false;
+		}
 		
 	}
 
 	//메세지 1개 삭제
 	@Override
-	public void deleteMsg(int message_id) {
-		session.delete("Message.deleteMsg", message_id);
+	public boolean deleteMsg(int message_id) {
+		int rowCount=session.delete("Message.deleteMsg", message_id);
+		if(rowCount>0) {
+			return true;
+		}else{
+			return false;
+		}
 		
 	}
 
@@ -58,11 +74,22 @@ public class MessageDaoImpl implements MessageDao {
 	public void deleteChat(String topic) {
 		session.delete("Message.deleteChat", topic);
 		
+		
 	}
 
 	@Override
-	public void deleteTrainerChat(int trainer_num) {
-		session.delete("Message.deleteTrainerChat", trainer_num);
+	public boolean deleteTrainerChat(int trainer_num) {
+		int rowCount=session.delete("Message.deleteTrainerChat", trainer_num);
+		if(rowCount>0) {
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	@Override
+	public void deleteMsgAll(String topic) {
+		session.delete("Message.deleteMsgAll", topic);
 		
 	}
 
