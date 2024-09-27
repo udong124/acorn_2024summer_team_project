@@ -79,10 +79,8 @@ public class MessageServiceImpl implements MessageService {
 	//채팅방 삭제(나가기)
 	@Override
 	public void deleteChat(String topic) {
-		
 		dao.deleteMsgAll(topic);
 		dao.deleteChat(topic);
-		
 		
 	}
 

@@ -48,7 +48,7 @@ public class TrainerCalendarController {
 	public Map<String, Object> insertCal(@RequestBody TrainerCalendarDto dto){
 		boolean isSuccess = service.addSchedule(dto);
 		Map<String, Object> map = new HashMap<String, Object>();
-		return Map.of("isSuccess", true);
+		return Map.of("isSuccess", isSuccess);
 	}
 	
 	@Operation(summary = "트레이너 일정 수정", description = "파라미터로 받은 트레이너 캘린더 아이디를 이용한 일정 수정")
@@ -56,7 +56,7 @@ public class TrainerCalendarController {
 	public Map<String, Object> updateCal(@PathVariable("t_calendar_id") int t_calendar_id, TrainerCalendarDto dto){
 		
 		boolean isSuccess = service.updateSchedule(dto);
-		return Map.of("isSuccess", true);
+		return Map.of("isSuccess", isSuccess);
 		
 	}
 	

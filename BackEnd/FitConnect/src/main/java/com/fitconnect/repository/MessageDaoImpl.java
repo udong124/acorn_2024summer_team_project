@@ -74,7 +74,6 @@ public class MessageDaoImpl implements MessageDao {
 	public void deleteChat(String topic) {
 		session.delete("Message.deleteChat", topic);
 		
-		
 	}
 
 	@Override

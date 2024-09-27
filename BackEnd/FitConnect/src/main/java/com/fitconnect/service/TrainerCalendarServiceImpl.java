@@ -88,9 +88,9 @@ public class TrainerCalendarServiceImpl implements TrainerCalendarService  {
 	@Override
 	public boolean disconnect(int member_num) {
 		//채팅방 삭제 추가
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-	    UserDto userDto = ((PrincipalDetails)authentication.getPrincipal()).getDto();
-	    ChatRoomDto chatDto = MsgDao.getChatRoom(userDto.getId());
+		
+	    ChatRoomDto chatDto = MsgDao.getChatRoom(member_num);
+	    System.out.println(chatDto);
 	    String topic = chatDto.getTopic();
 		MsgDao.deleteChat(topic);
 		

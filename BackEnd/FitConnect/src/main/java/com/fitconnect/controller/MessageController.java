@@ -42,7 +42,7 @@ public class MessageController {
 	public Map<String, Object> insertChat(@RequestBody ChatRoomDto dto) {
 		
 		boolean isSuccess = service.insertChat(dto);
-		return Map.of("isSuccess", true);
+		return Map.of("isSuccess", isSuccess);
 		
 	}
 	
@@ -74,7 +74,7 @@ public class MessageController {
 	@PostMapping("/messenger/detail")
 	public Map<String, Object> sendMessage(MessageDto dto) {
 		boolean isSuccess = service.sendMessage(dto);
-		return Map.of("isSuccess", true);
+		return Map.of("isSuccess", isSuccess);
 		
 		
 	}
@@ -86,7 +86,7 @@ public class MessageController {
 	public Map<String, Object> deleteMsg(@PathVariable("message_id") int message_id) {
 		
 		boolean isSuccess = service.deleteMsg(message_id);
-		return Map.of("isSuccess", true);
+		return Map.of("isSuccess", isSuccess);
 	}
 	
 	@Operation(summary = "채팅방 삭제(나가기)", description = "특정 회원과 연결된 채팅방 삭제하기(나가기)")
