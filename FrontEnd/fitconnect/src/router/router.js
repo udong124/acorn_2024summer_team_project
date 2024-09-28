@@ -1,21 +1,21 @@
 
 import App from "../App"
 import Home from "../pages/Home"
-import Calendar from "../pages/Calendar"
-import Message from "../pages/Message"
-import Members from "../pages/Members"
-import Mypage from "../pages/Mypage"
-import MypageDetail from "../pages/MypageDetail"
+import TrainerCalendar from "../pages/TrainerCalendar"
+import TrainerMessage from "../pages/TrainerMessage"
+import TrainerMembers from "../pages/TrainerMembers"
+import TrainerMypage from "../pages/TrainerMypage"
+import TrainerMypageDetail from "../pages/TrainerMypageDetail"
 const { createBrowserRouter } = require("react-router-dom")
 
 //라우트 정보를 배열에 저장
 const routes=[
     {path:"/", element: <Home/>},
-    {path:"/calendar", element: <Calendar/>},
-    {path:"/message", element: <Message/>},
-    {path:"/members", element: <Members/>},
-    {path:"/mypage", element: <Mypage/>},
-    {path:"/mypagedetail", element: <MypageDetail/>}
+    {path:"/trainer/calendar", element: <TrainerCalendar/>},
+    {path:"/trainer/message", element: <TrainerMessage/>},
+    {path:"/trainer/members", element: <TrainerMembers/>},
+    {path:"/trainer/mypage", element: <TrainerMypage/>},
+    {path:"/trainer/mypagedetail", element: <TrainerMypage/>}
 ]
 
 //BrowserRouter 를 만들기
