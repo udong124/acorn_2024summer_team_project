@@ -32,8 +32,9 @@ public class DietListDaoImpl implements DietListDao{
 	}
 
 	@Override
+
 	public boolean ManagerInsert(DietListDto dto) {
-		
+
 		int result = session.insert("dietList.ManagerInsert", dto);
 		if(result > 0) {
 			return true;

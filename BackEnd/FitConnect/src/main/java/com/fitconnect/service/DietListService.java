@@ -8,5 +8,5 @@ import com.fitconnect.dto.DietListDto;
 public interface DietListService {
 	public List<DietListDto> getList(DietListDto dto);
 	public boolean insert(DietListDto dto);
-	public boolean ManagerInsert(DietListDto dto);
+	public boolean managerInsert(DietListDto dto);
 }

@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fitconnect.dto.memberCalendarDto;
-import com.fitconnect.service.memberCalendarService;
+import com.fitconnect.dto.MemberCalendarDto;
+import com.fitconnect.service.MemberCalendarService;
 
 
 
 @RestController
-public class memberCalendarController {
+public class MemberCalendarController {
 	
-	@Autowired private memberCalendarService service;
+	@Autowired private MemberCalendarService service;
 	
 	/**********************************************************************
 	 * <PRE> * 메소드 정보 *
@@ -37,9 +37,9 @@ public class memberCalendarController {
 	 * 		@return
 	**********************************************************************/
 	@GetMapping("/membercalendar") //
-	public List<memberCalendarDto> getList(){
+	public List<MemberCalendarDto> getList(){
 		
-		List<memberCalendarDto> list = service.getAll();
+		List<MemberCalendarDto> list = service.getAll();
 		return list;
 	}
 	
@@ -60,7 +60,7 @@ public class memberCalendarController {
 	@GetMapping("/membercalendar/{m_calendar_id}")
 	public Map<String, Object> getMemberData(
 			@PathVariable("m_calendar_id") int m_calendar_id,
-			memberCalendarDto dto) {
+			MemberCalendarDto dto) {
 		dto.setM_calendar_id(m_calendar_id);
 		
 		return service.getOne(dto);
@@ -80,7 +80,7 @@ public class memberCalendarController {
 	 * 		@return
 	**********************************************************************/
 	@PostMapping("/membercalendar")
-	public Map<String, Object> insertCal(@RequestBody memberCalendarDto dto) {
+	public Map<String, Object> insertCal(@RequestBody MemberCalendarDto dto) {
 		
 		boolean isSuccess = service.insert(dto);
 		
@@ -104,7 +104,7 @@ public class memberCalendarController {
 	@PutMapping("/membercalendar/{m_calendar_id}")
 	public Map<String, Object> updateCal(
 			@PathVariable("m_calendar_id") int m_calendar_id, 
-			@RequestBody memberCalendarDto dto) {
+			@RequestBody MemberCalendarDto dto) {
 		dto.setM_calendar_id(m_calendar_id);
 		boolean isSuccess = service.update(dto);
 		

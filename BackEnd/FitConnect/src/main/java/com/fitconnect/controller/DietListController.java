@@ -75,7 +75,7 @@ public class DietListController {
 	 * 		@return
 	**********************************************************************/
 	@PostMapping("/dietlist/manager")
-	public Map<String, Object> ManagerInsert(@RequestBody DietListDto dto){
+	public Map<String, Object> managerInsert(@RequestBody DietListDto dto){
 		
 		boolean isSuccess = service.insert(dto);
 		return Map.of("isSuccess", isSuccess);

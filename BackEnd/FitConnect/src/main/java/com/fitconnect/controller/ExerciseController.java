@@ -49,7 +49,7 @@ public class ExerciseController {
 		map.put("exerList", list);
 		return map;
 	}
-	
+
 	@ApiResponses({
         @ApiResponse(responseCode = "200", description = "성공"),
         @ApiResponse(responseCode = "400", description = "실패")
@@ -61,6 +61,7 @@ public class ExerciseController {
 		return Map.of("categoryList", list);
 	}
 	
+
 	@ApiResponses({
         @ApiResponse(responseCode = "200", description = "성공"),
         @ApiResponse(responseCode = "400", description = "실패")

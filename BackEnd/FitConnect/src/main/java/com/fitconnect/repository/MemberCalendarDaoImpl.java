@@ -8,29 +8,29 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.fitconnect.dto.memberCalendarDto;
+import com.fitconnect.dto.MemberCalendarDto;
 
 
 @Repository
-public class memberCalendarDaoImpl implements memberCalendarDao{
+public class MemberCalendarDaoImpl implements MemberCalendarDao{
 
 	// 의존객체 주입
 	@Autowired SqlSession session;
 	
 	@Override
-	public List<memberCalendarDto> getList(int user_num) {
+	public List<MemberCalendarDto> getList(int user_num) {
 		
 		return session.selectList("calendar.getList", user_num);
 	}
 
 	@Override
-	public memberCalendarDto getData(memberCalendarDto dto) {
+	public MemberCalendarDto getData(MemberCalendarDto dto) {
 		
 		return session.selectOne("calendar.getData", dto);
 	}
 
 	@Override
-	public boolean insert(memberCalendarDto dto) {
+	public boolean insert(MemberCalendarDto dto) {
 		
 		int result = session.insert("calendar.insert", dto);
 		if(result > 0) {
@@ -41,8 +41,8 @@ public class memberCalendarDaoImpl implements memberCalendarDao{
 	}
 
 	@Override
-	public boolean update(memberCalendarDto dto) {
-		
+	public boolean update(MemberCalendarDto dto) {
+
 		int result = session.update("calendar.update", dto);
 		if(result > 0) {
 			return true;

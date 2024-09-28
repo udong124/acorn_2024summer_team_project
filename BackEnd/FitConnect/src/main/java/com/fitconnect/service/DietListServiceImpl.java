@@ -30,7 +30,7 @@ public class DietListServiceImpl implements DietListService{
 	}
 
 	@Override
-	public boolean ManagerInsert(DietListDto dto) {
+	public boolean managerInsert(DietListDto dto) {
 		
 		boolean isSuccess =dao.ManagerInsert(dto);
 		return isSuccess;

@@ -53,7 +53,8 @@ public class TrainerCalendarController {
 	
 	@Operation(summary = "트레이너 일정 수정", description = "파라미터로 받은 트레이너 캘린더 아이디를 이용한 일정 수정")
 	@PutMapping("/trainercalendar/{t_calendar_id}")
-	public Map<String, Object> updateCal(@PathVariable("t_calendar_id") int t_calendar_id, TrainerCalendarDto dto){
+	public Map<String, Object> updateCal(@PathVariable("t_calendar_id") int t_calendar_id, 
+			@RequestBody TrainerCalendarDto dto){
 		
 		boolean isSuccess = service.updateSchedule(dto);
 		return Map.of("isSuccess", isSuccess);
