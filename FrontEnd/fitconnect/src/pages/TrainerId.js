@@ -13,7 +13,7 @@ const TrainerId = () => {
   const [trainerList, setTrainerList] = useState([]); // 전체 트레이너 목록
   const [filteredTrainers, setFilteredTrainers] = useState([]); // 필터링된 트레이너 목록
   const [selectedTrainer, setSelectedTrainer] = useState(null); // 선택한 트레이너
-  const [memberNum, setMemberNum] = useState(null); // 회원 번호 상태
+  const [member_num, setMember_num] = useState(null); // 회원 번호 상태
 
   // 테스트용 데이터-실제 api로 할때는 이 부분 주석 처리하기
   useEffect(() => {
@@ -55,7 +55,7 @@ const TrainerId = () => {
       try {
         const { payload } = decodeToken(token.substring(7)); 
         if (payload && payload.id) {
-          setMemberNum(payload.id); // 토큰에서 가져온 id를 member_num으로 설정
+          setMember_num(payload.id); // 토큰에서 가져온 id를 member_num으로 설정
         }
       } catch (error) {
         console.error("토큰 처리 중 오류:", error);
@@ -85,14 +85,14 @@ const TrainerId = () => {
 
   // 트레이너 등록 버튼 클릭 시
   const handleRegister = () => {
-    if (!selectedTrainer || !memberNum) {
+    if (!selectedTrainer || !member_num) {
       alert("트레이너와 회원 정보를 확인하세요.");
       return;
     }
 
     axios
       .patch("/member/update/trainer", {
-        member_num: memberNum,
+        member_num: member_num,
         trainer_num: selectedTrainer.trainer_num,
       })
       .then((response) => {
@@ -175,7 +175,7 @@ const TrainerId = () => {
           <h4>선택된 트레이너</h4>
           <p>헬스장: {selectedTrainer.gym_name}</p>
           <p>인스타그램: {selectedTrainer.trainer_insta}</p>
-          <p>회원 번호: {memberNum ? memberNum : "불러오는 중..."}</p>
+          <p>회원 번호: {member_num ? member_num : "불러오는 중..."}</p>
           <Button onClick={handleRegister} className="btn-primary w-100">
             등록
           </Button>
