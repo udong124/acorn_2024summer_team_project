@@ -42,14 +42,14 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
 
             // role에 따라 표시할 모달 설정
             switch (allowedRoles[0]) {
-                case 'member':
-                    setActiveModal('member');
+                case 'MEMBER':
+                    setActiveModal('MEMBER');
                     break;
-                case 'trainer':
-                    setActiveModal('trainer');
+                case 'TRAINER':
+                    setActiveModal('TRAINER');
                     break;
-                case 'admin':
-                    setActiveModal('admin');
+                case 'ADMIN':
+                    setActiveModal('ADMIN');
                     break;
                 default:
                     setActiveModal(null);
@@ -72,11 +72,11 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
         switch (activeModal) {
             case 'login':
                 return <LoginModal isOpen={showModal} onClose={handleModalClose} />;
-            case 'member':
+            case 'MEMBER':
                 return <MemberModal isOpen={showModal} onClose={handleModalClose} />;
-            case 'trainer':
+            case 'TRAINER':
                 return <TrainerModal isOpen={showModal} onClose={handleModalClose} />;
-            case 'admin':
+            case 'ADMIN':
                 return <AdminModal isOpen={showModal} onClose={handleModalClose} />;
             default:
                 return null;

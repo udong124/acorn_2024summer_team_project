@@ -98,7 +98,7 @@ const UserSignUp = () => {
         setEmailErrorMessage("유효한 이메일 주소를 입력하세요.");
         return;
       }
-    
+    console.log(userData)
     axios
       .post("/user", userData)
       .then((response) => {
@@ -110,7 +110,7 @@ const UserSignUp = () => {
             formData.append("userName", userName);
             formData.append("name", name);
             formData.append("email", email);
-            formData.append("file", file);
+            formData.append("image", file);
 
             // profile 데이터를 multipart/form-data로 보내기  /보낼때는  file  받을 때는 profile 로 받기
             axios
@@ -213,7 +213,7 @@ const UserSignUp = () => {
               variant="outline-dark"
               className={cx("btnOutlineDark", "mt2")}
               as={Link}
-              to="http://localhost:8888/oauth2/authorization/google"
+              to="http://localhost:8080/oauth2/authorization/google"
             >
               Google Register
             </Button>
@@ -280,7 +280,7 @@ const UserSignUp = () => {
                 value={role}
                 onChange={(e) => {
                   setRole(e.target.value);
-                  setIsTrainer(e.target.value === "trainer");
+                  setIsTrainer(e.target.value === "TRAINER");
                 }}
                 required
                 className={cx("formControl")}
@@ -288,6 +288,7 @@ const UserSignUp = () => {
                 <option value="">사용자 선택</option>
                 <option value="MEMBER">회원용</option>
                 <option value="TRAINER">트레이너용</option>
+                <option value="ADMIN">관리자용</option>
               </Form.Control>
             </Form.Group>
             <Button
