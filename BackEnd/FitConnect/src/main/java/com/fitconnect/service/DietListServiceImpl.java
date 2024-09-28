@@ -28,9 +28,9 @@ public class DietListServiceImpl implements DietListService{
 	}
 
 	@Override
-	public void ManagerInsert(DietListDto dto) {
+	public void managerInsert(DietListDto dto) {
 		
-		dao.ManagerInsert(dto);
+		dao.managerInsert(dto);
 	}
 
 }

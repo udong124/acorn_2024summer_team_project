@@ -2,21 +2,21 @@ package com.fitconnect.repository;
 
 import java.util.List;
 
-import com.fitconnect.dto.memberCalendarDto;
+import com.fitconnect.dto.MemberCalendarDto;
 
 
-public interface memberCalendarDao {
+public interface MemberCalendarDao {
 	//로그인된 사용자의 캘린더 전체 조회
-	public List<memberCalendarDto> getList(int user_num);
+	public List<MemberCalendarDto> getList(int user_num);
 	
 	//로그인된 사용자가 선택한 캘린더 정보 하나를 조회
-	public memberCalendarDto getData(memberCalendarDto dto);
+	public MemberCalendarDto getData(MemberCalendarDto dto);
 	
 	//캘린더 정보 등록 ( 날짜, 메모만 수기로 입력하고 member_num 은 로그인된 사용자 아이디로 가져옴)
-	public void insert(memberCalendarDto dto);
+	public void insert(MemberCalendarDto dto);
 	
 	//선택한 캘린더 정보 수정
-	public void update(memberCalendarDto dto);
+	public void update(MemberCalendarDto dto);
 	
 	//선택한 캘린더 정보 삭제
 	public void delete(int member_num, int m_calendar_id);

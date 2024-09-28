@@ -13,21 +13,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fitconnect.dto.memberCalendarDto;
-import com.fitconnect.service.memberCalendarService;
+import com.fitconnect.dto.MemberCalendarDto;
+import com.fitconnect.service.MemberCalendarService;
 
 
 
 @RestController
-public class memberCalendarController {
+public class MemberCalendarController {
 	
-	@Autowired private memberCalendarService service;
+	@Autowired private MemberCalendarService service;
 	
 	//특정 멤버 캘린더 리스트 불러와서 달력에 정보 뿌리기
 	@GetMapping("/membercalendar") //
-	public List<memberCalendarDto> getList(){
+	public List<MemberCalendarDto> getList(){
 		
-		List<memberCalendarDto> list = service.getAll();
+		List<MemberCalendarDto> list = service.getAll();
 		return list;
 	}
 	
@@ -35,7 +35,7 @@ public class memberCalendarController {
 	@GetMapping("/membercalendar/{m_calendar_id}")
 	public Map<String, Object> getMemberData(
 			@PathVariable("m_calendar_id") int m_calendar_id,
-			memberCalendarDto dto) {
+			MemberCalendarDto dto) {
 		dto.setM_calendar_id(m_calendar_id);
 		
 		return service.getOne(dto);
@@ -43,7 +43,7 @@ public class memberCalendarController {
 	
 	//특정 멤버 캘린더 등록
 	@PostMapping("/membercalendar")
-	public Map<String, Object> insertCal(@RequestBody memberCalendarDto dto) {
+	public Map<String, Object> insertCal(@RequestBody MemberCalendarDto dto) {
 		
 		service.insert(dto);
 		
@@ -52,9 +52,9 @@ public class memberCalendarController {
 	
 	//특정 멤버 캘린더 정보 수정
 	@PutMapping("/membercalendar/{m_calendar_id}")
-	public memberCalendarDto updateCal(
+	public MemberCalendarDto updateCal(
 			@PathVariable("m_calendar_id") int m_calendar_id, 
-			@RequestBody memberCalendarDto dto) {
+			@RequestBody MemberCalendarDto dto) {
 		dto.setM_calendar_id(m_calendar_id);
 		service.update(dto);
 		

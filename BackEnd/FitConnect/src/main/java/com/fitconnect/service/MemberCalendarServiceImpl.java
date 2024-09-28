@@ -10,17 +10,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.fitconnect.auth.PrincipalDetails;
-import com.fitconnect.dto.memberCalendarDto;
-import com.fitconnect.repository.memberCalendarDao;
+import com.fitconnect.dto.MemberCalendarDto;
+import com.fitconnect.repository.MemberCalendarDao;
 
 
 @Service
-public class memberCalendarServiceImpl implements memberCalendarService{
+public class MemberCalendarServiceImpl implements MemberCalendarService{
 
-	@Autowired private memberCalendarDao dao;
+	@Autowired private MemberCalendarDao dao;
 	
 	@Override
-	public List<memberCalendarDto> getAll() {
+	public List<MemberCalendarDto> getAll() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		int user_num = ((PrincipalDetails) authentication.getPrincipal()).getDto().getId();
 		
@@ -28,18 +28,18 @@ public class memberCalendarServiceImpl implements memberCalendarService{
 	}
 
 	@Override
-	public Map<String, Object> getOne(memberCalendarDto dto) {
+	public Map<String, Object> getOne(MemberCalendarDto dto) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		int user_num = ((PrincipalDetails) authentication.getPrincipal()).getDto().getId();
 		
 		dto.setMember_num(user_num);
-		memberCalendarDto resultdto = dao.getData(dto);
+		MemberCalendarDto resultdto = dao.getData(dto);
 		
 		return Map.of("dto", resultdto);
 	}
 
 	@Override
-	public void insert(memberCalendarDto dto) {
+	public void insert(MemberCalendarDto dto) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		int user_num = ((PrincipalDetails) authentication.getPrincipal()).getDto().getId();
 		
@@ -49,7 +49,7 @@ public class memberCalendarServiceImpl implements memberCalendarService{
 	}
 	
 	@Override
-	public void update(memberCalendarDto dto) {
+	public void update(MemberCalendarDto dto) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		int user_num = ((PrincipalDetails) authentication.getPrincipal()).getDto().getId();
 		dto.setMember_num(user_num);

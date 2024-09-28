@@ -15,7 +15,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class memberCalendarDto {
+public class MemberCalendarDto {
 	private int m_calendar_id;
 	private int member_num;
 	private String regdate;
