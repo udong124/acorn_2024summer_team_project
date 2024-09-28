@@ -18,7 +18,9 @@ import com.fitconnect.repository.DietJournalDao;
 public class DietJournalServiceImpl implements DietJournalService{
 
 	@Autowired DietJournalDao dao;
-	
+	/**
+	 * 로그인된 사용자 토큰으로 id 값을 받아와 특정 사용자를 지칭하고 dto 에 담아준다.
+	 */
 	@Override
 	public List<DietJournalDto> getList(DietJournalDto dto) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -29,36 +31,45 @@ public class DietJournalServiceImpl implements DietJournalService{
 	}
 
 	@Override
-	public void insert(List<DietJournalDto> dietjournalList) {
-		
+	/**
+	 * 식단일지에서는 음식을 여러개 선택하고 한 번에 insert 요청을 보내기 때문에 반복문을 사용해 dao를 여러번 호출한다.
+	 */
+	public boolean insert(List<DietJournalDto> dietjournalList) {
+		boolean isSuccess = false;
 		for (DietJournalDto dto : dietjournalList) {
-			dao.insert(dto);
+			isSuccess = dao.insert(dto);
 		}
+		return isSuccess;
 	}
 
 	@Override
-	public void update(DietJournalDto dto) {
+	public boolean update(DietJournalDto dto) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		int user_num = ((PrincipalDetails) authentication.getPrincipal()).getDto().getId();
-		
 		dto.setMember_num(user_num);
-		dao.update(dto);
+		
+		boolean isSuccess = dao.update(dto);
+		
+		return isSuccess;
 	}
 
 	@Override
-	public void delete(int d_journal_id) {
+	public boolean delete(int d_journal_id) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		int user_num = ((PrincipalDetails) authentication.getPrincipal()).getDto().getId();
 
-		dao.delete(user_num, d_journal_id);
+		boolean isSuccess = dao.delete(user_num, d_journal_id);
+		
+		return isSuccess;
 	}
 
 	@Override
-	public void deleteAll(int m_calendar_id) {
+	public boolean deleteAll(int m_calendar_id) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		int user_num = ((PrincipalDetails) authentication.getPrincipal()).getDto().getId();
 		
-		dao.deleteAll(user_num, m_calendar_id);
+		boolean isSuccess = dao.deleteAll(user_num, m_calendar_id);
+		return isSuccess;
 	}
 
 }

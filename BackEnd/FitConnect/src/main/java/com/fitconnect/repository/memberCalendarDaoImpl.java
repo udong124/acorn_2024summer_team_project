@@ -30,24 +30,40 @@ public class memberCalendarDaoImpl implements memberCalendarDao{
 	}
 
 	@Override
-	public void insert(memberCalendarDto dto) {
+	public boolean insert(memberCalendarDto dto) {
 		
-		session.insert("calendar.insert", dto);
+		int result = session.insert("calendar.insert", dto);
+		if(result > 0) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 
 	@Override
-	public void update(memberCalendarDto dto) {
+	public boolean update(memberCalendarDto dto) {
 		
-		session.update("calendar.update", dto);
+		int result = session.update("calendar.update", dto);
+		if(result > 0) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 	
 	@Override
-	public void delete(int member_num, int m_calendar_id) {
+	public boolean delete(int member_num, int m_calendar_id) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("member_num", member_num);
 		params.put("m_calendar_id", m_calendar_id);
 		
-		session.delete("calendar.delete", params);
+		int result = session.delete("calendar.delete", params);
+		
+		if(result > 0) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 
 

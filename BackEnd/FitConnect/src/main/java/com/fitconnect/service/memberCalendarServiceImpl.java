@@ -21,6 +21,7 @@ public class memberCalendarServiceImpl implements memberCalendarService{
 	
 	@Override
 	public List<memberCalendarDto> getAll() {
+		//로그인된 사용자 토큰을 이용해서 id 값을 얻어와 user_num 이라는 이름으로 DB 에 담아서 dao 를 실행한다.
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		int user_num = ((PrincipalDetails) authentication.getPrincipal()).getDto().getId();
 		
@@ -39,29 +40,35 @@ public class memberCalendarServiceImpl implements memberCalendarService{
 	}
 
 	@Override
-	public void insert(memberCalendarDto dto) {
+	public boolean insert(memberCalendarDto dto) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		int user_num = ((PrincipalDetails) authentication.getPrincipal()).getDto().getId();
 		
 		dto.setMember_num(user_num);
-		dao.insert(dto);
+		boolean isSuccess = dao.insert(dto);
+		
+		return isSuccess;
 		
 	}
 	
 	@Override
-	public void update(memberCalendarDto dto) {
+	public boolean update(memberCalendarDto dto) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		int user_num = ((PrincipalDetails) authentication.getPrincipal()).getDto().getId();
 		dto.setMember_num(user_num);
-		dao.update(dto);
+		boolean isSuccess = dao.update(dto);
+		
+		return isSuccess;
 	}
 	
 	@Override
-	public void delete(int m_calendar_id) {
+	public boolean delete(int m_calendar_id) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		int user_num = ((PrincipalDetails) authentication.getPrincipal()).getDto().getId();
 		
-		dao.delete(user_num, m_calendar_id);
+		boolean isSuccess = dao.delete(user_num, m_calendar_id);
+		
+		return isSuccess;
 	}
 
 }

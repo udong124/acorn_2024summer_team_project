@@ -70,7 +70,8 @@ public class UserController {
 		//예외가 발생하지 않고 여기까지 실행 된다면 인증을 통과 한 것이다. 토큰을 발급해서 응답한다.
 		String userName = dto.getUserName();
 		int id = userDao.getData(userName).getId();
-		String token=jwtUtil.generateToken(userName, id);
+		String role = userDao.getData(userName).getRole();
+		String token=jwtUtil.generateToken(userName, id, role);
 		return "Bearer+"+token;
 	}
 	

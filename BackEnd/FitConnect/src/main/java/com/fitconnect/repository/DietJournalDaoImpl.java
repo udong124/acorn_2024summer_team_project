@@ -24,31 +24,55 @@ public class DietJournalDaoImpl implements DietJournalDao{
 	}
 
 	@Override
-	public void insert(DietJournalDto dto) {
+	public boolean insert(DietJournalDto dto) {
 		
-		session.insert("dietjournal.insert", dto);
+		int result = session.insert("dietjournal.insert", dto);
+		
+		if(result > 0) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 
 	@Override
-	public void update(DietJournalDto dto) {
+	public boolean update(DietJournalDto dto) {
 		
-		session.update("dietjournal.update", dto);
+		int result = session.update("dietjournal.update", dto);
+		
+		if(result > 0) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 
 	@Override
-	public void delete(int member_num, int d_journal_id) {
+	public boolean delete(int member_num, int d_journal_id) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("member_num", member_num);
 		params.put("d_journal_id", d_journal_id);
-		session.delete("dietjournal.deleteOne", params);
+		int result = session.delete("dietjournal.deleteOne", params);
+		
+		if(result > 0) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 
 	@Override
-	public void deleteAll(int member_num, int m_calendar_id) {
+	public boolean deleteAll(int member_num, int m_calendar_id) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("member_num", member_num);
 		params.put("m_calendar_id", m_calendar_id);
-		session.delete("dietjournal.deleteAll", params);
+		int result = session.delete("dietjournal.deleteAll", params);
+		
+		if(result > 0) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 
 }

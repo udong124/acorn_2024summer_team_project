@@ -39,7 +39,8 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
     	String userName = authentication.getName();
     	UserDto dto = dao.getData(userName);
     	int id = dto.getId();
-		String jwtToken="Bearer+"+jwtUtil.generateToken(userName, id);
+    	String role = dto.getRole();
+		String jwtToken="Bearer+"+jwtUtil.generateToken(userName, id, role);
 //		response.addHeader(jwtName, jwtToken);
 		response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
