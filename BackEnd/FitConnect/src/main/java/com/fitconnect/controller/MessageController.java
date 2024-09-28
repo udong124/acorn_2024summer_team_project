@@ -72,7 +72,7 @@ public class MessageController {
 	
 	@Operation(summary = "메세지 전송", description = "전송된 메세지 DB에 저장하기")
 	@PostMapping("/messenger/detail")
-	public Map<String, Object> sendMessage(MessageDto dto) {
+	public Map<String, Object> sendMessage(@RequestBody MessageDto dto) {
 		boolean isSuccess = service.sendMessage(dto);
 		return Map.of("isSuccess", isSuccess);
 		
