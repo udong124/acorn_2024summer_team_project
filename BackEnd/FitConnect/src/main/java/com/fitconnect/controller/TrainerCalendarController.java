@@ -47,7 +47,7 @@ public class TrainerCalendarController {
 	@PostMapping("/trainercalendar")
 	public Map<String, Object> insertCal(@RequestBody TrainerCalendarDto dto){
 		boolean isSuccess = service.addSchedule(dto);
-		Map<String, Object> map = new HashMap<String, Object>();
+
 		return Map.of("isSuccess", isSuccess);
 	}
 	
@@ -67,7 +67,7 @@ public class TrainerCalendarController {
 		dto.setT_calendar_id(t_calendar_id);
 		dto.setMember_num(member_num);
 		boolean isSuccess = service.deleteSchedule(dto);
-		Map<String, Object> map = new HashMap<String, Object>();
+
 		return Map.of("isSuccess", isSuccess);
 	}
 	
