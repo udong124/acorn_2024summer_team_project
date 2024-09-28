@@ -1,0 +1,55 @@
+.chatroom {
+    max-height: 400px; /* 최대 높이 설정 */
+    overflow-y: auto; /* 스크롤 가능 */
+    border: 1px solid #ccc; /* 테두리 설정 */
+    border-radius: 8px; /* 모서리 둥글게 */
+    background-color: #f9f9f9; /* 배경 색상 */
+    padding: 10px; /* 내부 여백 */
+  }
+  
+  .chatroom ul {
+    list-style: none; /* 리스트 스타일 제거 */
+    padding: 0; /* 패딩 제거 */
+    margin: 0; /* 마진 제거 */
+  }
+  
+  .chatroom li {
+    display: flex; /* Flexbox 사용 */
+    align-items: flex-start; /* 아이템 정렬 */
+    padding: 10px; /* 내부 여백 */
+    border-bottom: 1px solid #ddd; /* 항목 간 경계선 */
+  }
+  
+  .chatroom li:last-child {
+    border-bottom: none; /* 마지막 항목 경계선 제거 */
+  }
+  
+  .chatroom img {
+    width: 40px; /* 프로필 이미지 크기 */
+    height: 40px;
+    border-radius: 50%; /* 원형으로 만들기 */
+    margin-right: 10px; /* 이미지와 텍스트 사이 여백 */
+  }
+  
+  .chatroom p {
+    margin: 0; /* 기본 여백 제거 */
+    font-size: 0.9em; /* 기본 글자 크기 조정 */
+  }
+  
+  .chatroom p:nth-of-type(1) {
+    font-weight: bold; /* 이름 강조 */
+  }
+  
+  .chatroom p:nth-of-type(2) {
+    display: none; /* 프로필 이미지 URL 숨김 */
+  }
+  
+  .chatroom p:nth-of-type(3) {
+    margin-top: 5px; /* 내용과 시간 사이 여백 */
+    background-color: #e7f3ff; /* 메시지 배경 색상 */
+    padding: 5px 10px; /* 내용 여백 */
+    border-radius: 5px; /* 메시지 테두리 곡선 */
+    max-width: 70%; /* 최대 너비 설정 */
+    word-wrap: break-word; /* 긴 단어 줄바꿈 */
+  }
+  

@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import ChatMessage from '../components/ChatMessage';
 import mqtt from 'mqtt';
+import './css/Message.css';
 
 const App = () => {
   // 페이지 전환하면서 useNavigate 로 얻어오는 변수들
@@ -18,6 +19,23 @@ const App = () => {
     send_type: "member", //보내는 사람 type
     topic: "mytopic" //채팅창 고유 번호
   });
+
+  
+  const [members, setMembers] = useState([])
+
+  const getMembers = () =>{
+    axios.get(`/messenger/list`)
+    .then(res => {
+      console.log(res.data)
+      setMembers(res.data)
+})
+    .catch(err => console.log(err));
+};
+  
+
+useEffect(() => {
+  getMembers()
+}, []);
 
   const [message, setMessage] = useState({
     send_type: state.send_type, 
@@ -89,9 +107,22 @@ const App = () => {
     <>
       <div>
         <h1>MQTT Chat</h1>
+        <div className="chatroom">
+        <ul>
+        {members.map(item => (
+          <li key={item.chat_id}>
+            {item.profile_image_url && <img src={item.profile_image_url} alt={`${item.name} 프로필`} />}
+            <p>이름: {item.name}</p>
+            <p>프로필 이미지: {item.profile_image_url}</p>
+            <p>내용: {item.content}</p>
+            <p>시간: {item.times}</p>
+          </li>
+        ))}
+      </ul>
+      </div>
         <div>
           <button onClick={ExitHandle}>end</button>
-        </div> 
+        </div>
       </div>
       {/* 메세지 show */}
       <div style={{ height: '400px', overflowY: 'scroll', border: '1px solid #ccc', padding: '10px' }}>

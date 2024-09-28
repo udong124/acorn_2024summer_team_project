@@ -50,7 +50,7 @@ function Members() {
   }, []);
 
   const handleDelete = (num) => {
-    axios.delete(`/members/`)
+    axios.delete(`/members/${num}`)
       .then(res => getMembers(res.data)) 
       .catch(err => console.log(err));
   };
@@ -61,21 +61,21 @@ function Members() {
   return (
     <div className={cx("container")}>
       <h1>회원 목록</h1>
-      <ul>
+      <ul className={cx("members-list")}>
         {members.map(item => (
-          <li key={item.member_num}>
+          <li key={item.member_num} className={cx("member-info")}>
+            {item.profile_image_url && <img src={item.profile_image_url} alt={`${item.name} 프로필`} />}
             <p>이름: {item.name}</p>
-            <p>프로필 이미지: {item.profile}</p>
+            <p>프로필 이미지: {item.profile_image_url}</p>
             <p>키: {item.member_height}</p>
             <p>몸무게: {item.member_weight}</p>
             <p>성별: {item.member_gender}</p>
-            <p>플랜: {item.plan}</p>
+            <p>플랜: {item.member_plan}</p>
             <p>주간플랜: {item.weeklyplan}</p>
-            <button variant="primary" value="onSubmit" onClick={() => handleDelete(item.member_num)}>삭제</button>
+            <button onClick={() => handleDelete(item.member_num)}>삭제</button>
           </li>
         ))}
       </ul>
-
     </div>
   );
 }

@@ -17,7 +17,7 @@ function Calendar() {
   const [newEvent, setNewEvent] = useState({ t_calendar_id:'', member_num: '', trainer_num: '', name: '', date: '' }); // 새로운 이벤트 의 정보 
   const [isEditing, setIsEditing] = useState(false); // 편집 모드 여부
   const [currentEventId, setCurrentEventId] = useState(null); // 현재 편집 중인 이벤트의 ID
-  const [dateEvents, setDateEvents] = useState([]); //해당 날짜 클릭시 보여줄 이벤트
+  const [dateEvents, setDateEvents] = useState([]); //해당 날짜 클릭시   보여줄 이벤트
 
 
 
@@ -38,9 +38,14 @@ function Calendar() {
    
 
    const saveEvent = (event) => {
+
+    const formData = new FormData();
+    formData.append('member_num', event.member_num);
+    formData.append('regdate', event.date);
+
     if (isEditing) {
       // 기본 이벤트 업데이트
-      axios.put(`/calendar/${currentEventId}`, event)
+      axios.put(`/calendar/${currentEventId}`, formData)
         .then(res => {
           const updatedEvent = res.data;
           setEvents(events.map(evt => evt.id === currentEventId ? {
@@ -53,7 +58,7 @@ function Calendar() {
     } else {
       // formData.append('member_num', member_num) formData.append('regdate'. regdate)
       //axios({ method:'post', url:`/trinaercalendar`, data: formData,})
-      axios.post(`/trainercalendar`, event)
+      axios.post(`/trainercalendar`, formData)
       .then(res => {
         const newEvent = res.data;
         setEvents([...events, {
@@ -85,7 +90,7 @@ function Calendar() {
   };
 
 
-
+  //
   // 이벤트를 클릭했을때 호출되는 핸들러
   const handleEventClick = (clickInfo) => {
     const event = clickInfo.event; // 이벤트 클릭시
