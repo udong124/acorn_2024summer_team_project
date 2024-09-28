@@ -213,7 +213,7 @@ const UserSignUp = () => {
               variant="outline-dark"
               className={cx("btnOutlineDark", "mt2")}
               as={Link}
-              to="http://localhost:8080/oauth2/authorization/google"
+              to="http://localhost:8888/oauth2/authorization/google"
             >
               Google Register
             </Button>
@@ -286,8 +286,8 @@ const UserSignUp = () => {
                 className={cx("formControl")}
               >
                 <option value="">사용자 선택</option>
-                <option value="member">회원용</option>
-                <option value="trainer">트레이너용</option>
+                <option value="MEMBER">회원용</option>
+                <option value="TRAINER">트레이너용</option>
               </Form.Control>
             </Form.Group>
             <Button

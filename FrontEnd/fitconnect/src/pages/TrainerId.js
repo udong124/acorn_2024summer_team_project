@@ -54,8 +54,8 @@ const TrainerId = () => {
     if (token) {
       try {
         const { payload } = decodeToken(token.substring(7)); 
-        if (payload && payload.id) {
-          setMember_num(payload.id); // 토큰에서 가져온 id를 member_num으로 설정
+        if (payload && payload.user_num) {
+          setMember_num(payload.user_num); // 토큰에서 가져온 user_num을 member_num으로 설정
         }
       } catch (error) {
         console.error("토큰 처리 중 오류:", error);
