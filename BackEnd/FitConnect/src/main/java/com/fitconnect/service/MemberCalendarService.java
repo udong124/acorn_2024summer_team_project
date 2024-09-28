@@ -8,8 +8,8 @@ import com.fitconnect.dto.MemberCalendarDto;
 public interface MemberCalendarService {
 	public List<MemberCalendarDto> getAll();
 	public Map<String, Object> getOne(MemberCalendarDto dto);
-	public void insert(MemberCalendarDto dto);
-	public void update(MemberCalendarDto dto);
-	public void delete(int m_calendar_id);
+	public boolean insert(MemberCalendarDto dto);
+	public boolean update(MemberCalendarDto dto);
+	public boolean delete(int m_calendar_id);
 	
 }
