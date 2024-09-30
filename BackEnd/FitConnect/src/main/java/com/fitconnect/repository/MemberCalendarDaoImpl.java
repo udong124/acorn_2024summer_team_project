@@ -20,19 +20,19 @@ public class MemberCalendarDaoImpl implements MemberCalendarDao{
 	@Override
 	public List<MemberCalendarDto> getList(int user_num) {
 		
-		return session.selectList("calendar.getList", user_num);
+		return session.selectList("MemberCalendar.getList", user_num);
 	}
 
 	@Override
 	public MemberCalendarDto getData(MemberCalendarDto dto) {
 		
-		return session.selectOne("calendar.getData", dto);
+		return session.selectOne("MemberCalendar.getData", dto);
 	}
 
 	@Override
 	public boolean insert(MemberCalendarDto dto) {
 		
-		int result = session.insert("calendar.insert", dto);
+		int result = session.insert("MemberCalendar.insert", dto);
 		if(result > 0) {
 			return true;
 		}else {
@@ -43,7 +43,7 @@ public class MemberCalendarDaoImpl implements MemberCalendarDao{
 	@Override
 	public boolean update(MemberCalendarDto dto) {
 
-		int result = session.update("calendar.update", dto);
+		int result = session.update("MemberCalendar.update", dto);
 		if(result > 0) {
 			return true;
 		}else {
@@ -57,7 +57,7 @@ public class MemberCalendarDaoImpl implements MemberCalendarDao{
 		params.put("member_num", member_num);
 		params.put("m_calendar_id", m_calendar_id);
 		
-		int result = session.delete("calendar.delete", params);
+		int result = session.delete("MemberCalendar.delete", params);
 		
 		if(result > 0) {
 			return true;

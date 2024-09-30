@@ -15,7 +15,7 @@
 		VALUES (diet_id_seq.NEXTVAL, #{food}, #{calories}, #{carbs}, #{protein}, #{fat})
 	</insert>
 	
-	<insert id="ManagerInsert">
+	<insert id="managerInsert">
 		INSERT INTO dietList(diet_id, food, calories, carbs, protein, fat)
 		VALUES (diet_id_seq.NEXTVAL, #{food}, #{calories}, #{carbs}, #{protein}, #{fat})
 	</insert>
