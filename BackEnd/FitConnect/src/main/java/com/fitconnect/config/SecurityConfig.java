@@ -61,11 +61,11 @@ public class SecurityConfig {
 	        )
 	        .oauth2Login(oauth2 -> 
 	            oauth2
-//	                .loginPage("/auth")
 	                .userInfoEndpoint()
 	                .userService(principalOauth2UserService)
 	                .and()
 	                .successHandler(authSuccessHandler)
+	                .defaultSuccessUrl("/", true)
 	        )
 	        .sessionManagement(config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 	        // 토큰을 검사하는 필터를 security filter가 동작하기 이전에 동작하도록 설정
