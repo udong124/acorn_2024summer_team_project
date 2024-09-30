@@ -10,7 +10,7 @@ import AdminModal from './AdminModal';
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
     const isLogin = useSelector(state => state.userName) ? true : false;
-    const userRole = useSelector(state => state.role); // 현재 사용자의 역할 (member, trainer, admin 등)
+    const userRole = useSelector(state => state.role); // 현재 사용자의 역할 (MEMBER,TRAINER,ADMIN)
 
     const location = useLocation();
     const navigate = useNavigate(); // useNavigate 추가

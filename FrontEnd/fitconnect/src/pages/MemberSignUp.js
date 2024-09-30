@@ -12,7 +12,7 @@ const MemberSignUp = () => {
 
   const [formData, setFormData] = useState({
     member_num: "",
-    trainer_num: "",//회원이 회원가입한후 memberSignUp으로 넘어올때 트레이너번호? 트레이너검색기능이 membersignup에서 빠짐
+    trainer_num: "",
     member_height: "",
     member_weight: "",
     member_gender: "",

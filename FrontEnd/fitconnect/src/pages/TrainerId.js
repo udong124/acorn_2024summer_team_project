@@ -16,37 +16,37 @@ const TrainerId = () => {
   const [member_num, setMember_num] = useState(null); // 회원 번호 상태
 
   // 테스트용 데이터-실제 api로 할때는 이 부분 주석 처리하기
-  useEffect(() => {
-    const testData = [
-      { trainer_num: 1, gym_name: "ABC Gym", trainer_insta: "trainer_abc" },
-      { trainer_num: 2, gym_name: "화이팅 Gym", trainer_insta: "trainer_ddd" },
-      {
-        trainer_num: 3,
-        gym_name: "스파르타 Gym",
-        trainer_insta: "sparta_trainer",
-      },
-      {
-        trainer_num: 4,
-        gym_name: "챔피언 Gym",
-        trainer_insta: "champion_trainer",
-      },
-    ];
-    setTrainerList(testData);
-    setFilteredTrainers(testData);
-  }, []);
-
-  // //실제 API 데이터를 가져오는 useEffect (필요할 때 주석을 해제하기)
   // useEffect(() => {
-  //   axios.get('/trainer/list')
-  //     .then(response => {
-  //       const trainerData = response.data.trainerList || [];
-  //       setTrainerList(trainerData);
-  //       setFilteredTrainers(trainerData);
-  //     })
-  //     .catch(error => {
-  //       console.error('트레이너 목록 조회 실패:', error);
-  //     });
+  //   const testData = [
+  //     { trainer_num: 1, gym_name: "ABC Gym", trainer_insta: "trainer_abc" },
+  //     { trainer_num: 2, gym_name: "화이팅 Gym", trainer_insta: "trainer_ddd" },
+  //     {
+  //       trainer_num: 3,
+  //       gym_name: "스파르타 Gym",
+  //       trainer_insta: "sparta_trainer",
+  //     },
+  //     {
+  //       trainer_num: 4,
+  //       gym_name: "챔피언 Gym",
+  //       trainer_insta: "champion_trainer",
+  //     },
+  //   ];
+  //   setTrainerList(testData);
+  //   setFilteredTrainers(testData);
   // }, []);
+
+  //실제 API 데이터를 가져오는 useEffect (필요할 때 주석을 해제하기)
+  useEffect(() => {
+    axios.get('/trainer/list')
+      .then(response => {
+        const trainerData = response.data.trainerList || [];
+        setTrainerList(trainerData);
+        setFilteredTrainers(trainerData);
+      })
+      .catch(error => {
+        console.error('트레이너 목록 조회 실패:', error);
+      });
+  }, []);
 
   // 로그인한 사용자의 member_num 가져오기
   useEffect(() => {

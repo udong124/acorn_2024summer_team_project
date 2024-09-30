@@ -24,11 +24,10 @@ const UserSignUp = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [emailErrorMessage, setEmailErrorMessage] = useState("");
   const [isGoogleLogin, setIsGoogleLogin] = useState(false);
-  const [isTrainer, setIsTrainer] = useState(false);
   const navigate = useNavigate();
 
 
-  //구글연동:리다일렉트페이지이동후 정보 받아와서 role에 따라 정보등록페이지로 이동
+  //구글연동:리다일렉트 페이지 이동후 구글을 통해 정보 받아와서 role에 따라 정보등록(회원/트레이너기본정보등록)페이지로 이동
   useEffect(() => {
     // localStorage에서 토큰을 가져와 확인
     const token = localStorage.getItem('token');
@@ -119,13 +118,40 @@ const UserSignUp = () => {
               })
               .then((profileResponse) => {
                 if (profileResponse.data) {
+                  console.log("회원가입진행중")
                   console.log("프로필 이미지 등록 성공", profileResponse.data);
-                  navigate(isTrainer ? "/trainersignup" : "/membersignup", {
-                    state: {
-                      trainer_num: isTrainer ? response.data.trainer_num : undefined,
-                      member_num: !isTrainer ? response.data.member_num : undefined,
-                    },
-                  });
+                  //role 버튼 누른 것에 따라 페이지 이동하기
+                  if(role === "TRAINER") {
+                    navigate("/trainersignup", {
+                      state: {
+                        trainer_num: response.data.trainer_num
+                      }
+                    });
+                  } else if(role === "MEMBER") {
+                    navigate("/membersignup", {
+                      state: {
+                        member_num: response.data.member_num
+                      }
+                    });
+                  } else if (role === "ADMIN") {
+                    // role:Admin 을 눌렀을 경우 Authentication token(required) 로 관리자를 구분하기
+                    const token = localStorage.getItem('token');
+                    if (token) {
+                      try {
+                        const { payload } = decodeToken(token.substring(7)); 
+                        const adminNum = payload?.user_num; // payload에서 admin ID 추출 (id 필드는 백엔드에서 설정한 ID 필드에 맞게 수정)
+                        
+                        // adminNum과 함께 메인페이지 또는 관리자페이지로 이동하게
+                        navigate("/", {
+                          state: {
+                            admin_num: adminNum
+                          }
+                        });
+                      } catch (error) {
+                        console.error("토큰 디코딩 중 오류:", error);
+                      }
+                    }
+                  }
                 }
               })
               .catch((error) => {
@@ -140,13 +166,36 @@ const UserSignUp = () => {
               });
             } else {
               // 프로필 이미지가 없을 때도 이동하게?
-              navigate(isTrainer ? "/trainersignup" : "/membersignup", {
+             if(role === "TRAINER") {
+              navigate("/trainersignup", {
                 state: {
-                  trainer_num: isTrainer ? response.data.trainer_num : undefined,
-                  member_num: !isTrainer ? response.data.member_num : undefined,
-                },
+                  trainer_num: response.data.trainer_num
+                }
               });
+             }else if(role === "MEMBER") {
+              navigate("/membersignup", {
+                state: {
+                  member_num: response.data.member_num
+                }
+              });
+            } else if (role === "ADMIN") {
+              const token = localStorage.getItem('token');
+              if (token) {
+                try {
+                  const { payload } = decodeToken(token.substring(7)); 
+                  const adminNum = payload?.user_num; // payload에서 adminNum 추출  user_num이 맞나?
+                  
+                  navigate("/", {     //메인페이지 또는 관리자용페이지로 이동하게 
+                    state: {
+                      admin_num: adminNum
+                    }
+                  });
+                } catch (error) {
+                  console.error("토큰 디코딩 중 오류:", error);
+                }
+              }
             }
+          }
         } else {
           setErrorMessage("회원가입에 실패했습니다.");
         }
@@ -280,7 +329,6 @@ const UserSignUp = () => {
                 value={role}
                 onChange={(e) => {
                   setRole(e.target.value);
-                  setIsTrainer(e.target.value === "TRAINER");
                 }}
                 required
                 className={cx("formControl")}

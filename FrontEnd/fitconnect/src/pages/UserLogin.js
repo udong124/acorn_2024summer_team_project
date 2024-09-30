@@ -28,6 +28,7 @@ const UserLogin = () => {
         const token = response.data;
         if (token) {
           localStorage.setItem("token", token);
+          console.log("로그인 되었습니다")
           navigate(`/`);
         } else {
           setErrorMessage("로그인 실패: 아이디 또는 비밀번호가 틀렸습니다.");
