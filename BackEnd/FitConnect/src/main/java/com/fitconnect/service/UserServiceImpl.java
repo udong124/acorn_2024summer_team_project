@@ -45,4 +45,15 @@ public class UserServiceImpl implements UserService {
 		
 		dao.updateInfo(dto);
 	}
+
+	@Override
+	public boolean canUse(String userName) {
+		// userName 을 이용해서 UserDto 를 읽어와 본다.  없으면 null , null 이면 사용 가능하다 
+		UserDto dto=dao.getData(userName);
+		//사용 가능한지 여부
+		boolean canUse = dto == null;
+		
+		return canUse;
+	}
+	
 }
