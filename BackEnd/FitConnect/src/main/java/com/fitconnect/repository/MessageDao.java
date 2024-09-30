@@ -14,8 +14,8 @@ public interface MessageDao {
 	public List<ChatRoomDto> getChatRoomAll(int trainer_num);
 	public boolean sendMessage(MessageDto dto);
 	public boolean deleteMsg(int message_id);
-	public void deleteChat(String topic);
-	public void deleteMsgAll(String topic);
+	public boolean deleteChat(String topic);
+	public boolean deleteMsgAll(String topic);
 	public boolean deleteTrainerChat(int trainer_num);
 
 	
