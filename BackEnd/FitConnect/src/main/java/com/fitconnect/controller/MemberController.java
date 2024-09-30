@@ -38,13 +38,14 @@ public class MemberController {
 
 	//회원의 정보를 추가하는 API 
 	@PostMapping ("/member")
-	public MemberDto memberSignUp(@RequestBody MemberDto dto) {
+	public Map<String, Object> memberSignUp(@RequestBody MemberDto dto) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userName = authentication.getName();
         if(userDao.getData(userName).getId() != dto.getMember_num()) {
-        	return null;
+        	return Map.of("isSuccess", false);
         }
-		return service.addMember(dto);
+        boolean isSuccess = service.addMember(dto);
+		return Map.of("isSuccess", isSuccess);
 	}
 	
 	//회원의 정보를 삭제하는 API
@@ -60,11 +61,9 @@ public class MemberController {
       	MsgService.deleteChat(topic);
         
       	//트레이너 정보 삭제
-		service.deleteMember(userName);
+      	boolean isSuccess = service.deleteMember(userName);
 		
-		Map<String, Object> map=new HashMap<>();
-		map.put("isSuccess", true);
-		return map;
+		return Map.of("isSuccess", isSuccess);
 	}
 	
 	@GetMapping("/member")
@@ -76,24 +75,27 @@ public class MemberController {
 		
 	//회원의 정보를 수정(업데이트) 하는 API
 	@PatchMapping("/member/update/info")
-	public void memberUpdateInfo(@RequestBody MemberDto dto) {
-		service.updateMemberInfo(dto);
+	public Map<String, Object> memberUpdateInfo(@RequestBody MemberDto dto) {
+		boolean isSuccess = service.updateMemberInfo(dto);
+		return Map.of("isSuccess", isSuccess);
 	}
 	
 	@PatchMapping("/member/update/plan")
-	public void memberUpdatePlan(@RequestBody MemberDto dto) {
-		service.updateMemberPlan(dto);
+	public Map<String, Object> memberUpdatePlan(@RequestBody MemberDto dto) {
+		boolean isSuccess = service.updateMemberPlan(dto);
+		return Map.of("isSuccess", isSuccess);
 	}
 
 	@PatchMapping("/member/update/trainer")
-	public void memberUpdateTrainer(@RequestBody MemberDto dto) {
+	public Map<String, Object> memberUpdateTrainer(@RequestBody MemberDto dto) {
 		//채팅방 생성
 		ChatRoomDto chatDto = new ChatRoomDto();
 		chatDto.setMember_num(dto.getMember_num());
 		chatDto.setTrainer_num(dto.getTrainer_num());
 		MsgService.insertChat(chatDto);
 		
-		service.updateMemberTrainer(dto);
+		boolean isSuccess = service.updateMemberTrainer(dto);
+		return Map.of("isSuccess", isSuccess);
 	}
 
 	@GetMapping("/member/list")

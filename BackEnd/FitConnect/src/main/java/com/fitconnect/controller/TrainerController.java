@@ -40,13 +40,14 @@ public class TrainerController {
 	
 	//회원의 정보를 추가하는 API 
 	@PostMapping ("/trainer")
-	public TrainerDto trainerSignUp(@RequestBody TrainerDto dto) {
+	public Map<String, Object> trainerSignUp(@RequestBody TrainerDto dto) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userName = authentication.getName();
         if(userDao.getData(userName).getId() != dto.getTrainer_num()) {
-        	return null;
+        	return Map.of("isSuccess", false);
         }
-		return service.addTrainer(dto);
+		boolean isSuccess = service.addTrainer(dto);
+		return Map.of("isSuccess", isSuccess);
 	}
 
 	//회원의 정보를 삭제하는 API
@@ -56,10 +57,10 @@ public class TrainerController {
         String userName = authentication.getName();
         UserDto userDto = ((PrincipalDetails)authentication.getPrincipal()).getDto();
         MsgService.deleteTrainerChat(userDto.getId());
-		service.deleteTrainer(userName);
-		Map<String, Object> map=new HashMap<>();
-		map.put("isSuccess", true);
-		return map;
+
+        boolean isSuccess =  service.deleteTrainer(userName);
+		
+        return Map.of("isSuccess", isSuccess);
 	}
 
 	@GetMapping("/trainer")
@@ -71,13 +72,15 @@ public class TrainerController {
 		
 	//회원의 정보를 수정(업데이트) 하는 API
 	@PatchMapping("/trainer/update/info")
-	public void trainerUpdateInfo(@RequestBody TrainerDto dto) {
-		service.updateTrainerInfo(dto);
+	public Map<String, Object> trainerUpdateInfo(@RequestBody TrainerDto dto) {
+		boolean isSuccess = service.updateTrainerInfo(dto);
+		return Map.of("isSuccess", isSuccess);
 	}
 
 	@PatchMapping("/trainer/update/gyminfo")
-	public void trainerUpdateGymInfo(@RequestBody TrainerDto dto) {
-		service.updateTrainerGymInfo(dto);
+	public Map<String, Object> trainerUpdateGymInfo(@RequestBody TrainerDto dto) {
+		boolean isSuccess = service.updateTrainerGymInfo(dto);
+		return Map.of("isSuccess", isSuccess);
 	}
 
 	@GetMapping("/trainer/list")

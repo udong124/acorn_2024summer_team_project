@@ -8,11 +8,11 @@ import com.fitconnect.dto.MemberDto;
 
 @Service
 public interface MemberService {
-	public MemberDto addMember(MemberDto dto);
-	public void updateMemberInfo(MemberDto memberDto);
-	public void updateMemberPlan(MemberDto memberDto);
-	public void updateMemberTrainer(MemberDto memberDto);
-	public void deleteMember(String userName);
+	public boolean addMember(MemberDto dto);
+	public boolean updateMemberInfo(MemberDto memberDto);
+	public boolean updateMemberPlan(MemberDto memberDto);
+	public boolean updateMemberTrainer(MemberDto memberDto);
+	public boolean deleteMember(String userName);
 	public MemberDto selectOne(String userName);
 	public List<MemberDto> selectList();
 }

@@ -21,28 +21,53 @@ public class UserDaoImpl implements UserDao{
 	}
 
 	@Override
-	public void insert(UserDto dto) {
-		session.insert("user.insert", dto);
+	public boolean insert(UserDto dto) {
+		int rowCount = session.insert("user.insert", dto);
+		if(rowCount>0) {
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 	@Override
-	public void updatePwd(UserDto dto) {
-		session.update("user.updatePwd", dto);
+	public boolean updatePwd(UserDto dto) {
+		int rowCount = session.update("user.updatePwd", dto);
+		if(rowCount>0) {
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 	@Override
-	public void updateInfo(UserDto dto) {
-		session.update("user.updateInfo", dto);
+	public boolean updateInfo(UserDto dto) {
+		int rowCount = session.update("user.updateInfo", dto);
+		if(rowCount>0) {
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 	@Override
-	public void updateRole(UserDto dto) {
-		session.update("user.updateRole", dto);
+	public boolean updateRole(UserDto dto) {
+		int rowCount = session.update("user.updateRole", dto);
+		if(rowCount>0) {
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 	@Override
-	public void delete(String userName) {
-		session.delete("user.delete", userName);
+	public boolean delete(String userName) {
+		int rowCount = session.delete("user.delete", userName);
+		if(rowCount>0) {
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 }
