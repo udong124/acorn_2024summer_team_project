@@ -79,7 +79,7 @@ const MessageModal = ({ showModal, setShowModal }) => {
 //메세지 종료시 navigate설정
   const ExitHandle = () => {
     setShowModal(false); // Close the modal
-    navigate("/trainer/message");
+    navigate("/tr/message");
   };
 
   //채팅창 제일 아래로 

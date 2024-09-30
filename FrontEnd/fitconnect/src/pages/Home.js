@@ -1,12 +1,23 @@
 // src/components/MainContent.js
 import React from 'react';
-import './css/Home.css';
+import { Card,Row,Col} from "react-bootstrap";
 
 
 const Home = () => {
   return (
     <div className="home">
-      <h2>Mainpage</h2>      
+    <Row>
+      <Col>
+         <Card>
+          <Card.Header as="h6" className="border-bottom p-3 mb-0">
+            MainPage
+          </Card.Header>
+          <Card.Body className="">
+
+          </Card.Body>
+        </Card>
+      </Col>
+    </Row>     
     </div>
   );
 };
