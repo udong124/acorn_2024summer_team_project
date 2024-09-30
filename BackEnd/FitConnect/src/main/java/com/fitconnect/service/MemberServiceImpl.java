@@ -19,30 +19,34 @@ public class MemberServiceImpl implements MemberService{
 	private MemberDao memberDao;
 	
 	@Override
-	public MemberDto addMember(MemberDto dto) {
-		memberDao.insert(dto);
-		return memberDao.getData(dto.getMember_num());
+	public boolean addMember(MemberDto dto) {
+		boolean isSuccess = memberDao.insert(dto);
+		return isSuccess;
 	}
 
 	@Override
-	public void updateMemberInfo(MemberDto memberDto) {
-		memberDao.updateInfo(memberDto);
+	public boolean updateMemberInfo(MemberDto memberDto) {
+		boolean isSuccess = memberDao.updateInfo(memberDto);
+		return isSuccess;
 	}
 
 	@Override
-	public void updateMemberPlan(MemberDto memberDto) {
-		memberDao.updatePlan(memberDto);
+	public boolean updateMemberPlan(MemberDto memberDto) {
+		boolean isSuccess = memberDao.updatePlan(memberDto);
+		return isSuccess;
 	}
 
 	@Override
-	public void updateMemberTrainer(MemberDto memberDto) {
-		memberDao.updateTrainer(memberDto);
+	public boolean updateMemberTrainer(MemberDto memberDto) {
+		boolean isSuccess =memberDao.updateTrainer(memberDto);
+		return isSuccess;
 	}
 
 	@Override
-	public void deleteMember(String userName) {
+	public boolean deleteMember(String userName) {
 		int member_num = userDao.getData(userName).getId();
-		memberDao.delete(member_num);
+		boolean isSuccess = memberDao.delete(member_num);
+		return isSuccess;
 	}
 
 	@Override

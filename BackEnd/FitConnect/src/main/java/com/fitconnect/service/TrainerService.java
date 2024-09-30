@@ -7,10 +7,10 @@ import com.fitconnect.dto.MemberDto;
 import com.fitconnect.dto.TrainerDto;
 
 public interface TrainerService {
-	public TrainerDto addTrainer(TrainerDto dto);
-	public void updateTrainerInfo(TrainerDto dto);
-	public void updateTrainerGymInfo(TrainerDto dto);
-	public void deleteTrainer(String userName);
+	public boolean addTrainer(TrainerDto dto);
+	public boolean updateTrainerInfo(TrainerDto dto);
+	public boolean updateTrainerGymInfo(TrainerDto dto);
+	public boolean deleteTrainer(String userName);
 	public TrainerDto selectOne(String userName);
 	public Map<String, Object> selectOneUserInfo(String userName);
 	public List<TrainerDto> selectList();

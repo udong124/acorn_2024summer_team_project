@@ -85,10 +85,8 @@ public class UserController {
 			map.put("isSuccess", false);
 		}
 		else {
-			map.put("isSuccess", true);
-			userDao.insert(dto);
+			map.put("isSuccess", userDao.insert(dto));
 		}
-		
 		return map;
 	}
 
@@ -101,10 +99,8 @@ public class UserController {
 			map.put("isSuccess", false);
 		}
 		else {
-			map.put("isSuccess", true);
-			userDao.delete(userName);
+			map.put("isSuccess", userDao.delete(userName));
 		}
-		
 		return map;
 	}
 
@@ -116,7 +112,7 @@ public class UserController {
 	}
 
 	@PatchMapping(value="/user/update/info", consumes = {MediaType. APPLICATION_JSON_VALUE, MediaType. MULTIPART_FORM_DATA_VALUE})
-	public UserDto updateInfo(@ModelAttribute UserDto dto) {
+	public Map<String, Object> updateInfo(@ModelAttribute UserDto dto) {
 
 		System.out.println(fileLocation);
 		if(dto.getImage() != null) {
@@ -141,33 +137,32 @@ public class UserController {
         String userName = authentication.getName();
         dto.setUserName(userName);
 		
-		userDao.updateInfo(dto);
-		UserDto userDto = userDao.getData(userName);
-		
-		return userDto;
+		boolean isSuccess = userDao.updateInfo(dto);
+
+		return Map.of("isSuccess", isSuccess);
 	}
 	
 	@PatchMapping("/user/update/password")
-	public UserDto updatePassword(@RequestBody UserDto dto) {
+	public Map<String, Object> updatePassword(@RequestBody UserDto dto) {
 		String rawPassword = dto.getNewPassword();
 		String encPassword = passwordEncoder.encode(rawPassword);
 		dto.setPassword(encPassword);
-		userDao.updatePwd(dto);
+		boolean isSuccess = userDao.updatePwd(dto);
 		dto.setNewPassword(null);
-		return dto;
+		return Map.of("isSuccess", isSuccess);
 	}
 	
 	@PatchMapping("/user/update/role")
-	public UserDto updateRoleAdmin(@RequestBody UserDto dto) {
+	public Map<String, Object> updateRoleAdmin(@RequestBody UserDto dto) {
 		String role = dto.getRole();
+		boolean isSuccess;
 		if(role.equals("ADMIN") || role.equals("MEMBER") || role.equals("TRAINER")) {
-			userDao.updateRole(dto);
+			isSuccess = userDao.updateRole(dto);
 		}
 		else {
-			dto.setRole("FALSE");
+			dto.setRole("USER");
+			isSuccess = userDao.updateRole(dto);
 		}
-		return dto;
+		return Map.of("isSuccess", isSuccess);
 	}
-
-	
 }

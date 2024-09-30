@@ -30,23 +30,43 @@ public class TrainerDaoImpl implements TrainerDao{
 	}
 
 	@Override
-	public void insert(TrainerDto dto) {
-		session.insert("trainer.insert", dto);
+	public boolean insert(TrainerDto dto) {
+		int rowCount = session.insert("trainer.insert", dto);
+		if(rowCount>0) {
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 	@Override
-	public void updateInfo(TrainerDto dto) {
-		session.update("trainer.updateInfo", dto);
+	public boolean updateInfo(TrainerDto dto) {
+		int rowCount = session.update("trainer.updateInfo", dto);
+		if(rowCount>0) {
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 	@Override
-	public void updateGymInfo(TrainerDto dto) {
-		session.update("trainer.updateGymInfo", dto);
+	public boolean updateGymInfo(TrainerDto dto) {
+		int rowCount = session.update("trainer.updateGymInfo", dto);
+		if(rowCount>0) {
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 	@Override
-	public void delete(int trainer_num) {
-		session.delete("trainer.delete", trainer_num);
+	public boolean delete(int trainer_num) {
+		int rowCount = session.delete("trainer.delete", trainer_num);
+		if(rowCount>0) {
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 }

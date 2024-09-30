@@ -24,25 +24,28 @@ public class TrainerServiceImpl implements TrainerService{
 	private TrainerDao trainerDao;
 
 	@Override
-	public TrainerDto addTrainer(TrainerDto dto) {
-		trainerDao.insert(dto);
-		return trainerDao.getData(dto.getTrainer_num());
+	public boolean addTrainer(TrainerDto dto) {
+		boolean isSuccess = trainerDao.insert(dto);
+		return isSuccess;
 	}
 
 	@Override
-	public void updateTrainerInfo(TrainerDto dto) {
-		trainerDao.updateInfo(dto);
+	public boolean updateTrainerInfo(TrainerDto dto) {
+		boolean isSuccess = trainerDao.updateInfo(dto);
+		return isSuccess;
 	}
 
 	@Override
-	public void updateTrainerGymInfo(TrainerDto dto) {
-		trainerDao.updateGymInfo(dto);
+	public boolean updateTrainerGymInfo(TrainerDto dto) {
+		boolean isSuccess = trainerDao.updateGymInfo(dto);
+		return isSuccess;
 	}
 
 	@Override
-	public void deleteTrainer(String userName) {
+	public boolean deleteTrainer(String userName) {
 		int trainer_num = userDao.getData(userName).getId();
-		trainerDao.delete(trainer_num);
+		boolean isSuccess = trainerDao.delete(trainer_num);
+		return isSuccess;
 	}
 
 	@Override
