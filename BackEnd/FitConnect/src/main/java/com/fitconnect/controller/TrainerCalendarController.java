@@ -55,7 +55,7 @@ public class TrainerCalendarController {
 	@PutMapping("/trainercalendar/{t_calendar_id}")
 	public Map<String, Object> updateCal(@PathVariable("t_calendar_id") int t_calendar_id, 
 			@RequestBody TrainerCalendarDto dto){
-		
+		dto.setT_calendar_id(t_calendar_id);
 		boolean isSuccess = service.updateSchedule(dto);
 		return Map.of("isSuccess", isSuccess);
 		
