@@ -45,8 +45,8 @@ public class ExerciseController {
 	 * 5. 설명			: 모든 운동 리스트를 가져오는 메소드
      * 					  서비스에서 전체 운동 리스트를 가져와서 맵 형태로 반환한다.
 	 * </PRE>
-	 * 		@return Map<String,Object>
-	 * 		@return "exerList"
+	 * 		@return Map<String,Object> "exerList"
+	 * 		@return 
 	**********************************************************************/
 	@ApiResponses({
         @ApiResponse(responseCode = "200", description = "성공"),
@@ -71,9 +71,9 @@ public class ExerciseController {
 	 * 5. 설명			: 특정 운동 카테고리에 해당하는 리스트를 가져오는 메소드
      *                    경로변수로 받은 운동 카테고리를 이용하여 리스트를 조회한다.
 	 * </PRE>
-	 * 		@return Map<String,Object>
+	 * 		@return Map<String,Object> "categoryList"
 	 * 		@param exercise_category
-	 * 		@return "categoryList"
+	 * 		@return
 	**********************************************************************/
 	@ApiResponses({
         @ApiResponse(responseCode = "200", description = "성공"),
@@ -120,9 +120,9 @@ public class ExerciseController {
 	 * 5. 설명			: 관리자 권한으로 운동 리스트 추가하는 메소드
 	 * 					  exercise_name, exercise_category, exercise_info, exercise_image 의 값을 fome-data 로 받아와 운동 리스트를 추가한다.
 	 * </PRE>
-	 * 		@return Map<String,Object>
+	 * 		@return Map<String,Object> "isSuccess", true or false
 	 * 		@param dto
-	 * 		@return "isSuccess", true or false
+	 * 		@return
 	**********************************************************************/
 	@ApiResponses({
         @ApiResponse(responseCode = "200", description = "성공"),
@@ -147,9 +147,9 @@ public class ExerciseController {
 	 * 5. 설명			: 특정 회원의 특정 날짜 운동 리스트를 가져오는 매소드
 	 * 					  경로변수로 받아온 m_calendar_id 를 이용하여 특정 날짜의 운동 일지를 조회한다.
 	 * </PRE>
-	 * 		@return Map<String,Object>
+	 * 		@return Map<String,Object> "exerJournalList"
 	 * 		@param m_calendar_id
-	 * 		@return "exerJournalList"
+	 * 		@return
 	**********************************************************************/
 	@ApiResponses({
         @ApiResponse(responseCode = "200", description = "성공"),
@@ -173,9 +173,9 @@ public class ExerciseController {
 	 * 5. 설명			: 운동 일지에 등록된 운동 중 특정 1개의 운동 정보를 조회 메소드
 	 * 					  경로변수로 받아온 e_journal_id 를 이용해서 운동 일지 내 특정 운동 1개의 정보를 조회한다.
 	 * </PRE>
-	 * 		@return Map<String,Object>
+	 * 		@return Map<String,Object> "exerJournalDto"
 	 * 		@param e_journal_id
-	 * 		@return "exerJournalDto"
+	 * 		@return
 	**********************************************************************/
 	@ApiResponses({
         @ApiResponse(responseCode = "200", description = "성공"),
@@ -200,9 +200,9 @@ public class ExerciseController {
 	 * 					  m_calendar_id, exercise_id, exercise_order, exercise_set, exercise_count, exercise_weight 의 값을 json 형태로 받아와 등록한다.
 	 *  
 	 * </PRE>
-	 * 		@return Map<String,Object>
+	 * 		@return Map<String,Object> "isSuccess", true or false
 	 * 		@param exerJournalList
-	 * 		@return "isSuccess", true or false
+	 * 		@return 
 	**********************************************************************/
 	@ApiResponses({
         @ApiResponse(responseCode = "200", description = "성공"),
@@ -228,10 +228,10 @@ public class ExerciseController {
 	 * 5. 설명			: 운동 일지 내용을 수정하는 메소드
 	 * 					  운동 일지 내 e_journal_id 와 일치하는 운동 일지를 json 형태로 받아온 ExerciseJournalDto 값으로 수정한다.
 	 * </PRE>
-	 * 		@return Map<String,Object>
+	 * 		@return Map<String,Object> "isSuccess", true or false
 	 * 		@param e_journal_id
 	 * 		@param dto
-	 * 		@return "isSuccess", true or false
+	 * 		@return
 	**********************************************************************/
 	@ApiResponses({
         @ApiResponse(responseCode = "200", description = "성공"),
@@ -255,10 +255,10 @@ public class ExerciseController {
 	 * 5. 설명			: 운동 일지 내 등록된 특정 운동 1개 삭제하기
 	 * 					  경로변수로 받아온 e_journal_id, exercise_id 두가지 값을 이용하여 특정 일지 내 특정 운동 1개를 삭제한다.
 	 * </PRE>
-	 * 		@return Map<String,Object>
+	 * 		@return Map<String,Object> "isSuccess", true or false
 	 * 		@param e_journal_id
 	 * 		@param exercise_id
-	 * 		@return "isSuccess", true or false
+	 * 		@return
 	**********************************************************************/
 	@ApiResponses({
         @ApiResponse(responseCode = "200", description = "성공"),
@@ -283,9 +283,9 @@ public class ExerciseController {
 	 * 5. 설명			: 특정 날짜의 운동 일지를 전체 삭제하는 메소드
 	 * 					  경로변수로 받아온 m_calendar_id 를 이용해서 특정 날짜의 전체 운동 일지를 삭제한다.
 	 * </PRE>
-	 * 		@return Map<String,Object>
+	 * 		@return Map<String,Object> "isSuccess", true or false
 	 * 		@param m_calendar_id
-	 * 		@return "isSuccess", true or false
+	 * 		@return
 	**********************************************************************/
 	@ApiResponses({
         @ApiResponse(responseCode = "200", description = "성공"),
