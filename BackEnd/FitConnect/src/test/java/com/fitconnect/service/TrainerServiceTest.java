@@ -22,7 +22,7 @@ import com.fitconnect.repository.TrainerDao;
 import com.fitconnect.repository.UserDao;
 
 @ExtendWith(MockitoExtension.class)
-public class TrainerServiceImplTest {
+public class TrainerServiceTest {
 	
 	@InjectMocks
 	private TrainerServiceImpl trainerService;
