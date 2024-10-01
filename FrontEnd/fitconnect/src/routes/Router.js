@@ -32,7 +32,6 @@ const TrainerMessage = lazy(() => import("../pages/TrainerMessage.js"));
 const TrainerMembers = lazy(() => import("../pages/TrainerMembers.js"));
 const TrainerMypage = lazy(() => import("../pages/TrainerMypage.js"));
 const TrainerMypageDetail = lazy(() => import("../pages/TrainerMypageDetail.js"));
-const Ex = lazy(() => import("../pages/EEx.js"));
 
 
 /********* Routes *******/
@@ -67,7 +66,6 @@ const Routes = [
       { path: "/tr/members", element: <TrainerMembers/>},
       { path: "/tr/mypage", element: <TrainerMypage/>},
       { path: "/tr/mypagedetail", element: <TrainerMypageDetail/>},
-      { path: "/tr/ex", element: <Ex/>},
     ],
   },
 ];
