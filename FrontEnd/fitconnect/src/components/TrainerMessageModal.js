@@ -11,10 +11,10 @@ const MessageModal = ({ showModal, setShowModal }) => {
   // const { member_num, trainer_num, send_type, topic } = location.state;
 
   const [state, setState] = useState({
-    member_num: 1,
-    trainer_num: 2,
-    send_type: "member",
-    topic: "mytopic"
+    member_num: 0,
+    trainer_num: 0,
+    send_type: "",
+    topic: ""
   });
 
   const [message, setMessage] = useState({

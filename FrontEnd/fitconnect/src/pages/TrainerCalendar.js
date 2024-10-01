@@ -10,10 +10,12 @@ import { v4 as uuidv4 } from 'uuid';
 
 function Calendar() {
   const [events, setEvents] = useState([]); // 캘린더에 표시할 이벤트 목록
-  const [showModal, setShowModal] = useState(false); // 모달의 표시 여부
+  const [showModal, setShowModal] = useState(false); // 새 일정 추가/수정 모달
+  const [showDateEventsModal, setShowDateEventsModal] = useState(false); // 날짜 클릭 시 모든 일정 보기 모달
   const [newEvent, setNewEvent] = useState({ t_calendar_id: 0, member_num: 0, date: '' }); // t_calendar_id 추가
   const [isEditing, setIsEditing] = useState(false); // 편집 모드 여부
   const [currentEventId, setCurrentEventId] = useState(null); // 현재 편집 중인 이벤트의 ID
+  const [selectedDateEvents, setSelectedDateEvents] = useState([]); // 선택한 날짜의 모든 일정
 
   const refresh = () => {
     axios.get(`/trainercalendar`)
@@ -76,13 +78,14 @@ function Calendar() {
 
   // 날짜 클릭 시 호출되는 핸들러
   const handleDateClick = (date) => {
-    setNewEvent({
-      t_calendar_id: 0, // 새 이벤트이므로 t_calendar_id는 비워둠
-      member_num: 0,
-      date: date.dateStr // 날짜 클릭 시 newEvent의 date 설정
-    });
-    setIsEditing(false); // 새 이벤트 모드
-    setShowModal(true);
+    // 해당 날짜에 저장된 모든 일정을 필터링
+    const selectedEvents = events.filter(event => event.start.startsWith(date.dateStr));
+    
+    // 선택한 날짜의 일정 저장
+    setSelectedDateEvents(selectedEvents);
+
+    // 모든 일정 보기 모달을 표시
+    setShowDateEventsModal(true);
   };
 
   // 이벤트 클릭 시 호출되는 핸들러
@@ -114,16 +117,14 @@ function Calendar() {
   // 이벤트 삭제 핸들러
   const handleDeleteEvent = () => {
     const { t_calendar_id, member_num } = newEvent; // newEvent에서 t_calendar_id와 member_num 가져오기
-    console.log(t_calendar_id, member_num); // 값 확인용
 
-    axios.delete(`/trainercalendar/${t_calendar_id}`, {params:{member_num}})
+    axios.delete(`/trainercalendar/${t_calendar_id}`, { params: { member_num } })
       .then(() => {
         setEvents(events.filter(event => event.id !== t_calendar_id));
         setShowModal(false);
       })
       .catch(err => console.log(err));
   };
-
 
   const renderEventContent = (eventInfo) => {
     return (
@@ -132,8 +133,6 @@ function Calendar() {
       </div>
     );
   };
-
-
 
   return (
     <div className="fullcalendar-wrapper">
@@ -164,7 +163,7 @@ function Calendar() {
                     }
                   }
                 }}
-                dateClick={handleDateClick}
+                dateClick={handleDateClick} // 날짜 클릭 시 호출되는 핸들러
                 eventClick={handleEventClick} // 이벤트 클릭 시 호출되는 핸들러
                 eventContent={renderEventContent}
                 expandRows={true} // 행 확장을 활성화하여 모든 이벤트 표시
@@ -172,6 +171,7 @@ function Calendar() {
                 dayMaxEvents={false} // 최대 이벤트 수를 비활성화
               />
 
+              {/* 기존 일정 추가/수정 모달 */}
               <Modal show={showModal} onHide={() => setShowModal(false)}>
                 <Modal.Header closeButton>
                   <Modal.Title>{isEditing ? '일정 수정' : '새 일정 추가'}</Modal.Title>
@@ -205,6 +205,29 @@ function Calendar() {
                   {isEditing && <Button variant="danger" onClick={handleDeleteEvent}>삭제</Button>}
                   <Button variant="secondary" onClick={() => setShowModal(false)}>취소</Button>
                   <Button variant="primary" onClick={handleSaveEvent}>저장</Button>
+                </Modal.Footer>
+              </Modal>
+
+              {/* 선택한 날짜의 모든 일정 보기 모달 */}
+              <Modal show={showDateEventsModal} onHide={() => setShowDateEventsModal(false)}>
+                <Modal.Header closeButton>
+                  <Modal.Title>일정</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  {selectedDateEvents.length > 0 ? (
+                    selectedDateEvents.map(event => (
+                      <div key={event.id}>
+                        <p><b>{event.title}</b></p>
+                        <p>예약시간: {event.start}</p>
+                        <hr />
+                      </div>
+                    ))
+                  ) : (
+                    <p>해당 날짜에 저장된 일정이 없습니다.</p>
+                  )}
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={() => setShowDateEventsModal(false)}>닫기</Button>
                 </Modal.Footer>
               </Modal>
             </Card.Body>
