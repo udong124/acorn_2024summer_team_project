@@ -42,9 +42,23 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
     	String role = dto.getRole();
 		String jwtToken="Bearer+"+jwtUtil.generateToken(userName, id, role);
 //		response.addHeader(jwtName, jwtToken);
-		response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        response.getWriter().write("{\"token\": \"" + jwtToken + "\"}");
-        response.getWriter().flush();
+//		response.setContentType("application/json");
+//		response.setCharacterEncoding("UTF-8");
+//      response.getWriter().write("{\"token\": \"" + jwtToken + "\"}");
+//      response.getWriter().flush();
+
+		//URL 에 토큰을 포함하는 방식		
+	    String redirectUrl;
+	    if ("USER".equals(role)) {
+	        redirectUrl = "http://localhost:3000/googlelogin?token=" + jwtToken + "&id=" + id;
+	    } else if ("TRAINER".equals(role)) {
+	        redirectUrl = "http://localhost:3000/login?token=" + jwtToken + "&role=" + role;
+	    } else if ("MEMBER".equals(role)) {
+	        redirectUrl = "http://localhost:3000/login?token=" + jwtToken + "&role=" + role;
+	    } else {
+	        redirectUrl = "http://localhost:3000/";
+	    }
+	    
+        response.sendRedirect(redirectUrl);
     }
 }
