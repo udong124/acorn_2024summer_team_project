@@ -1,11 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { Form, Button, Card, Row, Col, Container } from "react-bootstrap"; // Bootstrap 적용
-import styles from "../css/TrainerId.module.css";
-import classNames from "classnames/bind";
-import { decodeToken } from "jsontokens";
 
-const cx = classNames.bind(styles);
+import { decodeToken } from "jsontokens";
 
 const TrainerId = () => {
   const searchKeywordRef = useRef(""); // 검색어 Ref
@@ -37,23 +34,24 @@ const TrainerId = () => {
 
   //실제 API 데이터를 가져오는 useEffect (필요할 때 주석을 해제하기)
   useEffect(() => {
-    axios.get('/trainer/list')
-      .then(response => {
+    axios
+      .get("/trainer/list")
+      .then((response) => {
         const trainerData = response.data.trainerList || [];
         setTrainerList(trainerData);
         setFilteredTrainers(trainerData);
       })
-      .catch(error => {
-        console.error('트레이너 목록 조회 실패:', error);
+      .catch((error) => {
+        console.error("트레이너 목록 조회 실패:", error);
       });
   }, []);
 
-  // 로그인한 사용자의 member_num 가져오기
+  // 로그인한 사용자의 토큰에서 user_num 가져오기
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       try {
-        const { payload } = decodeToken(token.substring(7)); 
+        const { payload } = decodeToken(token.substring(7));
         if (payload && payload.user_num) {
           setMember_num(payload.user_num); // 토큰에서 가져온 user_num을 member_num으로 설정
         }
@@ -110,77 +108,99 @@ const TrainerId = () => {
   };
 
   return (
-    <Container className={cx("container")}>
-      <h3 className={cx("header")}>트레이너 등록</h3>
+    <Container>
+      <Row>
+        <Col>
+          <Card>
+            <Card.Header as="div" className="border-bottom p-3 mb-0">
+              <h4>트레이너 등록</h4>
+            </Card.Header>
+            <Card.Body className="">
+              <Form className="mb-3">
+                <Row>
+                  <Col md={4}>
+                    <Form.Group>
+                      <Form.Select
+                        value={searchCondition}
+                        onChange={(e) => setSearchCondition(e.target.value)}
+                      >
+                        <option value="gym_name">헬스장 이름</option>
+                        <option value="trainer_insta">
+                          트레이너 인스타그램
+                        </option>
+                      </Form.Select>
+                    </Form.Group>
+                  </Col>
+                  <Col md={6}>
+                    <Form.Group>
+                      <Form.Control
+                        type="text"
+                        placeholder="검색어를 입력하세요"
+                        ref={searchKeywordRef}
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col md={2}>
+                    <Button onClick={handleSearch} className="w-100">
+                      검색
+                    </Button>
+                  </Col>
+                </Row>
+              </Form>
 
-      <Form className="mb-3">
-        <Row>
-          <Col md={4}>
-            <Form.Group>
-              <Form.Select
-                value={searchCondition}
-                onChange={(e) => setSearchCondition(e.target.value)}
-              >
-                <option value="gym_name">헬스장 이름</option>
-                <option value="trainer_insta">트레이너 인스타그램</option>
-              </Form.Select>
-            </Form.Group>
-          </Col>
-          <Col md={6}>
-            <Form.Group>
-              <Form.Control
-                type="text"
-                placeholder="검색어를 입력하세요"
-                ref={searchKeywordRef}
-              />
-            </Form.Group>
-          </Col>
-          <Col md={2}>
-            <Button onClick={handleSearch} className="w-100">
-              검색
-            </Button>
-          </Col>
-        </Row>
-      </Form>
+              {/* 검색된 트레이너 목록을 가로로 보여주기 */}
+              <Row className="mt-3">
+                {filteredTrainers.length > 0 ? (
+                  filteredTrainers.map((trainer) => (
+                    <Col
+                      xs={12}
+                      md={12}
+                      className="mb-3"
+                      key={trainer.trainer_num}
+                    >
+                      <Card
+                        className="h-100 shadow-sm"
+                        style={{ width: "100%" }}
+                      >
+                        <Card.Body>
+                          <Card.Title>{trainer.gym_name}</Card.Title>
+                          <Card.Text>{trainer.trainer_insta}</Card.Text>
+                          <Button
+                            onClick={() => setSelectedTrainer(trainer)}
+                            className="w-100 btn-secondary"
+                          >
+                            선택
+                          </Button>
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                  ))
+                ) : (
+                  <Col>
+                    <p>검색된 트레이너가 없습니다.</p>
+                  </Col>
+                )}
+              </Row>
 
-      {/* 검색된 트레이너 목록을 가로로 보여주기 */}
-      <Row className="mt-3">
-        {filteredTrainers.length > 0 ? (
-          filteredTrainers.map((trainer) => (
-            <Col xs={12} md={12} className="mb-3" key={trainer.trainer_num}>
-              <Card className="h-100 shadow-sm" style={{ width: "100%" }}>
-                <Card.Body>
-                  <Card.Title>{trainer.gym_name}</Card.Title>
-                  <Card.Text>{trainer.trainer_insta}</Card.Text>
+              {/* 선택된 트레이너 정보와 회원 번호 입력 */}
+              {selectedTrainer && (
+                <div className="mt-4">
+                  <h4>선택된 트레이너</h4>
+                  <p>헬스장: {selectedTrainer.gym_name}</p>
+                  <p>인스타그램: {selectedTrainer.trainer_insta}</p>
+                  <p>회원 번호: {member_num ? member_num : "불러오는 중..."}</p>
                   <Button
-                    onClick={() => setSelectedTrainer(trainer)}
-                    className="w-100 btn-secondary"
+                    onClick={handleRegister}
+                    className="btn-primary w-100"
                   >
-                    선택
+                    등록
                   </Button>
-                </Card.Body>
-              </Card>
-            </Col>
-          ))
-        ) : (
-          <Col>
-            <p>검색된 트레이너가 없습니다.</p>
-          </Col>
-        )}
+                </div>
+              )}
+            </Card.Body>
+          </Card>
+        </Col>
       </Row>
-
-      {/* 선택된 트레이너 정보와 회원 번호 입력 */}
-      {selectedTrainer && (
-        <div className="mt-4">
-          <h4>선택된 트레이너</h4>
-          <p>헬스장: {selectedTrainer.gym_name}</p>
-          <p>인스타그램: {selectedTrainer.trainer_insta}</p>
-          <p>회원 번호: {member_num ? member_num : "불러오는 중..."}</p>
-          <Button onClick={handleRegister} className="btn-primary w-100">
-            등록
-          </Button>
-        </div>
-      )}
     </Container>
   );
 };

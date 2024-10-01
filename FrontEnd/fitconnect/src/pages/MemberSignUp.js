@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Button, Form, Container } from "react-bootstrap";
+import { Button, Form, Container, Card, Row, Col } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import styles from "../css/MemberSignUp.module.css";
-import classNames from "classnames/bind";
 
-//cx 함수 만들기
-const cx = classNames.bind(styles);
+const token = localStorage.getItem("token");
 
 const MemberSignUp = () => {
 
@@ -23,7 +20,9 @@ const MemberSignUp = () => {
   const navigate = useNavigate();
 
   const location = useLocation();
+
   useEffect(() => {
+    console.log("location.state:", location.state); // 상태 확인
     if(location.state && location.state.member_num) {
       setFormData(prevData => ({
         ...prevData,
@@ -49,10 +48,14 @@ const MemberSignUp = () => {
     }
 
     axios
-      .post(`/member`, formData)
+      .post(`/member`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Authentication token도 보내야함 index.js에 되어있는 부분인데 생략할지?
+        },
+      })
       .then((response) => {
         console.log(response.data);
-        navigate(`/`); //합치게되면 경로를 member의 메인페이지로 바꾸기
+        navigate(`/mem/starter`); //회원정보등록까지 마치면 member의 메인페이지로 바꾸기
       })
       .catch((error) => {
         if (error.response && error.response.data) {
@@ -65,82 +68,87 @@ const MemberSignUp = () => {
   };
 
   return (
-    <Container className={cx("centerContainer")}>
-      <div className={cx("signupForm")}>
-        <h4 className={cx("textCenter")}> 회원 기본 설정 </h4>
-        <Form>
-          <Form.Group>
-            <Form.Label>키</Form.Label>
-            <Form.Control
-              type="text"
-              name="member_height"
-              placeholder="키를 입력해 주세요"
-              value={formData.member_height}
-              onChange={handleChange}
-              className={cx("formControl")}
-            />
-            <small className={cx("formText")}>키는 숫자로만 입력해 주세요</small>
-          </Form.Group>
-          <Form.Group>
-            <Form.Label>몸무게</Form.Label>
-            <Form.Control
-              type="text"
-              name="member_weight"
-              placeholder="몸무게를 입력해 주세요"
-              value={formData.member_weight}
-              onChange={handleChange}
-              className={cx("formControl")}
-            />
-            <small className={cx("formText")}>몸무게는 숫자로만 입력해 주세요</small>
-          </Form.Group>
-          <Form.Group>
-            <Form.Label>성별</Form.Label>
-            <Form.Control
-              as="select"
-              name="member_gender"
-              value={formData.member_gender}
-              onChange={handleChange}
-              className={cx("formControl")}
+    <Container>
+    <Row>
+      <Col>
+         <Card>
+          <Card.Header as="h6" className="border-bottom p-3 mb-0">
+            <h4> 회원 기본 설정 </h4>
+          </Card.Header>
+          <Card.Body className="">
+          <Form onSubmit={handleSubmit}>
+            <Form.Group>
+              <Form.Label>키</Form.Label>
+              <Form.Control
+                type="text"
+                name="member_height"
+                placeholder="키를 입력해 주세요"
+                value={formData.member_height}
+                onChange={handleChange}
+              />
+              <small>키는 숫자로만 입력해 주세요</small>
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>몸무게</Form.Label>
+              <Form.Control
+                type="text"
+                name="member_weight"
+                placeholder="몸무게를 입력해 주세요"
+                value={formData.member_weight}
+                onChange={handleChange}
+                
+              />
+              <small>몸무게는 숫자로만 입력해 주세요</small>
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>성별</Form.Label>
+              <Form.Control
+                as="select"
+                name="member_gender"
+                value={formData.member_gender}
+                onChange={handleChange}
+          
+              >
+                <option value="">성별 선택</option>
+                <option value="male">남성</option>
+                <option value="female">여성</option>
+              </Form.Control>
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>개인 목표</Form.Label>
+              <Form.Control
+                as="textarea"
+                name="plan"
+                placeholder="개인목표를 입력해 주세요"
+                rows={4}
+                value={formData.plan}
+                onChange={handleChange}
+              
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>주간 목표</Form.Label>
+              <Form.Control
+                as="textarea"
+                name="weeklyplan"
+                placeholder="주간목표를 입력해 주세요"
+                rows={4}
+                value={formData.weeklyplan}
+                onChange={handleChange}
+              
+              />
+            </Form.Group>
+            <Button
+              variant="dark"
+              type="submit"
             >
-              <option value="">성별 선택</option>
-              <option value="male">남성</option>
-              <option value="female">여성</option>
-            </Form.Control>
-          </Form.Group>
-          <Form.Group>
-            <Form.Label>개인 목표</Form.Label>
-            <Form.Control
-              as="textarea"
-              name="plan"
-              placeholder="개인목표를 입력해 주세요"
-              rows={4}
-              value={formData.plan}
-              onChange={handleChange}
-              className={cx("formControl")}
-            />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label>주간 목표</Form.Label>
-            <Form.Control
-              as="textarea"
-              name="weeklyplan"
-              placeholder="주간목표를 입력해 주세요"
-              rows={4}
-              value={formData.weeklyplan}
-              onChange={handleChange}
-              className={cx("formControl")}
-            />
-          </Form.Group>
-          <Button
-            variant="dark"
-            type="submit"
-            className={cx("w-100", "mt-3")}
-            onClick={handleSubmit}
-          >
-            완료
-          </Button>
-        </Form>
-      </div>
+              완료
+            </Button>
+          </Form>
+          </Card.Body>
+        </Card>
+      </Col>
+    </Row>     
     </Container>
   );
 };
