@@ -22,7 +22,7 @@
 	<update id="updateRole" parameterType="UserDto">
 		UPDATE user_info
 		SET role=#{role}
-		WHERE userName=#{userName}
+		WHERE id=#{id}
 	</update>
 
 	<insert id="insert" parameterType="UserDto">
