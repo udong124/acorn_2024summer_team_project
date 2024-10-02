@@ -6,7 +6,6 @@ import axios from "axios";
 import { decodeToken } from 'jsontokens';
 import { Provider } from "react-redux";
 
-
 function UserSignUp() {
   //폼에 입력한 내용을 상태값으로 관리
   const [step, setStep] = useState(1);
@@ -26,31 +25,8 @@ function UserSignUp() {
   });
   const [errorMessage, setErrorMessage] = useState("");
   const [emailErrorMessage, setEmailErrorMessage] = useState("");
-  const [isGoogleLogin, setIsGoogleLogin] = useState(false);
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    // localStorage에서 토큰을 가져와 확인
-    const token = localStorage.getItem('token');
-    if (!token) return;
-    
-    try {
-      const { payload } = decodeToken(token.substring(7)); 
-      if (payload) {
-        const { providerid, email, name } = payload;
-        setFormData({
-          ...formData,
-          "email":email,
-          "name":name,
-          "providerid":providerid
-        })
-        setIsGoogleLogin(true); // 구글 로그인 상태로 설정
-      }
-    } catch (error) {
-      console.error("토큰 처리 중 오류:", error);
-    }
-  }, []);
 
   useEffect(()=>{
     console.log(formData.id)
