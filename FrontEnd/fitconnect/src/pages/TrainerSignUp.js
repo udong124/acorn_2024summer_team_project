@@ -16,18 +16,15 @@ const TrainerSignUp = () => {
 
   const navigate = useNavigate();
 
-
   const location = useLocation();
+  const { trainer_num } = location.state; 
 
 useEffect(() => {
-  console.log("location.state:", location.state); // 상태 확인 onClick={handleSubmit}지웠음
-  if (location.state && location.state.trainer_num) {
-    setFormData(prevData => ({
-      ...prevData,
-      trainer_num: location.state.trainer_num
-    }));
-  }
-}, [location]);
+  setFormData(prevData => ({
+    ...prevData,
+    trainer_num: trainer_num
+  }));
+}, []);
 
 const handleChange = (e) => {
   const { name, value } = e.target;
@@ -40,9 +37,7 @@ const handleChange = (e) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    axios.post(`/trainer`, formData,{
-      headers:{ Authorization:`Bearer ${token}`}
-      })
+    axios.post(`/trainer`, formData)
       .then(response => {
         console.log(response.data);
         navigate(`/tr/home`);  //트레이너정보등록까지 마치면 트레이너메인페이지로 가게

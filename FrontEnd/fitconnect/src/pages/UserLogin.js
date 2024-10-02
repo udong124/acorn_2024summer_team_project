@@ -153,7 +153,7 @@ const handleNavigation = (role) => {
                 로그인
               </Button>
               <div >또는</div>
-              <Button variant="outline-dark"  as={Link} to="http://52.78.38.12:8080/login/oauth2/code/google">
+              <Button variant="outline-dark"  as={Link} to="http://localhost:8888/oauth2/authorization/google">
                 Google로 시작하기
               </Button>
               <div >

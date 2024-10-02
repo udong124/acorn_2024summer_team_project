@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { decodeToken } from "jsontokens";
 
 
-const GoogleLogin = ({ username }) => {
+const GoogleLogin = () => {
   const [selectedRole, setSelectedRole] = useState("");
   const [userName, setUserName] = useState("");
   const navigate = useNavigate();
@@ -37,7 +37,7 @@ const GoogleLogin = ({ username }) => {
       return;
     }
     axios
-      .patch("/user/update/role", { username, role: selectedRole })
+      .patch("/user/update/role", { userName, role: selectedRole })
       .then(() => {
         // 선택한 역할대로 회원정보등록 페이지로 이동하기
         if (selectedRole === "member") {

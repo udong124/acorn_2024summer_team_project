@@ -8,8 +8,8 @@ const token = localStorage.getItem("token");
 const MemberSignUp = () => {
 
   const [formData, setFormData] = useState({
-    member_num: "",
-    trainer_num: "",
+    member_num: 0,
+    trainer_num: 0,
     member_height: "",
     member_weight: "",
     member_gender: "",
@@ -20,16 +20,14 @@ const MemberSignUp = () => {
   const navigate = useNavigate();
 
   const location = useLocation();
+  const { member_num } = location.state;    
 
   useEffect(() => {
-    console.log("location.state:", location.state); // 상태 확인
-    if(location.state && location.state.member_num) {
-      setFormData(prevData => ({
-        ...prevData,
-        member_num: location.state.member_num
-      }));
-    }
-  }, [location]);
+    setFormData(prevData => ({
+      ...prevData,
+      member_num: member_num
+    }))
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -48,11 +46,7 @@ const MemberSignUp = () => {
     }
 
     axios
-      .post(`/member`, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`, // Authentication token도 보내야함 index.js에 되어있는 부분인데 생략할지?
-        },
-      })
+      .post(`/member`, formData)
       .then((response) => {
         console.log(response.data);
         navigate(`/mem/starter`); //회원정보등록까지 마치면 member의 메인페이지로 바꾸기

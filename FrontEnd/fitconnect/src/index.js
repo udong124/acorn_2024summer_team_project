@@ -19,7 +19,6 @@ let userName = null;
 let userRole = null;
 
 // 만일 토큰이 존재한다면
-localStorage.token = "Bearer+eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTEzOTMyODY3NDA5NTIyOTkxNDEyIiwiaWQiOjM1LCJleHAiOjE3Mjc0MjY1MjcsImlhdCI6MTcyNzQyMjkyN30.1RgNRludMkdmQv7jgYrEu28P8ax6KTchSDmS9_zSl2g"
 if (localStorage.token) {
   // 토큰을 디코딩 ( 앞에 7 자리를 제거한 , Bearer+ 를 제거한 문자열을 디코딩)
   const result = decodeToken(localStorage.token.substring(7));
