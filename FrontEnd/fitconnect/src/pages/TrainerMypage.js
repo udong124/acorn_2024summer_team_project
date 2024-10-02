@@ -40,7 +40,7 @@ const MyPage = () => {
             <h1>Mypage</h1>
           </Card.Header>
           <Card.Body className="">
-
+            
               <Row>
                 <Col>
                   <img src={trainerInfo.profile} alt="" />

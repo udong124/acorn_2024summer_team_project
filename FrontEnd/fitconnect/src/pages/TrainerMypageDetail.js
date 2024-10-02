@@ -41,7 +41,7 @@ const MyPageDetail = () => {
       .then(res => {setTrainerInfo(res.data)
       })
       .catch(err => console.log(err));
-      navigate(`/Mypage`);
+      navigate(`/tr/mypage`);
   };
 
   return (
@@ -145,7 +145,7 @@ const MyPageDetail = () => {
             <Button variant="primary" type="submit">
               저장
             </Button>
-            <Button variant="secondary" onClick={() => navigate('/Mypage')} className="ml-2">
+            <Button variant="secondary" onClick={() => navigate('/tr/mypage')} className="ml-2">
               취소
             </Button>
           </Form>

@@ -37,7 +37,7 @@ function Members() {
 
  
   const getMembers = () => {
-    axios.get(`/trainer/list/member`)
+    axios.get(`/trainercalendar`)
       .then(res => {
         console.log(res.data)
         setMembers(res.data)
@@ -60,7 +60,7 @@ function Members() {
 
   return (
     <div>
-    <Row>
+    {/* <Row>
       <Col>
          <Card>
           <Card.Header as="h6" className="border-bottom p-3 mb-0">
@@ -85,7 +85,7 @@ function Members() {
           </Card.Body>
         </Card>
       </Col>
-    </Row>     
+    </Row>      */}
     </div>
   );
 }

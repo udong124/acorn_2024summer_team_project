@@ -1,66 +1,72 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from "react-router-dom";
-import ChatMessage from './ChatMessage'; 
 import mqtt from 'mqtt';
 import { Modal, Button } from 'react-bootstrap';
+import ChatMessage from './ChatMessage'; 
 
-const MessageModal = ({ showModal, setShowModal }) => {
-      // 페이지 전환하면서 useNavigate 로 얻어오는 변수들
-  // const location = useLocation();
-  // const { member_num, trainer_num, send_type, topic } = location.state;
-
-  const [state, setState] = useState({
-    member_num: 0,
-    trainer_num: 0,
-    send_type: "",
+const MessageModal = ({ showModal, setShowModal, topic }) => { // props로 topic 값 받음
+  const [message, setMessage] = useState({
+    send_type: "", 
+    content: "",
     topic: ""
   });
-
-  const [message, setMessage] = useState({
-    send_type: state.send_type, 
-    content: ""
-  });
-
   const [messages, setMessages] = useState([]);
   const messagesEndRef = useRef(null);
-  const encoder = new TextEncoder();
   const decoder = new TextDecoder('utf-8');
-  const navigate = useNavigate();
-
   const client = mqtt.connect('ws://localhost:9001'); // mqtt 연결 설정 코드
 
+
+                              // get `messenger` -> 채팅방 자체만불러오기(빈채팅방)
+
+                              // get `messenger/list` -> 채팅방외부 회원목록 불러오기 **토큰값필요**
+                              // get `messenger/detail/{topic}` ->채팅방내부에 있는 대화내용 불러오기
+
+                              // post `messenger/detail` ->메세지 전송
+                              // post `/messenger` -> 채팅방 생성
+
+                              // DEL `messenger` -> 채팅방 삭제
+                              // DEL `messenger/detail` -> 채팅방내에서 메세지 하나씩 삭제
+
   const refresh = () => {
-    //api 주소
-    axios.get("/messenger/list")
+    setMessages([])
+    // topic을 활용하여 해당 메시지들을 가져옴
+    axios.get(`/messenger/detail/${topic}`)
       .then(res => {
-        console.log(res.data);
-        setMessages(res.data);
+        setMessages([...messages, ...res.data.msgAll]);
       })
       .catch(error => {
         console.log(error);
       });
   };
 
-  useEffect(() => {
-    refresh();
-    client.subscribe(state.topic);
-    client.on('message', function (topic, message) {
-      const decodedMessage = JSON.parse(decoder.decode(new Uint8Array(message)));
-      console.log(decodedMessage);
-      setMessages(prevMessages => [...prevMessages, decodedMessage]);
-    });
+  useEffect(()=>{
+    console.log(messages)
+  }, [messages])
 
-    return () => {
-      client.end();
-    };
-  }, []);
+  useEffect(()=>{
+    refresh();
+  }, [])
+
+  useEffect(() => {
+    if (topic) {
+      refresh();
+      client.subscribe(topic);
+      client.on('message', function (topic, message) {
+        const decodedMessage = JSON.parse(decoder.decode(new Uint8Array(message)));
+        console.log(decodedMessage);
+        setMessages(prevMessages => [...prevMessages, decodedMessage]);
+      });
+
+      return () => {
+        client.end();
+      };
+    }
+  }, [topic]); // topic이 변경될 때마다 useEffect 실행
 
   const sendMessageHandle = (e) => {
     e.preventDefault();
-    if (message.content !== "") {
-      client.publish(state.topic, JSON.stringify(message), { qos: 0, retain: false });
-
+    if (message.content !== "" && message.topic !== "" && message.send_type !== "") {
+      client.publish(topic, JSON.stringify(message), { qos: 0, retain: false });
       axios.post("/messenger/detail", message)
         .then(res => {
           console.log(res.data);
@@ -70,41 +76,34 @@ const MessageModal = ({ showModal, setShowModal }) => {
         });
 
       setMessage({
-        send_type: state.send_type,
+        ...message,
         content: ""
       });
     }
   };
 
-//메세지 종료시 navigate설정
-  const ExitHandle = () => {
-    setShowModal(false); // Close the modal
-    navigate("/tr/message");
-  };
-
-  //채팅창 제일 아래로 
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
-
   return (
-    <Modal show={showModal} onHide={() => setShowModal(false)}>
+    <Modal show={showModal} onHide={() => {
+      setMessages([])
+      setShowModal(false)}}>
       <Modal.Header closeButton>
-        <Modal.Title>MQTT Chat</Modal.Title>
+        <Modal.Title>MQTT Chat - {topic}</Modal.Title> {/* topic 표시 */}
       </Modal.Header>
       <Modal.Body>
-        {/* 메세지 show */}
         <div style={{ height: '400px', overflowY: 'scroll', border: '1px solid #ccc', padding: '10px' }}>
           {messages.map((msg, index) => (
-            <ChatMessage key={index} message={msg.content} isOwnMessage={msg.send_type === state.send_type} />
+            <div>
+              <ChatMessage key={index} message={msg.content} isOwnMessage={msg.send_type === message.send_type}/>
+              <li>{}</li>
+            </div>
           ))}
+          
           <div ref={messagesEndRef} />
-          {/* 채팅 전송버튼 */}
           <form onSubmit={sendMessageHandle} style={{ display: 'flex', marginTop: '10px' }}>
             <input
               type="text"
               value={message.content}
-              onChange={(e) => setMessage({ ...message, content: e.target.value })}
+              onChange={(e) => setMessage({ ...message, content: e.target.value})}
               style={{ flex: 1, padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
             />
             <Button type="submit" style={{ padding: '10px', borderRadius: '5px', marginLeft: '10px' }}>Send</Button>
@@ -112,9 +111,9 @@ const MessageModal = ({ showModal, setShowModal }) => {
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={ExitHandle}>
-          End
-        </Button>
+        <Button variant="secondary" onClick={() => {
+          setMessages([])
+          setShowModal(false)}}>Close</Button>
       </Modal.Footer>
     </Modal>
   );

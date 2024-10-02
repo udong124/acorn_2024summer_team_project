@@ -13,7 +13,7 @@ const Home = () => {
             MainPage
           </Card.Header>
           <Card.Body className="">
-
+            
           </Card.Body>
         </Card>
       </Col>
