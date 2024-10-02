@@ -231,7 +231,7 @@ function UserSignUp() {
                   variant="outline-dark"
                   
                   as={Link}   
-                  to="/googlelogin"
+                  to="http://localhost:8888/oauth2/authorization/google"
                 >
                   Google Register
                 </Button>

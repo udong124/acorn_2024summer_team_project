@@ -16,7 +16,7 @@ const MemberSignUp = () => {
     plan: "",
     weeklyplan: ""
   });
-
+  const [step, setStep] = useState(0);
   const navigate = useNavigate();
 
   const location = useLocation();
@@ -28,6 +28,25 @@ const MemberSignUp = () => {
       member_num: member_num
     }))
   }, []);
+
+  useEffect(() => {
+    if(step === 1 && formData.member_num !== 0) {
+      axios
+      .post(`/member`, formData)
+      .then((response) => {
+        console.log(response.data);
+        navigate(`/mem/starter`); //회원정보등록까지 마치면 member의 메인페이지로 바꾸기
+      })
+      .catch((error) => {
+        if (error.response && error.response.data) {
+          console.error(
+            "서버 응답 오류:",
+            error.response.data.message || error.message
+          );
+        }
+      });
+    }
+  }, [step, formData])
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -45,20 +64,7 @@ const MemberSignUp = () => {
       return;
     }
 
-    axios
-      .post(`/member`, formData)
-      .then((response) => {
-        console.log(response.data);
-        navigate(`/mem/starter`); //회원정보등록까지 마치면 member의 메인페이지로 바꾸기
-      })
-      .catch((error) => {
-        if (error.response && error.response.data) {
-          console.error(
-            "서버 응답 오류:",
-            error.response.data.message || error.message
-          );
-        }
-      });
+    setStep(1)
   };
 
   return (

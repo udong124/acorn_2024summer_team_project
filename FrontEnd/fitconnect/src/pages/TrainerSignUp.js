@@ -7,13 +7,13 @@ const token = localStorage.getItem("token");
 
 const TrainerSignUp = () => {
   const [formData, setFormData] = useState({
-    trainer_num: "",
+    trainer_num: 0,
     trainer_insta: "",
     trainer_intro: "",
     gym_name: "",
     gym_link: ""
   });
-
+  const [step, setStep] = useState(0);
   const navigate = useNavigate();
 
   const location = useLocation();
@@ -26,6 +26,21 @@ useEffect(() => {
   }));
 }, []);
 
+useEffect(()=>{
+  if(step === 1 && formData.trainer_num !== 0) {
+    axios.post(`/trainer`, formData)
+    .then(response => {
+      console.log(response.data);
+      navigate(`/tr/home`);  //트레이너정보등록까지 마치면 트레이너메인페이지로 가게
+    })
+    .catch(error => {
+      if (error.response && error.response.data) {
+        console.error("서버 응답 오류:", error.response?.data?.message || error.message); 
+      }
+    });
+  }
+})
+
 const handleChange = (e) => {
   const { name, value } = e.target;
   setFormData({
@@ -37,16 +52,7 @@ const handleChange = (e) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    axios.post(`/trainer`, formData)
-      .then(response => {
-        console.log(response.data);
-        navigate(`/tr/home`);  //트레이너정보등록까지 마치면 트레이너메인페이지로 가게
-      })
-      .catch(error => {
-        if (error.response && error.response.data) {
-          console.error("서버 응답 오류:", error.response?.data?.message || error.message); 
-        }
-      });
+    setStep(1)
   };
 
   return (
