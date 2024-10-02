@@ -26,18 +26,22 @@ const Header = () => {
   const handleLogout = () => {
     localStorage.removeItem("token"); // 로그인 토큰 삭제
     navigate("/login"); // 로그인 페이지로 리다이렉트
+    localStorage.removeItem("userName") //-로그인중 사라지도록 삭제
+    setUserName(null); //-상태 원래되로
   };
 
   // 로그인/회원가입 페이지 여부 확인
   const isAuthPage = location.pathname.startsWith("/login") || location.pathname.startsWith("/signup") ||location.pathname.startsWith("/userstart");
 
-  //로그인중 표시를 위하여 로그인 된 사용자이름을 가져오기
+  //로그인 중 표시를 위하여 로그인 된 사용자이름을 가져오기
   useEffect(() => {
     const storedUserName = localStorage.getItem("userName");
     if(storedUserName) {
       setUserName(storedUserName);
+    } else {
+      setUserName(null); 
     }
-  }, []);
+  }, [location]); 
 
   return (
     <Navbar
@@ -87,7 +91,7 @@ const Header = () => {
 
         {/* 로그인 여부에 따라 userName 표시 */}
         {userName ? (
-          <span>{userName}님 로그인 중</span>
+          <span style={{color: "#fff", marginRight: 20}}>{userName}님 로그인 중</span>
         ) : null }
 
         {/* 경로에 따라 로그인/로그아웃 버튼 표시 */}

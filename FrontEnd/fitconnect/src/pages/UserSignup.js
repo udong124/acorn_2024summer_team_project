@@ -55,8 +55,6 @@ function UserSignUp() {
           try {
             const { payload } = decodeToken(token.substring(7)); 
             const adminNum = payload?.user_num; // payload에서 admin ID 추출 (id 필드는 백엔드에서 설정한 ID 필드에 맞게 수정)
-            
-            // adminNum과 함께 메인페이지 또는 관리자페이지로 이동하게
             navigate("/", {
               state: {
                 admin_num: adminNum
@@ -72,9 +70,7 @@ function UserSignUp() {
 
   // 아이디, 비밀번호, 이메일을 입력했을때 호출되는 함수 
   const handleChange = (e)=>{
-    // e.target 은 object 이다. object 의 내용을 분해 할당
     const {name, value} = e.target
-
     setFormData({
         ...formData,
         [name]:value
@@ -120,7 +116,7 @@ function UserSignUp() {
       return;
     }
 
-    //axios 를 이용해서 현재까지 입력한 회원정보를 전송한다.
+    //입력한 회원정보를 전송하기
     axios.post("/user", formData)
     .then(res=>{
       if (res.data.isSuccess) {
@@ -177,9 +173,6 @@ function UserSignUp() {
     setStep(3)
   };
 
-
-
-
   return (
     <Container >
     <Row>
@@ -209,7 +202,6 @@ function UserSignUp() {
                     name="password"
                     onChange={handleChange}
                     required
-                    
                   />
                   <div className="form-text">비밀번호를 6자 이상 입력해 주세요</div>
                 </Form.Group>
@@ -221,7 +213,6 @@ function UserSignUp() {
                     name="newPassword"
                     onChange={handleChange}
                     required
-                    
                   />
                 </Form.Group>
                 {errorMessage && <p className="text-danger">{errorMessage}</p>}
@@ -231,13 +222,11 @@ function UserSignUp() {
                 >
                   다음
                 </Button>
-                
-                <div >또는</div>
+                <div>또는</div>
                 <Button
                   variant="outline-dark"
-                  
                   as={Link}   
-                  to="http://localhost:8888/oauth2/authorization/google"
+                  to="http://52.78.38.12:8080/login/oauth2/code/google"
                 >
                   Google Register
                 </Button>
@@ -272,7 +261,6 @@ function UserSignUp() {
                     이메일 형식에 맞게 입력해 주세요(@)
                   </div>
                 </Form.Group>
-
                 <Form.Group >
                   <Form.Label>프로필 이미지 업로드</Form.Label>
                   <div>
@@ -281,18 +269,38 @@ function UserSignUp() {
                         src={formData.profile}
                         alt="Profile Preview"
                         roundedCircle
+                        style={{ width: "150px", height: "150px", objectFit: "cover" }}
                       />
                     ) : (
-                      <label htmlFor="profileImg">
-                        프로필 이미지 추가
-                      </label>
+                      <div
+                        style={{
+                          width: "150px",
+                          height: "150px",
+                          backgroundColor: "#f0f0f0",
+                          borderRadius: "50%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          cursor: "pointer",
+                          color: "#999",
+                        }}
+                        onClick={() => document.getElementById("profileImg").click()}
+                      >
+                        <span>이미지 추가</span>
+                      </div>
                     )}
                     <input
                       type="file"
                       id="profileImg"
                       onChange={handleImageChange}
                       accept="image/*"
+                      style={{ display: "none" }}
                     />
+                    {formData.file && <span className="mt-2">{formData.file.name}</span>}
+                    {/* 사용자 위해서 안내 메시지 넣어주기 */}
+                    <small className="text-muted mt-2">
+                      프로필 사진을 등록해주세요 (JPG, PNG, 5MB 이하)
+                    </small>
                   </div>
                 </Form.Group>
                 <Form.Group >

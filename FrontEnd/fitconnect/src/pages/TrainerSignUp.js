@@ -19,12 +19,13 @@ const TrainerSignUp = () => {
   const location = useLocation();
   const { trainer_num } = location.state; 
 
-useEffect(() => {
-  setFormData(prevData => ({
-    ...prevData,
-    trainer_num: trainer_num
-  }));
-}, []);
+  useEffect(() => {
+    setFormData(prevData => ({
+      ...prevData,
+      trainer_num: trainer_num
+    }));
+  }, []);
+  
 
 useEffect(()=>{
   if(step === 1 && formData.trainer_num !== 0 && token.startsWith("Bearer+")) {
@@ -37,7 +38,7 @@ useEffect(()=>{
     .then(response => {
       console.log(response.data);
       if(response.data.isSuccess){
-        navigate(`/`); //회원정보등록까지 마치면 member의 메인페이지로 바꾸기
+        navigate(`/tr/home`); 
       }
     })
     .catch(error => {

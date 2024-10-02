@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import { decodeToken } from "jsontokens";
+import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap';
 
 
 const GoogleLogin = () => {
@@ -62,33 +63,47 @@ const GoogleLogin = () => {
     setStep(1);
   };
 
+ //코드는 수정x, ui만 부트스트랩으로 수정함
+ 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>역할을 선택해주세요</h2>
-      <div>
-        <label>
-          <input
-            type="radio"
-            value="MEMBER"
-            checked={selectedRole === "MEMBER"}
-            onChange={handleRoleChange}
-          />
-          회원
-        </label>
-      </div>
-      <div>
-        <label>
-          <input
-            type="radio"
-            value="TRAINER"
-            checked={selectedRole === "TRAINER"}
-            onChange={handleRoleChange}
-          />
-          트레이너
-        </label>
-      </div>
-      <button type="submit">계속</button>
-    </form>
-  );
+    <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: "100vh" }}>
+    <Row>
+      <Col>
+        <Card className="p-4 shadow-lg" style={{ width: "350px" }}>
+          <Card.Body>
+            <h2 className="text-center mb-4" style={{ fontSize: "1.5rem" }}>역할을 선택해주세요</h2>
+            <Form onSubmit={handleSubmit}>
+              <Form.Group className="mb-3">
+                <Form.Check
+                  type="radio"
+                  label="회원"
+                  name="role"
+                  value="member"
+                  checked={selectedRole === "member"}
+                  onChange={handleRoleChange}
+                  className="mb-2"
+                  style={{ fontSize: "1.2rem" }}
+                />
+                <Form.Check
+                  type="radio"
+                  label="트레이너"
+                  name="role"
+                  value="trainer"
+                  checked={selectedRole === "trainer"}
+                  onChange={handleRoleChange}
+                  style={{ fontSize: "1.2rem" }}
+                />
+              </Form.Group>
+              <Button variant="dark" type="submit" className="w-100" style={{ fontSize: "1.2rem", padding: "10px" }}>
+                계속
+              </Button>
+            </Form>
+          </Card.Body>
+        </Card>
+      </Col>
+    </Row>
+  </Container>
+);
 };
+
 export default GoogleLogin;

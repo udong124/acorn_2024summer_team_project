@@ -12,32 +12,13 @@ const TrainerId = () => {
   const [selectedTrainer, setSelectedTrainer] = useState(null); // 선택한 트레이너
   const [member_num, setMember_num] = useState(null); // 회원 번호 상태
 
-  // 테스트용 데이터-실제 api로 할때는 이 부분 주석 처리하기
-  // useEffect(() => {
-  //   const testData = [
-  //     { trainer_num: 1, gym_name: "ABC Gym", trainer_insta: "trainer_abc" },
-  //     { trainer_num: 2, gym_name: "화이팅 Gym", trainer_insta: "trainer_ddd" },
-  //     {
-  //       trainer_num: 3,
-  //       gym_name: "스파르타 Gym",
-  //       trainer_insta: "sparta_trainer",
-  //     },
-  //     {
-  //       trainer_num: 4,
-  //       gym_name: "챔피언 Gym",
-  //       trainer_insta: "champion_trainer",
-  //     },
-  //   ];
-  //   setTrainerList(testData);
-  //   setFilteredTrainers(testData);
-  // }, []);
-
-  //실제 API 데이터를 가져오는 useEffect (필요할 때 주석을 해제하기)
+  
+  //트레이너리스트를 가져오기
   useEffect(() => {
     axios
       .get("/trainer/list")
       .then((response) => {
-        const trainerData = response.data.trainerList || [];
+        const trainerData = response.data;
         setTrainerList(trainerData);
         setFilteredTrainers(trainerData);
       })
@@ -46,14 +27,16 @@ const TrainerId = () => {
       });
   }, []);
 
-  // 로그인한 사용자의 토큰에서 user_num 가져오기
+  // 로그인한 "Bearer+"뒤의 토큰 부분에서 id 가져오기
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token) {
+    if (token && token.startsWith("Bearer+")) {
       try {
         const { payload } = decodeToken(token.substring(7));
-        if (payload && payload.user_num) {
-          setMember_num(payload.user_num); // 토큰에서 가져온 user_num을 member_num으로 설정
+        if (payload && payload.id) {
+          setMember_num(payload.id); // 토큰에서 가져온 id를 member_num으로 설정
+        } else {
+          console.error("토큰에 id 정보가 없습니다.");
         }
       } catch (error) {
         console.error("토큰 처리 중 오류:", error);
@@ -68,7 +51,7 @@ const TrainerId = () => {
       setFilteredTrainers(trainerList);
       return;
     }
-
+    //검색어조건(헬스장이름, 트레이너인스타에 따라)
     const filteredList = trainerList.filter((trainer) => {
       if (searchCondition === "gym_name") {
         return trainer.gym_name.toLowerCase().includes(keyword);
@@ -81,13 +64,12 @@ const TrainerId = () => {
     setFilteredTrainers(filteredList);
   };
 
-  // 트레이너 등록 버튼 클릭 시
   const handleRegister = () => {
     if (!selectedTrainer || !member_num) {
       alert("트레이너와 회원 정보를 확인하세요.");
       return;
     }
-
+    //현재 해결되지 못한 부분-> 선택된 트레이너 등록(axios.patch안됨) 못함, member_num 을 얻어오지 못함(회원번호에 나온 번호는 user_num이다)
     axios
       .patch("/member/update/trainer", {
         member_num: member_num,
@@ -188,7 +170,7 @@ const TrainerId = () => {
                   <h4>선택된 트레이너</h4>
                   <p>헬스장: {selectedTrainer.gym_name}</p>
                   <p>인스타그램: {selectedTrainer.trainer_insta}</p>
-                  <p>회원 번호: {member_num ? member_num : "불러오는 중..."}</p>
+                  <p>회원 번호: {member_num ? member_num : "토큰에서 member_num을 찾을 수 없음..."}</p>
                   <Button
                     onClick={handleRegister}
                     className="btn-primary w-100"

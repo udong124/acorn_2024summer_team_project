@@ -40,7 +40,7 @@ const MemberSignUp = () => {
       .then((response) => {
         console.log(response.data);
         if(response.data.isSuccess){
-          navigate(`/`); //회원정보등록까지 마치면 member의 메인페이지로 바꾸기
+          navigate("/mem/starter"); 
         }
       })
       .catch((error) => {

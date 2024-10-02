@@ -29,12 +29,6 @@ function UserStartPage() {
               <Link to="/login">사용자 로그인</Link>
             </li>
             <li>
-              <Link to="/membersignup">회원 기본 설정</Link>
-            </li>
-            <li>
-              <Link to="/trainersignup">트레이너 기본 설정</Link>
-            </li>
-            <li>
               <Link to="/trainerid">트레이너 검색기능</Link>
             </li>
             <li>
