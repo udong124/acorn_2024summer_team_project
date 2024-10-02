@@ -30,12 +30,18 @@ const MemberSignUp = () => {
   }, []);
 
   useEffect(() => {
-    if(step === 1 && formData.member_num !== 0) {
+    if(step === 1 && formData.member_num !== 0 && token.startsWith("Bearer+")) {
       axios
-      .post(`/member`, formData)
+      .post(`/member`, formData, {
+        headers: {
+          Authorization: `${token}`
+        }
+      })
       .then((response) => {
         console.log(response.data);
-        navigate(`/mem/starter`); //회원정보등록까지 마치면 member의 메인페이지로 바꾸기
+        if(response.data.isSuccess){
+          navigate(`/`); //회원정보등록까지 마치면 member의 메인페이지로 바꾸기
+        }
       })
       .catch((error) => {
         if (error.response && error.response.data) {
@@ -46,7 +52,7 @@ const MemberSignUp = () => {
         }
       });
     }
-  }, [step, formData])
+  }, [step, formData.member_num, token])
 
   const handleChange = (e) => {
     const { name, value } = e.target;

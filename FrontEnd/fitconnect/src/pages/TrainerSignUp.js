@@ -27,19 +27,29 @@ useEffect(() => {
 }, []);
 
 useEffect(()=>{
-  if(step === 1 && formData.trainer_num !== 0) {
-    axios.post(`/trainer`, formData)
+  if(step === 1 && formData.trainer_num !== 0 && token.startsWith("Bearer+")) {
+    axios
+    .post(`/trainer`, formData, {
+      headers: {
+        Authorization: `${token}`
+      }
+    })
     .then(response => {
       console.log(response.data);
-      navigate(`/tr/home`);  //트레이너정보등록까지 마치면 트레이너메인페이지로 가게
+      if(response.data.isSuccess){
+        navigate(`/`); //회원정보등록까지 마치면 member의 메인페이지로 바꾸기
+      }
     })
     .catch(error => {
       if (error.response && error.response.data) {
-        console.error("서버 응답 오류:", error.response?.data?.message || error.message); 
+        console.error(
+          "서버 응답 오류:",
+          error.response?.data?.message || error.message
+        ); 
       }
     });
   }
-})
+}, [step, formData.trainer_num, token])
 
 const handleChange = (e) => {
   const { name, value } = e.target;

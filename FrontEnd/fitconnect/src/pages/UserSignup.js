@@ -10,6 +10,7 @@ function UserSignUp() {
   //폼에 입력한 내용을 상태값으로 관리
   const [step, setStep] = useState(1);
   const [id, setId] = useState(0);
+  const [token, setToken] = useState("");
   const [formData, setFormData] = useState({
     id:0,
     userName:"",
@@ -27,6 +28,10 @@ function UserSignUp() {
   const [emailErrorMessage, setEmailErrorMessage] = useState("");
 
   const navigate = useNavigate();
+
+  useEffect(()=>{
+    delete localStorage.token
+  }, [])
 
   useEffect(()=>{
     console.log(formData.id)
@@ -63,7 +68,7 @@ function UserSignUp() {
         }
       }
     }
-  }, [id])
+  }, [id, token])
 
   // 아이디, 비밀번호, 이메일을 입력했을때 호출되는 함수 
   const handleChange = (e)=>{
@@ -155,6 +160,7 @@ function UserSignUp() {
       .then((res) => {
         console.log(res.data)
         const token = res.data;
+        setToken(token);
         localStorage.setItem("token", token);
         localStorage.setItem("userName", formData.userName); //로그인된 사용자이름 표시해주기 위해
         localStorage.setItem("role", formData.role)
