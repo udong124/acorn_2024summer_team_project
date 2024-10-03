@@ -4,19 +4,21 @@ import { useNavigate } from 'react-router-dom';
 import { Col, Container, Row, Form, Button, Card } from 'react-bootstrap';
 
 const MyPageDetail = () => {
-  const [trainerInfo, setTrainerInfo] = useState({
+  const [memberInfo, setMemberInfo] = useState({
     name: '',
-    userName: '',
     id: '',
-    trainer_num: '',
+    userName: '',
     email: '',
-    regdate: '',
     profile: '',
     image: '',
-    trainer_insta: '',
-    trainer_intro: '',
-    gym_name: '',
-    gym_link: ''
+    regdate: '',
+    member_num: '',
+    trainer_num: '',
+    member_height: '',
+    member_weight: '',
+    member_gender: '',
+    plan: '',
+    weeklyplan: ''
   });
   const [isReady, setIsReady] = useState(false);
 
@@ -57,10 +59,9 @@ const MyPageDetail = () => {
 
   //회원정보 수정 페이지에서 본인의 정보를 가져오는 axios.get요청
   useEffect(() => {
-
     axios.get(`/user`)
     .then(res => {
-      setTrainerInfo(prevInfo => ({
+      setMemberInfo(prevInfo => ({
         ...prevInfo,
         ...res.data
       }));
@@ -79,9 +80,9 @@ const MyPageDetail = () => {
         console.log(dataUrl)
       }
 
-      axios.get(`/trainer`)
+      axios.get(`/member`)
       .then(res => {
-        setTrainerInfo(prevInfo => ({
+        setMemberInfo(prevInfo => ({
           ...prevInfo,
           ...res.data
         }));
@@ -94,7 +95,7 @@ const MyPageDetail = () => {
 
   useEffect(()=>{
     if(isReady) {
-      axios.patch("/user/update/info", trainerInfo, {
+      axios.patch("/user/update/info", memberInfo, {
         headers:{"Content-Type":"multipart/form-data"}
       })
       .then(res=>{
@@ -104,27 +105,27 @@ const MyPageDetail = () => {
           console.log(error)
       })
   
-      axios.patch(`/trainer/update/info`, trainerInfo)
+      axios.patch(`/member/update/info`, memberInfo)
       .then(res => {
         console.log(res.data)
       })
       .catch(err => console.log(err));
 
-      axios.patch(`/trainer/update/gyminfo`, trainerInfo)
+      axios.patch(`/member/update/plan`, memberInfo)
       .then(res => {
         console.log(res.data)
       })
       .catch(err => console.log(err));
   
-      navigate(`/trainer/mypage`);
+      navigate(`/member/mypage`);
     }
-  }, [trainerInfo.trainer_num, isReady])
+  }, [memberInfo.trainer_num, isReady])
 
   //수정된 내용을 관리하는 핸들러
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setTrainerInfo({
-      ...trainerInfo,
+    setMemberInfo({
+      ...memberInfo,
       [name]: value,
     });
   };
@@ -143,7 +144,7 @@ const MyPageDetail = () => {
         const data=event.target.result
         setImageSrc(data)
     }
-    setTrainerInfo(prevInfo => ({
+    setMemberInfo(prevInfo => ({
       ...prevInfo,
       image: e.target.image
     }));
@@ -179,7 +180,12 @@ const MyPageDetail = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log(trainerInfo)
+    if (isNaN(memberInfo.member_height) || isNaN(memberInfo.member_weight)) {
+      console.error("키와 몸무게는 숫자여야 합니다.");
+      return;
+    }
+
+    console.log(memberInfo)
     setIsReady(true);
   };
 
@@ -220,17 +226,18 @@ const MyPageDetail = () => {
                   <Form.Control
                     type="text"
                     name="name"
-                    value={trainerInfo.name}
+                    value={memberInfo.name}
                     onChange={handleInputChange}
                   />
                 </Form.Group>
-                <Form.Group controlId="formIntro">
-                  <Form.Label>소갯글</Form.Label>
+                <Form.Group controlId="formTrainerName">
+                  <Form.Label>담당 트레이너</Form.Label>
                   <Form.Control
-                    as="textarea"
-                    name="trainer_intro"
-                    value={trainerInfo.trainer_intro}
-                    onChange={handleInputChange}
+                    type="text"
+                    name="trainer_num"
+                    value={memberInfo.trainer_num}
+                    onClick={() => navigate("/member/trainerlist")}
+                    disabled
                   />
                 </Form.Group>
               </Col>
@@ -240,7 +247,7 @@ const MyPageDetail = () => {
                   <Form.Control
                     type="text"
                     name="userName"
-                    value={trainerInfo.userName}
+                    value={memberInfo.userName}
                     disabled
                   />
                 </Form.Group>
@@ -249,7 +256,7 @@ const MyPageDetail = () => {
                   <Form.Control
                     type="text"
                     name="email"
-                    value={trainerInfo.email}
+                    value={memberInfo.email}
                     onChange={handleInputChange}
                   />
                 </Form.Group>
@@ -258,34 +265,52 @@ const MyPageDetail = () => {
                   <Form.Control
                     type="text"
                     name="regdate"
-                    value={trainerInfo.regdate}
+                    value={memberInfo.regdate}
                     disabled
                   />
                 </Form.Group>
-                <Form.Group controlId="formInsta">
-                  <Form.Label>트레이너 SNS</Form.Label>
+                <Form.Group controlId="formHeight">
+                  <Form.Label>키</Form.Label>
                   <Form.Control
                     type="text"
-                    name="trainer_insta"
-                    value={trainerInfo.trainer_insta}
+                    name="member_height"
+                    value={memberInfo.member_height}
                     onChange={handleInputChange}
                   />
                 </Form.Group>
-                <Form.Group controlId="formGymName">
-                  <Form.Label>헬스장이름</Form.Label>
+                <Form.Group controlId="formWeight">
+                  <Form.Label>몸무게</Form.Label>
                   <Form.Control
                     type="text"
-                    name="gym_name"
-                    value={trainerInfo.gym_name}
+                    name="member_weight"
+                    value={memberInfo.member_weight}
                     onChange={handleInputChange}
                   />
                 </Form.Group>
-                <Form.Group controlId="formGymLink">
-                  <Form.Label>헬스장위치</Form.Label>
+                <Form.Group controlId="formGender">
+                  <Form.Label>성별</Form.Label>
                   <Form.Control
                     type="text"
-                    name="gym_link"
-                    value={trainerInfo.gym_link}
+                    name="member_gender"
+                    value={memberInfo.member_gender}
+                    onChange={handleInputChange}
+                  />
+                </Form.Group>
+                <Form.Group controlId="formPlan">
+                  <Form.Label>목표</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    name="plan"
+                    value={memberInfo.plan}
+                    onChange={handleInputChange}
+                  />
+                </Form.Group>
+                <Form.Group controlId="formWeeklyPlan">
+                  <Form.Label>주간목표</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    name="weeklyplan"
+                    value={memberInfo.weeklyplan}
                     onChange={handleInputChange}
                   />
                 </Form.Group>
@@ -295,7 +320,7 @@ const MyPageDetail = () => {
             <Button variant="primary" type="submit" className="ml-2">
               저장
             </Button>
-            <Button variant="secondary" onClick={() => navigate('/trainer/mypage')} className="ml-2">
+            <Button variant="secondary" onClick={() => navigate('/member/mypage')} className="ml-2">
               취소
             </Button>
           </Form>

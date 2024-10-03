@@ -9,17 +9,13 @@ const UserLogin = () => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [isReady, setIsReady] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-
-    if (password.length < 6) {
-      setErrorMessage("비밀번호는 6자 이상이어야 합니다.");
-      return;
-    }
-
-    axios
+  useEffect(()=>{
+    if(isReady) {
+      console.log(userName + " " + password)
+      axios
       .post("/auth", { userName, password })
       .then((response) => {
         const token = response.data;
@@ -47,7 +43,6 @@ const UserLogin = () => {
           }
         }
       })
-
       .catch((error) => {
         // 에러 메시지 처리
         const errorMsg =
@@ -56,6 +51,18 @@ const UserLogin = () => {
         setErrorMessage(errorMsg);
         console.error("로그인 실패:", errorMsg);
       });
+    }
+  }, [userName, password, isReady])
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+
+    if (password.length < 6) {
+      setErrorMessage("비밀번호는 6자 이상이어야 합니다.");
+      return;
+    }
+
+    setIsReady(true);
   };
 
   // 역할에 따라 페이지 이동하기

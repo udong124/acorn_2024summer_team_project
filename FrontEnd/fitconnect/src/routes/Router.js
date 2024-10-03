@@ -9,7 +9,9 @@ import MemberSignUp from '../pages/User/MemberSignUp';
 import TrainerId from '../pages/User/TrainerId';
 import GoogleLogin from '../pages/User/GoogleLogin';
 import MemberMain from '../pages/Member/MemberMain';
-import MemberMyPage from '../pages/Member/MemberMyPage';
+import MemberMypage from '../pages/Member/MemberMypage';
+import MemberMypageDetail from '../pages/Member/MemberMypageDetail';
+import MemberTrainerList from '../pages/Member/MemberTrainerList';
 import MemberCalendar from '../pages/Member/MemberCalendar';
 import MemberDietJournal from '../pages/Member/MemberDietJournal';
 import MemberDietAdd from '../pages/Member/MemberDietAdd';
@@ -41,7 +43,9 @@ const Routes = [
       // 멤버 관련 경로
       { path: "/member/*", element: <Navigate to="/member" /> },
       { path: "/member", element: <MemberMain /> },
-      { path: "/member/mypage", element: <MemberMyPage /> },
+      { path: "/member/mypage", element: <MemberMypage /> },
+      { path: "/member/mypagedetail", element: <MemberMypageDetail /> },
+      { path: "/member/trainerlist", element: <MemberTrainerList /> },
       { path: "/member/calendar", element: <MemberCalendar /> },
       { path: "/member/dietjournal", element: <MemberDietJournal /> },
       { path: "/member/dietadd", element: <MemberDietAdd /> },

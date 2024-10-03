@@ -1,214 +1,143 @@
-import React, { useEffect, useState, useRef } from 'react'
-import { Row, Col, Card, Button, Form} from "react-bootstrap";
-import { useNavigate } from 'react-router';
-import axios from 'axios'
+import React, { useEffect, useRef, useState } from 'react';
+import axios from 'axios';
+import { Col, Container, Row, Card, Button, Form } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
-const MemberMyPage = () => {
-  const [formData, setFormData] = useState({
-    id:"",
-    userName:"",
-    password:"",
-    newPassword:"",
-    name:"",
-    email:"",
-    profile:"",
-    trainer:"",
-    role:"",
-    regdate:"",
-    provider:"",
-    trainer_num:""
-  })
 
-  const [originalData, setOriginalData] = useState(null)
-  const [emailError, setEmailError]=useState("")
-  const [profileView, setProfileView]=useState("")
+const MyPage = () => {
+  const [memberInfo, setMemberInfo] = useState({
+    name: '',
+    id: '',
+    userName: '',
+    email: '',
+    profile: '',
+    image: '',
+    regdate: '',
+    member_num: '',
+    trainer_num: '',
+    member_height: '',
+    member_weight: '',
+    member_gender: '',
+    plan: '',
+    weeklyplan: ''
+  });
+  // 프로필 이미지 src 에 적용할 값을 state 로 관리 하기
+  const [imageSrc, setImageSrc] = useState(null);
 
-  const token= localStorage.getItem('token')||sessionStorage.getItem('token')
-  const navigate = useNavigate()
-  const profileInput = useRef(null)
+  const personSvg = useRef();
+  // 이미지 input 요소의 참조값을 사용하기 위해 
+  const imageInput = useRef()
 
-  useEffect(()=>{
-      if(!token) return
-      axios.get('/user',{
-        headers:{Authorization:`Bearer ${token}`}
-      })
-      .then(res=>{console.log(res.data)
-          setFormData({
-            id: res.data.id,
-            userName: res.data.userName,
-            password: "",
-            name: res.data.name,
-            email: res.data.email,
-            trainer_num:""
-          })
-          setOriginalData(res.data)
-          setProfileView(res.data.profile)
-      })
-      .catch(error=>console.log(error))
-      
-      axios.get('/trainer',{
-          headers:{ Authorization:`Bearer ${token}`}
-      })
-      .then(res=>{
-          setFormData((prevState)=>({
-              ...prevState,
-              trainer_num: res.data.trainer_num
-          }))
-      })
-      .catch(error=>{console.log(error)})
-  },[token])
+  const navigate = useNavigate();
 
-  const handleChange = (e) => {
-      setFormData({
-          ...formData,
-          [e.target.name]:e.target.value
-      })
-
-      if(e.target.name === 'email'){
-          const emailComfirm = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-          if(!emailComfirm.test(e.target.value)){
-              setEmailError("유효한 이메일 형식이 아닙니다.")
-            if(e.target.value == "")
-              setEmailError("")
-          }
-          else{
-              setEmailError("")
-          }
-      }
+  const dropZoneStyle={
+    minHeight:"250px",
+    minWidth:"250px",
+    border:"3px solid #cecece",
+    borderRadius:"10px",
+    display:"flex",
+    justifyContent:"center",
+    alignItems:"center"
+  }
+  const profileStyle={
+    width: "200px",
+    height: "200px",
+    border: "1px solid #cecece",
+    borderRadius: "50%"
+  }
+  const profileStyle2={
+    width: "200px",
+    height: "200px",
+    border: "1px solid #cecece",
+    borderRadius: "50%",
+    display: "none"
   }
 
-  const handleProfileChange = (e)=>{
-      const profileChangeFile = e.target.files[0]
-      if(profileChangeFile){
-          setProfileView(URL.createObjectURL(profileChangeFile))
-          
-          const reader = new FileReader()
-          reader.onloadend = ()=>{
-              setFormData({
-                  ...formData,
-                  profile: reader.result
-              })
-          }
-          reader.readAsDataURL(profileChangeFile)
-      }
-  }
-
-  const handleChangeSubmit = (e)=>{
-      e.preventDefault()
-      
-      if(JSON.stringify(formData)==JSON.stringify(originalData)){
-          alert("수정된 내용이 없습니다")
-          return
-      }
-
-      if(formData.password !== formData.newPassword){
-          if(formData.password==="" || formData.newPassword===""){
-              alert("비밀번호를 입력해주세요")
-              return
-          }
-          else{
-          alert("비밀번호가 일치하지 않습니다.")
-          return
-          }
+  // 본인정보를 가져오는 axios.get 요청
+  useEffect(() => {
+    axios.get(`/user`)
+    .then(res => {
+      setMemberInfo(prevInfo => ({
+        ...prevInfo,
+        ...res.data
+      }));
+      //만일 등록된 프로필 이미지가 있다면
+      if(res.data.profile){
+        setImageSrc(`/upload/images/${res.data.profile}`)
+      }else{//없다면 
+        // person svg 이미지를 읽어들여서 data url 로 만든다음 imageSrc 에 반영하기 
+        // svg 이미지를 2 진 데이터 문자열로 읽어들여서 
+        const svgString=new XMLSerializer().serializeToString(personSvg.current)
+        // 2진데이터 문자열을 btoa (binary to ascii) 함수를 이용해서 ascii 코드로 변경
+        const encodedData = btoa(svgString)
+        // 변경된 ascii 코드를 이용해서 dataUrl 을 구성한다 
+        const dataUrl = "data:image/svg+xml;base64," + encodedData;
+        setImageSrc(dataUrl)
+        console.log(dataUrl)
       }
 
-      axios.patch('/user/update/info',{
-          profile:formData.profile,
-          userName:formData.userName,
-          name:formData.name,
-          email:formData.email,
+      axios.get(`/member`)
+      .then(res => { 
+        setMemberInfo(prevInfo => ({
+          ...prevInfo,
+          ...res.data
+        }));
       })
-      .then(res=>{
-          console.log(res.data)
-          navigate('/user/MemberDashBoard')
-      })
-      .catch(error=>console.log(error))
+      .catch(err => console.log(err));
+    })
+    .catch(err => console.log(err));
+  }, []);
 
-      if(formData.newPassword){
-          axios.patch('/user/update/password',{
-              newPassword:formData.newPassword
-          },{
-              headers:{
-                  Authorization: `Bearer ${token}`,
-                  'Content-Type':"application/json"
-              }
-          })
-          .then(res=>{
-              console.log(res.data)
-              navigate('/user/MemberDashBoard')
-          })
-          .catch(error=>console.log(error))
-      }
-  }
 
-  const handleTrainerDelete=(e)=>{
-      e.preventDefault()
-      axios.delete('/trainer',{
-          headers:{Authorization:`Bearer ${token}`}
-      })
-      .then(res=>{
-          console.log(res.data)
-          setFormData({...formData, trainer_num:""})
-      })
-      .catch(error=>{
-          console.log(error)
-          return
-      })
-  }
 
   return (
-    <Row>
+    <>
+      <svg ref={personSvg} style={profileStyle2}  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+        <path fillRule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+      </svg>
+      <Container>
+      <Row>
       <Col>
          <Card>
           <Card.Header as="h6" className="border-bottom p-3 mb-0">
-            <i className="bi bi-link me-2"> </i>
-            회원정보 수정
+            <h1>Mypage</h1>
           </Card.Header>
           <Card.Body className="">
-            <Form onSubmit={handleChangeSubmit}>
-                <div style={{ textAlign: "center", marginBottom: "20px" }}>
-                <div style={{ display: "inline-block", border: "1px solid black", padding: "10px"}}>
-                    <img src={profileView || `/upload/images/`} alt="프로필 이미지" onClick={()=>profileInput.current.click()} style={{cursor: 'pointer', width:'150px', height:'150px', objectFit:'cover'}}/>
-                    <input type="file" ref={profileInput} onChange={handleProfileChange} style={{display:'none'}} />
-                </div></div>
-                <Form.Group controlId='userName'>
-                    <Form.Label>아이디</Form.Label>
-                    <Form.Control readOnly name="userName" value={formData.userName} type="text" placeholder='아이디' />
-                </Form.Group>
-
-                <Form.Group controlId='name'>
-                    <Form.Label>이름</Form.Label>
-                    <Form.Control name="name" value={formData.name} type="text" onChange={handleChange} placeholder='이름'/>
-                </Form.Group>
-
-                <Form.Group controlId='email'>
-                    <Form.Label>이메일</Form.Label>
-                    {emailError && <p style={{color:'red'}}>{emailError}</p>}
-                    <Form.Control name="email" value={formData.email} type="email" onChange={handleChange} placeholder='이메일'/>
-                    
-                </Form.Group>
-
-                <Form.Group controlId='newPassword'>
-                    <Form.Label>비밀번호</Form.Label>
-                    <Form.Control name="password" value={formData.password} type="password" onChange={handleChange} placeholder='비밀번호'/>
-
-                </Form.Group>
-                <Form.Group>
-                    <Form.Label>비밀번호 확인</Form.Label>
-                    <Form.Control name="newPassword" value={formData.newPassword} type="password" onChange={handleChange} placeholder='비밀번호 확인'/>
-                </Form.Group>
-                <Form.Group controlId='trainer'>
-                    <Form.Label>트레이너 번호</Form.Label>
-                    <Form.Control readOnly name="trainer_num" value={formData.trainer_num||"등록된 트레이너 없음"} type="text" placeholder='트레이너 번호'/>
-                <Button onClick={handleTrainerDelete}>트레이너 삭제</Button>
-                </Form.Group>
-                <Button type="submit">수정</Button>
-                </Form>
-          </Card.Body>
-        </Card>
-      </Col>
-    </Row>
+            
+              <Row>
+                <Col>
+                  <Form.Group>
+                    <Form.Label>프로필 이미지 </Form.Label>
+                    <Form.Control ref={imageInput} style={{display:"none"}} type="file" name="image" accept="image/*"/>
+                  </Form.Group>
+                  <div className="mb-3">
+                    <div style={dropZoneStyle}>
+                        <img style={profileStyle} src={imageSrc} alt="프로필 이미지"/>
+                    </div>
+                  </div>
+                </Col>
+                <Col>
+                    <p>이름: {memberInfo.name}</p>
+                    <p>생성일: {memberInfo.regdate}</p>
+                    <p>아이디: {memberInfo.userName}</p>
+                    <p>이메일: {memberInfo.email}</p>
+                    <p>키: {memberInfo.member_height}</p>
+                    <p>몸무게: {memberInfo.member_weight}</p>
+                    <p>성별: {memberInfo.member_gender}</p>
+                    <p>목표: {memberInfo.plan}</p>
+                    <p>주간 목표: {memberInfo.weeklyplan}</p>
+                </Col>
+              </Row>
+              <Button type="submit"  onClick={()=> navigate('/member/mypagedetail')}>회원정보수정</Button>
+          
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>     
+      </Container>
+    </>
   );
 };
 
-export default MemberMyPage;
+export default MyPage;
