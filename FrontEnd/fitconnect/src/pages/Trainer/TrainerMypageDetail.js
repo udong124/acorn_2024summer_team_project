@@ -19,12 +19,15 @@ const MyPageDetail = () => {
 
   const navigate = useNavigate();
 
+  //회원정보 수정 페이지에서 본인의 정보를 가져오는 axios.get요청
   useEffect(() => {
     axios.get(`/trainer`)
       .then(res => {setTrainerInfo(res.data)})
       .catch(err => console.log(err));
   }, []);
 
+
+  //수정된 내용을 관리하는 핸들러
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setTrainerInfo({
@@ -35,13 +38,14 @@ const MyPageDetail = () => {
 
 
 
+  //회원정보 수정 페이지에서 본인의 정보를 수정하는 axios.patch 요청
   const handleSubmit = (e) => {
     
     axios.patch(`/trainer/update/info`, trainerInfo)
       .then(res => {setTrainerInfo(res.data)
       })
       .catch(err => console.log(err));
-      navigate(`/Mypage`);
+      navigate(`/tr/mypage`);
   };
 
   return (
@@ -145,7 +149,7 @@ const MyPageDetail = () => {
             <Button variant="primary" type="submit">
               저장
             </Button>
-            <Button variant="secondary" onClick={() => navigate('/Mypage')} className="ml-2">
+            <Button variant="secondary" onClick={() => navigate('/tr/mypage')} className="ml-2">
               취소
             </Button>
           </Form>

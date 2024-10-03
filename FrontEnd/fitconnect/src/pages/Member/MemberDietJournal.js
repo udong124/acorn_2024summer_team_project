@@ -3,15 +3,12 @@ import axios from "axios"
 import React, { useEffect, useState } from "react"
 import { Button, Card, Row, Col } from "react-bootstrap"
 import ProgressBar from 'react-bootstrap/ProgressBar'
-import { useNavigate, useParams } from "react-router-dom"
+import { useLocation, useNavigate, useParams } from "react-router-dom"
 
 function MemberDietJournal(){
 
-  const {member_num} = useParams()
-  const {m_calendar_id} = useParams()
-  const {d_journal_id} = useParams()
+  const {member_num, m_calendar_id, d_journal_id} = useParams()
 
-  const [date,setDate] = useState({})
   const [formData,setFormData] = useState([])
   const [totalCarbs, setTotalCarbs] = useState(0)
   const [totalProtein, setTotalProtein] = useState(0)
@@ -21,27 +18,44 @@ function MemberDietJournal(){
   const token = localStorage.getItem('token')
   
   const navigate = useNavigate()
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search)
+
+  const today = new Date()
+  const localDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
+  const initialDate = queryParams.get("date") ? queryParams.get("date") : localDate
+  const [selectedDate, setSelectedDate] = useState(initialDate);
+
+  useEffect(()=>{
+    if(!queryParams.get("date"))
+      navigate(`?date=${initialDate}`)
+  },[initialDate, navigate, queryParams])
 
   useEffect(()=>{
     axios.get(`/dietjournal/${m_calendar_id}`)
     .then(res => {
-      setFormData(res.data)
+      axios.get(`/membercalendar/${m_calendar_id}`)
+      .then(calendarRes=>{
+        const selectDateCalendar = calendarRes.data.date
+        const filteredData = res.data.filter(item => selectDateCalendar === selectedDate)
+        setFormData(filteredData)
+    
+        const carbsAll = filteredData.reduce((sum, data) => sum + data.carbs, 0)
+        setTotalCarbs(carbsAll)
+    
+        const proteinAll = filteredData.reduce((sum, data) => sum + data.protein, 0)
+        setTotalProtein(proteinAll)
+    
+        const fatAll = filteredData.reduce((sum, data) => sum + data.fat, 0)
+        setTotalFat(fatAll)
+    
+        const kcalAll = filteredData.reduce((sum, data) => sum + data.calories, 0)
+        setTotalKcal(kcalAll)
   
-      const carbsAll = res.data.reduce((sum, data) => sum + data.carbs, 0)
-      setTotalCarbs(carbsAll)
-  
-      const proteinAll = res.data.reduce((sum, data) => sum + data.protein, 0)
-      setTotalProtein(proteinAll)
-  
-      const fatAll = res.data.reduce((sum, data) => sum + data.fat, 0)
-      setTotalFat(fatAll)
-  
-      const kcalAll = res.data.reduce((sum, data) => sum + data.calories, 0)
-      setTotalKcal(kcalAll)
-  
+      })  
     })
     .catch(error => console.log(error))
-  },[token,m_calendar_id,member_num])
+  },[token, m_calendar_id,member_num,selectedDate])
 
   const getDietByType = (type) => {
     return formData.filter(data => data.diet_type === type)
@@ -50,7 +64,7 @@ function MemberDietJournal(){
   const handleAllDelete=()=>{
     axios.delete(`/dietjournal/all/${m_calendar_id}`)
     .then(res=>{
-      if(res.data){
+      if(res.data.isSuccess){
         alert("삭제 완료되었습니다.")
         navigate('/MemberCalendar')
       }else{
@@ -67,7 +81,7 @@ function MemberDietJournal(){
   const handleDelete=()=>{
     axios.delete(`/dietjournal/${d_journal_id}`)
     .then(res => {
-      if(res.data){
+      if(res.data.isSuccess){
         setFormData(data => data.filter(item => item.d_journal_id !== d_journal_id))
         alert("식단 삭제 완료되었습니다.")
       }else{
@@ -80,6 +94,13 @@ function MemberDietJournal(){
   return (
     <>
     <div>
+      <Row>
+        <Col>
+          <Card>
+            <Card.Header as="h6" className="border-bottom p-3 mb-0"><div><h1>{selectedDate}의 식단</h1></div></Card.Header>
+          </Card>
+        </Col>
+      </Row>
       <Row>
         <Col xs={24} md={12}>
             <Card>

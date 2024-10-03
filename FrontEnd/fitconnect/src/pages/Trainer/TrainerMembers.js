@@ -35,9 +35,10 @@ function Members() {
 
   // const [dietJournal, setdietJournal ]= useState([]);
 
- 
+
+  // 회원목록 가져오는 axios.get요청
   const getMembers = () => {
-    axios.get(`/trainer/list/member`)
+    axios.get(`/trainercalendar`)
       .then(res => {
         console.log(res.data)
         setMembers(res.data)
@@ -49,6 +50,7 @@ function Members() {
     getMembers()
   }, []);
 
+  // 회원을 목록에서 삭제하는 axios.delete 요청
   const handleDelete = (num) => {
     axios.delete(`/members/${num}`)
       .then(res => getMembers(res.data)) 
@@ -57,10 +59,10 @@ function Members() {
 
 
 
-
+  // 회원목록 출력
   return (
     <div>
-    <Row>
+    {/* <Row>
       <Col>
          <Card>
           <Card.Header as="h6" className="border-bottom p-3 mb-0">
@@ -85,7 +87,7 @@ function Members() {
           </Card.Body>
         </Card>
       </Col>
-    </Row>     
+    </Row>      */}
     </div>
   );
 }

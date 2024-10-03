@@ -1,4 +1,3 @@
-import { lazy } from "react";
 import { Navigate } from "react-router-dom";
 
 import BaseLayout from './../layouts/BaseLayout';
@@ -7,7 +6,7 @@ import UserLogin from '../pages/User/UserLogin';
 import UserSignUp from '../pages/User/UserSignUp';
 import TrainerSignUp from '../pages/User/TrainerSignUp';
 import MemberSignUp from '../pages/User/MemberSignUp';
-import TrainerId from '../pages/Trainer/TrainerId';
+import TrainerId from '../pages/User/TrainerId';
 import GoogleLogin from '../pages/User/GoogleLogin';
 import MemberMain from '../pages/Member/MemberMain';
 import MemberMyPage from '../pages/Member/MemberMyPage';

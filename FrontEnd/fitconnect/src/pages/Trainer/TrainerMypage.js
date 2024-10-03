@@ -20,6 +20,7 @@ const MyPage = () => {
 
   const navigate = useNavigate();
 
+  // 본인정보를 가져오는 axios.get 요청
   useEffect(() => {
     axios.get(`/trainer`)
       .then(res => { 
@@ -40,7 +41,7 @@ const MyPage = () => {
             <h1>Mypage</h1>
           </Card.Header>
           <Card.Body className="">
-
+            
               <Row>
                 <Col>
                   <img src={trainerInfo.profile} alt="" />
@@ -56,7 +57,7 @@ const MyPage = () => {
                     <p>헬스장위치: {trainerInfo.gym_link}</p>
                 </Col>
               </Row>
-              <Button type="submit"  onClick={()=> navigate('/MypageDetail/')}>회원정보수정</Button>
+              <Button type="submit"  onClick={()=> navigate('/tr/mypagedetail')}>회원정보수정</Button>
           
             </Card.Body>
           </Card>

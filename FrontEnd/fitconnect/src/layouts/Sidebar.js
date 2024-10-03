@@ -15,26 +15,26 @@ const Sidebar = () => {
   // 경로에 따라 다른 네비게이션 메뉴 설정
   let navigation = [];
 
-  if (location.pathname.startsWith("/mem")) {
+  if (location.pathname.startsWith("/member")) {
     // 멤버 관련 경로일 때 보여줄 메뉴 설정
     navigation = [
-      { title: "Dashboard", href: "/mem/starter", icon: "bi bi-speedometer2" },
-      { title: "Member My Page", href: "/mem/MemberMyPage", icon: "bi bi-link" },
-      { title: "Member Calendar", href: "/mem/MemberCalendar", icon: <FcCalendar /> },
-      { title: "Diet Journal", href: "/mem/MemberDietJournal", icon: <FcViewDetails /> },
-      { title: "Add Diet", href: "/mem/MemberDietAdd", icon: <FcViewDetails /> },
-      { title: "Add Exercise", href: "/mem/MemberExerciseAdd", icon: <FcViewDetails /> },
-      { title: "Exercise", href: "/mem/MemberExercise", icon: <FcViewDetails /> }
+      { title: "Dashboard", href: "/member", icon: "bi bi-speedometer2" },
+      { title: "Member My Page", href: "/member/mypage", icon: "bi bi-link" },
+      { title: "Member Calendar", href: "/member/calendar", icon: <FcCalendar /> },
+      { title: "Diet Journal", href: "/member/dietjournal", icon: <FcViewDetails /> },
+      { title: "Add Diet", href: "/member/dietadd", icon: <FcViewDetails /> },
+      { title: "Add Exercise", href: "/member/exerciseadd", icon: <FcViewDetails /> },
+      { title: "Exercise", href: "/member/exercise", icon: <FcViewDetails /> }
     ];
   } else if (location.pathname.startsWith("/tr")) {
     // 트레이너 관련 경로일 때 보여줄 메뉴 설정
     navigation = [
-      { title: "MainPage", href: "/tr/home", icon: "bi bi-speedometer2" },
-      { title: "캘린더", href: "/tr/calendar", icon: "bi bi-people" },
-      { title: "메신저", href: "/tr/message", icon: "bi bi-list-task" },
-      { title: "회원목록", href: "/tr/members", icon: "bi bi-calendar-event" },
-      { title: "마이페이지", href: "/tr/mypage", icon: "bi bi-calendar-event" },
-      { title: "MypageDetail", href: "/tr/mypagedetail", icon: "bi bi-calendar-event" },
+      { title: "MainPage", href: "/trainer", icon: "bi bi-speedometer2" },
+      { title: "캘린더", href: "/trainer/calendar", icon: "bi bi-people" },
+      { title: "메신저", href: "/trainer/message", icon: "bi bi-list-task" },
+      { title: "회원목록", href: "/trainer/members", icon: "bi bi-calendar-event" },
+      { title: "마이페이지", href: "/trainer/mypage", icon: "bi bi-calendar-event" },
+      { title: "MypageDetail", href: "/trainer/mypagedetail", icon: "bi bi-calendar-event" },
     ];
   } else {
     // 로그인 또는 회원가입 경로일 때 보여줄 메뉴 설정
