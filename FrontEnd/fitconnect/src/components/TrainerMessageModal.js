@@ -15,6 +15,7 @@ const MessageModal = ({ showModal, setShowModal, topic }) => { // props로 topic
   const decoder = new TextDecoder('utf-8');
   const client = mqtt.connect('ws://localhost:9001'); // mqtt 연결 설정 코드
 
+                              // messenger 내에서 필요한 axios 요청 목록들
 
                               // get `messenger` -> 채팅방 자체만불러오기(빈채팅방)
 
@@ -26,6 +27,7 @@ const MessageModal = ({ showModal, setShowModal, topic }) => { // props로 topic
 
                               // DEL `messenger` -> 채팅방 삭제
                               // DEL `messenger/detail` -> 채팅방내에서 메세지 하나씩 삭제
+
 
   const refresh = () => {
     setMessages([])
@@ -63,6 +65,7 @@ const MessageModal = ({ showModal, setShowModal, topic }) => { // props로 topic
     }
   }, [topic]); // topic이 변경될 때마다 useEffect 실행
 
+  // 양식제출이 일어났을때 실행되는 핸들러
   const sendMessageHandle = (e) => {
     e.preventDefault();
     if (message.content !== "" && message.topic !== "" && message.send_type !== "") {

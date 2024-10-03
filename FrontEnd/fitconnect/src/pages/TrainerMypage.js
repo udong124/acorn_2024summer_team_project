@@ -20,6 +20,7 @@ const MyPage = () => {
 
   const navigate = useNavigate();
 
+  // 본인정보를 가져오는 axios.get 요청
   useEffect(() => {
     axios.get(`/trainer`)
       .then(res => { 

@@ -7,7 +7,8 @@ const Message = () => {
   const [showModal, setShowModal] = useState(false);
   const [members, setMembers] = useState([]);
   const [selectedTopic, setSelectedTopic] = useState(''); // 선택된 topic 값을 저장하는 상태
-
+  
+  //axios.get요청으로 전체 회원리스트 가져오기
   const getMembers = () => {
     axios.get(`/messenger/list`)
       .then(res => {
