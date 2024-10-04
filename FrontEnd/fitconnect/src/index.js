@@ -10,6 +10,7 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom"; // BrowserRouter로 변경
 import Loader from "./layouts/loader/Loader";
 import axios from 'axios';
+import { Provider } from "react-redux";
 
 // id가 root인 곳에 UI 출력하기
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -56,7 +57,9 @@ const store = createStore(rootReducer, initialState);
 root.render(
   <Suspense fallback={<Loader />}>
     <BrowserRouter> {/* BrowserRouter로 변경 */}
-      <App />
+    <Provider store={store}>
+        <App />
+      </Provider>
     </BrowserRouter>
   </Suspense>
 );

@@ -7,8 +7,8 @@ const ProtectedRoute = lazy(() => import("../components/ProtectedRoute.js"));
 
 /********* Pages *******/
 
- //ProtectedRoute 사용할 경우 이 주석을 이용해 감싸서 사용해주기
- // <ProtectedRoute allowedRoles={['member']}><TrainerId/></ProtectedRoute>
+ //ProtectedRoute 사용할 경우 이 주석을 이용해 감싸서 사용해주기  MEMBER,TRAINER,ADMIN 대문자로!
+ // <ProtectedRoute allowedRoles={['MEMBER']}><TrainerId/></ProtectedRoute>
 
 /**** USER ****/
 const UserStartPage = lazy(() => import("../pages/UserStartPage.js"));
@@ -50,8 +50,7 @@ const Routes = [
       { path: "/signup", element: <UserSignUp/> },
       { path: "/trainersignup", element: <TrainerSignUp /> },
       { path: "/membersignup", element: <MemberSignUp /> },
-      { path: "/trainerid", element: <TrainerId /> },
-      { path: "/googlelogin", element: <GoogleLogin/>},
+      { path: "/trainerid", element: <TrainerId />}, 
 
       // 멤버 관련 경로
       { path: "/mem", element: <Navigate to="/mem/starter" /> },

@@ -5,7 +5,6 @@ import Logo from "./Logo";
 import { ReactComponent as LogoWhite } from "../assets/images/logos/FitConnectLogo.svg";
 import user1 from "../assets/images/users/user4.jpg";
 
-
 const Header = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
@@ -13,7 +12,6 @@ const Header = () => {
   const location = useLocation(); // 현재 경로 가져오기
   const navigate = useNavigate(); // 페이지 이동을 위한 navigate 설정
 
-  
   const toggle = () => setDropdownOpen((prevState) => !prevState);
   const Handletoggle = () => {
     setIsOpen(!isOpen);
@@ -26,22 +24,22 @@ const Header = () => {
   const handleLogout = () => {
     localStorage.removeItem("token"); // 로그인 토큰 삭제
     navigate("/login"); // 로그인 페이지로 리다이렉트
-    localStorage.removeItem("userName") //-로그인중 사라지도록 삭제
+    localStorage.removeItem("userName"); //-로그인중 사라지도록 삭제
     setUserName(null); //-상태 원래되로
   };
 
-  // 로그인/회원가입 페이지 여부 확인
+   // 로그인/회원가입 페이지 여부 확인
   const isAuthPage = location.pathname.startsWith("/login") || location.pathname.startsWith("/signup") ||location.pathname.startsWith("/userstart");
 
   //로그인 중 표시를 위하여 로그인 된 사용자이름을 가져오기
   useEffect(() => {
     const storedUserName = localStorage.getItem("userName");
-    if(storedUserName) {
+    if (storedUserName) {
       setUserName(storedUserName);
     } else {
-      setUserName(null); 
+      setUserName(null);
     }
-  }, [location]); 
+  }, [location]);
 
   return (
     <Navbar
@@ -85,31 +83,29 @@ const Header = () => {
       </div>
 
       <Navbar.Collapse>
-        <Nav className="me-auto">
-          {/* 빈 네비게이션 */}
-        </Nav>
+        <Nav className="me-auto">{/* 빈 네비게이션 */}</Nav>
 
-        {/* 로그인 여부에 따라 userName 표시 */}
+        {/* 로그인 여부에 따라 로그인,로그아웃 버튼 표시 */}
         {userName ? (
-          <span style={{color: "#fff", marginRight: 20}}>{userName}님 로그인 중</span>
-        ) : null }
-
-        {/* 경로에 따라 로그인/로그아웃 버튼 표시 */}
-        {isAuthPage ? (
+          <>
+            <span style={{ color: "#fff", marginRight: 20 }}>{userName}님 로그인 중</span>
+            <Button variant="danger" onClick={handleLogout}>
+              로그아웃
+            </Button>
+          </>
+        ) : (
           <Button variant="light" onClick={() => navigate("/login")}>
             로그인
           </Button>
-        ) : (
-          <>
-          
-          <Button variant="danger" onClick={handleLogout}>
-            로그아웃
-          </Button>
-          </>
         )}
         <Dropdown show={dropdownOpen} onToggle={toggle}>
           <Dropdown.Toggle variant="transparent">
-            <img src={user1} alt="profile" className="rounded-circle" width="30" />
+            <img
+              src={user1}
+              alt="profile"
+              className="rounded-circle"
+              width="30"
+            />
           </Dropdown.Toggle>
         </Dropdown>
       </Navbar.Collapse>

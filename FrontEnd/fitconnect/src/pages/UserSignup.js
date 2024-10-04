@@ -54,7 +54,7 @@ function UserSignUp() {
         if (token) {
           try {
             const { payload } = decodeToken(token.substring(7)); 
-            const adminNum = payload?.user_num; // payload에서 admin ID 추출 (id 필드는 백엔드에서 설정한 ID 필드에 맞게 수정)
+            const adminNum = payload?.id; // payload에서 admin ID 추출 (id 필드는 백엔드에서 설정한 ID 필드에 맞게 수정)
             navigate("/", {
               state: {
                 admin_num: adminNum
