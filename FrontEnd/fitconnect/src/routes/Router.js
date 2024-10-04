@@ -48,7 +48,7 @@ const Routes = [
       { path: "/member", element: <MemberMain /> },
       { path: "/member/mypage", element: <MemberMypage /> },
       { path: "/member/mypagedetail", element: <MemberMypageDetail /> },
-      { path: "/member/trainerlist", element: <MemberTrainerList /> },
+      { path: "/member/trainerlist/:member_num", element: <MemberTrainerList /> },
       { path: "/member/calendar", element: <MemberCalendar /> },
       { path: "/member/dietjournal/:m_calendar_id", element: <MemberDietJournal /> },
       { path: "/member/dietadd/:m_calendar_id/:d_journal_id?", element: <MemberDietAdd /> },

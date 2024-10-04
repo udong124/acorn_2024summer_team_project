@@ -3,6 +3,7 @@ import axios from "axios";
 import { Form, Button, Card, Row, Col, Container } from "react-bootstrap"; // Bootstrap 적용
 
 import { decodeToken } from "jsontokens";
+import { useNavigate } from "react-router-dom";
 
 const TrainerId = () => {
   const searchKeywordRef = useRef(""); // 검색어 Ref
@@ -12,7 +13,8 @@ const TrainerId = () => {
   const [selectedTrainer, setSelectedTrainer] = useState(null); // 선택한 트레이너
   const [member_num, setMember_num] = useState(null); // 회원 번호 상태
 
-  
+  const navigate = useNavigate();
+
   //트레이너리스트를 가져오기
   useEffect(() => {
     axios
@@ -80,6 +82,7 @@ const TrainerId = () => {
           alert("트레이너가 성공적으로 등록되었습니다.");
           setSelectedTrainer(null);
           setFilteredTrainers(trainerList);
+          navigate("/member/mypagedetail")
         } else {
           alert("트레이너 등록에 실패했습니다.");
         }
@@ -130,6 +133,23 @@ const TrainerId = () => {
                 </Row>
               </Form>
 
+              {/* 선택된 트레이너 정보와 회원 번호 입력 */}
+              {selectedTrainer && (
+                <div className="mt-4">
+                  <h4>선택된 트레이너</h4>
+                  <p>이름: {selectedTrainer.name}</p>
+                  <p>헬스장: {selectedTrainer.gym_name}</p>
+                  <p>인스타그램: {selectedTrainer.trainer_insta}</p>
+                  <p>회원 번호: {member_num ? member_num : "토큰에서 member_num을 찾을 수 없음..."}</p>
+                  <Button
+                    onClick={handleRegister}
+                    className="btn-primary w-100"
+                  >
+                    등록
+                  </Button>
+                </div>
+              )}
+
               {/* 검색된 트레이너 목록을 가로로 보여주기 */}
               <Row className="mt-3">
                 {filteredTrainers.length > 0 ? (
@@ -164,21 +184,6 @@ const TrainerId = () => {
                 )}
               </Row>
 
-              {/* 선택된 트레이너 정보와 회원 번호 입력 */}
-              {selectedTrainer && (
-                <div className="mt-4">
-                  <h4>선택된 트레이너</h4>
-                  <p>헬스장: {selectedTrainer.gym_name}</p>
-                  <p>인스타그램: {selectedTrainer.trainer_insta}</p>
-                  <p>회원 번호: {member_num ? member_num : "토큰에서 member_num을 찾을 수 없음..."}</p>
-                  <Button
-                    onClick={handleRegister}
-                    className="btn-primary w-100"
-                  >
-                    등록
-                  </Button>
-                </div>
-              )}
             </Card.Body>
           </Card>
         </Col>

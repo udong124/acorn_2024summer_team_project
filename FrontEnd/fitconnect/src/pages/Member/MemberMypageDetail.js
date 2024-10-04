@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Col, Container, Row, Form, Button, Card } from 'react-bootstrap';
+import { Col, Container, Row, Form, Button, Card, InputGroup } from 'react-bootstrap';
+import { FaSearch } from 'react-icons/fa';
 
 const MyPageDetail = () => {
   const [memberInfo, setMemberInfo] = useState({
@@ -232,13 +233,22 @@ const MyPageDetail = () => {
                 </Form.Group>
                 <Form.Group controlId="formTrainerName">
                   <Form.Label>담당 트레이너</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="trainer_num"
-                    value={memberInfo.trainer_num}
-                    onClick={() => navigate("/member/trainerlist")}
-                    disabled
-                  />
+                  <InputGroup>
+                    <Form.Control
+                      type="text"
+                      name="trainer_num"
+                      value={memberInfo.trainer_num}
+                      onClick={() => navigate(`/member/trainerlist/${memberInfo.member_num}`)}
+                      readOnly
+                      style={{cursor: "pointer"}}
+                    />
+                    <InputGroup.Text
+                      onClick={() => navigate(`/member/trainerlist/${memberInfo.member_num}`)}
+                      style={{cursor: "pointer"}}
+                    >
+                      <FaSearch/>
+                    </InputGroup.Text>
+                  </InputGroup>
                 </Form.Group>
               </Col>
               <Col className='rightside'>
