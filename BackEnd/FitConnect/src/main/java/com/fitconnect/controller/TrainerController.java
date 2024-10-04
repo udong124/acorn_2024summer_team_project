@@ -162,7 +162,7 @@ public class TrainerController {
     *       @return List<TrainerDto>
    **********************************************************************/
    @GetMapping("/trainer/list")
-   public List<TrainerDto> getTrainerList(){
+   public List<Map<String, Object>> getTrainerList(){
       return service.selectList();
    }
 
