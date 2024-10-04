@@ -12,6 +12,37 @@ const UserLogin = () => {
   const [isReady, setIsReady] = useState(false);
   const navigate = useNavigate();
 
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+
+  const google_token = queryParams.get('token');
+
+  useEffect(()=>{
+    if(google_token) {
+      localStorage.setItem("token", google_token);
+
+      // 토큰에서 payload 정보 얻어오기
+      const { payload } = decodeToken(google_token.substring(7));
+      console.log("토큰 안의 payload 확인:", payload); 
+  
+      const userRole = payload?.userRole;
+      const decodedUserName = payload?.userName; 
+  
+      if (userRole && decodedUserName) {
+        localStorage.setItem("role", userRole);
+        localStorage.setItem("userName", decodedUserName);
+  
+        // 로그인 성공 알림
+        alert(`${decodedUserName} 님 로그인 되었습니다.`);
+  
+        // 역할에 따라 페이지 이동
+        navigateByRole(userRole);
+      } else {
+        setErrorMessage("로그인 실패: 아이디 또는 비밀번호가 틀렸습니다.");
+      }
+    }
+  }, [google_token])
+
   useEffect(()=>{
     if(isReady) {
       console.log(userName + " " + password)

@@ -78,8 +78,8 @@ const GoogleLogin = () => {
                   type="radio"
                   label="회원"
                   name="role"
-                  value="member"
-                  checked={selectedRole === "member"}
+                  value="MEMBER"
+                  checked={selectedRole === "MEMBER"}
                   onChange={handleRoleChange}
                   className="mb-2"
                   style={{ fontSize: "1.2rem" }}
@@ -88,8 +88,8 @@ const GoogleLogin = () => {
                   type="radio"
                   label="트레이너"
                   name="role"
-                  value="trainer"
-                  checked={selectedRole === "trainer"}
+                  value="TRAINER"
+                  checked={selectedRole === "TRAINER"}
                   onChange={handleRoleChange}
                   style={{ fontSize: "1.2rem" }}
                 />
