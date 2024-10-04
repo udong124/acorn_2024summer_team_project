@@ -1,4 +1,3 @@
-//식단 추가및 수정
 import axios from "axios"
 import React, { useState, useEffect } from "react"
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -6,29 +5,40 @@ import { Modal, Button, Card, Row, Col, InputGroup, DropdownButton, Dropdown, Fo
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-function MemberDietJournalAdd(){
-    const {m_calendar_id, d_journal_id} = useParams()
+/**
+ * MemberDietJournalAdd 컴포넌트
+ * - 사용자가 식단을 추가하거나 수정할 수 있는 기능을 제공
+ * - 식단 목록을 검색 및 선택한 식단을 추가
+ * - 새로운 식단 데이터를 추가할 수 있는 모달 창 제공
+ */
 
-    const [dietType, setDietType] = useState('선택')//아점저
+function MemberDietJournalAdd(){
+    const {m_calendar_id, d_journal_id} = useParams()//URL 파라미터에서 m_calendar_id와 d_journal_id 추출
+
+    const [dietType, setDietType] = useState('선택')//식단 유형 (아침, 점심, 저녁)
     const [search, setSearch] = useState("")//검색
-    const [dietList, setDietList] = useState([])//총식단리스트 오리지널 데이터
-    const [select, setSelect] = useState([])//식단선택에서 고른거
+    const [dietList, setDietList] = useState([])//전체 식단 리스트 (오리지널 데이터)
+    const [select, setSelect] = useState([])//선택한 식단 목록
     const [isModalOpen,setIsModalOpen]=useState(false)//음식추가모달창여부
     const [foodData,setFoodData]=useState([])//음식데이터 추가할때
     const [selectedRowIndex, setSelectedRowIndex] = useState(null) // 선택된 테이블 행 인덱스
-    const [formData,setFormData]=useState({}) //임시데이터값 받아와서 무게에따라 바뀌게하기위해
+    const [formData,setFormData]=useState({}) //임시데이터값 받아와서 무게에따라 변경
     
-    const navigate = useNavigate()//이건 나중에 이동할거
-    const location = useLocation()
-    const queryParams = new URLSearchParams(location.search)
+    const navigate = useNavigate()//페이지 이동 및 쿼리파라미터 연관
+    const location = useLocation()//쿼리파라미터의 위치정보를 담기위함
+    const queryParams = new URLSearchParams(location.search)//URL 쿼리 파라미터
     
-    const initialDate = queryParams.get("date") ? new Date(queryParams.get("date")) : new Date();
-    const [selectedDate, setSelectedDate] = useState(initialDate)
+    //날짜 관련 및 아무런 날짜 받은게 없으면 현재날짜 기준으로 셋팅
+    const today = new Date()
+    const localDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
+    const initialDateStr = queryParams.get("date") ? queryParams.get("date") : localDate
+    const initialDate = new Date(initialDateStr)
+    const [selectedDate, setSelectedDate] = useState(initialDate);
 
     const token = localStorage.getItem('token')
 
     useEffect(()=>{ 
-        //오리지널 식단리스트 가져오는거
+        //추가가능한 오리지널 식단리스트 가져오는거
         axios.get('/dietlist')
         .then(res => {
             // res.data가 배열인지 확인후 배열이 아니면 빈 배열설정
@@ -42,15 +52,18 @@ function MemberDietJournalAdd(){
           })
         .catch(error => console.log(error))
 
+        //추가한 식단목록에서 식단이 있을경우 데이터 가져오기. (수정할때 수정할 데이터를 가져오기 위함)
         if(select.length>0){
-            axios.get(`/dietjournal/${m_calendar_id}`)
+            axios.get(`/dietjournal/${m_calendar_id}`) //특정멤버 식단일지 세부조회
             .then(res=>{
-                axios.get(`/membercalendar/${m_calendar_id}`)
+                axios.get(`/membercalendar/${m_calendar_id}`)//date를 가져오기위해 특정멤버 캘린더 세부조회
                 .then(calendarRes=>{
                     const selectDateCalendar = calendarRes.data.date
                     const filteredData = res.data.filter(item=>selectDateCalendar===selectedDate)
                     
                     const saveLoadData = filteredData.map(data => ({
+                        ...data,
+                        diet_id: data.diet_id,
                         diet_type: data.diet_type,
                         food: data.food,
                         calories: data.calories,
@@ -64,13 +77,15 @@ function MemberDietJournalAdd(){
 
             }).catch(error=>console.log(error))
         }
-    },[token,m_calendar_id,select.length,selectedDate])
+    },[token,m_calendar_id,select.length,selectedDate])//의존성배열
     
+    //검색어변경 핸들러
     const handleChange =(e)=>{
         setSearch(e.target.value)
     }
 
-    const handleClickAdd = () => { //식단선택후 추가하는 테이블
+    //식단유형(아침,점심,저녁)과 선택된 식단있는지 확인하고 선택된 식단추가
+    const handleClickAdd = () => {
         if (dietType === '선택') {
             alert("식단 유형을 선택해주세요.")
             return
@@ -94,13 +109,14 @@ function MemberDietJournalAdd(){
         setSelectedRowIndex(null)
     }
     
-
+    //식단리스트를 검색어에 따라 필터링
     const dietListSearch = dietList.filter(data=>
         data.food.toLowerCase().includes(search.toLowerCase())
     )
 
+    //음식데이터 추가 핸들러
     const handleFoodDataAdd =(e)=>{
-    const isFoodData = foodData.filter(food => 
+    const isFoodData = foodData.filter(food =>//유효한 음식데이터 필터링 
         food.food.trim() !== "" &&
         !isNaN(food.calories) &&
         !isNaN(food.carbs) &&
@@ -115,7 +131,7 @@ function MemberDietJournalAdd(){
         return
     }
 
-    axios.post('/dietlist', isFoodData)
+    axios.post('/dietlist', isFoodData)//식단추가API
     .then(res => {
         if(res.data.isSuccess){
         const newDietList = isFoodData.map((food, idx) => ({
@@ -124,7 +140,7 @@ function MemberDietJournalAdd(){
         }))
         setDietList([...dietList, ...newDietList])
         handleCloseModal()
-        navigate(`/MemberDietJournal?date=${selectedDate.toISOString().split('T')[0]}&m_calendar_id=${m_calendar_id}`)
+        navigate(`/member/dietjournal/${m_calendar_id}?date=${selectedDate.toISOString().split('T')[0]}`)
     }})
     .catch(error => {
         console.log(error)
@@ -132,12 +148,12 @@ function MemberDietJournalAdd(){
     })
     }
 
+    //무게변경 핸들러 (무게따라 칼로리, 탄수화물, 단백질, 지방 값 저절로 업데이트)
     const handleWeightChange = (index, foodcount) => {
         if (isNaN(foodcount) || foodcount <= 0) {
             console.error('유효하지 않은 무게 값')
             return
         }
-    
         const updatedFormData = [...formData]
         updatedFormData[index] = {
             ...updatedFormData[index],
@@ -150,29 +166,35 @@ function MemberDietJournalAdd(){
         setFormData(updatedFormData)
     }
     
+    //날짜변경 핸들러. 선택한 날짜 업데이트되고, url 쿼리 파라미터도 같이 변경됨
     const handleDateChange = (date)=>{
         setSelectedDate(date)
         const formattedDate = date.toISOString().split("T")[0]
         queryParams.set("date",formattedDate)
-        navigate(`?date=${formattedDate}`)
+        navigate(`?date=${formattedDate}`, { replace: true })
     }
 
+    //모달창 열기
     const handleOpenModal=()=>{
         setIsModalOpen(true)
     }
     
+    //모달창 닫기
     const handleCloseModal=()=>{
         setIsModalOpen(false)
     }
 
+    //테이블 행 추가
     const handleTableAdd=()=>{
         setFoodData([...foodData, { food: "", calories: "", carbs: "", protein: "", fat: "", foodcount: "" }])
     }
 
+    //테이블 행 삭제
     const handleTableDelete=(index)=>{
         setFoodData(foodData.filter((_, idx) => idx !== index))
     }
 
+    //업데이트 된 식단데이터 가져오기
     const fetchUpdatedDietData = async()=>{
         try {
             const res = await axios.get(`/dietjournal/${m_calendar_id}`);
@@ -197,6 +219,7 @@ function MemberDietJournalAdd(){
           }
         }
 
+    //저장
     const handleSubmit= async() => {
         if (select.length === 0) {
             alert("추가된 식단이 없습니다.")
@@ -205,7 +228,7 @@ function MemberDietJournalAdd(){
         try {
             let response;
         
-            //수정
+            //수정일경우
             if (d_journal_id) {
               response = await axios.put(`/dietjournal/${d_journal_id}`, {
                 m_calendar_id,
@@ -216,7 +239,7 @@ function MemberDietJournalAdd(){
                 }))
               })
             } else {
-              //새로추가
+              //새로추가일 경우
               response = await axios.post(`/dietjournal/${m_calendar_id}`, {
                 m_calendar_id,
                 diet: select.map(data => ({

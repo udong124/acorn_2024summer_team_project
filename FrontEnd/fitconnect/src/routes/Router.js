@@ -47,10 +47,10 @@ const Routes = [
       { path: "/member/mypagedetail", element: <MemberMypageDetail /> },
       { path: "/member/trainerlist", element: <MemberTrainerList /> },
       { path: "/member/calendar", element: <MemberCalendar /> },
-      { path: "/member/dietjournal", element: <MemberDietJournal /> },
-      { path: "/member/dietadd", element: <MemberDietAdd /> },
-      { path: "/member/exerciseadd", element: <MemberExerciseAdd /> },
-      { path: "/member/exercise", element: <MemberExercise /> },
+      { path: "/member/dietjournal/:m_calendar_id", element: <MemberDietJournal /> },
+      { path: "/member/dietadd/:m_calendar_id/:d_journal_id", element: <MemberDietAdd /> },
+      { path: "/member/exercise/:m_calendar_id", element: <MemberExercise /> },
+      { path: "/member/exerciseadd/:m_calendar_id/:e_journal_id", element: <MemberExerciseAdd /> },
 
       // 트레이너 관련 경로
       { path: "/trainer/*", element: <Navigate to="/trainer" /> },

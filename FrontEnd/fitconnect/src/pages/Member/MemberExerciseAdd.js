@@ -6,14 +6,27 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css"
 
+/**
+ * MemberExerciseAdd 컴포넌트
+ * - 사용자가 운동을 추가하거나 수정할 수 있는 기능 제공
+ * - 운동 목록을 검색 및 선택하여 운동 리스트에 추가
+ * - 추가된 운동을 드래그 앤 드롭으로 순서 조정 가능
+ * - 운동의 무게, 횟수, 세트를 입력하고 저장할 수 있는 기능 제공
+ */
+
 function MemberExerciseAdd() {
   const { exercise_category, exercise_id, m_calendar_id } = useParams();
 
-  const location = useLocation()
-  const navigate = useNavigate()
-  const queryParams = new URLSearchParams(location.search)
-  const initialDate = queryParams.get("date") ? new Date(queryParams.get("date")) : new Date()
-  const [selectedDate, setSelectedDate] = useState(initialDate)
+  const navigate = useNavigate()//페이지 이동 및 쿼리파라미터 연관
+  const location = useLocation()//쿼리파라미터의 위치정보를 담기위함
+  const queryParams = new URLSearchParams(location.search)//URL 쿼리 파라미터
+    
+  //날짜 관련 및 아무런 날짜 받은게 없으면 현재날짜 기준으로 셋팅
+  const today = new Date()
+  const localDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
+  const initialDateStr = queryParams.get("date") ? queryParams.get("date") : localDate
+  const initialDate = new Date(initialDateStr)
+  const [selectedDate, setSelectedDate] = useState(initialDate);
 
   const [exerciseCategory, setExerciseCategory] = useState("전체"); // 운동목록 선택
   const [exerciseData, setExerciseData] = useState([]);
@@ -27,33 +40,53 @@ function MemberExerciseAdd() {
   // 체크박스 옵션관련
   const [showDetailsOption, setShowDetailsOption] = useState(false);
 
+  const token = localStorage.getItem('token')
+
+  //카테고리 선택할때마다 바뀌는 운동목록 데이터
   useEffect(() => {
-    const category = exerciseCategory === "전체" ? "" : `/${exerciseCategory}`;
+    const category = exerciseCategory === "전체" ? "" : `/${exercise_category}`;
 
     axios.get(`/exerciselist${category}`)
       .then((res) => {setExerciseData(res.data)})
       .catch((error) => {console.error("운동목록 불러오기 실패", error)});
-  }, [exerciseCategory]); // 카테고리가 변경될때마다 데이터 가져오기
+  }, [token,exerciseCategory]); // 카테고리가 변경될때마다 데이터 가져오기
 
+  //검색초점
   const handleChange = (e) => {
     setSearch(e.target.value);
   };
 
+  //운동일지 조회 데이터 가져오기
   useEffect(() => {
       axios.get(`/exercisejournal/${m_calendar_id}`)
       .then(res=>{
-        if(res.data){
-          setSelectExercise(res.data)
-        }}
-      ).catch(error=>console.log(error))
-  },[m_calendar_id])
+        axios.get(`/membercalendar/${m_calendar_id}`)
+        .then(calendarRes=>{
+          const selectDateCalendar = calendarRes.data.date
+          const filteredData = res.data.filter(item=>selectDateCalendar===selectedDate)
 
+          const saveLoadData = filteredData.map(data => ({
+            exercise_id: data.exercise_id,
+            exercise_name: data.exercise_name,
+            exercise_set: data.exercise_set,
+            exercise_count: data.exercise_count,
+            exercise_order: data.exercise_order,
+            exercise_weight: data.exercise_weight
+          }))
+          setSelectExercise(saveLoadData)
+        }).catch(error=>console.log(error))
+
+    }).catch(error=>console.log(error))
+  },[token,m_calendar_id,selectedDate])//의존성배열
+
+  //운동검색필터
   const exerciseSearch = Array.isArray(exerciseData) 
   ? exerciseData.filter((data) =>
       data.exercise_name.toLowerCase().includes(search.toLowerCase())
     )
   : [];
 
+  //모달로 운동 상세설명 띄우기
   const handleExerciseDetail = (exercise_id) => {
     axios.get(`/exerciselist/${exercise_id}`)
     .then(res=>{
@@ -61,31 +94,32 @@ function MemberExerciseAdd() {
       setShowModal(true);
     })
     .catch(error=>console.log(error))
+  }
 
-  };
-
+  //운동목록 클릭시 오른쪽 테이블에 추가되는
   const handleCardClick = (exercise) => {
     setSelectExercise([...selectExercise, { ...exercise, e_journal_id: `ej_${exercise.exercise_id}_${new Date().getTime()}` }])
     if (showDetailsOption) {
       handleExerciseDetail(exercise);
     }
-  };
+  }
 
+  //테이블 드래그하면 순서변경
   const handleOnDragEnd = (result) => {
     if (!result.destination) return;
-
     const items = Array.from(selectExercise);
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
-
     setSelectExercise(items);
-  };
+  }
 
+  //모달닫기
   const handleCloseModal = () => {
     setShowModal(false);
     setModalData(null);
   };
 
+  //무게 횟수 세트 입력
   const handleInputChange = (e, id, field) => {
     setSelectExercise((prevExercises) =>
       prevExercises.map((exercise) =>
@@ -94,31 +128,34 @@ function MemberExerciseAdd() {
     )
   }
 
-  const handleDateChange = (date) => {
+  //날짜변경 핸들러. 선택한 날짜 업데이트되고, url 쿼리 파라미터도 같이 변경됨
+  const handleDateChange = (date)=>{
     setSelectedDate(date)
     const formattedDate = date.toISOString().split("T")[0]
     queryParams.set("date",formattedDate)
-    navigate(`?date=${formattedDate}`)
+    navigate(`?date=${formattedDate}`, { replace: true })
   }
 
+  //저장시 운동등록 되어있으면 수정 아니면 저장
   const handleSubmit = () => {
     console.log("작동함")
     selectExercise.forEach((exercise) => {
       axios.post("/exerciselist", { selectedExercise: [exercise] })
-        .then(() => {
-          if (exercise.e_journal_id) {
-            console.log("수정할 운동:", exercise.e_journal_id);
-            return axios.post(`/exercisejournal/${exercise.e_journal_id}`, {
-              exercise_id: exercise.exercise_id,
-              exercise_set: exercise.exercise_set,
-              exercise_count: exercise.exercise_count,
-              exercise_order: exercise.exercise_order,
-              exercise_weight: exercise.exercise_weight,
-            })
+        .then((res) => {
+          if(res.data.isSuccess){
+            if (exercise.e_journal_id) {
+              console.log("수정할 운동:", exercise.e_journal_id);
+              return axios.post(`/exercisejournal/${exercise.e_journal_id}`, {
+                exercise_id: exercise.exercise_id,
+                exercise_set: exercise.exercise_set,
+                exercise_count: exercise.exercise_count,
+                exercise_order: exercise.exercise_order,
+                exercise_weight: exercise.exercise_weight,
+              })}
           }
         })
         .then(() => {
-          navigate(`/MemberDietJournal?date=${selectedDate.toISOString().split("T")[0]}`)
+          navigate(`/member/exercise/${m_calendar_id}?date=${selectedDate.toISOString().split("T")[0]}`)
           console.log("운동 추가 및 수정 완료");
           alert("저장");
         })
@@ -132,6 +169,23 @@ function MemberExerciseAdd() {
 
   return (
     <>
+    <Row>
+        <Col>
+          <Card>
+           <Card.Header as="h6" className="border-bottom p-3 mb-0">
+                <h2>{selectedDate.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })}의 운동 추가</h2>
+                <div style={{ marginBottom: "20px" }}>
+                    <DatePicker
+                    selected={selectedDate}  // 현재 선택된 날짜 설정
+                    onChange={handleDateChange}  // 날짜 변경 시 handleDateChange 호출
+                    dateFormat="yyyy년 MM월 dd일"  // 날짜 포맷 설정
+                    placeholderText="날짜를 선택하세요"
+                    />
+                </div>
+            </Card.Header>
+          </Card>
+        </Col>
+      </Row>
       <Row>
         <Col md={6} lg={5}>
           <Card>

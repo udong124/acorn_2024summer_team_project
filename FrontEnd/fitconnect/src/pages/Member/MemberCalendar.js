@@ -7,6 +7,14 @@ import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 
+/**
+ * CalendarComponent
+ * - FullCalendar를 사용하여 일정 관리 기능을 제공
+ * - 날짜를 클릭하여 새로운 일정 추가, 기존 일정을 수정/삭제
+ * - 일정 데이터는 서버와 연동하여 가져오고 저장합니다.
+ * 
+ */
+
 const CalendarComponent = () => {
   const { m_calendar_id } = useParams()
   const [events, setEvents] = useState([])
@@ -18,6 +26,7 @@ const CalendarComponent = () => {
   const token = localStorage.getItem('token')
   const navigate = useNavigate()
 
+  //처음 로드될때
   useEffect(() => {
     axios.get('/membercalendar')
       .then(res => {
@@ -33,8 +42,9 @@ const CalendarComponent = () => {
           return {
             id: event.m_calendar_id.toString(),
             title: event.memo.includes("식단") ? "식단" : event.memo.includes("운동") ? "운동" : event.memo,
-            date: event.date,
-            backgroundColor: eventColor
+            date: event.regdate,
+            backgroundColor: eventColor,
+            regdate: event.regdate
           };
         });
         setEvents(calendarEvents);
@@ -51,7 +61,8 @@ const CalendarComponent = () => {
           const fetchedEvents = calendar.map(event => ({
             id: event.m_calendar_id.toString(),  // ID를 문자열로 변환
             title: event.memo,
-            date: event.date,
+            date: event.regdate,
+            regdate: event.regdate,
           }));
           setEvents(fetchedEvents);
         })
@@ -72,11 +83,12 @@ const CalendarComponent = () => {
 
   // 기존 이벤트 클릭 시 모달 열기
   const handleEventClick = (clickInfo) => {
-    const eventDate = clickInfo.event.startStr
+    const id = clickInfo.event.id;
+    const eventDate = clickInfo.event.startStr.split('T')[0];
     if (clickInfo.event.title.includes("식단")){
-      navigate(`/MemberDietJournal?date=${eventDate}`)
+      navigate(`/member/dietjournal/${id}?date=${eventDate}`)
     }else if (clickInfo.event.title.includes("운동")){
-      navigate(`/MemberExerciseJournal?date=${eventDate}`)
+      navigate(`/member/exercise/${id}?date=${eventDate}`)
     }
     setSelectedDate(clickInfo.event.startStr);  // 이벤트의 날짜 저장
     setNewEventTitle(clickInfo.event.title);  // 기존 이벤트 제목을 입력 필드에 표시
@@ -117,9 +129,8 @@ const CalendarComponent = () => {
         // 새로운 이벤트 추가
         const newEvent = {
           memo: newEventTitle,
-          date: selectedDate,
+          regdate: selectedDate,
         };
-        
         axios.post('/membercalendar', newEvent)
           .then((res) => {
             if (res.data.isSuccess) { 
