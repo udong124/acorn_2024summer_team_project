@@ -64,6 +64,7 @@ const TrainerId = () => {
     setFilteredTrainers(filteredList);
   };
 
+  //트레이너 등록하기 
   const handleRegister = () => {
     if (!selectedTrainer || !member_num) {
       alert("트레이너와 회원 정보를 확인하세요.");

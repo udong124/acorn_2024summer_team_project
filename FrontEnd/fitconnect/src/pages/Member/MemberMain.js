@@ -47,23 +47,22 @@ const BlogData = [
 const Starter = () => {
   return (
     <div>
-      {/***Top Cards***/}
-
+      {/***Table ***/}
+      <Row>
+        <Col lg={12}>
+          <SalesChart />
+        </Col>
+      </Row>
       {/***Sales & Feed***/}
       <Row>
         <Col sm={6} lg={6} xl={7} xxl={8}>
-          <SalesChart />
+          <ProjectTables />
         </Col>
         <Col sm={6} lg={6} xl={5} xxl={4}>
           <Feeds />
         </Col>
       </Row>
-      {/***Table ***/}
-      <Row>
-        <Col lg={12}>
-          <ProjectTables />
-        </Col>
-      </Row>
+
       {/***Blog Cards***/}
       <Row>
         {BlogData.map((blg, index) => (

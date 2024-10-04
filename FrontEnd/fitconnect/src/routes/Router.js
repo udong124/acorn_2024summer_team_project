@@ -25,6 +25,9 @@ import TrainerMypageDetail from '../pages/Trainer/TrainerMypageDetail';
 import TrainerMain from '../pages/Trainer/TrainerMain';
 import AdminMain from '../pages/Admin/AdminMain';
 
+ //ProtectedRoute 사용할 경우 이 주석을 이용해 감싸서 사용해주기  MEMBER,TRAINER,ADMIN 대문자로!
+ // <ProtectedRoute allowedRoles={['MEMBER']}><TrainerId/></ProtectedRoute>
+
 /********* Routes *******/
 const Routes = [
   {
@@ -48,9 +51,9 @@ const Routes = [
       { path: "/member/trainerlist", element: <MemberTrainerList /> },
       { path: "/member/calendar", element: <MemberCalendar /> },
       { path: "/member/dietjournal/:m_calendar_id", element: <MemberDietJournal /> },
-      { path: "/member/dietadd/:m_calendar_id/:d_journal_id", element: <MemberDietAdd /> },
+      { path: "/member/dietadd/:m_calendar_id/:d_journal_id?", element: <MemberDietAdd /> },
       { path: "/member/exercise/:m_calendar_id", element: <MemberExercise /> },
-      { path: "/member/exerciseadd/:m_calendar_id/:e_journal_id", element: <MemberExerciseAdd /> },
+      { path: "/member/exerciseadd/:m_calendar_id/:e_journal_id?", element: <MemberExerciseAdd /> },
 
       // 트레이너 관련 경로
       { path: "/trainer/*", element: <Navigate to="/trainer" /> },
