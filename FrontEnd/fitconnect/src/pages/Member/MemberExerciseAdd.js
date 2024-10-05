@@ -28,7 +28,7 @@ function MemberExerciseAdd() {
   const initialDate = new Date(initialDateStr)
   const [selectedDate, setSelectedDate] = useState(initialDate);
 
-  const [exerciseCategory, setExerciseCategory] = useState("전체"); // 운동목록 선택
+  const [exerciseCategory, setExerciseCategory] = useState("all"); // 운동목록 선택
   const [exerciseData, setExerciseData] = useState([]);
   const [search, setSearch] = useState(""); // 검색
   const [selectExercise, setSelectExercise] = useState([]);
@@ -44,12 +44,14 @@ function MemberExerciseAdd() {
 
   //카테고리 선택할때마다 바뀌는 운동목록 데이터
   useEffect(() => {
-    const category = exerciseCategory === "전체" ? "" : `/${exercise_category}`;
+    const category = exerciseCategory === "all" ? `` : `/${exerciseCategory}`;
 
-    axios.get(`/exerciselist${category}`)
-      .then((res) => {setExerciseData(res.data)})
+    axios.get(`/exerciselist`+category)
+      .then((res) => {
+        setExerciseData(res.data.exerList)
+      })
       .catch((error) => {console.error("운동목록 불러오기 실패", error)});
-  }, [token,exerciseCategory]); // 카테고리가 변경될때마다 데이터 가져오기
+  }, [token, exerciseCategory]); // 카테고리가 변경될때마다 데이터 가져오기
 
   //검색초점
   const handleChange = (e) => {
@@ -195,29 +197,28 @@ function MemberExerciseAdd() {
             <Card.Body>
               <InputGroup className="mb-3">
                 <DropdownButton variant="outline-secondary" title={exerciseCategory} id="input-group-dropdown-1">
-                  <Dropdown.Item onClick={() => setExerciseCategory("전체")}>전체</Dropdown.Item>
-                  <Dropdown.Item onClick={() => setExerciseCategory("등")}>등</Dropdown.Item>
-                  <Dropdown.Item onClick={() => setExerciseCategory("가슴")}>가슴</Dropdown.Item>
-                  <Dropdown.Item onClick={() => setExerciseCategory("어깨")}>어깨</Dropdown.Item>
-                  <Dropdown.Item onClick={() => setExerciseCategory("하체")}>하체</Dropdown.Item>
-                  <Dropdown.Item onClick={() => setExerciseCategory("복근")}>복근</Dropdown.Item>
-                  <Dropdown.Item onClick={() => setExerciseCategory("삼두")}>삼두</Dropdown.Item>
-                  <Dropdown.Item onClick={() => setExerciseCategory("이두")}>이두</Dropdown.Item>
-                  <Dropdown.Item onClick={() => setExerciseCategory("전신")}>전신</Dropdown.Item>
+                  <Dropdown.Item onClick={() => setExerciseCategory("all")}>전체</Dropdown.Item>
+                  <Dropdown.Item onClick={() => setExerciseCategory("back")}>등</Dropdown.Item>
+                  <Dropdown.Item onClick={() => setExerciseCategory("chest")}>가슴</Dropdown.Item>
+                  <Dropdown.Item onClick={() => setExerciseCategory("shoulger")}>어깨</Dropdown.Item>
+                  <Dropdown.Item onClick={() => setExerciseCategory("lower")}>하체</Dropdown.Item>
+                  <Dropdown.Item onClick={() => setExerciseCategory("core")}>코어</Dropdown.Item>
+                  <Dropdown.Item onClick={() => setExerciseCategory("arm")}>팔</Dropdown.Item>
+                  <Dropdown.Item onClick={() => setExerciseCategory("aerobic")}>유산소</Dropdown.Item>
                 </DropdownButton>
                 <Form.Control onChange={handleChange} placeholder="운동목록 검색" type="text"/>
               </InputGroup>
-
+        
               <Form.Group controlId="showDetailsCheckbox" className="mb-3">
                 <Form.Check type="checkbox" label="운동 상세 보기" checked={showDetailsOption} onChange={(e) => setShowDetailsOption(e.target.checked)}/>
               </Form.Group>
 
                 <Row>
-                  {exerciseSearch.map((data) => (
+                  {exerciseData.map((data) => (
                     <Col key={data.exercise_id} xs={12} sm={6} md={4} lg={4} className="mb-3">
                       <Card onClick={() => handleCardClick(data)} style={{ cursor: "pointer" }}
                         className={`h-100 ${selectExercise.find((item) => item.exercise_id === data.exercise_id) ? "border-primary" : ""}`}>
-                        <Card.Img variant="top" src={data.saveImage} alt={data.exercise_name} style={{ height: "150px", objectFit: "cover" }}/>
+                        <Card.Img variant="top" src={`http://52.78.38.12:8080/upload/${data.exercise_image}`} alt={data.exercise_name} style={{ height: "150px", objectFit: "cover" }}/>
                         <Card.Body className="d-flex justify-content-center align-items-center p-2">
                           <Card.Text className="text-center">{data.exercise_name}</Card.Text>
                         </Card.Body>
