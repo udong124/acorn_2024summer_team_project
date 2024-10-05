@@ -3,8 +3,6 @@ import { Button, Form, Container, Row, Col, Card } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const token = localStorage.getItem("token");
-
 const TrainerSignUp = () => {
   const [formData, setFormData] = useState({
     trainer_num: 0,
@@ -13,57 +11,56 @@ const TrainerSignUp = () => {
     gym_name: "",
     gym_link: ""
   });
-  const [step, setStep] = useState(0);
+  const [token, setToken] = useState("");
+  const [isReady, setIsReady] = useState(false);
   const navigate = useNavigate();
-
   const location = useLocation();
   const { trainer_num } = location.state; 
 
   useEffect(() => {
+    setToken(localStorage.getItem("token"));
     setFormData(prevData => ({
       ...prevData,
       trainer_num: trainer_num
     }));
   }, []);
   
+  useEffect(()=>{
+    if(formData.trainer_num !== 0 && token !== "" && isReady) {
+      axios
+      .post(`/trainer`, formData, {
+        headers: {
+          Authorization: `${token}`
+        }
+      })
+      .then(response => {
+        if(response.data.isSuccess){
+          navigate(`/trainer`); 
+        }
+      })
+      .catch(error => {
+        if (error.response && error.response.data) {
+          console.error(
+            "서버 응답 오류:",
+            error.response?.data?.message || error.message
+          ); 
+        }
+      });
+    }
+  }, [formData, token, isReady])
 
-useEffect(()=>{
-  if(step === 1 && formData.trainer_num !== 0 && token.startsWith("Bearer+")) {
-    axios
-    .post(`/trainer`, formData, {
-      headers: {
-        Authorization: `${token}`
-      }
-    })
-    .then(response => {
-      console.log(response.data);
-      if(response.data.isSuccess){
-        navigate(`/tr/home`); 
-      }
-    })
-    .catch(error => {
-      if (error.response && error.response.data) {
-        console.error(
-          "서버 응답 오류:",
-          error.response?.data?.message || error.message
-        ); 
-      }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
     });
-  }
-}, [step, formData.trainer_num, token])
-
-const handleChange = (e) => {
-  const { name, value } = e.target;
-  setFormData({
-    ...formData,
-    [name]: value,
-  });
-};
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    setStep(1)
+    setIsReady(true);
   };
 
   return (

@@ -3,8 +3,6 @@ import { Button, Form, Container, Card, Row, Col } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const token = localStorage.getItem("token");
-
 const MemberSignUp = () => {
 
   const [formData, setFormData] = useState({
@@ -16,21 +14,22 @@ const MemberSignUp = () => {
     plan: "",
     weeklyplan: ""
   });
-  const [step, setStep] = useState(0);
+  const [token, setToken] = useState("");
+  const [isReady, setIsReady] = useState(false);
   const navigate = useNavigate();
-
   const location = useLocation();
-  const { member_num } = location.state;    
+  const { member_num } = location.state;
 
   useEffect(() => {
+    setToken(localStorage.getItem("token"));
     setFormData(prevData => ({
       ...prevData,
       member_num: member_num
-    }))
+    }));
   }, []);
 
   useEffect(() => {
-    if(step === 1 && formData.member_num !== 0 && token.startsWith("Bearer+")) {
+    if(formData.member_num !== 0 && token !== "" && isReady) {
       axios
       .post(`/member`, formData, {
         headers: {
@@ -38,9 +37,8 @@ const MemberSignUp = () => {
         }
       })
       .then((response) => {
-        console.log(response.data);
-        if(response.data.isSuccess){
-          navigate("/mem/starter"); 
+        if(response.data.isSuccess){  
+          navigate("/member"); 
         }
       })
       .catch((error) => {
@@ -52,7 +50,7 @@ const MemberSignUp = () => {
         }
       });
     }
-  }, [step, formData.member_num, token])
+  }, [formData, token, isReady])
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -70,7 +68,7 @@ const MemberSignUp = () => {
       return;
     }
 
-    setStep(1)
+    setIsReady(true);
   };
 
   return (

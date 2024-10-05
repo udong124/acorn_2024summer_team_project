@@ -9,17 +9,44 @@ const UserLogin = () => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [isReady, setIsReady] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
-    e.preventDefault();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
 
-    if (password.length < 6) {
-      setErrorMessage("비밀번호는 6자 이상이어야 합니다.");
-      return;
+  const google_token = queryParams.get('token');
+
+  useEffect(()=>{
+    if(google_token) {
+      localStorage.setItem("token", google_token);
+
+      // 토큰에서 payload 정보 얻어오기
+      const { payload } = decodeToken(google_token.substring(7));
+      console.log("토큰 안의 payload 확인:", payload); 
+  
+      const userRole = payload?.userRole;
+      const decodedUserName = payload?.userName; 
+  
+      if (userRole && decodedUserName) {
+        localStorage.setItem("role", userRole);
+        localStorage.setItem("userName", decodedUserName);
+  
+        // 로그인 성공 알림
+        alert(`${decodedUserName} 님 로그인 되었습니다.`);
+  
+        // 역할에 따라 페이지 이동
+        navigateByRole(userRole);
+      } else {
+        setErrorMessage("로그인 실패: 아이디 또는 비밀번호가 틀렸습니다.");
+      }
     }
+  }, [google_token])
 
-    axios
+  useEffect(()=>{
+    if(isReady) {
+      console.log(userName + " " + password)
+      axios
       .post("/auth", { userName, password })
       .then((response) => {
         const token = response.data;
@@ -47,7 +74,6 @@ const UserLogin = () => {
           }
         }
       })
-
       .catch((error) => {
         // 에러 메시지 처리
         const errorMsg =
@@ -56,14 +82,26 @@ const UserLogin = () => {
         setErrorMessage(errorMsg);
         console.error("로그인 실패:", errorMsg);
       });
+    }
+  }, [userName, password, isReady])
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+
+    if (password.length < 6) {
+      setErrorMessage("비밀번호는 6자 이상이어야 합니다.");
+      return;
+    }
+
+    setIsReady(true);
   };
 
   // 역할에 따라 페이지 이동하기
   const navigateByRole = (role) => {
     if (role === "TRAINER") {
-      navigate("/tr/home");
+      navigate("/trainer");
     } else if (role === "MEMBER") {
-      navigate("/mem/starter");
+      navigate("/member");
     } else if (role === "ADMIN") {
       navigate("/"); //관리자메인으로 이동, 나중에 수정
     } else {
@@ -79,7 +117,7 @@ const UserLogin = () => {
             <Card.Header as="h6" className="border-bottom p-3 mb-0">
               <div>
                 <h1>로그인</h1>
-                <p>로그인하여 Fit Connect를 이용해보세요</p>
+                <p>로그인하여 FitConnect를 이용해보세요.</p>
               </div>
             </Card.Header>
 
@@ -113,7 +151,7 @@ const UserLogin = () => {
                 <Button
                   variant="outline-dark"
                   as={Link}
-                  to="http://52.78.38.12:8080/login/oauth2/code/google"
+                  to="http://52.78.38.12:8080/oauth2/authorization/google"
                 >
                   Google로 시작하기
                 </Button>

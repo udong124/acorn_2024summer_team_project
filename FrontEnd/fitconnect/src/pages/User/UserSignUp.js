@@ -9,8 +9,6 @@ import { Provider } from "react-redux";
 function UserSignUp() {
   //폼에 입력한 내용을 상태값으로 관리
   const [step, setStep] = useState(1);
-  const [id, setId] = useState(0);
-  const [token, setToken] = useState("");
   const [formData, setFormData] = useState({
     id:0,
     userName:"",
@@ -24,6 +22,7 @@ function UserSignUp() {
     providerid:"",
     file:""
   });
+  const [isReady, setIsReady] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [emailErrorMessage, setEmailErrorMessage] = useState("");
 
@@ -34,8 +33,7 @@ function UserSignUp() {
   }, [])
 
   useEffect(()=>{
-    console.log(formData.id)
-    if(step === 3) {
+    if(formData.id !== 0 && localStorage.getItem("token") !== "" && isReady) {
       if(formData.role === "TRAINER") {
         navigate("/trainersignup", {
           state: {
@@ -66,7 +64,7 @@ function UserSignUp() {
         }
       }
     }
-  }, [id, token])
+  }, [formData, localStorage, isReady])
 
   // 아이디, 비밀번호, 이메일을 입력했을때 호출되는 함수 
   const handleChange = (e)=>{
@@ -124,7 +122,6 @@ function UserSignUp() {
           ...formData,
           "id":res.data.id
         })
-        setId(res.data.id)
       }
       else {
         console.log("존재하는 아이디입니다.")
@@ -153,13 +150,13 @@ function UserSignUp() {
       }
 
       axios.post("/auth", formData)
-      .then((res) => {
-        console.log(res.data)
-        const token = res.data;
-        setToken(token);
-        localStorage.setItem("token", token);
+      .then((authResponse) => {
+        const token = authResponse.data;
+        localStorage.setItem("token", token); //토큰을 저장해둠
         localStorage.setItem("userName", formData.userName); //로그인된 사용자이름 표시해주기 위해
         localStorage.setItem("role", formData.role)
+
+        setIsReady(true);
       })
       .catch(error => {
         setErrorMessage(error.message);
@@ -169,8 +166,6 @@ function UserSignUp() {
     .catch(error=>{
         console.log(error)
     })
-
-    setStep(3)
   };
 
   return (
@@ -226,7 +221,7 @@ function UserSignUp() {
                 <Button
                   variant="outline-dark"
                   as={Link}   
-                  to="http://52.78.38.12:8080/login/oauth2/code/google"
+                  to="http://52.78.38.12:8080/oauth2/authorization/google"
                 >
                   Google Register
                 </Button>

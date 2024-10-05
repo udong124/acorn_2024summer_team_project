@@ -57,7 +57,7 @@ const store = createStore(rootReducer, initialState);
 root.render(
   <Suspense fallback={<Loader />}>
     <BrowserRouter> {/* BrowserRouter로 변경 */}
-    <Provider store={store}>
+      <Provider store={store}>
         <App />
       </Provider>
     </BrowserRouter>
