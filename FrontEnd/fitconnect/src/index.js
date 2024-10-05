@@ -10,6 +10,7 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom"; // BrowserRouter로 변경
 import Loader from "./layouts/loader/Loader";
 import axios from 'axios';
+import { Provider } from "react-redux";
 
 // id가 root인 곳에 UI 출력하기
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -19,7 +20,6 @@ let userName = null;
 let userRole = null;
 
 // 만일 토큰이 존재한다면
-localStorage.token = "Bearer+eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJxd2VyIiwiaWQiOjQ4LCJ1c2VyTmFtZSI6InF3ZXIiLCJ1c2VyUm9sZSI6IlRSQUlORVIiLCJleHAiOjE3Mjc4NjE5MzMsImlhdCI6MTcyNzg1ODMzM30.ZUsGMDZ0OsGwLg4Lkgrc8Fa1KU055_cLVgsLJTaBnDk"
 if (localStorage.token) {
   // 토큰을 디코딩 ( 앞에 7 자리를 제거한 , Bearer+ 를 제거한 문자열을 디코딩)
   const result = decodeToken(localStorage.token.substring(7));
@@ -57,7 +57,9 @@ const store = createStore(rootReducer, initialState);
 root.render(
   <Suspense fallback={<Loader />}>
     <BrowserRouter> {/* BrowserRouter로 변경 */}
-      <App />
+      <Provider store={store}>
+        <App />
+      </Provider>
     </BrowserRouter>
   </Suspense>
 );

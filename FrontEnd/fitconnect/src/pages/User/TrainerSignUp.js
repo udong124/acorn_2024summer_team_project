@@ -3,52 +3,64 @@ import { Button, Form, Container, Row, Col, Card } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-
-
-
 const TrainerSignUp = () => {
   const [formData, setFormData] = useState({
-    trainer_num: "",
+    trainer_num: 0,
     trainer_insta: "",
     trainer_intro: "",
     gym_name: "",
     gym_link: ""
   });
-
+  const [token, setToken] = useState("");
+  const [isReady, setIsReady] = useState(false);
   const navigate = useNavigate();
-
-
   const location = useLocation();
-useEffect(() => {
-  if (location.state && location.state.trainer_num) {
+  const { trainer_num } = location.state; 
+
+  useEffect(() => {
+    setToken(localStorage.getItem("token"));
     setFormData(prevData => ({
       ...prevData,
-      trainer_num: location.state.trainer_num
+      trainer_num: trainer_num
     }));
-  }
-}, [location]);
+  }, []);
+  
+  useEffect(()=>{
+    if(formData.trainer_num !== 0 && token !== "" && isReady) {
+      axios
+      .post(`/trainer`, formData, {
+        headers: {
+          Authorization: `${token}`
+        }
+      })
+      .then(response => {
+        if(response.data.isSuccess){
+          navigate(`/trainer`); 
+        }
+      })
+      .catch(error => {
+        if (error.response && error.response.data) {
+          console.error(
+            "서버 응답 오류:",
+            error.response?.data?.message || error.message
+          ); 
+        }
+      });
+    }
+  }, [formData, token, isReady])
 
-const handleChange = (e) => {
-  const { name, value } = e.target;
-  setFormData({
-    ...formData,
-    [name]: value,
-  });
-};
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    axios.post(`/trainer`, formData)
-      .then(response => {
-        console.log(response.data);
-        navigate(`/`);  //트레이너 메인페이지로 이동하게끔 통합되면 수정
-      })
-      .catch(error => {
-        if (error.response && error.response.data) {
-          console.error("서버 응답 오류:", error.response?.data?.message || error.message); 
-        }
-      });
+    setIsReady(true);
   };
 
   return (
@@ -106,7 +118,7 @@ const handleChange = (e) => {
               
               />
             </Form.Group>
-            <Button variant="dark" type="submit" onClick={handleSubmit}>
+            <Button variant="dark" type="submit" >
             완료</Button>
           </Form>
           </Card.Body>

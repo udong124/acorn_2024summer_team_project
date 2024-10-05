@@ -1,38 +1,32 @@
-import { element } from "prop-types";
-import { lazy } from "react";
 import { Navigate } from "react-router-dom";
 
-/********Layouts********/
-const BaseLayout = lazy(() => import("../layouts/BaseLayout.js"));
-const ProtectedRoute = lazy(() => import("../components/ProtectedRoute.js"));
+import BaseLayout from './../layouts/BaseLayout';
+import UserMain from '../pages/User/UserMain';
+import UserLogin from '../pages/User/UserLogin';
+import UserSignUp from '../pages/User/UserSignUp';
+import TrainerSignUp from '../pages/User/TrainerSignUp';
+import MemberSignUp from '../pages/User/MemberSignUp';
+import TrainerId from '../pages/User/TrainerId';
+import GoogleLogin from '../pages/User/GoogleLogin';
+import MemberMain from '../pages/Member/MemberMain';
+import MemberMypage from '../pages/Member/MemberMypage';
+import MemberMypageDetail from '../pages/Member/MemberMypageDetail';
+import MemberTrainerList from '../pages/Member/MemberTrainerList';
+import MemberCalendar from '../pages/Member/MemberCalendar';
+import MemberDietJournal from '../pages/Member/MemberDietJournal';
+import MemberDietAdd from '../pages/Member/MemberDietAdd';
+import MemberExerciseAdd from '../pages/Member/MemberExerciseAdd';
+import MemberExercise from '../pages/Member/MemberExercise';
+import TrainerCalendar from '../pages/Trainer/TrainerCalendar';
+import TrainerMessage from '../pages/Trainer/TrainerMessage';
+import TrainerMembers from '../pages/Trainer/TrainerMembers';
+import TrainerMypage from '../pages/Trainer/TrainerMypage';
+import TrainerMypageDetail from '../pages/Trainer/TrainerMypageDetail';
+import TrainerMain from '../pages/Trainer/TrainerMain';
+import AdminMain from '../pages/Admin/AdminMain';
 
-/********* Pages *******/
-
-/**** USER ****/
-const UserStartPage = lazy(() => import("../pages/UserStartPage.js"));
-const MemberSignUp = lazy(() => import("../pages/MemberSignUp.js"));
-const TrainerSignUp = lazy(() => import("../pages/TrainerSignUp.js"));
-const UserLogin = lazy(() => import("../pages/UserLogin.js"));
-const UserSignUp = lazy(() => import("../pages/UserSignup.js"));
-const TrainerId = lazy(() => import("../pages/TrainerId.js"));
-
-/**** MEMBER ****/
-const Starter = lazy(() => import("../pages/Starter.js"));
-const MemberMyPage = lazy(() => import("../pages/MemberMyPage.js"));
-const MemberCalendar = lazy(() => import("../pages/MemberCalendar.js"));
-const MemberDietJournal = lazy(() => import("../pages/MemberDietJournal.js"));
-const MemberDietAdd = lazy(() => import("../pages/MemberDietAdd.js"));
-const MemberExercise = lazy(() => import("../pages/MemberExercise.js"));
-const MemberExerciseAdd = lazy(() => import("../pages/MemberExerciseAdd.js"));
-
-/**** TRAINER ****/
-const Home = lazy(() => import("../pages/Home.js"));
-const TrainerCalendar = lazy(() => import("../pages/TrainerCalendar.js"));
-const TrainerMessage = lazy(() => import("../pages/TrainerMessage.js"));
-const TrainerMembers = lazy(() => import("../pages/TrainerMembers.js"));
-const TrainerMypage = lazy(() => import("../pages/TrainerMypage.js"));
-const TrainerMypageDetail = lazy(() => import("../pages/TrainerMypageDetail.js"));
-
+ //ProtectedRoute 사용할 경우 이 주석을 이용해 감싸서 사용해주기  MEMBER,TRAINER,ADMIN 대문자로!
+ // <ProtectedRoute allowedRoles={['MEMBER']}><TrainerId/></ProtectedRoute>
 
 /********* Routes *******/
 const Routes = [
@@ -40,32 +34,39 @@ const Routes = [
     path: "/",
     element: <BaseLayout />, // 모든 경로에 BaseLayout 사용
     children: [
-      { path: "/", element: <Navigate to="/userstartpage" /> },
-      { path: "/userstartpage", element: <UserStartPage /> },
+      { path: "*", element: <Navigate to="/" /> },
+      { path: "/", element: <UserMain /> },
       { path: "/login", element: <UserLogin /> },
-      { path: "/signup", element: <UserSignUp /> },
+      { path: "/signup", element: <UserSignUp/> },
       { path: "/trainersignup", element: <TrainerSignUp /> },
       { path: "/membersignup", element: <MemberSignUp /> },
       { path: "/trainerid", element: <TrainerId /> },
+      { path: "/googlelogin", element: <GoogleLogin/>},
 
       // 멤버 관련 경로
-      { path: "/mem", element: <Navigate to="/mem/starter" /> },
-      { path: "/mem/starter", element: <Starter /> },
-      { path: "/mem/MemberMyPage", element: <MemberMyPage /> },
-      { path: "/mem/MemberCalendar", element: <MemberCalendar /> },
-      { path: "/mem/MemberDietJournal", element: <MemberDietJournal /> },
-      { path: "/mem/MemberDietAdd", element: <MemberDietAdd /> },
-      { path: "/mem/MemberExerciseAdd", element: <MemberExerciseAdd /> },
-      { path: "/mem/MemberExercise", element: <MemberExercise /> },
+      { path: "/member/*", element: <Navigate to="/member" /> },
+      { path: "/member", element: <MemberMain /> },
+      { path: "/member/mypage", element: <MemberMypage /> },
+      { path: "/member/mypagedetail", element: <MemberMypageDetail /> },
+      { path: "/member/trainerlist/:member_num", element: <MemberTrainerList /> },
+      { path: "/member/calendar", element: <MemberCalendar /> },
+      { path: "/member/dietjournal/:m_calendar_id", element: <MemberDietJournal /> },
+      { path: "/member/dietadd/:m_calendar_id/:d_journal_id?", element: <MemberDietAdd /> },
+      { path: "/member/exercise/:m_calendar_id", element: <MemberExercise /> },
+      { path: "/member/exerciseadd/:m_calendar_id/:e_journal_id?", element: <MemberExerciseAdd /> },
 
       // 트레이너 관련 경로
-      { path: "/tr", element: <Navigate to="/tr/home" /> },
-      { path: "/tr/home", element: <Home/> },
-      { path: "/tr/calendar", element: <TrainerCalendar /> },
-      { path: "/tr/message", element: <TrainerMessage/>},
-      { path: "/tr/members", element: <TrainerMembers/>},
-      { path: "/tr/mypage", element: <TrainerMypage/>},
-      { path: "/tr/mypagedetail", element: <TrainerMypageDetail/>},
+      { path: "/trainer/*", element: <Navigate to="/trainer" /> },
+      { path: "/trainer", element: <TrainerMain/> },
+      { path: "/trainer/calendar", element: <TrainerCalendar /> },
+      { path: "/trainer/message", element: <TrainerMessage/>},
+      { path: "/trainer/members", element: <TrainerMembers/>},
+      { path: "/trainer/mypage", element: <TrainerMypage/>},
+      { path: "/trainer/mypagedetail", element: <TrainerMypageDetail/>},
+
+      // 관리자 관련 경로
+      { path: "/admin/*", element: <Navigate to="/admin" /> },
+      { path: "/admin", element: <AdminMain/> }
     ],
   },
 ];

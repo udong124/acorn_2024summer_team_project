@@ -1,37 +1,44 @@
-//식단 추가및 수정
 import axios from "axios"
 import React, { useState, useEffect } from "react"
-import { useNavigate, useParams } from 'react-router'
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Modal, Button, Card, Row, Col, InputGroup, DropdownButton, Dropdown, Form, ListGroup, ListGroupItem, Table } from "react-bootstrap"
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
+/**
+ * MemberDietJournalAdd 컴포넌트
+ * - 사용자가 식단을 추가하거나 수정할 수 있는 기능을 제공
+ * - 식단 목록을 검색 및 선택한 식단을 추가
+ * - 새로운 식단 데이터를 추가할 수 있는 모달 창 제공
+ */
 
-function MemberDietJournal(){
-    const {m_calendar_id} = useParams()
-    const {d_journal_id} = useParams()
+function MemberDietJournalAdd(){
+    const {m_calendar_id, d_journal_id} = useParams()//URL 파라미터에서 m_calendar_id와 d_journal_id 추출
 
-    const [dietType, setDietType] = useState('선택')//아점저
+    const [dietType, setDietType] = useState('선택')//식단 유형 (아침, 점심, 저녁)
     const [search, setSearch] = useState("")//검색
-    const [dietList, setDietList] = useState([])//총식단리스트 오리지널 데이터
-    const [select, setSelect] = useState([])//식단선택에서 고른거
-    const [date,setDate] = useState()//n이전페이지에서 날짜담을
+    const [dietList, setDietList] = useState([])//전체 식단 리스트 (오리지널 데이터)
+    const [select, setSelect] = useState([])//선택한 식단 목록
     const [isModalOpen,setIsModalOpen]=useState(false)//음식추가모달창여부
     const [foodData,setFoodData]=useState([])//음식데이터 추가할때
     const [selectedRowIndex, setSelectedRowIndex] = useState(null) // 선택된 테이블 행 인덱스
-
-
-    const [formData,setFormData]=useState({}) //임시데이터값 받아와서 무게에따라 바뀌게하기위해
+    const [formData,setFormData]=useState({}) //임시데이터값 받아와서 무게에따라 변경
     
-    const navigate = useNavigate()//이건 나중에 이동할거
+    const navigate = useNavigate()//페이지 이동 및 쿼리파라미터 연관
+    const location = useLocation()//쿼리파라미터의 위치정보를 담기위함
+    const queryParams = new URLSearchParams(location.search)//URL 쿼리 파라미터
+    
+    //날짜 관련 및 아무런 날짜 받은게 없으면 현재날짜 기준으로 셋팅
+    const today = new Date()
+    const localDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
+    const initialDateStr = queryParams.get("date") ? queryParams.get("date") : localDate
+    const initialDate = new Date(initialDateStr)
+    const [selectedDate, setSelectedDate] = useState(initialDate);
 
     const token = localStorage.getItem('token')
 
     useEffect(()=>{ 
-        const date = localStorage.getItem('selectDate') 
-        setDate(date)
-        /*날짜 화면에 띄어보려하는데 에러나는것입니다.*/
-
-
-        //오리지널 식단리스트 가져오는거
+        //추가가능한 오리지널 식단리스트 가져오는거
         axios.get('/dietlist')
         .then(res => {
             // res.data가 배열인지 확인후 배열이 아니면 빈 배열설정
@@ -40,17 +47,45 @@ function MemberDietJournal(){
               setFormData(res.data.map(item => ({ ...item, foodcount: 100 })))
             } else {
               setDietList([]) // 배열이 아니다 그럼 빈 배열설정
-              console.error('API에서 받은 데이터가 배열이 아닙니다:', res.data)
+              console.error('API에서 값을 받아오지 못했습니다', res.data)
             }
           })
         .catch(error => console.log(error))
-    },[token])
+
+        //추가한 식단목록에서 식단이 있을경우 데이터 가져오기. (수정할때 수정할 데이터를 가져오기 위함)
+        if(select.length>0){
+            axios.get(`/dietjournal/${m_calendar_id}`) //특정멤버 식단일지 세부조회
+            .then(res=>{
+                axios.get(`/membercalendar/${m_calendar_id}`)//date를 가져오기위해 특정멤버 캘린더 세부조회
+                .then(calendarRes=>{
+                    const selectDateCalendar = calendarRes.data.date
+                    const filteredData = res.data.filter(item=>selectDateCalendar===selectedDate)
+                    
+                    const saveLoadData = filteredData.map(data => ({
+                        ...data,
+                        diet_id: data.diet_id,
+                        diet_type: data.diet_type,
+                        food: data.food,
+                        calories: data.calories,
+                        carbs: data.carbs,
+                        protein: data.protein,
+                        fat: data.fat,
+                        foodcount: data.foodCount
+                    }))
+                    setSelect(saveLoadData)
+                }).catch(error=>console.log(error))
+
+            }).catch(error=>console.log(error))
+        }
+    },[token,m_calendar_id,select.length,selectedDate])//의존성배열
     
+    //검색어변경 핸들러
     const handleChange =(e)=>{
         setSearch(e.target.value)
     }
 
-    const handleClickAdd = () => { //식단선택후 추가하는 테이블
+    //식단유형(아침,점심,저녁)과 선택된 식단있는지 확인하고 선택된 식단추가
+    const handleClickAdd = () => {
         if (dietType === '선택') {
             alert("식단 유형을 선택해주세요.")
             return
@@ -74,13 +109,14 @@ function MemberDietJournal(){
         setSelectedRowIndex(null)
     }
     
-
+    //식단리스트를 검색어에 따라 필터링
     const dietListSearch = dietList.filter(data=>
         data.food.toLowerCase().includes(search.toLowerCase())
     )
 
+    //음식데이터 추가 핸들러
     const handleFoodDataAdd =(e)=>{
-    const isFoodData = foodData.filter(food => 
+    const isFoodData = foodData.filter(food =>//유효한 음식데이터 필터링 
         food.food.trim() !== "" &&
         !isNaN(food.calories) &&
         !isNaN(food.carbs) &&
@@ -95,27 +131,29 @@ function MemberDietJournal(){
         return
     }
 
-    axios.post('/dietlist', isFoodData)
+    axios.post('/dietlist', isFoodData)//식단추가API
     .then(res => {
+        if(res.data.isSuccess){
         const newDietList = isFoodData.map((food, idx) => ({
             diet_id: dietList.length + idx + 1, 
             ...food
         }))
         setDietList([...dietList, ...newDietList])
         handleCloseModal()
-    })
+        navigate(`/member/dietjournal/${m_calendar_id}?date=${selectedDate.toISOString().split('T')[0]}`)
+    }})
     .catch(error => {
         console.log(error)
         alert("식단 데이터 추가실패!")
     })
     }
 
+    //무게변경 핸들러 (무게따라 칼로리, 탄수화물, 단백질, 지방 값 저절로 업데이트)
     const handleWeightChange = (index, foodcount) => {
         if (isNaN(foodcount) || foodcount <= 0) {
             console.error('유효하지 않은 무게 값')
             return
         }
-    
         const updatedFormData = [...formData]
         updatedFormData[index] = {
             ...updatedFormData[index],
@@ -128,59 +166,122 @@ function MemberDietJournal(){
         setFormData(updatedFormData)
     }
     
+    //날짜변경 핸들러. 선택한 날짜 업데이트되고, url 쿼리 파라미터도 같이 변경됨
+    const handleDateChange = (date)=>{
+        setSelectedDate(date)
+        const formattedDate = date.toISOString().split("T")[0]
+        queryParams.set("date",formattedDate)
+        navigate(`?date=${formattedDate}`, { replace: true })
+    }
 
+    //모달창 열기
     const handleOpenModal=()=>{
         setIsModalOpen(true)
     }
     
+    //모달창 닫기
     const handleCloseModal=()=>{
         setIsModalOpen(false)
     }
 
+    //테이블 행 추가
     const handleTableAdd=()=>{
         setFoodData([...foodData, { food: "", calories: "", carbs: "", protein: "", fat: "", foodcount: "" }])
     }
 
+    //테이블 행 삭제
     const handleTableDelete=(index)=>{
         setFoodData(foodData.filter((_, idx) => idx !== index))
     }
 
+    //업데이트 된 식단데이터 가져오기
+    const fetchUpdatedDietData = async()=>{
+        try {
+            const res = await axios.get(`/dietjournal/${m_calendar_id}`);
+            if (res.data) {
+              const calendarRes = await axios.get(`/membercalendar/${m_calendar_id}`)
+              const selectDateCalendar = calendarRes.data.date;
+              const filteredData = res.data.filter(item => selectDateCalendar === selectedDate);
+        
+              const saveLoadData = filteredData.map(data => ({
+                diet_type: data.diet_type,
+                food: data.food,
+                calories: data.calories,
+                carbs: data.carbs,
+                protein: data.protein,
+                fat: data.fat,
+                foodcount: data.foodCount
+              }));
+              setSelect(saveLoadData);
+            }
+          } catch (error) {
+            console.log(error);
+          }
+        }
+
+    //저장
     const handleSubmit= async() => {
         if (select.length === 0) {
             alert("추가된 식단이 없습니다.")
             return
         }
         try {
-            const getData = await axios.get(`/dietjournal/${m_calendar_id}`)
-    
-            if (getData.data) {
-                //안에 암것도 없을때 등록시
-                await axios.put(`/dietjournal/${m_calendar_id}`, {
-                    m_calendar_id, 
-                    diet: select.map(data => ({
-                        diet_id: data.diet_id,
-                        diet_type: data.diet_type,
-                        foodCount: data.foodcount
-                    })) 
-                })
+            let response;
+        
+            //수정일경우
+            if (d_journal_id) {
+              response = await axios.put(`/dietjournal/${d_journal_id}`, {
+                m_calendar_id,
+                diet: select.map(data => ({
+                  diet_id: data.diet_id,
+                  diet_type: data.diet_type,
+                  foodCount: data.foodcount,
+                }))
+              })
+            } else {
+              //새로추가일 경우
+              response = await axios.post(`/dietjournal/${m_calendar_id}`, {
+                m_calendar_id,
+                diet: select.map(data => ({
+                  diet_id: data.diet_id,
+                  diet_type: data.diet_type,
+                  foodCount: data.foodcount,
+                }))
+              })
             }
-        } catch (error) {console.log(error)}
-
-        //이건 수정할때
-        axios.post(`/dietjournal/${d_journal_id}`,{
-            m_calendar_id, 
-            diet: select.map(data => ({
-                diet_id: data.diet_id, 
-                diet_type: data.diet_type, 
-                foodCount: data.foodcount 
-            }))
-        })
-    }
+        
+            if (response.data.isSuccess) {
+              await fetchUpdatedDietData();
+        
+              navigate(`/MemberDietJournal?date=${selectedDate.toISOString().split("T")[0]}`);
+            } else {
+              alert("저장 실패");
+            }
+          } catch (error) {
+            console.log("저장 중 오류 발생:", error);
+          }
+        }
 
 
   return (
     <div>
-        <h1>{setDate}</h1>
+      <Row>
+        <Col>
+          <Card>
+           <Card.Header as="h6" className="border-bottom p-3 mb-0">
+                <h2>{selectedDate.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })}의 식단 추가</h2>
+                <div style={{ marginBottom: "20px" }}>
+                    <DatePicker
+                    selected={selectedDate}  // 현재 선택된 날짜 설정
+                    onChange={handleDateChange}  // 날짜 변경 시 handleDateChange 호출
+                    dateFormat="yyyy년 MM월 dd일"  // 날짜 포맷 설정
+                    placeholderText="날짜를 선택하세요"
+                    />
+                </div>
+            </Card.Header>
+          </Card>
+        </Col>
+      </Row>
       <Row>
         <Col xs={12} md={6}>
             <Card>
@@ -240,14 +341,13 @@ function MemberDietJournal(){
                 <Button onClick={handleOpenModal} className="open-modal-button" variant="outline-secondary">음식 데이터추가</Button>            
                 <Button onClick={handleClickAdd}>식단추가</Button>
                 
-                <Modal show={isModalOpen} onHide={handleOpenModal}>
+                <Modal show={isModalOpen} onHide={handleCloseModal}>
                 <div className="modal show" style={{ display: 'block', position: 'initial' }}>
                     <Modal.Dialog>
                         <Modal.Header>
                         <Modal.Title>식단데이터 추가</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
-                            
                             <InputGroup className="mb-3">
                             <Table bordered>
                                 <thead>
@@ -265,10 +365,8 @@ function MemberDietJournal(){
                                 {foodData.map((food, index) => (
                                     <tr key={index}>
                                         <td>
-                                            <Form.Control 
-                                                placeholder="음식" 
-                                                value={food.food} 
-                                                onChange={(e) => {
+                                            <Form.Control placeholder="음식" value={food.food} 
+                                            onChange={(e) => {
                                                     const updatedFood = [...foodData]
                                                     updatedFood[index].food = e.target.value
                                                     setFoodData(updatedFood)
@@ -276,10 +374,7 @@ function MemberDietJournal(){
                                             />
                                         </td>
                                         <td>
-                                            <Form.Control 
-                                                type="number" 
-                                                placeholder="kcal" 
-                                                value={food.calories} 
+                                            <Form.Control type="number" placeholder="kcal" value={food.calories} 
                                                 onChange={(e) => {
                                                     const updatedFood = [...foodData]
                                                     updatedFood[index].calories = Number(e.target.value)
@@ -288,10 +383,7 @@ function MemberDietJournal(){
                                             />
                                         </td>
                                         <td>
-                                            <Form.Control 
-                                                type="number" 
-                                                placeholder="g" 
-                                                value={food.carbs} 
+                                            <Form.Control type="number" placeholder="g" value={food.carbs} 
                                                 onChange={(e) => {
                                                     const updatedFood = [...foodData]
                                                     updatedFood[index].carbs = Number(e.target.value)
@@ -300,10 +392,7 @@ function MemberDietJournal(){
                                             />
                                         </td>
                                         <td>
-                                            <Form.Control 
-                                                type="number" 
-                                                placeholder="g" 
-                                                value={food.protein} 
+                                            <Form.Control type="number"  placeholder="g" value={food.protein} 
                                                 onChange={(e) => {
                                                     const updatedFood = [...foodData]
                                                     updatedFood[index].protein = Number(e.target.value)
@@ -312,10 +401,7 @@ function MemberDietJournal(){
                                             />
                                         </td>
                                         <td>
-                                            <Form.Control 
-                                                type="number" 
-                                                placeholder="g" 
-                                                value={food.fat} 
+                                            <Form.Control type="number" placeholder="g" value={food.fat} 
                                                 onChange={(e) => {
                                                     const updatedFood = [...foodData]
                                                     updatedFood[index].fat = Number(e.target.value)
@@ -324,10 +410,7 @@ function MemberDietJournal(){
                                             />
                                         </td>
                                         <td>
-                                            <Form.Control 
-                                                type="number" 
-                                                placeholder="g" 
-                                                value={food.foodcount} 
+                                            <Form.Control type="number" placeholder="g" value={food.foodcount} 
                                                 onChange={(e) => {
                                                     const updatedFood = [...foodData]
                                                     updatedFood[index].foodcount = Number(e.target.value)
@@ -398,7 +481,7 @@ function MemberDietJournal(){
                 </tbody>
                 </Table>
             </Card.Body>
-            <Button onClick={()=>{handleSubmit();navigate('/') /*난제 이동경로 바꾸기*/}} >완료</Button> 
+            <Button onClick={handleSubmit} >완료</Button> 
           </Card>
         </Col>
       </Row>
@@ -406,4 +489,4 @@ function MemberDietJournal(){
   )
 }
 
-export default MemberDietJournal
+export default MemberDietJournalAdd

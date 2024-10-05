@@ -17,16 +17,16 @@ function Calendar() {
   const [currentEventId, setCurrentEventId] = useState(null); // 현재 편집 중인 이벤트의 ID
   const [selectedDateEvents, setSelectedDateEvents] = useState([]); // 선택한 날짜의 모든 일정
 
+  //해당 캘린더의 저장되어있는 전체 이벤트를 가져오는 axios.get요청
   const refresh = () => {
     axios.get(`/trainercalendar`)
       .then(res => {
         const formattedEvents = res.data.calList.map(event => ({
-          id: event.t_calendar_id,
           title: event.name,
           start: event.regdate,
           member_num: event.member_num,
           trainer_num: event.trainer_num,
-          t_calendar_id: event.t_calendar_id // t_calendar_id 추가
+          t_calendar_id: event.t_calendar_id // 
         }));
         setEvents(formattedEvents);
       })
@@ -58,7 +58,7 @@ function Calendar() {
     };
 
     if (isEditing) {
-      // PUT 요청: 기존 이벤트 업데이트
+      // 기존 저장되어있는 이벤트를 수정하는 axios.put 요청
       axios.put(`/trainercalendar/${event.t_calendar_id}`, eventToSave)
         .then(res => {
           setShowModal(false);
@@ -66,7 +66,7 @@ function Calendar() {
         })
         .catch(err => console.log(err));
     } else {
-      // POST 요청: 새로운 이벤트 생성
+      // 새로운 이벤트를 추가하는 axios.post요청
       axios.post(`/trainercalendar`, eventToSave)
         .then(res => {
           setShowModal(false);
@@ -76,7 +76,7 @@ function Calendar() {
     }
   };
 
-  // 날짜 클릭 시 호출되는 핸들러
+  // ★날짜 클릭 시 호출되는 핸들러
   const handleDateClick = (date) => {
     // 해당 날짜에 저장된 모든 일정을 필터링
     const selectedEvents = events.filter(event => event.start.startsWith(date.dateStr));
@@ -88,7 +88,7 @@ function Calendar() {
     setShowDateEventsModal(true);
   };
 
-  // 이벤트 클릭 시 호출되는 핸들러
+  // ★이벤트 클릭 시 호출되는 핸들러
   const handleEventClick = (clickInfo) => {
     const event = clickInfo.event;
     setNewEvent({
@@ -120,11 +120,15 @@ function Calendar() {
 
     axios.delete(`/trainercalendar/${t_calendar_id}`, { params: { member_num } })
       .then(() => {
+        refresh();
         setEvents(events.filter(event => event.id !== t_calendar_id));
         setShowModal(false);
       })
       .catch(err => console.log(err));
   };
+
+ 
+    const ownTopic = Array.from(new Map(events.map(item=> [item.member_num, item])).values());
 
   const renderEventContent = (eventInfo) => {
     return (
@@ -184,7 +188,8 @@ function Calendar() {
                         value={newEvent.member_num}
                         onChange={(e) => setNewEvent({ ...newEvent, member_num: e.target.value })}
                       >
-                        {Array.isArray(events) && events.map(item => (
+                        <option>선택</option>
+                        {Array.isArray(events) && ownTopic.map(item => (
                           <option key={uuidv4()} value={item.member_num}>
                             {item.title}
                           </option>

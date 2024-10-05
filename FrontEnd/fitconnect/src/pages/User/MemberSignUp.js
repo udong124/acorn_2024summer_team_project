@@ -3,32 +3,54 @@ import { Button, Form, Container, Card, Row, Col } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-
-
-
 const MemberSignUp = () => {
 
   const [formData, setFormData] = useState({
-    member_num: "",
-    trainer_num: "",//회원이 회원가입한후 memberSignUp으로 넘어올때 트레이너번호? 트레이너검색기능이 membersignup에서 빠짐
+    member_num: 0,
+    trainer_num: 0,
     member_height: "",
     member_weight: "",
     member_gender: "",
     plan: "",
     weeklyplan: ""
   });
-
+  const [token, setToken] = useState("");
+  const [isReady, setIsReady] = useState(false);
   const navigate = useNavigate();
-
   const location = useLocation();
+  const { member_num } = location.state;
+
   useEffect(() => {
-    if(location.state && location.state.member_num) {
-      setFormData(prevData => ({
-        ...prevData,
-        member_num: location.state.member_num
-      }));
+    setToken(localStorage.getItem("token"));
+    setFormData(prevData => ({
+      ...prevData,
+      member_num: member_num
+    }));
+  }, []);
+
+  useEffect(() => {
+    if(formData.member_num !== 0 && token !== "" && isReady) {
+      axios
+      .post(`/member`, formData, {
+        headers: {
+          Authorization: `${token}`
+        }
+      })
+      .then((response) => {
+        if(response.data.isSuccess){
+          navigate("/member"); 
+        }
+      })
+      .catch((error) => {
+        if (error.response && error.response.data) {
+          console.error(
+            "서버 응답 오류:",
+            error.response.data.message || error.message
+          );
+        }
+      });
     }
-  }, [location]);
+  }, [formData, token, isReady])
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -46,20 +68,7 @@ const MemberSignUp = () => {
       return;
     }
 
-    axios
-      .post(`/member`, formData)
-      .then((response) => {
-        console.log(response.data);
-        navigate(`/`); //합치게되면 경로를 member의 메인페이지로 바꾸기
-      })
-      .catch((error) => {
-        if (error.response && error.response.data) {
-          console.error(
-            "서버 응답 오류:",
-            error.response.data.message || error.message
-          );
-        }
-      });
+    setIsReady(true);
   };
 
   return (
@@ -71,7 +80,7 @@ const MemberSignUp = () => {
             <h4> 회원 기본 설정 </h4>
           </Card.Header>
           <Card.Body className="">
-          <Form>
+          <Form onSubmit={handleSubmit}>
             <Form.Group>
               <Form.Label>키</Form.Label>
               <Form.Control
@@ -136,8 +145,6 @@ const MemberSignUp = () => {
             <Button
               variant="dark"
               type="submit"
-            
-              onClick={handleSubmit}
             >
               완료
             </Button>
