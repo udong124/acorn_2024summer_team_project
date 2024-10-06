@@ -13,7 +13,8 @@ import 'react-datepicker/dist/react-datepicker.css';
  */
 
 function MemberDietJournalAdd(){
-    const {m_calendar_id, d_journal_id} = useParams()//URL 파라미터에서 m_calendar_id와 d_journal_id 추출
+    const [m_calendar_id, setMCalendarId] = useState(null)
+    const [d_journal_id, setDJournalId] = useState(null)
 
     const [dietType, setDietType] = useState('선택')//식단 유형 (아침, 점심, 저녁)
     const [search, setSearch] = useState("")//검색
@@ -37,7 +38,18 @@ function MemberDietJournalAdd(){
 
     const token = localStorage.getItem('token')
 
+    //해당날짜 쿼리파라미터로 로딩시 가져오기
+    useEffect(()=>{
+      if(!queryParams.get("date")){
+        const formattedDate = selectedDate.toISOString().split("T")[0];
+        navigate(`?date=${formattedDate}`, { replace: true });
+      }
+    },[selectedDate, navigate, queryParams])
+
     useEffect(()=>{ 
+        axios.get('/membercalendar')
+        .then(res=>{setMCalendarId(res.data.m_calendar_id)})
+        .catch(error=>console.log(error))
         //추가가능한 오리지널 식단리스트 가져오는거
         axios.get('/dietlist')
         .then(res => {
@@ -56,6 +68,7 @@ function MemberDietJournalAdd(){
         if(select.length>0){
             axios.get(`/dietjournal/${m_calendar_id}`) //특정멤버 식단일지 세부조회
             .then(res=>{
+                setDJournalId(res.data.d_journal_id)
                 axios.get(`/membercalendar/${m_calendar_id}`)//date를 가져오기위해 특정멤버 캘린더 세부조회
                 .then(calendarRes=>{
                     const selectDateCalendar = calendarRes.data.date

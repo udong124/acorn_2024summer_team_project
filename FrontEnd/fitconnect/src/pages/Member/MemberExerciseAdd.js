@@ -15,7 +15,9 @@ import "react-datepicker/dist/react-datepicker.css"
  */
 
 function MemberExerciseAdd() {
-  const { exercise_category, exercise_id, m_calendar_id } = useParams();
+  const [exercise_category, setExercise_Category] = useState(null)//API에서 받은 카테고리
+  const [e_journal_id, setEJournalId] = useState(null)//API에서 받은 exercise_id
+  const [m_calendar_id, setMCalendarId] = useState(null)//API에서 받은 m_Calendar_id
 
   const navigate = useNavigate()//페이지 이동 및 쿼리파라미터 연관
   const location = useLocation()//쿼리파라미터의 위치정보를 담기위함
@@ -42,6 +44,21 @@ function MemberExerciseAdd() {
 
   const token = localStorage.getItem('token')
 
+  //API에서 m_calnedar_id 받기
+  useEffect(()=>{
+    axios.get('/membercalendar')
+    .then(res=>{setMCalendarId(res.data.m_calendar_id)})
+    .catch(error=> console.log(error))
+  })
+
+  //해당날짜 쿼리파라미터로 로딩시 가져오기
+  useEffect(()=>{
+    if(!queryParams.get("date")){
+      const formattedDate = selectedDate.toISOString().split("T")[0];
+      navigate(`?date=${formattedDate}`, { replace: true });
+    }
+  },[selectedDate, navigate, queryParams])
+
   //카테고리 선택할때마다 바뀌는 운동목록 데이터
   useEffect(() => {
     const category = exerciseCategory === "all" ? `` : `/${exerciseCategory}`;
@@ -62,6 +79,7 @@ function MemberExerciseAdd() {
   useEffect(() => {
       axios.get(`/exercisejournal/${m_calendar_id}`)
       .then(res=>{
+        setEJournalId(res.data.exercise_id)
         axios.get(`/membercalendar/${m_calendar_id}`)
         .then(calendarRes=>{
           const selectDateCalendar = calendarRes.data.date
@@ -208,7 +226,7 @@ function MemberExerciseAdd() {
                 </DropdownButton>
                 <Form.Control onChange={handleChange} placeholder="운동목록 검색" type="text"/>
               </InputGroup>
-        
+
               <Form.Group controlId="showDetailsCheckbox" className="mb-3">
                 <Form.Check type="checkbox" label="운동 상세 보기" checked={showDetailsOption} onChange={(e) => setShowDetailsOption(e.target.checked)}/>
               </Form.Group>
