@@ -3,6 +3,7 @@ import axios from "axios";
 import { Form, Button, Card, Row, Col, Container } from "react-bootstrap"; // Bootstrap 적용
 
 import { decodeToken } from "jsontokens";
+import { Link, useNavigate } from "react-router-dom";
 
 const TrainerId = () => {
   const searchKeywordRef = useRef(""); // 검색어 Ref
@@ -11,8 +12,14 @@ const TrainerId = () => {
   const [filteredTrainers, setFilteredTrainers] = useState([]); // 필터링된 트레이너 목록
   const [selectedTrainer, setSelectedTrainer] = useState(null); // 선택한 트레이너
   const [member_num, setMember_num] = useState(null); // 회원 번호 상태
+  const [trainer_num, setTrainer_num] = useState(null); //트레이너 번호 상태
+  const [isReady, setIsReady] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(""); 
+  //프로필 이미지 관련
+  const [imageSrc, setImageSrc] = useState(null);
 
-  
+  const navigate = useNavigate();
+
   //트레이너리스트를 가져오기
   useEffect(() => {
     axios
@@ -64,31 +71,41 @@ const TrainerId = () => {
     setFilteredTrainers(filteredList);
   };
 
-  //트레이너 등록하기 
-  const handleRegister = () => {
-    if (!selectedTrainer || !member_num) {
-      alert("트레이너와 회원 정보를 확인하세요.");
-      return;
-    }
-    //현재 해결되지 못한 부분-> 선택된 트레이너 등록(axios.patch안됨) 못함, member_num 을 얻어오지 못함(회원번호에 나온 번호는 user_num이다)
-    axios
-      .patch("/member/update/trainer", {
-        member_num: member_num,
-        trainer_num: selectedTrainer.trainer_num,
-      })
-      .then((response) => {
-        if (response.data.isSuccess) {
-          alert("트레이너가 성공적으로 등록되었습니다.");
-          setSelectedTrainer(null);
-          setFilteredTrainers(trainerList);
-        } else {
-          alert("트레이너 등록에 실패했습니다.");
-        }
-      })
-      .catch((error) => {
-        console.error("트레이너 등록 실패:", error);
-      });
-  };
+  useEffect(() => {
+    if (isReady && member_num !== null && selectedTrainer !== null) {
+      const formData = {member_num: member_num, trainer_num: selectedTrainer.id};
+      console.log(formData);
+
+      axios
+        .patch("/member/update/trainer", formData)
+        .then((response) => {
+          if (response.data.isSuccess) {
+            alert("트레이너가 성공적으로 등록되었습니다.");
+            setSelectedTrainer(null);
+            setFilteredTrainers(trainerList);
+            navigate("/member/mypagedetail")
+          } else {
+            alert("트레이너 등록에 실패했습니다.");
+          }
+        })
+        .catch((error) => {
+          const errorMsg =error.response?.data?.message || "트레이너 등록 실패: 트레이너 등록에 실패했습니다.";
+          setErrorMessage(errorMsg);
+          console.error("트레이너 등록 실패:", error);
+        });
+      }
+    }, [member_num, trainer_num, isReady]);
+
+    const handleRegister = (e) => {
+      e.preventDefault();
+
+      if (!selectedTrainer || !member_num) {
+        setErrorMessage("트레이너와 회원 정보를 확인하세요.");
+        return;
+      }
+  
+      setIsReady(true);
+    };
 
   return (
     <Container>
@@ -131,6 +148,27 @@ const TrainerId = () => {
                 </Row>
               </Form>
 
+              {/* 선택된 트레이너 정보와 회원 번호 입력 */}
+              {selectedTrainer && (
+                <div className="mt-4">
+                  <h4>선택된 트레이너</h4>
+                  <p>이름: {selectedTrainer.name}</p>
+                  <p>이메일: {selectedTrainer.email}</p>
+                  <p style={{right: 20}}>프로필: {selectedTrainer.profile}</p>
+                  <p>인스타그램: <Link to="/{selectedTrainer.trainer_insta}">{selectedTrainer.trainer_insta}</Link></p>
+                  <p>자기소개: {selectedTrainer.trainer_intro}</p>
+                  <p>헬스장: {selectedTrainer.gym_name}</p>
+                  <p>헬스장 링크: <Link to="/{selectedTrainer.gym_link}">{selectedTrainer.gym_link}</Link></p>
+                  <p>회원 번호: {member_num ? member_num : "토큰에서 member_num을 찾을 수 없음..."}</p>
+                  <Button
+                    onClick={handleRegister}
+                    className="btn-primary w-100"
+                  >  
+                    등록
+                  </Button>
+                </div>
+              )}
+
               {/* 검색된 트레이너 목록을 가로로 보여주기 */}
               <Row className="mt-3">
                 {filteredTrainers.length > 0 ? (
@@ -165,21 +203,6 @@ const TrainerId = () => {
                 )}
               </Row>
 
-              {/* 선택된 트레이너 정보와 회원 번호 입력 */}
-              {selectedTrainer && (
-                <div className="mt-4">
-                  <h4>선택된 트레이너</h4>
-                  <p>헬스장: {selectedTrainer.gym_name}</p>
-                  <p>인스타그램: {selectedTrainer.trainer_insta}</p>
-                  <p>회원 번호: {member_num ? member_num : "토큰에서 member_num을 찾을 수 없음..."}</p>
-                  <Button
-                    onClick={handleRegister}
-                    className="btn-primary w-100"
-                  >
-                    등록
-                  </Button>
-                </div>
-              )}
             </Card.Body>
           </Card>
         </Col>

@@ -24,9 +24,10 @@ import TrainerMypage from '../pages/Trainer/TrainerMypage';
 import TrainerMypageDetail from '../pages/Trainer/TrainerMypageDetail';
 import TrainerMain from '../pages/Trainer/TrainerMain';
 import AdminMain from '../pages/Admin/AdminMain';
+import ProtectedRoute from "../components/ProtectedRoute";
 
  //ProtectedRoute 사용할 경우 이 주석을 이용해 감싸서 사용해주기  MEMBER,TRAINER,ADMIN 대문자로!
- // <ProtectedRoute allowedRoles={['MEMBER']}><TrainerId/></ProtectedRoute>
+ // 예시: <ProtectedRoute allowedRoles={['ADMIN']}><TrainerId/></ProtectedRoute>
 
 /********* Routes *******/
 const Routes = [
@@ -40,36 +41,35 @@ const Routes = [
       { path: "/signup", element: <UserSignUp/> },
       { path: "/trainersignup", element: <TrainerSignUp /> },
       { path: "/membersignup", element: <MemberSignUp /> },
-      { path: "/trainerid", element: <TrainerId /> },
+      { path: "/trainerid", element: <ProtectedRoute allowedRoles={['MEMBER']}><TrainerId /></ProtectedRoute> },
       { path: "/googlelogin", element: <GoogleLogin/>},
 
       // 멤버 관련 경로
       { path: "/member/*", element: <Navigate to="/member" /> },
-      { path: "/member", element: <MemberMain /> },
-      { path: "/member/mypage", element: <MemberMypage /> },
-      { path: "/member/mypagedetail", element: <MemberMypageDetail /> },
-      { path: "/member/trainerlist/:member_num", element: <MemberTrainerList /> },
-      { path: "/member/calendar", element: <MemberCalendar /> },
-      { path: "/member/dietjournal/:m_calendar_id", element: <MemberDietJournal /> },
-      { path: "/member/dietadd/:m_calendar_id/:d_journal_id?", element: <MemberDietAdd /> },
-      { path: "/member/exercise/:m_calendar_id", element: <MemberExercise /> },
-      { path: "/member/exerciseadd/:m_calendar_id/:e_journal_id?", element: <MemberExerciseAdd /> },
+      { path: "/member", element: <ProtectedRoute allowedRoles={['MEMBER']}><MemberMain /></ProtectedRoute> },
+      { path: "/member/mypage", element: <ProtectedRoute allowedRoles={['MEMBER']}><MemberMypage /></ProtectedRoute> },
+      { path: "/member/mypagedetail", element: <ProtectedRoute allowedRoles={['MEMBER']}><MemberMypageDetail /></ProtectedRoute> },
+      { path: "/member/trainerlist/:member_num", element: <ProtectedRoute allowedRoles={['MEMBER']}><MemberTrainerList /></ProtectedRoute> },
+      { path: "/member/calendar", element: <ProtectedRoute allowedRoles={['MEMBER']}><MemberCalendar /></ProtectedRoute> },
+      { path: "/member/dietjournal", element: <ProtectedRoute allowedRoles={['MEMBER']}><MemberDietJournal /></ProtectedRoute> },
+      { path: "/member/dietadd", element: <ProtectedRoute allowedRoles={['MEMBER']}><MemberDietAdd /></ProtectedRoute> },
+      { path: "/member/exercise", element: <ProtectedRoute allowedRoles={['MEMBER']}><MemberExercise /></ProtectedRoute> },
+      { path: "/member/exerciseadd", element: <ProtectedRoute allowedRoles={['MEMBER']}><MemberExerciseAdd /></ProtectedRoute> },
 
       // 트레이너 관련 경로
       { path: "/trainer/*", element: <Navigate to="/trainer" /> },
-      { path: "/trainer", element: <TrainerMain/> },
-      { path: "/trainer/calendar", element: <TrainerCalendar /> },
-      { path: "/trainer/message", element: <TrainerMessage/>},
-      { path: "/trainer/members", element: <TrainerMembers/>},
-      { path: "/trainer/mypage", element: <TrainerMypage/>},
-      { path: "/trainer/mypagedetail", element: <TrainerMypageDetail/>},
+      { path: "/trainer", element: <ProtectedRoute allowedRoles={['TRAINER']}><TrainerMain/></ProtectedRoute> },
+      { path: "/trainer/calendar", element: <ProtectedRoute allowedRoles={['TRAINER']}><TrainerCalendar /></ProtectedRoute> },
+      { path: "/trainer/message", element: <ProtectedRoute allowedRoles={['TRAINER']}><TrainerMessage/></ProtectedRoute>},
+      { path: "/trainer/members", element: <ProtectedRoute allowedRoles={['TRAINER']}><TrainerMembers/></ProtectedRoute>},
+      { path: "/trainer/mypage", element: <ProtectedRoute allowedRoles={['TRAINER']}><TrainerMypage/></ProtectedRoute>},
+      { path: "/trainer/mypagedetail", element: <ProtectedRoute allowedRoles={['TRAINER']}><TrainerMypageDetail/></ProtectedRoute>},
 
       // 관리자 관련 경로
       { path: "/admin/*", element: <Navigate to="/admin" /> },
-      { path: "/admin", element: <AdminMain/> }
+      { path: "/admin", element: <ProtectedRoute allowedRoles={['ADMIN']}><AdminMain/></ProtectedRoute> }
     ],
   },
 ];
 
 export default Routes;
-
