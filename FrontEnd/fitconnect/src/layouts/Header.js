@@ -53,9 +53,17 @@ const Header = () => {
         <div className="d-lg-block d-none me-5 pe-3">
           <Logo />
         </div>
-        <Navbar.Brand href="/">
-          <LogoWhite className="d-lg-none" />
-        </Navbar.Brand>
+        {console.log(localStorage.getItem("role"))}
+        {localStorage.getItem("role")==="MEMBER" ?
+          <Navbar.Brand href="/member">
+            <LogoWhite className="d-lg-none" />
+          </Navbar.Brand>
+        : <Navbar.Brand href="/trainer">
+            <LogoWhite className="d-lg-none" />
+          </Navbar.Brand>
+        }
+        
+        
         {/* 로그인 페이지에서는 이 버튼이 나타나지 않도록 조건부 렌더링 */}
         {!isAuthPage && (
           <Button variant="dark" className="d-lg-none" onClick={showMobilemenu}>
@@ -93,21 +101,18 @@ const Header = () => {
               로그아웃
             </Button>
           </>
-        ) : (
-          <Button variant="light" onClick={() => navigate("/login")}>
-            로그인
-          </Button>
-        )}
-        <Dropdown show={dropdownOpen} onToggle={toggle}>
-          <Dropdown.Toggle variant="transparent">
-            <img
-              src={user1}
-              alt="profile"
-              className="rounded-circle"
-              width="30"
-            />
-          </Dropdown.Toggle>
-        </Dropdown>
+        ) : ""}
+        {userName ? (
+          <Dropdown show={dropdownOpen} onToggle={toggle}>
+            <Dropdown.Toggle variant="transparent">
+              <img
+                src={user1}
+                alt="profile"
+                className="rounded-circle"
+                width="30"
+              />
+            </Dropdown.Toggle>
+          </Dropdown>): ""}
       </Navbar.Collapse>
     </Navbar>
   );

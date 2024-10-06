@@ -68,7 +68,7 @@ const MyPageDetail = () => {
       }));
       //만일 등록된 프로필 이미지가 있다면
       if(res.data.profile){
-        setImageSrc(`/upload/images/${res.data.profile}`)
+        setImageSrc(`/home/upload/${res.data.profile}`)
       }else{//없다면 
         // person svg 이미지를 읽어들여서 data url 로 만든다음 imageSrc 에 반영하기 
         // svg 이미지를 2 진 데이터 문자열로 읽어들여서 
@@ -147,7 +147,7 @@ const MyPageDetail = () => {
     }
     setMemberInfo(prevInfo => ({
       ...prevInfo,
-      image: e.target.image
+      image: file
     }));
   }
 
@@ -209,7 +209,7 @@ const MyPageDetail = () => {
               <Col className='leftside'>
                 <Form.Group>
                     <Form.Label>프로필사진 ( click or drag-drop to Edit ) </Form.Label>
-                    <Form.Control onChange={handleImageChange} ref={imageInput} style={{display:"none"}} type="file" name="image" accept="image/*"/>
+                    <Form.Control onChange={handleImageChange} ref={imageInput} style={{display:"none"}} type="file" name="image" accept="image/*" />
                 </Form.Group>
                 <div className="mb-3">
                     <a href="about:blank" onClick={(e)=>{

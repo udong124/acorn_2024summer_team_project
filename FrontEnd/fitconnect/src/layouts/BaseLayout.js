@@ -9,10 +9,10 @@ const BaseLayout = () => {
 
   // 현재 경로에 따라 헤더나 사이드바의 내용이 변경되도록 설정
   const getLayoutConfig = () => {
-    if (location.pathname.startsWith("/mem")) {
+    if (location.pathname.startsWith("/member")) {
       return { showSidebar: true, showContent: true };
     } 
-    else if (location.pathname.startsWith("/tr")) {
+    else if (location.pathname.startsWith("/trainer")) {
       return { showSidebar: true, showContent: true };
     } 
     else {

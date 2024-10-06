@@ -221,7 +221,7 @@ function UserSignUp() {
                 <Button
                   variant="outline-dark"
                   as={Link}   
-                  to="http://52.78.38.12:8080/oauth2/authorization/google"
+                  to="http://ec2-52-78-38-12.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/google"
                 >
                   Google Register
                 </Button>
