@@ -81,6 +81,19 @@ const MemberTrainerList = () => {
         .then((response) => {
           if (response.data.isSuccess) {
             alert("트레이너가 성공적으로 등록되었습니다.");
+            //채팅방 생성
+            axios.post("/messenger", formData)
+            .then((responseMessenger) => {
+              if(responseMessenger){
+                console.log("채팅방 생성")
+              }
+              else{
+                console.log("채팅방 생성 실패")
+              }
+            })
+            .catch((error) => {
+              console.error("채팅방 생성 실패:", error)
+            })
             setSelectedTrainer(null);
             setFilteredTrainers(trainerList);
             navigate("/member/mypagedetail")

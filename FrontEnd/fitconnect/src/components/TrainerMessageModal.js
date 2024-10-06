@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import mqtt from 'mqtt';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Form } from 'react-bootstrap';
 import ChatMessage from './ChatMessage';
 
 const MessageModal = ({ showModal, setShowModal, topic }) => {
@@ -13,12 +13,12 @@ const MessageModal = ({ showModal, setShowModal, topic }) => {
   const [messages, setMessages] = useState([]);
   const [deleteMode, setDeleteMode] = useState(false); // 삭제 모드 상태 추가
   const messagesEndRef = useRef(null);
+  const [content, setContent] = useState("");
   const decoder = new TextDecoder('utf-8');
 
   const client = mqtt.connect('ws://52.78.38.12:9002'); // mqtt 연결 설정 코드
 
   const [isReady, setIsReady] = useState(false);
-  const [areReady, setAreReady] = useState(false);
 
   // 메시지 목록을 새로고침하는 함수
   const refresh = () => {
@@ -33,10 +33,6 @@ const MessageModal = ({ showModal, setShowModal, topic }) => {
         });
     }
   };
-
-  useEffect(() => {
-    refresh();
-  }, [topic]);
 
   useEffect(() => {
     if (topic) {
@@ -55,6 +51,7 @@ const MessageModal = ({ showModal, setShowModal, topic }) => {
 
   // `topic`이 변경될 때마다 message.topic을 업데이트
   useEffect(() => {
+    refresh();
     setMessage(prevMessage => ({
       ...prevMessage,
       topic: topic // topic을 업데이트
@@ -64,7 +61,7 @@ const MessageModal = ({ showModal, setShowModal, topic }) => {
   // 양식 제출이 일어났을 때 실행되는 핸들러
   const sendMessageHandle = (e) => {
     e.preventDefault();
-
+    setMessage({ ...message, content: content })
     // 메시지를 전송하기 전에 필드 상태 확인
     console.log("Sending message:", message);
 
@@ -74,19 +71,12 @@ const MessageModal = ({ showModal, setShowModal, topic }) => {
       client.publish(topic, JSON.stringify(message), { qos: 0, retain: false });
 
       // 서버로 메시지 저장 요청
-      setIsReady({...isReady, ready:true});
+      setIsReady(true);
 
-      // 메시지 필드 초기화
-      setMessage({
-        send_type: "TRAINER",  // send_type 유지
-        content: "",        // 전송 후 content만 초기화
-        topic: topic        // topic 유지
-      });
   };
 
-
   useEffect(()=>{
-    if(message.content !== "" && isReady.topic !== "" && isReady.ready){
+    if(message.content !== "" && isReady){
       console.log(message)
       axios.post("/messenger/detail", message, {
         headers: {
@@ -96,6 +86,15 @@ const MessageModal = ({ showModal, setShowModal, topic }) => {
         .then(res => {
           console.log("Message sent successfully:", res.data);
           refresh(); // 메시지 전송 후 새로고침
+          setIsReady(false);
+        
+          // 메시지 필드 초기화
+          setMessage({
+            send_type: "TRAINER",  // send_type 유지
+            content: "",        // 전송 후 content만 초기화
+            topic: topic        // topic 유지
+          });
+          setContent("")
         })
         .catch(error => {
           console.error("Error sending message:", error);
@@ -109,10 +108,12 @@ const MessageModal = ({ showModal, setShowModal, topic }) => {
             console.error("Error setting up the request:", error.message);
           }
         });
-        setIsReady(false);
     }
   }, [message.content, message.topic , isReady])
 
+  const handleChange = (e) => {
+    setContent(e.target.value);
+  }
 
   // 특정 메시지를 삭제하는 함수
   const deleteMessage = (message_id) => {
@@ -127,10 +128,6 @@ const MessageModal = ({ showModal, setShowModal, topic }) => {
   const toggleDeleteMode = () => {
     setDeleteMode(prevState => !prevState); 
   };
-
-  const handleContent = (e) =>{
-    setMessage({ ...message, content: e.target.value })
-  }
 
   return (
     <Modal show={showModal} onHide={() => {
@@ -167,15 +164,15 @@ const MessageModal = ({ showModal, setShowModal, topic }) => {
           {deleteMode ? "삭제 취소" : "메세지 삭제"}
         </Button>
 
-        <form onSubmit={sendMessageHandle} style={{ display: 'flex', marginTop: '10px' }}>
+        <Form onSubmit={sendMessageHandle} style={{ display: 'flex', marginTop: '10px' }}>
           <input
             type="text"
-            value={message.content}
-            onChange={handleContent}
+            name="content"
+            onChange={handleChange}
             style={{ flex: 1, padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
           />
           <Button type="submit" style={{ padding: '10px', borderRadius: '5px', marginLeft: '10px' }}>Send</Button>
-        </form>
+        </Form>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={() => {
