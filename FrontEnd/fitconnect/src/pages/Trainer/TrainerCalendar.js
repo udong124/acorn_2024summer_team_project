@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import FullCalendar from '@fullcalendar/react';
 import interactionPlugin from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -10,6 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 function Calendar() {
   const [events, setEvents] = useState([]); // 캘린더에 표시할 이벤트 목록
+  const [members, setMembers] = useState([]); // 회원 목록
   const [showModal, setShowModal] = useState(false); // 새 일정 추가/수정 모달
   const [showDateEventsModal, setShowDateEventsModal] = useState(false); // 날짜 클릭 시 모든 일정 보기 모달
   const [newEvent, setNewEvent] = useState({ t_calendar_id: 0, member_num: 0, date: '' }); // t_calendar_id 추가
@@ -22,27 +23,30 @@ function Calendar() {
     axios.get(`/trainercalendar`)
       .then(res => {
         const formattedEvents = res.data.calList.map(event => ({
-<<<<<<< HEAD
-=======
-          id: event.t_calendar_id,
->>>>>>> af86f934149f75b6ce17b56d57aa1447563a3ba3
           title: event.name,
           start: event.regdate,
           member_num: event.member_num,
           trainer_num: event.trainer_num,
-<<<<<<< HEAD
-          t_calendar_id: event.t_calendar_id // 
-=======
-          t_calendar_id: event.t_calendar_id // t_calendar_id 추가
->>>>>>> af86f934149f75b6ce17b56d57aa1447563a3ba3
+          t_calendar_id: event.t_calendar_id 
         }));
         setEvents(formattedEvents);
       })
       .catch(err => console.log(err));
   };
 
+
+    const membersList = () => {
+      axios.get(`/trainer/list/member`)
+        .then(res => {
+          setMembers(res.data);
+        })
+        .catch(err => console.log(err));
+    };
+  
+
   useEffect(() => {
     refresh();
+    membersList();
   }, []);
 
   // 날짜 변환 함수: 'YYYY-MM-DD HH:mm' 형식으로 변환
@@ -128,22 +132,16 @@ function Calendar() {
 
     axios.delete(`/trainercalendar/${t_calendar_id}`, { params: { member_num } })
       .then(() => {
-<<<<<<< HEAD
         refresh();
-=======
->>>>>>> af86f934149f75b6ce17b56d57aa1447563a3ba3
         setEvents(events.filter(event => event.id !== t_calendar_id));
         setShowModal(false);
       })
       .catch(err => console.log(err));
   };
 
-<<<<<<< HEAD
  
     const ownTopic = Array.from(new Map(events.map(item=> [item.member_num, item])).values());
 
-=======
->>>>>>> af86f934149f75b6ce17b56d57aa1447563a3ba3
   const renderEventContent = (eventInfo) => {
     return (
       <div>
@@ -202,14 +200,10 @@ function Calendar() {
                         value={newEvent.member_num}
                         onChange={(e) => setNewEvent({ ...newEvent, member_num: e.target.value })}
                       >
-<<<<<<< HEAD
                         <option>선택</option>
-                        {Array.isArray(events) && ownTopic.map(item => (
-=======
-                        {Array.isArray(events) && events.map(item => (
->>>>>>> af86f934149f75b6ce17b56d57aa1447563a3ba3
-                          <option key={uuidv4()} value={item.member_num}>
-                            {item.title}
+                        {members.map(item => (
+                          <option key={item.id} value={item.id}>
+                            {item.name}
                           </option>
                         ))}
                       </Form.Select>

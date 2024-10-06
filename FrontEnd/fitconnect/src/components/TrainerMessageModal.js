@@ -3,14 +3,11 @@ import axios from 'axios';
 import mqtt from 'mqtt';
 import { Modal, Button } from 'react-bootstrap';
 import ChatMessage from './ChatMessage';
+import { v4 as uuidv4, v4 } from 'uuid';
 
 const MessageModal = ({ showModal, setShowModal, topic }) => {
   const [message, setMessage] = useState({
-<<<<<<< HEAD
     send_type: "TRAINER",  // 기본값 설정
-=======
-    send_type: "user",  // 기본값 설정
->>>>>>> af86f934149f75b6ce17b56d57aa1447563a3ba3
     content: "",        // 메시지 내용
     topic: topic || ""  // props에서 받은 topic 값
   });
@@ -19,14 +16,11 @@ const MessageModal = ({ showModal, setShowModal, topic }) => {
   const messagesEndRef = useRef(null);
   const decoder = new TextDecoder('utf-8');
 
-<<<<<<< HEAD
   const client = mqtt.connect('ws://52.78.38.12:9002'); // mqtt 연결 설정 코드
 
   const [isReady, setIsReady] = useState(false);
   const [areReady, setAreReady] = useState(false);
 
-=======
->>>>>>> af86f934149f75b6ce17b56d57aa1447563a3ba3
   // 메시지 목록을 새로고침하는 함수
   const refresh = () => {
     setMessages([]); // 기존 메시지 초기화
@@ -47,11 +41,7 @@ const MessageModal = ({ showModal, setShowModal, topic }) => {
 
   useEffect(() => {
     if (topic) {
-<<<<<<< HEAD
       client.subscribe(topic); 
-=======
-      client.subscribe(topic); // topic에 대한 구독
->>>>>>> af86f934149f75b6ce17b56d57aa1447563a3ba3
       client.on('message', (topic, message) => {
         const decodedMessage = JSON.parse(decoder.decode(new Uint8Array(message)));
         setMessages(prevMessages => [...prevMessages, decodedMessage]); // 새로운 메시지를 추가
@@ -71,10 +61,7 @@ const MessageModal = ({ showModal, setShowModal, topic }) => {
     }));
   }, [topic]);
 
-<<<<<<< HEAD
-
-=======
->>>>>>> af86f934149f75b6ce17b56d57aa1447563a3ba3
+  
   // 양식 제출이 일어났을 때 실행되는 핸들러
   const sendMessageHandle = (e) => {
     e.preventDefault();
@@ -83,16 +70,10 @@ const MessageModal = ({ showModal, setShowModal, topic }) => {
     console.log("Sending message:", message);
 
     // 모든 필드가 채워져 있는지 확인
-<<<<<<< HEAD
-
-=======
-    if (message.content !== "" && message.topic !== "" && message.send_type !== "") {
->>>>>>> af86f934149f75b6ce17b56d57aa1447563a3ba3
       // MQTT로 메시지 전송
       client.publish(topic, JSON.stringify(message), { qos: 0, retain: false });
 
       // 서버로 메시지 저장 요청
-<<<<<<< HEAD
       setIsReady({...isReady, ready:true});
 
       // 메시지 필드 초기화
@@ -108,14 +89,6 @@ const MessageModal = ({ showModal, setShowModal, topic }) => {
     if(message.content !== "" && isReady.topic !== "" && isReady.ready){
       console.log(message)
       axios.post("/messenger/detail", message, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-=======
-      axios.post("/messenger/detail", message, {
-        headers: {
-          'Content-Type': 'application/json'  // 헤더에 Content-Type을 명시적으로 설정
->>>>>>> af86f934149f75b6ce17b56d57aa1447563a3ba3
-        }
       })
         .then(res => {
           console.log("Message sent successfully:", res.data);
@@ -133,20 +106,7 @@ const MessageModal = ({ showModal, setShowModal, topic }) => {
             console.error("Error setting up the request:", error.message);
           }
         });
-<<<<<<< HEAD
         setIsReady(false);
-=======
-
-
-      // 메시지 필드 초기화
-      setMessage({
-        send_type: "user",  // send_type 유지
-        content: "",        // 전송 후 content만 초기화
-        topic: topic        // topic 유지
-      });
-    } else {
-      console.log("모든 필드를 입력해야 합니다.");
->>>>>>> af86f934149f75b6ce17b56d57aa1447563a3ba3
     }
   }, [message.content, message.topic , isReady])
 
@@ -160,7 +120,6 @@ const MessageModal = ({ showModal, setShowModal, topic }) => {
       .catch(err => console.log(err));
   };
 
-<<<<<<< HEAD
   // 삭제 모달을 키는 함수
   const toggleDeleteMode = () => {
     setDeleteMode(prevState => !prevState); 
@@ -169,24 +128,6 @@ const MessageModal = ({ showModal, setShowModal, topic }) => {
   const handleContent = (e) =>{
     setMessage({ ...message, content: e.target.value })
   }
-=======
-  // 특정 메시지를 삭제하는 함수
-  const deleteMessage = (message_id) => {
-    axios.delete(`/messenger/detail/${message_id}`)
-      .then(res => {
-        console.log(`Message with id ${message_id} deleted successfully.`);
-        refresh(); // 삭제 후 메시지 목록 새로고침
-      })
-      .catch(error => {
-        console.error(`Error deleting message with id ${message_id}:`, error);
-      });
-  };
-
-  // 삭제 모드를 토글하는 함수
-  const toggleDeleteMode = () => {
-    setDeleteMode(prevState => !prevState); // 삭제 모드를 토글
-  };
->>>>>>> af86f934149f75b6ce17b56d57aa1447563a3ba3
 
   return (
     <Modal show={showModal} onHide={() => {
@@ -199,7 +140,7 @@ const MessageModal = ({ showModal, setShowModal, topic }) => {
       <Modal.Body>
         <div style={{ height: '400px', overflowY: 'scroll', border: '1px solid #ccc', padding: '10px' }}>
           {messages.map((msg, index) => (
-            <div key={msg.message_id}>
+            <div key = {uuidv4()}>
               <ChatMessage message={msg.content} isOwnMessage={msg.send_type === message.send_type} />
               {/* 삭제 모드일 때만 삭제 버튼을 보여줌 */}
               {deleteMode && (
@@ -223,19 +164,15 @@ const MessageModal = ({ showModal, setShowModal, topic }) => {
           {deleteMode ? "삭제 취소" : "메세지 삭제"}
         </Button>
 
-        <form onSubmit={sendMessageHandle} style={{ display: 'flex', marginTop: '10px' }}>
+        <form style={{ display: 'flex', marginTop: '10px' }}>
           <input
             type="text"
             value={message.content}
-<<<<<<< HEAD
             onChange={handleContent}
 
-=======
-            onChange={(e) => setMessage({ ...message, content: e.target.value })}
->>>>>>> af86f934149f75b6ce17b56d57aa1447563a3ba3
             style={{ flex: 1, padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
           />
-          <Button type="submit" style={{ padding: '10px', borderRadius: '5px', marginLeft: '10px' }}>Send</Button>
+          <Button type="submit" style={{ padding: '10px', borderRadius: '5px', marginLeft: '10px' }} onClick={sendMessageHandle}>Send</Button>
         </form>
       </Modal.Body>
       <Modal.Footer>

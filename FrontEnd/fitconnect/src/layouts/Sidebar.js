@@ -34,7 +34,6 @@ const Sidebar = () => {
       { title: "메신저", href: "/trainer/message", icon: "bi bi-list-task" },
       { title: "회원목록", href: "/trainer/members", icon: "bi bi-calendar-event" },
       { title: "마이페이지", href: "/trainer/mypage", icon: "bi bi-calendar-event" },
-      { title: "MypageDetail", href: "/trainer/mypagedetail", icon: "bi bi-calendar-event" },
     ];
   } else {
     // 로그인 또는 회원가입 경로일 때 보여줄 메뉴 설정
