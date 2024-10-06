@@ -22,12 +22,11 @@ function Calendar() {
     axios.get(`/trainercalendar`)
       .then(res => {
         const formattedEvents = res.data.calList.map(event => ({
-          id: event.t_calendar_id,
           title: event.name,
           start: event.regdate,
           member_num: event.member_num,
           trainer_num: event.trainer_num,
-          t_calendar_id: event.t_calendar_id // t_calendar_id 추가
+          t_calendar_id: event.t_calendar_id
         }));
         setEvents(formattedEvents);
       })
@@ -121,11 +120,14 @@ function Calendar() {
 
     axios.delete(`/trainercalendar/${t_calendar_id}`, { params: { member_num } })
       .then(() => {
+        refresh();
         setEvents(events.filter(event => event.id !== t_calendar_id));
         setShowModal(false);
       })
       .catch(err => console.log(err));
   };
+
+    const ownTopic = Array.from(new Map(events.map(item=> [item.member_num, item])).values());
 
   const renderEventContent = (eventInfo) => {
     return (
@@ -185,7 +187,8 @@ function Calendar() {
                         value={newEvent.member_num}
                         onChange={(e) => setNewEvent({ ...newEvent, member_num: e.target.value })}
                       >
-                        {Array.isArray(events) && events.map(item => (
+                        <option>선택</option>
+                        {Array.isArray(events) && ownTopic.map(item => (
                           <option key={uuidv4()} value={item.member_num}>
                             {item.title}
                           </option>
