@@ -66,7 +66,7 @@ const MyPageDetail = () => {
       }));
       //만일 등록된 프로필 이미지가 있다면
       if(res.data.profile){
-        setImageSrc(`/upload/images/${res.data.profile}`)
+        setImageSrc(`/home/upload/${res.data.profile}`)
       }else{//없다면 
         // person svg 이미지를 읽어들여서 data url 로 만든다음 imageSrc 에 반영하기 
         // svg 이미지를 2 진 데이터 문자열로 읽어들여서 
@@ -145,7 +145,7 @@ const MyPageDetail = () => {
     }
     setTrainerInfo(prevInfo => ({
       ...prevInfo,
-      image: e.target.image
+      image: file
     }));
   }
 
