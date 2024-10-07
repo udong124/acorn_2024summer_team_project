@@ -188,7 +188,10 @@ const MemberTrainerList = () => {
                           <Card.Title>{trainer.gym_name}</Card.Title>
                           <Card.Text>{trainer.trainer_insta}</Card.Text>
                           <Button
-                            onClick={() => setSelectedTrainer(trainer)}
+                            onClick={() => {
+                              setSelectedTrainer(trainer)
+                              window.scrollTo({ top: 0, behavior: 'smooth' })
+                            }}
                             className="w-100 btn-secondary"
                           >
                             선택
