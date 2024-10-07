@@ -149,16 +149,23 @@ const MessageModal = ({ showModal, setShowModal, topic }) => {
         <Modal.Title>{topic}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <div style={{ height: '400px', overflowY: 'scroll', border: '1px solid #ccc', padding: '10px' }}>
+        <div style={{ height: '800px', lineHeight: 'normal', overflowY: 'scroll', border: '1px solid #ccc', padding: '10px'}}>
           {messages.map((msg, index) => (
-            <div key={msg.message_id}>
+            <div style={{flex:1}} key={msg.message_id}>
               <ChatMessage message={msg.content} isOwnMessage={msg.send_type === message.send_type} isCenter={msg.send_type === "ADMIN"}/>
               {/* 삭제 모드일 때만 삭제 버튼을 보여줌 */}
-              {deleteMode && (
+              {deleteMode && msg.send_type === "TRAINER" && (
                 <Button 
                   variant="danger" 
                   onClick={() => deleteMessage(msg.message_id)} 
-                  style={{ fontSize: '12px',  }}>
+                  style={{ 
+                    fontSize: '10px',   // 작은 글자 크기
+                    padding: '2px 8px', // 작고 간결한 패딩
+                    marginLeft: '400px',
+                    marginTop: '5px',
+                    marginBottom : '5px',
+                    display: 'block'    // 버튼을 블록 요소로 설정하여 아래에 표시
+                  }}>
                   X
                 </Button>
               )}
