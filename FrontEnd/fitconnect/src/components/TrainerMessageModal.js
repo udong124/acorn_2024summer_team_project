@@ -58,13 +58,24 @@ const MessageModal = ({ showModal, setShowModal, topic }) => {
     }));
   }, [topic]);
 
+  
+  //메세지 전송을 눌렀을때 스크롤 처리
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+
   // 양식 제출이 일어났을 때 실행되는 핸들러
   const sendMessageHandle = (e) => {
     e.preventDefault();
     setMessage({ ...message, content: content })
     // 메시지를 전송하기 전에 필드 상태 확인
     console.log("Sending message:", message);
-
+    scrollToBottom();
     // 모든 필드가 채워져 있는지 확인
 
       // MQTT로 메시지 전송
@@ -72,7 +83,7 @@ const MessageModal = ({ showModal, setShowModal, topic }) => {
 
       // 서버로 메시지 저장 요청
       setIsReady(true);
-
+      client.end();
   };
 
   useEffect(()=>{
@@ -109,7 +120,7 @@ const MessageModal = ({ showModal, setShowModal, topic }) => {
           }
         });
     }
-  }, [message.content, message.topic , isReady])
+  }, [])
 
   const handleChange = (e) => {
     setContent(e.target.value);
@@ -141,7 +152,7 @@ const MessageModal = ({ showModal, setShowModal, topic }) => {
         <div style={{ height: '400px', overflowY: 'scroll', border: '1px solid #ccc', padding: '10px' }}>
           {messages.map((msg, index) => (
             <div key={msg.message_id}>
-              <ChatMessage message={msg.content} isOwnMessage={msg.send_type === message.send_type} />
+              <ChatMessage message={msg.content} isOwnMessage={msg.send_type === message.send_type} isCenter={msg.send_type === "ADMIN"}/>
               {/* 삭제 모드일 때만 삭제 버튼을 보여줌 */}
               {deleteMode && (
                 <Button 
@@ -185,3 +196,4 @@ const MessageModal = ({ showModal, setShowModal, topic }) => {
 };
 
 export default MessageModal;
+
