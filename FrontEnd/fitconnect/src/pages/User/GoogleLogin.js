@@ -19,6 +19,9 @@ const GoogleLogin = () => {
 
   useEffect(()=>{
     localStorage.token = "Bearer+" + token.slice(7);
+  }, [token])
+
+  useEffect(()=>{
     if(step === 1) {
       axios
       .patch("/user/update/role", { id, role: selectedRole })

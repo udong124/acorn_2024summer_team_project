@@ -19,7 +19,7 @@ const UserLogin = () => {
 
   useEffect(()=>{
     if(google_token) {
-      localStorage.setItem("token", google_token);
+      localStorage.setItem("token", "Bearer+" + google_token.slice(7));
 
       // 토큰에서 payload 정보 얻어오기
       const { payload } = decodeToken(google_token.substring(7));
