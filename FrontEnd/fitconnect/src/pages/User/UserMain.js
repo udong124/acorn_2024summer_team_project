@@ -2,6 +2,7 @@ import { useLocation, useNavigate, useOutlet } from 'react-router-dom';
 import userMainCss from './css/UserMain.module.css';
 import binder from 'classnames/bind'
 import { Button } from 'react-bootstrap';
+import { useEffect } from 'react';
 
 const cx = binder.bind(userMainCss)
 
@@ -11,6 +12,12 @@ function UserStartPage() {
   const navigate=useNavigate();
 
   const currentOutlet = useOutlet()
+
+  useEffect(()=>{
+    localStorage.setItem("token", "")
+    localStorage.setItem("userName", "")
+    localStorage.setItem("role", "")
+  }, [])
 
   return (
     <div className="MainContainer">

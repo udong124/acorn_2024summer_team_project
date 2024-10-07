@@ -29,10 +29,6 @@ function UserSignUp() {
   const navigate = useNavigate();
 
   useEffect(()=>{
-    delete localStorage.token
-  }, [])
-
-  useEffect(()=>{
     if(formData.id !== 0 && localStorage.getItem("token") !== "" && isReady) {
       if(formData.role === "TRAINER") {
         navigate("/trainersignup", {
