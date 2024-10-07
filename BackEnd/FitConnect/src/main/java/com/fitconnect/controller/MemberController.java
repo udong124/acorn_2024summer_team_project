@@ -161,10 +161,18 @@ public class MemberController {
    @PatchMapping("/member/update/trainer")
    public Map<String, Object> memberUpdateTrainer(@RequestBody MemberDto dto) {
       //채팅방 생성
-      ChatRoomDto chatDto = new ChatRoomDto();
-      chatDto.setMember_num(dto.getMember_num());//멤버의 번호를 설정
-      chatDto.setTrainer_num(dto.getTrainer_num());//트레이너의 번호를 설정
-      MsgService.insertChat(chatDto); //MsgService를 통해 새로운 채팅방 정보를 DB에 저장
+	  int member_num=dto.getMember_num();
+	  int trainer_num=dto.getTrainer_num();
+	  
+
+      ChatRoomDto chatDto= MsgService.getChatRoom(member_num); 
+      String topic = chatDto.getTopic();
+      MsgService.deleteChat(topic);
+      
+      ChatRoomDto chatDto2 = new ChatRoomDto();
+      chatDto2.setMember_num(member_num);//멤버의 번호를 설정
+      chatDto2.setTrainer_num(trainer_num);//트레이너의 번호를 설정
+      MsgService.insertChat(chatDto2); //MsgService를 통해 새로운 채팅방 정보를 DB에 저장
       boolean isSuccess = service.updateMemberTrainer(dto);
       return Map.of("isSuccess", isSuccess);
    }
