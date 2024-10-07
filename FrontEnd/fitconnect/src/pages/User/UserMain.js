@@ -23,7 +23,7 @@ function UserStartPage() {
     <div className="MainContainer">
       {location.pathname === "/" && (
       <div className='MainBackGround'>
-        <video className={cx('video-background')} autoPlay loop muted>
+        <video className={cx('video-background')} autoPlay loop muted style={{pointerEvents: 'none'}}>
           <source src={`${process.env.PUBLIC_URL}/health_main.mp4`} type='video/mp4' />
         </video>
         <div className={cx("overlay")}>
