@@ -23,6 +23,7 @@ import com.fitconnect.dto.UserDto;
 import com.fitconnect.repository.UserDao;
 import com.fitconnect.service.MemberService;
 import com.fitconnect.service.MessageService;
+import com.fitconnect.service.TrainerService;
 
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -33,6 +34,8 @@ public class MemberController {
    @Autowired private UserDao userDao;
 
    @Autowired private MemberService service;
+   
+   @Autowired private TrainerService trainerService;
    
    @Autowired private MessageService MsgService;
 
@@ -191,5 +194,27 @@ public class MemberController {
    @GetMapping("/member/list")
    public List<MemberDto> getMemberList(){
       return service.selectList();
+   }
+   
+   /**********************************************************************
+    * <PRE> * 메소드 정보 *
+    * 1. MethodName   : getMemberTrainer
+    * 2. ClassName      : MemberController
+    * 3. 작성자         : udong124
+    * 4. 작성일         : 2024. 10. 7. 오후 1:07:12
+    * 5. 설명         :멤버의 담당 트레이너 정보를 반환한다.
+    * 서비스에서 트레이너 정보를 조회 후 반환한다.
+    * </PRE>
+    *       @return Map<String, Object>
+   **********************************************************************/
+   @GetMapping("/member/trainer")
+   public Map<String, Object> getMemberTrainer() {
+      Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+      String userName = authentication.getName();
+      int member_num = userDao.getData(userName).getId();
+      int trainer_num = service.selectOne(userName).getTrainer_num();
+      String trainerUserName = userDao.getDataByNum(trainer_num).getUserName();
+      
+      return trainerService.selectOneUserInfo(trainerUserName);
    }
 }
