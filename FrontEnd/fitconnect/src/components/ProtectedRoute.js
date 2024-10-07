@@ -6,6 +6,7 @@ import MemberModal from './MemberModal';
 import TrainerModal from './TrainerModal';
 import AdminModal from './AdminModal';
 import { decodeToken } from 'jsontokens'; 
+   // 메시지 필드 초기화
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
     const token = localStorage.getItem('token');

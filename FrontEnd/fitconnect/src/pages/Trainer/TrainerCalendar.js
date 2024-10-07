@@ -139,8 +139,6 @@ function Calendar() {
       .catch(err => console.log(err));
   };
 
- 
-    const ownTopic = Array.from(new Map(events.map(item=> [item.member_num, item])).values());
 
   const renderEventContent = (eventInfo) => {
     return (

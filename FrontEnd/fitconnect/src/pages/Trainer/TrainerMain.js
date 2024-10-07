@@ -7,6 +7,7 @@ const Home = () => {
   const [todayEvents, setTodayEvents] = useState([]);
 
 
+  // 시간 표기 관련 함수
   const getTodayDate = () => {
     const today = new Date();
     const year = today.getFullYear();
