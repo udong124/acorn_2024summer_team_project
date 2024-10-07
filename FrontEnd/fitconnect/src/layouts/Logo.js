@@ -3,15 +3,22 @@ import { ReactComponent as LogoDark } from "../assets/images/logos/FitConnectLog
 import { Link } from "react-router-dom";
 
 const Logo = () => {
-  const [role, setRole] = useState(null);
-  useEffect(()=>{
-    setRole(localStorage.getItem("role").toLowerCase());
-  })
+  let role ;
+  const getRole = localStorage.getItem("role");
+  if (getRole === "MEMBER" || getRole === "TRAINER"){
+    role = getRole.toLowerCase();
+  } else {
+    role = null
+  }
 
   return (
-    <Link to={role}>
-      <LogoDark />
-    </Link>
+    <>
+      { 
+      <Link to={role}>
+        <LogoDark />
+      </Link>
+      }
+    </>
   );
 };
 
