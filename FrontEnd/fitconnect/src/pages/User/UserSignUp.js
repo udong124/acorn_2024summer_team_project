@@ -287,11 +287,14 @@ function UserSignUp() {
                       accept="image/*"
                       style={{ display: "none" }}
                     />
-                    {formData.file && <span className="mt-2">{formData.file.name}</span>}
+                    {formData.file && <> <br/> <span className="mt-2">{formData.file.name}</span> </>}
                     {/* 사용자 위해서 안내 메시지 넣어주기 */}
-                    <small className="text-muted mt-2">
-                      프로필 사진을 등록해주세요 (JPG, PNG, 5MB 이하)
-                    </small>
+                    {
+                      !formData.file &&
+                      <small className="text-muted mt-2">
+                        프로필 사진을 등록해주세요 (JPG, PNG, 5MB 이하)
+                      </small>
+                    }
                   </div>
                 </Form.Group>
                 <Form.Group >
