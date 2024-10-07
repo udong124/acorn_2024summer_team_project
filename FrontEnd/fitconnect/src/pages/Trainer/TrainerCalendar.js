@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import FullCalendar from '@fullcalendar/react';
 import interactionPlugin from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -10,6 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 function Calendar() {
   const [events, setEvents] = useState([]); // 캘린더에 표시할 이벤트 목록
+  const [members, setMembers] = useState([]); // 회원 목록
   const [showModal, setShowModal] = useState(false); // 새 일정 추가/수정 모달
   const [showDateEventsModal, setShowDateEventsModal] = useState(false); // 날짜 클릭 시 모든 일정 보기 모달
   const [newEvent, setNewEvent] = useState({ t_calendar_id: 0, member_num: 0, date: '' }); // t_calendar_id 추가
@@ -26,15 +27,26 @@ function Calendar() {
           start: event.regdate,
           member_num: event.member_num,
           trainer_num: event.trainer_num,
-          t_calendar_id: event.t_calendar_id
+          t_calendar_id: event.t_calendar_id 
         }));
         setEvents(formattedEvents);
       })
       .catch(err => console.log(err));
   };
 
+
+    const membersList = () => {
+      axios.get(`/trainer/list/member`)
+        .then(res => {
+          setMembers(res.data);
+        })
+        .catch(err => console.log(err));
+    };
+  
+
   useEffect(() => {
     refresh();
+    membersList();
   }, []);
 
   // 날짜 변환 함수: 'YYYY-MM-DD HH:mm' 형식으로 변환
@@ -126,7 +138,7 @@ function Calendar() {
       })
       .catch(err => console.log(err));
   };
-
+ 
     const ownTopic = Array.from(new Map(events.map(item=> [item.member_num, item])).values());
 
   const renderEventContent = (eventInfo) => {
@@ -188,9 +200,9 @@ function Calendar() {
                         onChange={(e) => setNewEvent({ ...newEvent, member_num: e.target.value })}
                       >
                         <option>선택</option>
-                        {Array.isArray(events) && ownTopic.map(item => (
-                          <option key={uuidv4()} value={item.member_num}>
-                            {item.title}
+                        {members.map(item => (
+                          <option key={item.id} value={item.id}>
+                            {item.name}
                           </option>
                         ))}
                       </Form.Select>

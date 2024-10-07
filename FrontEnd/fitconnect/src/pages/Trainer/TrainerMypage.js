@@ -120,9 +120,17 @@ const MyPage = () => {
                   <p>아이디: {trainerInfo.userName}</p>
                   <p>이메일: {trainerInfo.email}</p>
                   <p>생성일: {trainerInfo.regdate}</p>
-                  <p>트레이너 SNS: {trainerInfo.trainer_insta}</p>
+                  <p>
+                    {<a href={trainerInfo.trainer_insta} target="_blank" rel="noopener noreferrer">
+                        <b>트레이너 SNS</b>
+                      </a>}
+                  </p>
                   <p>헬스장이름: {trainerInfo.gym_name}</p>
-                  <p>헬스장위치: {trainerInfo.gym_link}</p>
+                  <p>
+                    {<a href={trainerInfo.gym_link} target="_blank" rel="noopener noreferrer">
+                        <b>헬스장 위치</b>
+                      </a>}
+                  </p>
                 </Col>
               </Row>
               <Button type="submit"  onClick={()=> navigate('/trainer/mypagedetail')}>회원정보수정</Button>

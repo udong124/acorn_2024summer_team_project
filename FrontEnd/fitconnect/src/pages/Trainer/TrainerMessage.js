@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Card, Row, Col, Button, Modal } from "react-bootstrap";
+import { Card, Row, Col, Button, Modal, Form } from "react-bootstrap";
 import MessageModal from '../../components/TrainerMessageModal';
 
 const Message = () => {
@@ -9,6 +9,9 @@ const Message = () => {
   const [selectedTopic, setSelectedTopic] = useState(''); // 선택된 topic 값을 저장하는 상태
   const [confirmDelete, setConfirmDelete] = useState(false); // 삭제 확인 모달 상태
   const [topicToDelete, setTopicToDelete] = useState(''); // 삭제할 topic 저장
+
+
+
 
   // axios.get요청으로 전체 회원리스트 가져오기
   const getMembers = () => {
@@ -34,12 +37,11 @@ const Message = () => {
   const leaveChatRoom = () => {
     axios.delete(`/messenger/${topicToDelete}`)
       .then(res => {
-        console.log(`Left chat room with topic ${topicToDelete}`);
         getMembers(); // 채팅방 목록을 새로고침하여 업데이트
         setConfirmDelete(false); // 모달 닫기
       })
       .catch(err => {
-        console.error(`Error leaving chat room with topic ${topicToDelete}:`, err);
+        console.error(err);
       });
   };
 
@@ -66,27 +68,19 @@ const Message = () => {
                   <ul style={{ listStyle: 'none', padding: 0 }}>
                     {ownTopic.map(item => (
                       <li 
-                        key={item.chat_id} 
+                        key={item.topic} 
                         style={{ 
                           display: 'flex', 
                           justifyContent: 'space-between', 
                           alignItems: 'center', 
                           borderBottom: '1px solid #ccc', 
                           padding: '10px' 
-                        }}
-                      >
+                        }}>
                         <div onClick={() => handleMemberClick(item.topic)} style={{ flex: 1 }}>
-                          {item.profile_image_url && (
-                            <img 
-                              src={item.profile_image_url} 
-                              alt={`${item.name} 프로필`} 
-                              style={{ width: '50px', height: '50px', borderRadius: '50%', marginRight: '10px' }}
-                            />
-                          )}
                           <p>{item.name}</p>
-                          <p>프로필 이미지: {item.profile_image_url}</p>
-                          <p>내용: {item.content}</p>
-                          <p>{item.times}</p>
+                          <p>프로필 이미지: {item.profile_image_url || 'No image'}</p>
+                          <p>내용: {item.content || 'No content'}</p> {/* content가 없을 경우 'No content' 출력 */}
+                          <p>{item.times || 'No timestamp'}</p>  {/* times가 없을 경우 'No timestamp' 출력 */}
                         </div>
                         {/* 나가기 버튼을 추가 */}
                         <Button 
@@ -105,6 +99,8 @@ const Message = () => {
                     setShowModal={setShowModal} 
                     topic={selectedTopic} // 선택된 topic 값을 전달
                   />
+                
+
                 </div>
               </Card.Body>
             </Card>
