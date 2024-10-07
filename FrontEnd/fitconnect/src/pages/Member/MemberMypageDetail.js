@@ -237,13 +237,13 @@ const MyPageDetail = () => {
                     <Form.Control
                       type="text"
                       name="trainer_num"
-                      value={memberInfo.trainer_num}
-                      onClick={() => navigate(`/member/trainerlist/${memberInfo.member_num}`)}
+                      value={memberInfo.trainer_num ? memberInfo.trainer_num : "트레이너 등록"}
+                      onClick={() => navigate(`/member/trainerlist`)}
                       readOnly
                       style={{cursor: "pointer"}}
                     />
                     <InputGroup.Text
-                      onClick={() => navigate(`/member/trainerlist/${memberInfo.member_num}`)}
+                      onClick={() => navigate(`/member/trainerlist`)}
                       style={{cursor: "pointer"}}
                     >
                       <FaSearch/>
