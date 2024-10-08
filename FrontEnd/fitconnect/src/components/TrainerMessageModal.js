@@ -78,12 +78,13 @@ const MessageModal = ({ showModal, setShowModal, topic }) => {
     scrollToBottom();
     // 모든 필드가 채워져 있는지 확인
 
-      // MQTT로 메시지 전송
-      client.publish(topic, JSON.stringify(message), { qos: 0, retain: false });
+    // MQTT로 메시지 전송
+    client.publish(topic, JSON.stringify(message), { qos: 0, retain: false });
 
-      // 서버로 메시지 저장 요청
-      setIsReady(true);
-      client.end();
+    // 서버로 메시지 저장 요청
+    setIsReady(true);
+    client.end();
+    e.target.content.value = "";
   };
 
   useEffect(()=>{
@@ -96,7 +97,10 @@ const MessageModal = ({ showModal, setShowModal, topic }) => {
       })
         .then(res => {
           console.log("Message sent successfully:", res.data);
-          refresh(); // 메시지 전송 후 새로고침
+          setMessages([
+            ...messages,
+            message
+          ])
           setIsReady(false);
         
           // 메시지 필드 초기화
@@ -120,7 +124,7 @@ const MessageModal = ({ showModal, setShowModal, topic }) => {
           }
         });
     }
-  }, [])
+  }, [message, isReady])
 
   const handleChange = (e) => {
     setContent(e.target.value);
