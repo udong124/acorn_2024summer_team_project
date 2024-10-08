@@ -16,9 +16,15 @@ const TrainerId = () => {
   const [isReady, setIsReady] = useState(false);
   const [errorMessage, setErrorMessage] = useState(""); 
   //프로필 이미지 관련
-  const [imageSrc, setImageSrc] = useState(null);
-
+ 
   const navigate = useNavigate();
+
+  const profileStyle={
+    width: "200px",
+    height: "200px",
+    border: "1px solid #cecece",
+    borderRadius: "50%"
+  }
 
   //트레이너리스트를 가져오기
   useEffect(() => {
@@ -96,7 +102,8 @@ const TrainerId = () => {
             })
             setSelectedTrainer(null);
             setFilteredTrainers(trainerList);
-            navigate("/member/mypagedetail")
+            navigate("/member")
+            setIsReady(false); // ->등록 후 다시 false로 설정해 두 번째 등록이 가능하게 만듦
           } else {
             alert("트레이너 등록에 실패했습니다.");
           }
@@ -104,6 +111,7 @@ const TrainerId = () => {
         .catch((error) => {
           const errorMsg =error.response?.data?.message || "트레이너 등록 실패: 트레이너 등록에 실패했습니다.";
           setErrorMessage(errorMsg);
+          setIsReady(false); // ->에러가 발생해도 다시 false로 설정
           console.error("트레이너 등록 실패:", error);
         });
       }
@@ -131,7 +139,7 @@ const TrainerId = () => {
             <Card.Body className="">
               <Form className="mb-3">
                 <Row>
-                  <Col md={4}>
+                  <Col md={3}>
                     <Form.Group>
                       <Form.Select
                         value={searchCondition}
@@ -144,7 +152,7 @@ const TrainerId = () => {
                       </Form.Select>
                     </Form.Group>
                   </Col>
-                  <Col md={6}>
+                  <Col md={5}>
                     <Form.Group>
                       <Form.Control
                         type="text"
@@ -158,21 +166,40 @@ const TrainerId = () => {
                       검색
                     </Button>
                   </Col>
+                  <Col md={2}>
+                    <Button onClick={()=>navigate("/member")} className="w-100" variant="danger">
+                      스킵
+                    </Button>
+                  </Col>
                 </Row>
               </Form>
 
               {/* 선택된 트레이너 정보와 회원 번호 입력 */}
               {selectedTrainer && (
                 <div className="mt-4">
-                  <h4>선택된 트레이너</h4>
-                  <p>이름: {selectedTrainer.name}</p>
-                  <p>이메일: {selectedTrainer.email}</p>
-                  <p style={{right: 20}}>프로필: {selectedTrainer.profile}</p>
-                  <p>인스타그램: <Link to="/{selectedTrainer.trainer_insta}">{selectedTrainer.trainer_insta}</Link></p>
-                  <p>자기소개: {selectedTrainer.trainer_intro}</p>
-                  <p>헬스장: {selectedTrainer.gym_name}</p>
-                  <p>헬스장 링크: <Link to="/{selectedTrainer.gym_link}">{selectedTrainer.gym_link}</Link></p>
-                  <p>회원 번호: {member_num ? member_num : "토큰에서 member_num을 찾을 수 없음..."}</p>
+                  <Row>
+                    <Col md={4}>
+                      <img
+                        src={selectedTrainer.profile ? `/upload/${selectedTrainer.profile}` : "https://www.gravatar.com/avatar/?d=mp&s=200"}
+                        alt="프로필 이미지"
+                        onError={(e) => {
+                          e.target.src = "https://www.gravatar.com/avatar/?d=mp&s=200"; 
+                        }}
+                        style={profileStyle}
+                      />
+                    </Col>
+                    <Col md={8}>
+                      <h4>선택된 트레이너</h4>
+                      <p>이름: {selectedTrainer.name}</p>
+                      <p>이메일: {selectedTrainer.email}</p>
+                      <p style={{right: 20}}>프로필: {selectedTrainer.profile}</p>
+                      <p>인스타그램: <Link to="/{selectedTrainer.trainer_insta}">{selectedTrainer.trainer_insta}</Link></p>
+                      <p>자기소개: {selectedTrainer.trainer_intro}</p>
+                      <p>헬스장: {selectedTrainer.gym_name}</p>
+                      <p>헬스장 링크: <Link to="/{selectedTrainer.gym_link}">{selectedTrainer.gym_link}</Link></p>
+                      <p>회원 번호: {member_num ? member_num : "토큰에서 member_num을 찾을 수 없음..."}</p>
+                    </Col>
+                  </Row>
                   <Button
                     onClick={handleRegister}
                     className="btn-primary w-100"
@@ -182,23 +209,28 @@ const TrainerId = () => {
                 </div>
               )}
 
-              {/* 검색된 트레이너 목록을 가로로 보여주기 */}
-              <Row className="mt-3">
-                {filteredTrainers.length > 0 ? (
-                  filteredTrainers.map((trainer) => (
-                    <Col
-                      xs={12}
-                      md={12}
-                      className="mb-3"
-                      key={trainer.trainer_num}
-                    >
-                      <Card
-                        className="h-100 shadow-sm"
-                        style={{ width: "100%" }}
-                      >
+
+            {/* 검색된 트레이너 목록을 가로로 보여주기 */}
+            <Row className="mt-3">
+              {filteredTrainers.length > 0 ? (
+                filteredTrainers.map((trainer) => (
+                  <Col xs={12} md={12} className="mb-3" key={trainer.trainer_num}>
+                  <Card className="h-100 shadow-sm" style={{ width: "100%" }}>
+                    <Row>
+                      <Col md={4}>
+                        <img
+                          src={trainer.profile ? `/upload/${trainer.profile}` : "https://www.gravatar.com/avatar/?d=mp&s=200"}
+                          alt="프로필 이미지"
+                          onError={(e) => {
+                            e.target.src = "https://www.gravatar.com/avatar/?d=mp&s=200"; 
+                          }}
+                          style={profileStyle}
+                        />
+                      </Col>
+                      <Col md={8}>
                         <Card.Body>
-                          <Card.Title>{trainer.gym_name}</Card.Title>
-                          <Card.Text>{trainer.trainer_insta}</Card.Text>
+                          <Card.Title>이름: {trainer.name}</Card.Title>
+                          <Card.Text>헬스장: {trainer.gym_name}</Card.Text>
                           <Button
                             onClick={() => setSelectedTrainer(trainer)}
                             className="w-100 btn-secondary"
@@ -206,22 +238,23 @@ const TrainerId = () => {
                             선택
                           </Button>
                         </Card.Body>
-                      </Card>
-                    </Col>
-                  ))
-                ) : (
-                  <Col>
-                    <p>검색된 트레이너가 없습니다.</p>
-                  </Col>
-                )}
-              </Row>
-
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
-  );
+                      </Col>
+                    </Row>
+                  </Card>
+                </Col>
+              ))
+            ) : (
+              <Col>
+                <p>검색된 트레이너가 없습니다.</p>
+              </Col>
+            )}
+          </Row>
+        </Card.Body>
+      </Card>
+    </Col>
+  </Row>
+</Container>
+);
 };
 
 export default TrainerId;
