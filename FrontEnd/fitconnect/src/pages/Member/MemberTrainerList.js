@@ -16,9 +16,14 @@ const MemberTrainerList = () => {
   const [isReady, setIsReady] = useState(false);
   const [errorMessage, setErrorMessage] = useState(""); 
   //프로필 이미지 관련
-  const [imageSrc, setImageSrc] = useState(null);
-
+ 
   const navigate = useNavigate();
+
+  // 트레이너 선택 시 이름 저장->trainer_num 대신 트레이너이름을 멤버페이지에 넣어주기 위해
+  const handleSelectTrainer = (trainer) => {
+    setSelectedTrainer(trainer);
+    localStorage.setItem('selectedTrainerName', trainer.name); // 트레이너 이름을 로컬 스토리지에 저장
+  };
 
   const profileStyle={
     width: "200px",
@@ -27,7 +32,7 @@ const MemberTrainerList = () => {
     borderRadius: "50%",
     objectFit: "cover"
   };
-  
+
   //트레이너리스트를 가져오기
   useEffect(() => {
     axios
@@ -89,10 +94,23 @@ const MemberTrainerList = () => {
         .then((response) => {
           if (response.data.isSuccess) {
             alert("트레이너가 성공적으로 등록되었습니다.");
+            //채팅방 생성
+            axios.post("/messenger", formData)
+            .then((responseMessenger) => {
+              if(responseMessenger){
+                console.log("채팅방 생성")
+              }
+              else{
+                console.log("채팅방 생성 실패")
+              }
+            })
+            .catch((error) => {
+              console.error("채팅방 생성 실패:", error)
+            })
             setSelectedTrainer(null);
             setFilteredTrainers(trainerList);
-            setIsReady(false); // ->등록 후 다시 false로 설정해 두 번째 등록이 가능하게 만듦
             navigate("/member/mypagedetail")
+            setIsReady(false); // ->등록 후 다시 false로 설정해 두 번째 등록이 가능하게 만듦
           } else {
             alert("트레이너 등록에 실패했습니다.");
           }
@@ -117,7 +135,6 @@ const MemberTrainerList = () => {
       setIsReady(true);
     };
 
-  
   return (
     <Container>
       <Row>
@@ -129,7 +146,7 @@ const MemberTrainerList = () => {
             <Card.Body className="">
               <Form className="mb-3">
                 <Row>
-                  <Col md={4}>
+                  <Col md={3}>
                     <Form.Group>
                       <Form.Select
                         value={searchCondition}
@@ -142,7 +159,7 @@ const MemberTrainerList = () => {
                       </Form.Select>
                     </Form.Group>
                   </Col>
-                  <Col md={6}>
+                  <Col md={5}>
                     <Form.Group>
                       <Form.Control
                         type="text"
@@ -154,6 +171,11 @@ const MemberTrainerList = () => {
                   <Col md={2}>
                     <Button onClick={handleSearch} className="w-100">
                       검색
+                    </Button>
+                  </Col>
+                  <Col md={2}>
+                    <Button onClick={()=>navigate("/member")} className="w-100" variant="danger">
+                      스킵
                     </Button>
                   </Col>
                 </Row>
@@ -177,11 +199,11 @@ const MemberTrainerList = () => {
                       <h4>선택된 트레이너</h4>
                       <p>이름: {selectedTrainer.name}</p>
                       <p>이메일: {selectedTrainer.email}</p>
+                      <p style={{right: 20}}>프로필: {selectedTrainer.profile}</p>
                       <p>인스타그램: <Link to="/{selectedTrainer.trainer_insta}">{selectedTrainer.trainer_insta}</Link></p>
                       <p>자기소개: {selectedTrainer.trainer_intro}</p>
                       <p>헬스장: {selectedTrainer.gym_name}</p>
                       <p>헬스장 링크: <Link to="/{selectedTrainer.gym_link}">{selectedTrainer.gym_link}</Link></p>
-                      <p>회원 번호: {member_num ? member_num : "토큰에서 member_num을 찾을 수 없음..."}</p>
                     </Col>
                   </Row>
                   <Button
@@ -193,51 +215,53 @@ const MemberTrainerList = () => {
                 </div>
               )}
 
-              {/* 검색된 트레이너 목록을 가로로 보여주기 */}
-              <Row className="mt-3">
-                {filteredTrainers.length > 0 ? (
-                  filteredTrainers.map((trainer) => (
-                    <Col xs={12} md={12} className="mb-3" key={trainer.trainer_num}>
-                    <Card className="h-100 shadow-sm" style={{ width: "100%" }}>
-                      <Row>
-                        <Col md={4}>
-                          <img
-                            src={trainer.profile ? `/upload/${trainer.profile}` : "https://www.gravatar.com/avatar/?d=mp&s=200"}
-                            alt="프로필 이미지"
-                            onError={(e) => {
-                              e.target.src = "https://www.gravatar.com/avatar/?d=mp&s=200"; 
-                            }}
-                            style={profileStyle}
-                          />
-                        </Col>
-                        <Col md={8}>
-                          <Card.Body>
-                            <Card.Title>이름: {trainer.name}</Card.Title>
-                            <Card.Text>헬스장: {trainer.gym_name}</Card.Text>
-                            <Button
-                              onClick={() => setSelectedTrainer(trainer)}
-                              className="w-100 btn-secondary"
-                            >
-                              선택
-                            </Button>
-                          </Card.Body>
-                        </Col>
-                      </Row>
-                    </Card>
-                  </Col>
-                ))
-              ) : (
-                <Col>
-                  <p>검색된 트레이너가 없습니다.</p>
+
+            {/* 검색된 트레이너 목록을 가로로 보여주기 */}
+            <Row className="mt-3">
+              {filteredTrainers.length > 0 ? (
+                filteredTrainers.map((trainer) => (
+                  <Col xs={12} md={12} className="mb-3" key={trainer.trainer_num}>
+                  <Card className="h-100 shadow-sm" style={{ width: "100%" }}>
+                    <Row>
+                      <Col md={4}>
+                        <img
+                          src={trainer.profile ? `/upload/${trainer.profile}` : "https://www.gravatar.com/avatar/?d=mp&s=200"}
+                          alt="프로필 이미지"
+                          onError={(e) => {
+                            e.target.src = "https://www.gravatar.com/avatar/?d=mp&s=200"; 
+                          }}
+                          style={profileStyle}
+                        />
+                      </Col>
+                      <Col md={8}>
+                        <Card.Body>
+                          <Card.Title>이름: {trainer.name}</Card.Title>
+                          <Card.Text>헬스장: {trainer.gym_name}</Card.Text>
+                          <Button
+                            onClick={() => handleSelectTrainer(trainer)}
+                            className="w-100 btn-secondary"
+                          >
+                            선택
+                          </Button>
+                        </Card.Body>
+                      </Col>
+                    </Row>
+                  </Card>
                 </Col>
-              )}
-            </Row>
-          </Card.Body>
-        </Card>
-      </Col>
-    </Row>
-  </Container>
+              ))
+            ) : (
+              <Col>
+                <p>검색된 트레이너가 없습니다.</p>
+              </Col>
+            )}
+          </Row>
+        </Card.Body>
+      </Card>
+    </Col>
+  </Row>
+</Container>
 );
 };
+
 
 export default MemberTrainerList;

@@ -23,13 +23,13 @@ const Header = () => {
   // 로그아웃 핸들러
   const handleLogout = () => {
     localStorage.removeItem("token"); // 로그인 토큰 삭제
-    navigate("/"); // 로그인 페이지로 리다이렉트
+    navigate("/login"); // 로그인 페이지로 리다이렉트
     localStorage.removeItem("userName"); //-로그인중 사라지도록 삭제
     setUserName(null); //-상태 원래되로
   };
 
    // 로그인/회원가입 페이지 여부 확인
-  const isAuthPage = location.pathname.startsWith("/login") || location.pathname.startsWith("/signup") || location.pathname.startsWith("/userstart") ;
+  const isAuthPage = location.pathname.startsWith("/login") || location.pathname.startsWith("/signup") || location.pathname.startsWith("/") ;
 
   //로그인 중 표시를 위하여 로그인 된 사용자이름을 가져오기
   useEffect(() => {
@@ -117,7 +117,11 @@ const Header = () => {
         { userName ? (
           <>
             <span style={{ color: "#fff", marginRight: 20 }}>{userName}님 로그인 중</span>
-            <Button variant="danger" onClick={handleLogout}>
+            <Button
+            variant="danger"
+            style={{ zIndex: 9999, position: 'relative' }} // 인라인 스타일로 z-index 적용
+            onClick={handleLogout}
+            >
               로그아웃
             </Button>
           </>

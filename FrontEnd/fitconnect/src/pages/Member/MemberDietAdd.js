@@ -153,7 +153,7 @@ function MemberDietJournalAdd() {
                 console.log(res.data);
                 if (res.data.isSuccess) {
                     alert("식단이 등록되었습니다");
-                    navigate(`/member/dietjournal/${m_calendar_id}?date=${selectedDate.toISOString().split('T')[0]}`);
+                    navigate(`/member/dietjournal`);
                 }
             })
             .catch(error => {

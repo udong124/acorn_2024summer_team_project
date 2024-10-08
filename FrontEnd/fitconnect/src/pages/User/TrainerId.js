@@ -23,7 +23,8 @@ const TrainerId = () => {
     width: "200px",
     height: "200px",
     border: "1px solid #cecece",
-    borderRadius: "50%"
+    borderRadius: "50%",
+    objectFit: "cover"
   }
 
   //트레이너리스트를 가져오기
@@ -197,7 +198,6 @@ const TrainerId = () => {
                       <p>자기소개: {selectedTrainer.trainer_intro}</p>
                       <p>헬스장: {selectedTrainer.gym_name}</p>
                       <p>헬스장 링크: <Link to="/{selectedTrainer.gym_link}">{selectedTrainer.gym_link}</Link></p>
-                      <p>회원 번호: {member_num ? member_num : "토큰에서 member_num을 찾을 수 없음..."}</p>
                     </Col>
                   </Row>
                   <Button
