@@ -147,12 +147,6 @@ const Home = () => {
             <Card.Body>
               <Row>
                 <Col sm={12} lg={6} className='leftside'>
-                  <Card style={{ maxHeight: '600px', overflowY: 'auto', overflowX: 'hidden' }}>
-                    <Message></Message>
-                  </Card>
-
-                </Col>
-                <Col sm={12} lg={6} className='leftside'>
                   <Card>
                     <Form.Group>
                       <Form.Control ref={imageInput} style={{display:"none"}} type="file" name="image" accept="image/*"/>
@@ -183,6 +177,13 @@ const Home = () => {
 
                   </Col>
 
+                <Col sm={12} lg={6} className='rightside'>
+                  <Card style={{ maxHeight: '600px', overflowY: 'auto', overflowX: 'hidden' }}>
+                    <Message></Message>
+                  </Card>
+
+              
+                  </Col>
               </Row>
 
             </Card.Body>

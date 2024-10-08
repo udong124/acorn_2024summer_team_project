@@ -153,7 +153,7 @@ const MessageModal = ({ showModal, setShowModal, topic }) => {
         <Modal.Title>{topic}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <div style={{ height: '800px', lineHeight: 'normal', overflowY: 'scroll', border: '1px solid #ccc', padding: '10px'}}>
+        <div style={{ height: '400px', lineHeight: 'normal', overflowY: 'scroll', border: '1px solid #ccc', padding: '10px'}}>
           {messages.map((msg, index) => (
             <div style={{flex:1}} key={msg.message_id}>
               <ChatMessage message={msg.content} isOwnMessage={msg.send_type === message.send_type} isCenter={msg.send_type === "ADMIN"}/>
