@@ -122,28 +122,22 @@ const Home = () => {
 
                 return (
                   <Col sm={6} md={6} lg={3} className='leftside'  style={{ margin: 0, padding: 0 }} key={index}>
+                    <Card style={{ height:"150px" }}>
+                      <Card.Header>
+                        {currentDate.getFullYear()}년 {currentDate.getMonth() + 1}월 {currentDate.getDate()}일
+                      </Card.Header>
                     {todayEvents.length > 0 ? (
                       todayEvents.map(event => (
-                        <Card key={event.t_calendar_id} >
-                        <Card.Header>
-                          {currentDate.getFullYear()}년 {currentDate.getMonth() + 1}월 {currentDate.getDate()}일
-                        </Card.Header>
-                          <Card.Body style={{ height:"150px" }}>
-                            {event.name} {new Date(event.regdate).toLocaleTimeString()}
+                          <Card.Body  key={event.t_calendar_id}>
+                            {event.name}    {new Date(event.regdate).toLocaleTimeString()}
                           </Card.Body>
-                        </Card>
                       ))
                     ) : (
-                      <Card>
-                        <Card.Header>
-                          {currentDate.getFullYear()}년 {currentDate.getMonth() + 1}월 {currentDate.getDate()}일
-                        </Card.Header>
-                        <Card.Body style={{ height:"150px" }}>
+                        <Card.Body>
                           <p>오늘의 일정이 없습니다.</p>
                         </Card.Body>
-
-                      </Card>
                     )}
+                    </Card>
                   </Col>
                 );
               })}
