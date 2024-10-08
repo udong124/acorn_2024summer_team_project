@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
 import { ReactComponent as LogoDark } from "../assets/images/logos/FitConnectLogo.svg";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Logo = () => {
   let role ;
@@ -10,13 +9,19 @@ const Logo = () => {
   } else {
     role = null
   }
+  const location = useLocation(); // 현재 경로 가져오기
+  const isAuthPage = location.pathname.startsWith("/login") || location.pathname.startsWith("/signup")
 
   return (
     <>
-      { 
-      <Link to={role}>
-        <LogoDark />
-      </Link>
+      { !isAuthPage ?
+          <Link to={role}>
+            <LogoDark />
+          </Link>
+        :
+          <Link to={role}>
+            <LogoDark style={{cursor:"default"}}/>
+          </Link>
       }
     </>
   );
