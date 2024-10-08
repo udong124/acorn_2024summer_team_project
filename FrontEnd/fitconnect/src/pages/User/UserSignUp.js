@@ -292,7 +292,7 @@ function UserSignUp() {
                     {
                       !formData.file &&
                       <small className="text-muted mt-2">
-                        프로필 사진을 등록해주세요 (JPG, PNG, 5MB 이하)
+                        프로필 사진을 등록해주세요 (이미지는 JPG 파일만 등록 가능)
                       </small>
                     }
                   </div>
