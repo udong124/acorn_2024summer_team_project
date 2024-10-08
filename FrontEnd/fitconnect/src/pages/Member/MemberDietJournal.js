@@ -135,7 +135,11 @@ function MemberDietJournal(){
     console.log(formattedDate2);
     navigate(`/member/dietadd/?date=${formattedDate2}`)
   }
-
+  
+  const graphCarbs = (totalCarbs/500) * 100 // 한국 성인 남성 탄수화물 섭취량 약 304g
+  const graphProtein = (totalProtein/120) * 100 // 성인 기준 체중 kg 당 0.73g 단백질 섭취
+  const graphFat = (totalFat/100) * 100 // 한국인 평균 지방 섭취량 53.9g
+  const graphKcal = (totalKcal / 4000) * 100 // 한국인 성인 남성 평균 2500kcal~3600kcal 섭취
   return (
     <>
     <div>
@@ -172,7 +176,7 @@ function MemberDietJournal(){
                 <span>탄수화물</span>
                 </Col>
                 <Col>
-                <ProgressBar striped variant="success" animated now={40} style={{height:'30px'}} />
+                <ProgressBar striped variant="success" animated now={graphCarbs} style={{height:'30px'}} />
                 </Col>
                 <Col xs="auto">
                 <span>{totalCarbs}</span>
@@ -184,7 +188,7 @@ function MemberDietJournal(){
                   <span>단백질</span>
                 </Col>
                 <Col>
-                <ProgressBar striped variant="info" animated now={20} style={{height:'30px'}}/>
+                <ProgressBar striped variant="info" animated now={graphProtein} style={{height:'30px'}}/>
                 </Col>
                 <Col xs="auto">
                 <span>{totalProtein}</span>
@@ -196,7 +200,7 @@ function MemberDietJournal(){
                   <span>지방</span>
                 </Col>
                 <Col>
-                <ProgressBar striped variant="warning" animated now={60} style={{height:'30px'}}/>
+                <ProgressBar striped variant="warning" animated now={graphFat} style={{height:'30px'}}/>
                 </Col>
                 <Col xs="auto">
                   <span>{totalFat}</span>
@@ -208,7 +212,7 @@ function MemberDietJournal(){
                   <span>칼로리</span>
                 </Col>
                 <Col>
-                <ProgressBar striped variant="danger" animated now={80} style={{height:'30px'}}/>
+                <ProgressBar striped variant="danger" animated now={graphKcal} style={{height:'30px'}}/>
                 </Col>
                 <Col xs="auto">
                   <span>{totalKcal}</span>
