@@ -96,7 +96,7 @@ const TrainerId = () => {
             })
             setSelectedTrainer(null);
             setFilteredTrainers(trainerList);
-            navigate("/member/mypagedetail")
+            navigate("/member")
           } else {
             alert("트레이너 등록에 실패했습니다.");
           }
@@ -131,7 +131,7 @@ const TrainerId = () => {
             <Card.Body className="">
               <Form className="mb-3">
                 <Row>
-                  <Col md={4}>
+                  <Col md={3}>
                     <Form.Group>
                       <Form.Select
                         value={searchCondition}
@@ -144,7 +144,7 @@ const TrainerId = () => {
                       </Form.Select>
                     </Form.Group>
                   </Col>
-                  <Col md={6}>
+                  <Col md={5}>
                     <Form.Group>
                       <Form.Control
                         type="text"
@@ -156,6 +156,11 @@ const TrainerId = () => {
                   <Col md={2}>
                     <Button onClick={handleSearch} className="w-100">
                       검색
+                    </Button>
+                  </Col>
+                  <Col md={2}>
+                    <Button onClick={()=>navigate("/member")} className="w-100" variant="danger">
+                      스킵
                     </Button>
                   </Col>
                 </Row>

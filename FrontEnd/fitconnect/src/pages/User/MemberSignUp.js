@@ -38,7 +38,7 @@ const MemberSignUp = () => {
       })
       .then((response) => {
         if(response.data.isSuccess){
-          navigate("/member"); 
+          navigate("/trainerid");
         }
       })
       .catch((error) => {
