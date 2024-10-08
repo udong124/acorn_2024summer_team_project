@@ -37,4 +37,16 @@
 		WHERE m_calendar_id = #{m_calendar_id}
 	</delete>
 	
+	<select id="getCalendarId" parameterType="String" resultType="MemberCalendarDto">
+		SELECT m_calendar_id
+		FROM membercalendar
+		where regdate = TO_DATE(#{ regdate}, 'YYYY-MM-DD')
+	</select>
+	
+	<select id="getMCalendarId" parameterType="String" resultType="int">
+		SELECT m_calendar_id
+		FROM membercalendar
+		where regdate = TO_DATE(#{ regdate}, 'YYYY-MM-DD')
+	</select>
+	
 </mapper>

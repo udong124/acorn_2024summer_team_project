@@ -66,5 +66,20 @@ public class MemberCalendarDaoImpl implements MemberCalendarDao{
 		}
 	}
 
+	@Override
+	public boolean getCalendarId(String regdate) {
+		MemberCalendarDto result = session.selectOne("MemberCalendar.getCalendarId", regdate);
+		if(result != null) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+	@Override
+	public int getMcalendarId(String regdate) {
+		
+		return session.selectOne("MemberCalendar.getMCalendarId",regdate);
+	}
 
 }

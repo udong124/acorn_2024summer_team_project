@@ -72,4 +72,16 @@ public class MemberCalendarServiceImpl implements MemberCalendarService{
 		return isSuccess;
 	}
 
+	@Override
+	public boolean getCalendarId(String regdate) {
+		boolean isSuccess = dao.getCalendarId(regdate);
+		return isSuccess;
+	}
+
+	@Override
+	public int getMCalendarId(String regdate) {
+		
+		return dao.getMcalendarId(regdate);
+	}
+
 }

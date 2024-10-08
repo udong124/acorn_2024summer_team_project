@@ -1,6 +1,7 @@
 package com.fitconnect.repository;
 
 import java.util.List;
+import java.util.Map;
 
 import com.fitconnect.dto.MemberCalendarDto;
 
@@ -21,4 +22,7 @@ public interface MemberCalendarDao {
 	//선택한 캘린더 정보 삭제
 	public boolean delete(int member_num, int m_calendar_id);
 
+	//특정 멤버 캘린더 아이디 조회
+	public boolean getCalendarId(String regdate);
+	public int getMcalendarId(String regdate);
 }

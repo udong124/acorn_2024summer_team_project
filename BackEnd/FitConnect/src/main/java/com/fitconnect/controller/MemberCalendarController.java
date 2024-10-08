@@ -1,5 +1,6 @@
 package com.fitconnect.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,9 +12,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fitconnect.dto.MemberCalendarDto;
+import com.fitconnect.repository.MemberCalendarDao;
 import com.fitconnect.service.MemberCalendarService;
 
 
@@ -83,7 +86,7 @@ public class MemberCalendarController {
 	public Map<String, Object> insertCal(@RequestBody MemberCalendarDto dto) {
 		
 		boolean isSuccess = service.insert(dto);
-		
+		// m_calendar_id
 		return Map.of("isSuccess", isSuccess);
 	}
 	
@@ -132,4 +135,20 @@ public class MemberCalendarController {
 		return Map.of("isSuccess", isSuccess);
 	}
 	
+	@GetMapping("/membercalendar/check")
+	public Map<String, Object> getCalendarId(
+			@RequestParam("regdate") String regdate){
+		Map<String, Object> map = new HashMap<>();
+		boolean isSuccess = service.getCalendarId(regdate);
+		
+		if(isSuccess == true) {
+			int m_calendar_id = service.getMCalendarId(regdate);
+			map.put("isSuccess", isSuccess);
+			map.put("m_calendar_id", m_calendar_id);
+		}else {
+			map.put("isSuccess", isSuccess);
+		}
+		
+		return Map.of("result", map);
+	}
 }
