@@ -26,13 +26,19 @@ function Members() {
     }, []);
   
 
-    
+  // 반복문으로 출력한 id(member_num) 값으로 topic값 가져오기
   const getAndPost = (id) => {
     const member_num = id;
     console.log(member_num);
     axios.get(`/messenger`, { params: { member_num } })  
       .then(res => {
 
+        // ☆★☆★☆★☆★해당부분 수정중☆★☆★☆★☆★☆★☆★☆★
+        axios.get(`/messenger/detail/${res.data.topic}`)
+        .then(detailRes =>{
+          if (!detailRes.data.content || detailRes.data.content === "") {
+          console.log(detailRes.content)
+          console.log("위에꺼")
         const firstMessage = {
           topic: res.data.topic,
           content: "채팅방이 개설되었습니다.",
@@ -40,6 +46,7 @@ function Members() {
         };
         console.log(firstMessage)
 
+        // 채팅방 생성 post 요청하기
         axios.post("/messenger/detail", firstMessage, {
           headers: {
             'Content-Type': 'multipart/form-data'
@@ -53,10 +60,14 @@ function Members() {
           .catch(error => {
             console.error(error);
           });
+        }else{
+          alert("이미 채팅방이 존재합니다") 
+        }
       })
       .catch(err => {
         console.error( err);
       });
+    })
   };
 
  
