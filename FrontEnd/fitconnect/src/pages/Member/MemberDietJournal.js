@@ -138,7 +138,7 @@ function MemberDietJournal(){
   
   const graphCarbs = (totalCarbs/500) * 100 // 한국 성인 남성 탄수화물 섭취량 약 304g
   const graphProtein = (totalProtein/120) * 100 // 성인 기준 체중 kg 당 0.73g 단백질 섭취
-  const graphFat = (totalFat/100) * 100 // 한국인 평균 지방 섭취량 53.9g
+  const graphFat = (totalFat/100) * 100 // 한국인 평균 지방 섭취량 53.9g 
   const graphKcal = (totalKcal / 4000) * 100 // 한국인 성인 남성 평균 2500kcal~3600kcal 섭취
   return (
     <>
@@ -173,49 +173,53 @@ function MemberDietJournal(){
             <div>
               <Row className="align-items-center">
                 <Col xs={1}>
-                <span>탄수화물</span>
+                <span>탄수화물</span><br/>
+                <span style={{fontSize: "10px", color: "grey"}}>기준: 500g</span>
                 </Col>
                 <Col>
                 <ProgressBar striped variant="success" animated now={graphCarbs} style={{height:'30px'}} />
                 </Col>
                 <Col xs="auto">
-                <span>{totalCarbs}</span>
+                <span>{graphCarbs.toFixed(1)}%</span>
                 </Col>
               </Row>
                 <br/>
                 <Row className="align-items-center">
                 <Col xs={1}>
-                  <span>단백질</span>
+                  <span>단백질</span><br/>
+                  <span style={{fontSize: "10px", color: "grey"}}>기준: 120g</span>
                 </Col>
                 <Col>
                 <ProgressBar striped variant="info" animated now={graphProtein} style={{height:'30px'}}/>
                 </Col>
                 <Col xs="auto">
-                <span>{totalProtein}</span>
+                <span>{graphProtein.toFixed(1)}%</span>
                 </Col>
               </Row>
                 <br/>
                 <Row className="align-items-center">
                 <Col xs={1}>
-                  <span>지방</span>
+                  <span>지방</span><br/>
+                  <span style={{fontSize: "10px", color: "grey"}}>기준: 100g</span>
                 </Col>
                 <Col>
                 <ProgressBar striped variant="warning" animated now={graphFat} style={{height:'30px'}}/>
                 </Col>
                 <Col xs="auto">
-                  <span>{totalFat}</span>
+                  <span>{graphFat.toFixed(1)}%</span>
                 </Col>
               </Row>
                 <br/>
                 <Row className="align-items-center">
                 <Col xs={1}>
-                  <span>칼로리</span>
+                  <span>칼로리</span><br/>
+                  <span style={{fontSize: "10px", color: "grey"}}>기준: 4000g</span>
                 </Col>
                 <Col>
                 <ProgressBar striped variant="danger" animated now={graphKcal} style={{height:'30px'}}/>
                 </Col>
                 <Col xs="auto">
-                  <span>{totalKcal}</span>
+                  <span>{graphKcal.toFixed(1)}%</span>
                 </Col>
               </Row>
             </div>
