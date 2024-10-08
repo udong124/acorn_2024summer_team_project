@@ -55,8 +55,30 @@ public class TrainerServiceImpl implements TrainerService{
 	}
 
 	@Override
-	public List<TrainerDto> selectList() {
-		return trainerDao.getList();
+	public List<Map<String, Object>> selectList() {
+		List<Map<String, Object>> resultList = new ArrayList<Map<String,Object>>();
+		
+		List<TrainerDto> dtoList = trainerDao.getList();
+		
+		dtoList.forEach(trainerDto -> {
+			int trainer_num = trainerDto.getTrainer_num();
+			UserDto userDto = userDao.getDataByNum(trainer_num);
+			
+			Map<String, Object> resultMap = new HashMap<>();
+	        resultMap.put("id", userDto.getId());
+	        resultMap.put("name", userDto.getName());
+	        resultMap.put("email", userDto.getEmail());
+	        resultMap.put("profile", userDto.getProfile());
+	        resultMap.put("regdate", userDto.getRegdate());
+	        resultMap.put("trainer_insta", trainerDto.getTrainer_insta());
+	        resultMap.put("trainer_intro", trainerDto.getTrainer_intro());
+	        resultMap.put("gym_name", trainerDto.getGym_name());
+	        resultMap.put("gym_link", trainerDto.getGym_link());
+	        
+	        resultList.add(resultMap);
+		});
+		
+		return resultList;
 	}
 
 	@Override

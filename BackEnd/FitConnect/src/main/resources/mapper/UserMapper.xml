@@ -22,7 +22,7 @@
 	<update id="updateRole" parameterType="UserDto">
 		UPDATE user_info
 		SET role=#{role}
-		WHERE userName=#{userName}
+		WHERE id=#{id}
 	</update>
 
 	<insert id="insert" parameterType="UserDto">
@@ -36,5 +36,12 @@
 		FROM user_info
 		WHERE userName=#{userName}
 	</select>
+
+	<select id="getDataByNum" parameterType="int" resultType="UserDto">
+		SELECT id, userName, password, name, email, role, profile, regdate, provider, providerid
+		FROM user_info
+		WHERE id=#{id}
+	</select>
+
 
 </mapper>

@@ -83,7 +83,7 @@ public class ExerciseController {
 	@GetMapping("/exerciselist/{exercise_category}")
 	public Map<String, Object> getCategory(@PathVariable("exercise_category") String exercise_category){
 		List<ExerciseListDto> list = service.seleteCategory(exercise_category);
-		return Map.of("categoryList", list);
+		return Map.of("exerList", list);
 	}
 	
 

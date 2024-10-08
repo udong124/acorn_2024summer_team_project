@@ -13,6 +13,6 @@ public interface TrainerService {
 	public boolean deleteTrainer(String userName);
 	public TrainerDto selectOne(String userName);
 	public Map<String, Object> selectOneUserInfo(String userName);
-	public List<TrainerDto> selectList();
+	public List<Map<String, Object>> selectList();
 	public List<Map<String, Object>> selectTrainerMemberList(int trainer_num);
 }

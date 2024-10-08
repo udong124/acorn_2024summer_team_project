@@ -9,8 +9,8 @@
 
 	<insert id="insert" parameterType="MemberDto">
 		INSERT INTO member_info
-		(member_num, trainer_num, member_height, member_weight, member_gender, plan, weeklyplan)
-		VALUES(#{member_num}, #{trainer_num}, #{member_height}, #{member_weight}, #{member_gender}, #{plan}, #{weeklyplan})
+		(member_num, member_height, member_weight, member_gender, plan, weeklyplan)
+		VALUES(#{member_num}, #{member_height}, #{member_weight}, #{member_gender}, #{plan}, #{weeklyplan})
 	</insert>
 
 	<update id="updateInfo" parameterType="MemberDto">
