@@ -23,7 +23,7 @@
 		GROUP BY cr.member_num, cr.topic, ui.name, ui.profile, cm.content
 	</select>
 	<select id="getMsgAll" resultType="messageDto" parameterType="string">
-		SELECT message_id, topic, content, send_type, to_char(times, 'YYYY-MM-DD HH24:MI:FF3') as times
+		SELECT message_id, topic, content, send_type, to_char(times, 'YYYY-MM-DD HH24:MI:SS:FF3') as times
 		FROM chat_message 
 		WHERE topic=#{topic}
 		ORDER BY times ASC
