@@ -174,13 +174,16 @@ public class TrainerCalendarServiceImpl implements TrainerCalendarService  {
 	@Override
 	public boolean disconnect(int member_num) {
 		//채팅방 삭제 추가
+		boolean isSuccess = calDao.disconnect(member_num);
 		
 	    ChatRoomDto chatDto = MsgDao.getChatRoom(member_num);
+	    if(chatDto != null){
+	    	String topic = chatDto.getTopic();
+	    	MsgDao.deleteChat(topic);
+	    }
 	    System.out.println(chatDto);
-	    String topic = chatDto.getTopic();
-		MsgDao.deleteChat(topic);
+	    
 		
-		boolean isSuccess = calDao.disconnect(member_num);
 		return isSuccess;
 	}
 
