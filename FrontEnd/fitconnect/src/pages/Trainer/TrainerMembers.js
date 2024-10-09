@@ -76,15 +76,21 @@ function Members() {
   
 
 
-    const handleDelete = (id) => {
-      console.log(id)
-      axios.put(`trainercalendar/detail`, { params: { id } })
-      .then(res => {
-        setMembers(members.filter(member => member.id !== id));
-      })
-      .catch(err => console.log(err));
-    };
-    
+  const handleDelete = (id) => {
+    console.log(id)
+    const formData = new FormData();
+    formData.append('member_num', id); // member_num 추가
+  
+    // PUT 요청
+    axios.put('/trainercalendar/detail', formData)
+    .then(res => {
+      console.log(res.data)
+    })
+    .catch(err => console.log(err))
+
+    getMembers();
+  };
+
   // 회원목록 출력
   return (
     <div>
