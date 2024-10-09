@@ -116,31 +116,43 @@ const Home = () => {
             <p><b>일정</b></p>
             <Row className="m-3">
               
+            <Row>
               {[...Array(4)].map((_, index) => {
-                const currentDate = new Date(); // 현재 날짜
-                currentDate.setDate(currentDate.getDate() + index); // 인덱스에 따라 날짜를 하루씩 추가
+                const currentDate = new Date();
+                currentDate.setDate(currentDate.getDate() + index);
+
+                const eventsForDate = todayEvents.filter(event => {
+                  const eventDate = new Date(event.regdate);
+                  return (
+                    eventDate.getFullYear() === currentDate.getFullYear() &&
+                    eventDate.getMonth() === currentDate.getMonth() &&
+                    eventDate.getDate() === currentDate.getDate()
+                  );
+                });
 
                 return (
-                  <Col sm={6} md={6} lg={3} className='leftside'  style={{ margin: 0, padding: 0 }} key={index}>
-                    <Card style={{ height:"150px" }}>
+                  <Col sm={6} md={6} lg={3} className='leftside' style={{ margin: 0, padding: 0 }} key={index}>
+                    <Card style={{ height: "150px" }}>
                       <Card.Header>
                         {currentDate.getFullYear()}년 {currentDate.getMonth() + 1}월 {currentDate.getDate()}일
                       </Card.Header>
-                    {todayEvents.length > 0 ? (
-                      todayEvents.map(event => (
-                          <Card.Body  key={event.t_calendar_id}>
-                            {event.name}    {new Date(event.regdate).toLocaleTimeString()}
+                      {eventsForDate.length > 0 ? (
+                        eventsForDate.map(event => (
+                          <Card.Body key={event.t_calendar_id}>
+                            {event.name} {new Date(event.regdate).toLocaleTimeString()}
                           </Card.Body>
-                      ))
-                    ) : (
+                        ))
+                      ) : (
                         <Card.Body>
                           <p>오늘의 일정이 없습니다.</p>
                         </Card.Body>
-                    )}
+                      )}
                     </Card>
                   </Col>
                 );
               })}
+            </Row>
+
 
             </Row>
             </Card.Body>
