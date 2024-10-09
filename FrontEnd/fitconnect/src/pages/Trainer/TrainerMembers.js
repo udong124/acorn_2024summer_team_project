@@ -33,7 +33,6 @@ function Members() {
     axios.get(`/messenger`, { params: { member_num } })  
       .then(res => {
         console.log(res.data.topic)
-        // ☆★☆★☆★☆★해당부분 수정중☆★☆★☆★☆★☆★☆★☆★
         axios.get(`/messenger/detail/${res.data.topic}`)
         .then(detailRes =>{
           if (!detailRes.message_id) {
@@ -77,18 +76,23 @@ function Members() {
 
 
   const handleDelete = (id) => {
-    console.log(id)
-    const formData = new FormData();
-    formData.append('member_num', id); // member_num 추가
-  
-    // PUT 요청
-    axios.put('/trainercalendar/detail', formData)
-    .then(res => {
-      console.log(res.data)
-    })
-    .catch(err => console.log(err))
-
-    getMembers();
+    const confirmDelete = window.confirm("정말로 이 회원을 삭제하시겠습니까?");
+    
+    if (confirmDelete) {
+      console.log(id)
+      const formData = new FormData();
+      formData.append('member_num', id); // member_num 추가
+    
+      // PUT 요청
+      axios.put('/trainercalendar/detail', formData)
+        .then(res => {
+          console.log(res.data)
+          getMembers(); // 삭제 후 회원 목록을 갱신
+        })
+        .catch(err => console.log(err));
+    } else {
+      console.log("삭제 취소됨");
+    }
   };
 
   // 회원목록 출력
