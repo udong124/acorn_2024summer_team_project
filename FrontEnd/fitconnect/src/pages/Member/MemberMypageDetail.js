@@ -21,6 +21,19 @@ const MyPageDetail = () => {
     plan: '',
     weeklyplan: ''
   });
+
+
+  //트레이너의 이름을 얻기 
+  const [trainerName, setTrainerName] = useState("");
+
+  useEffect(() => {
+    const storedTrainerName = localStorage.getItem('selectedTrainerName'); // 로컬 스토리지에서 트레이너 이름 가져오기
+    if (storedTrainerName) {
+      setTrainerName(storedTrainerName);
+    }
+  }, []);
+
+
   const [isReady, setIsReady] = useState(false);
 
   // 프로필 이미지 src 에 적용할 값을 state 로 관리 하기
@@ -236,8 +249,8 @@ const MyPageDetail = () => {
                   <InputGroup>
                     <Form.Control
                       type="text"
-                      name="trainer_num"
-                      value={memberInfo.trainer_num ? memberInfo.trainer_num : "트레이너 등록"}
+                      name="trainerName"
+                      value={trainerName ? trainerName : "트레이너 등록"}
                       onClick={() => navigate(`/member/trainerlist`)}
                       readOnly
                       style={{cursor: "pointer"}}

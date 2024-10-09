@@ -32,13 +32,14 @@ function Members() {
     console.log(member_num);
     axios.get(`/messenger`, { params: { member_num } })  
       .then(res => {
-
+        console.log(res.data.topic)
         // ☆★☆★☆★☆★해당부분 수정중☆★☆★☆★☆★☆★☆★☆★
         axios.get(`/messenger/detail/${res.data.topic}`)
         .then(detailRes =>{
-          if (!detailRes.data.content || detailRes.data.content === "") {
-          console.log(detailRes.content)
+          if (!detailRes.message_id) {
+          console.log(detailRes.message_id)
           console.log("위에꺼")
+
         const firstMessage = {
           topic: res.data.topic,
           content: "채팅방이 개설되었습니다.",
@@ -75,15 +76,15 @@ function Members() {
   
 
 
- const handleDelete = (id) => {
-  axios.patch(`/member/update/trainer`)
-  .then(res => {
-    // 성공적으로 trainer_num이 null로 업데이트되면, 화면상에서 회원을 제거
-    setMembers(members.filter(member => member.id !== id));
-  })
-  .catch(err => console.log(err));
-};
-
+    const handleDelete = (id) => {
+      console.log(id)
+      axios.put(`trainercalendar/detail`, { params: { id } })
+      .then(res => {
+        setMembers(members.filter(member => member.id !== id));
+      })
+      .catch(err => console.log(err));
+    };
+    
   // 회원목록 출력
   return (
     <div>
