@@ -145,8 +145,6 @@ public class MemberCalendarController {
 			int m_calendar_id = service.getMCalendarId(regdate);
 			map.put("isSuccess", isSuccess);
 			map.put("m_calendar_id", m_calendar_id);
-		}else {
-			map.put("isSuccess", isSuccess);
 		}
 		
 		return Map.of("result", map);

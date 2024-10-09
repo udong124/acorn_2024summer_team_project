@@ -4,11 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.fitconnect.dto.MemberCalendarDto;
+import com.fitconnect.exception.NotCalendarIdOneException;
 
 
 @Repository
@@ -67,12 +69,16 @@ public class MemberCalendarDaoImpl implements MemberCalendarDao{
 	}
 
 	@Override
-	public boolean getCalendarId(String regdate) {
-		MemberCalendarDto result = session.selectOne("MemberCalendar.getCalendarId", regdate);
-		if(result != null) {
-			return true;
-		}else {
-			return false;
+	public boolean getCalendarId(String regdate) throws NotCalendarIdOneException{
+		try {
+			MemberCalendarDto result = session.selectOne("MemberCalendar.getCalendarId", regdate);
+			if(result != null) {
+				return true;
+			}else {
+				return false;
+			}
+		}catch(org.mybatis.spring.MyBatisSystemException e) {
+			throw new NotCalendarIdOneException("2개 이상의 캘린더 아이디 조회됨");
 		}
 	}
 

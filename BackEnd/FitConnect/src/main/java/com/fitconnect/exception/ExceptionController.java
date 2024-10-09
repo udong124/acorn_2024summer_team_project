@@ -25,4 +25,19 @@ public class ExceptionController {
 		return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED); // 401 에러 응답
 		
 	}
+	
+	/*
+	 * 	/membercalendar/check API 호출 시 m_calendar_id 가 2개 이상인 예외가 발생하면
+	 * 	이 메소드가 호출된다
+	 */
+	@ExceptionHandler(NotCalendarIdOneException.class)
+	public ResponseEntity<Object> checkException(NotCalendarIdOneException ce){
+		//예외메세지
+		String msg = ce.getMessage();
+		//에러 응답
+		ErrorResponse response = ErrorResponse.builder()
+										.code(401).message(msg).build();
+		
+		return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED); // 401 에러 응답
+	}
 }

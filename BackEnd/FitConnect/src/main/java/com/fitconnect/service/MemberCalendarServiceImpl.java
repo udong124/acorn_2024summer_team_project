@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.fitconnect.auth.PrincipalDetails;
 import com.fitconnect.dto.MemberCalendarDto;
+import com.fitconnect.exception.NotCalendarIdOneException;
 import com.fitconnect.repository.MemberCalendarDao;
 
 
