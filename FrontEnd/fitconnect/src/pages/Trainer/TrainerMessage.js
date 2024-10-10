@@ -9,6 +9,7 @@ const Message = () => {
   const [showModal, setShowModal] = useState(false);
   const [members, setMembers] = useState([]);
   const [selectedTopic, setSelectedTopic] = useState(''); // 선택된 topic 값을 저장하는 상태
+  const [isReady, setIsReady] = useState(false);
 
 
   // axios.get요청으로 전체 회원리스트 가져오기
@@ -22,6 +23,7 @@ const Message = () => {
           content: item.content || '표시할 내용이 없습니다',
           times: item.times || '표시할 시간이 없습니다' 
         }));
+        console.log("가져온데이터", res.data)
         setMembers(updatedMembers);
       })
       .catch(err => console.log(err));
@@ -43,9 +45,17 @@ const Message = () => {
   // 특정 멤버 클릭 시 topic 값을 설정하는 함수
   const handleMemberClick = (topic) => {
     setSelectedTopic(topic); // 클릭한 멤버의 topic 값을 상태로 저장
-    setShowModal(true); // 모달을 보여줌
-    setParams({topic})
+    setIsReady(true); // 모달을 보여줌
   };
+
+  useEffect(()=>{
+    if(isReady && selectedTopic !== ""){
+      setShowModal(true); // 모달을 보여줌
+      setParams({selectedTopic})
+      setSelectedTopic("")
+    }
+  }, [isReady, selectedTopic])
+
 
   // 모달창을 닫았을때 ?topic=xxx  지우기 
   useEffect(()=>{
@@ -92,9 +102,10 @@ const Message = () => {
                           borderBottom: '1px solid #ccc', 
                           padding: '10px' 
                         }}>
+                          
                         <div onClick={() => handleMemberClick(item.topic)} style={{ flex: 1 }}>
+                        {item.profile && <img src={"http://52.78.38.12:8080/upload/"+item.profile} alt={`${item.name} 프로필`} />}
                           <p>{item.name}</p>
-                          <p>프로필 이미지: {item.profile}</p>
                           <p>내용: {item.content}</p> 
                           <p>{formatDate(item.times)}</p>
                         </div>

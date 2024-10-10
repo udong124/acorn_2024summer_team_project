@@ -24,6 +24,10 @@ function MemberMessenger() {
     gym_link: "",
   });
 
+
+
+   
+
   //채팅방 정보
   const [chatRoom, setChatRoom] = useState({});
   //채팅방 모달창 관리
@@ -106,10 +110,49 @@ function MemberMessenger() {
       .catch((error) => console.log(error));
   }, []);
 
+  
   //대화하기를 눌렀을 때 실행할 함수
-  const handleChatClick = () => {
-    setShowModal(true); // 모달을 보여줌
+    // 반복문으로 출력한 id(member_num) 값으로 topic값 가져오기
+  const handleChatClick = (member_num) => {
+
+    axios.get(`/messenger`, { params: { member_num } })  
+      .then(res => {
+        console.log(res.data.topic)
+        axios.get(`/messenger/detail/${res.data.topic}`)
+        .then(detailRes =>{
+          //대화 메세지가 있는지 여부
+          const isExist = detailRes.data.msgAll.length > 0
+          if (!isExist) {
+            const firstMessage = {
+              topic: res.data.topic,
+              content: "채팅방이 개설되었습니다.",
+              send_type: "ADMIN",
+            };
+            console.log(firstMessage)
+
+            // 채팅방 생성 post 요청하기
+            axios.post("/messenger/detail", firstMessage, {
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+            })
+            .then(response => {
+              console.log( response.data);
+           
+            })
+            .catch(error => {
+              console.error(error);
+            });
+          }else{
+            setShowModal(true); // 모달을 보여줌
+          }
+      })
+      .catch(err => {
+        console.error( err);
+      });
+    })
   };
+
 
   //트레이너 찾기 버튼 눌렀을 때 실행할 함수
   const handleFindTrainer = () => {
@@ -194,7 +237,7 @@ function MemberMessenger() {
                 </div>
 
 
-                <Button onClick={handleChatClick}>대화시작하기</Button>
+                <Button onClick={() => handleChatClick(member_num)}>대화시작하기</Button>
               </>
             ) : (
               // 트레이너 정보가 없을 때 '트레이너 찾기' 버튼과 플러스 아이콘이 보이게끔
