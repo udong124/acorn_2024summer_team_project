@@ -18,7 +18,7 @@
 	<select id="getDataByDate" parameterType="MemberCalendarDto" resultType="MemberCalendarDto">
 		SELECT m_calendar_id, member_num, regdate, memo
 		FROM membercalendar
-		WHERE TO_DATE(#{ regdate}, 'YYYY-MM-DD') AND member_num = #{ member_num}
+		WHERE regdate = TO_DATE(#{ regdate}, 'YYYY-MM-DD') AND member_num = #{ member_num}
 	</select>
 	
 	<select id="getExistDiet">
