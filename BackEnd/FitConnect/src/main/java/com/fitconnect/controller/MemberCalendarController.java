@@ -69,6 +69,13 @@ public class MemberCalendarController {
 		return service.getOne(dto);
 	}
 	
+	@GetMapping("/membercalendar/date")
+	public Map<String, Object> getDataByDate(@RequestBody MemberCalendarDto dto){
+		
+		
+		return service.getOneByDate(dto);
+	}
+	
 	/**********************************************************************
 	 * <PRE> * 메소드 정보 *
 	 * 1. MethodName	: insertCal
@@ -86,6 +93,14 @@ public class MemberCalendarController {
 	public Map<String, Object> insertCal(@RequestBody MemberCalendarDto dto) {
 		
 		boolean isSuccess = service.insert(dto);
+		// m_calendar_id
+		return Map.of("isSuccess", isSuccess);
+	}
+	
+	@PostMapping("/membercalendar/date")
+	public Map<String, Object> insertCalByDate(@RequestBody MemberCalendarDto dto) {
+		
+		boolean isSuccess = service.insertByDate(dto);
 		// m_calendar_id
 		return Map.of("isSuccess", isSuccess);
 	}

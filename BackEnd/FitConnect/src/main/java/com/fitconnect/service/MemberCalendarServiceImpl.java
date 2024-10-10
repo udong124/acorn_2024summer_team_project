@@ -40,6 +40,17 @@ public class MemberCalendarServiceImpl implements MemberCalendarService{
 		
 		return Map.of("dto", resultdto);
 	}
+	
+	@Override
+	public Map<String, Object> getOneByDate(MemberCalendarDto dto) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		int user_num = ((PrincipalDetails) authentication.getPrincipal()).getDto().getId();
+		
+		dto.setMember_num(user_num);
+		Map<String, Object> getByDate = dao.getDataByDate(dto);
+		
+		return getByDate;
+	}
 
 	@Override
 	public boolean insert(MemberCalendarDto dto) {
@@ -51,6 +62,28 @@ public class MemberCalendarServiceImpl implements MemberCalendarService{
 		
 		return isSuccess;
 		
+	}
+	
+	@Override
+	public boolean insertByDate(MemberCalendarDto dto) {
+		
+		// input으로 regdate, memo null 값 가능
+		System.out.println(dto);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		int user_num = ((PrincipalDetails) authentication.getPrincipal()).getDto().getId();
+		
+		dto.setMember_num(user_num);
+		
+		Map<String, Object> getByDate = dao.getDataByDate(dto);
+		
+		if((boolean) getByDate.get("isSuccess")) {
+			return true;
+		}else {
+			if(dto.getMemo() == null) {
+				dto.setMemo("");
+			}
+			return dao.insert(dto);
+		}
 	}
 	
 	@Override

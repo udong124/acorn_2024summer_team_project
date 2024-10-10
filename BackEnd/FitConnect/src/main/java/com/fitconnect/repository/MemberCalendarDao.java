@@ -13,8 +13,11 @@ public interface MemberCalendarDao {
 	//로그인된 사용자가 선택한 캘린더 정보 하나를 조회
 	public MemberCalendarDto getData(MemberCalendarDto dto);
 	
+	public Map<String, Object> getDataByDate(MemberCalendarDto dto);
+	
 	//캘린더 정보 등록 ( 날짜, 메모만 수기로 입력하고 member_num 은 로그인된 사용자 아이디로 가져옴)
 	public boolean insert(MemberCalendarDto dto);
+
 	
 	//선택한 캘린더 정보 수정
 	public boolean update(MemberCalendarDto dto);

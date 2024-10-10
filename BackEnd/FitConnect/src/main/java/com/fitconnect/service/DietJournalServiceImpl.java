@@ -42,6 +42,7 @@ public class DietJournalServiceImpl implements DietJournalService{
 		return isSuccess;
 	}
 
+	
 	@Override
 	public boolean update(DietJournalDto dto) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

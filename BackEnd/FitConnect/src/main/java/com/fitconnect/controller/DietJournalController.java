@@ -16,14 +16,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fitconnect.auth.PrincipalDetails;
 import com.fitconnect.dto.DietJournalDto;
+import com.fitconnect.dto.MemberCalendarDto;
 import com.fitconnect.dto.UserDto;
 import com.fitconnect.service.DietJournalService;
+import com.fitconnect.service.MemberCalendarService;
 
 
 @RestController
 public class DietJournalController {
 	
 	@Autowired DietJournalService service;
+	@Autowired MemberCalendarService membercalendarService;
 	
 	/**********************************************************************
 	 * <PRE> * 메소드 정보 *
@@ -53,6 +56,31 @@ public class DietJournalController {
 		return Map.of("list", list);
 	}
 	
+	
+	@GetMapping("/dietjournal/date/{regdate}")
+	public Map<String, Object> getListByDate(
+			@PathVariable("regdate") String regdate,
+			DietJournalDto dto){
+		MemberCalendarDto membercalendarDto = new MemberCalendarDto();
+		membercalendarDto.setRegdate(regdate);
+		Map<String, Object> getOneByDate= membercalendarService.getOneByDate(membercalendarDto);
+		
+		System.out.println(getOneByDate);
+		
+		//regdate 넣었을 때, m_calendar_id 가 여러개이면 exception, 한 개면 true, 0 개면 false
+		if((boolean) getOneByDate.get("isSuccess")) {
+			int m_calendar_id = ((MemberCalendarDto)getOneByDate.get("result")).getM_calendar_id();
+			dto.setM_calendar_id(m_calendar_id);
+			
+			List<DietJournalDto> list = service.getList(dto);
+			return Map.of("isSuccess", true,
+							"list", list);
+		}else {
+			// m_calendar_id 가 없을 때
+			return Map.of("isSuccess", false);
+		}
+	}
+	
 	/**********************************************************************
 	 * <PRE> * 메소드 정보 *
 	 * 1. MethodName	: insert
@@ -78,6 +106,26 @@ public class DietJournalController {
 		
 	    boolean isSuccess = service.insert(dietjournalList);
 		return Map.of("isSuccess", isSuccess);
+	}
+	
+	@PostMapping("/dietjournal/date/{regdate}")
+	public Map<String, Object> insertBydate(
+			@PathVariable("regdate") String regdate,
+			@RequestBody List<DietJournalDto> dietjournalList){
+		
+		MemberCalendarDto membercalendarDto = new MemberCalendarDto();
+		membercalendarDto.setRegdate(regdate);
+		// error 제외하고 true 값을 반환
+		membercalendarService.insertByDate(membercalendarDto);
+		Map<String, Object> getIdByDate = membercalendarService.getOneByDate(membercalendarDto);
+		System.out.println(getIdByDate);
+		for (DietJournalDto dto : dietjournalList) {
+	        dto.setM_calendar_id(((MemberCalendarDto) getIdByDate.get("result")).getM_calendar_id());
+	    }
+		
+	    boolean isSuccess = service.insert(dietjournalList);
+		return Map.of("isSuccess", isSuccess);
+
 	}
 	
 	/**********************************************************************

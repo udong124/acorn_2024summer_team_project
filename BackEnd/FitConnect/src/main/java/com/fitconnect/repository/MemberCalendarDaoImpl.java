@@ -32,6 +32,27 @@ public class MemberCalendarDaoImpl implements MemberCalendarDao{
 	}
 
 	@Override
+	public Map<String, Object> getDataByDate(MemberCalendarDto dto) throws NotCalendarIdOneException {
+		try {
+			System.out.println(dto);
+			MemberCalendarDto result = session.selectOne("MemberCalendar.getDataByDate", dto);
+			System.out.println(result);
+			
+			// m_calendar_id 가 1개 있을 때, true와 result 값 반환
+			if(result != null) {
+				return Map.of("isSuccess", true,
+								"result", result);
+			}else {	// m_calendar_id 가 없을 때 false 반환
+				return Map.of("isSuccess", false);
+			}
+			// m_calendar_id 가 여러개 있을 때 예외처리
+		}catch(org.mybatis.spring.MyBatisSystemException e) {
+			throw new NotCalendarIdOneException("2개 이상의 캘린더 아이디 조회됨");
+		}
+			
+	}
+	
+	@Override
 	public boolean insert(MemberCalendarDto dto) {
 		
 		int result = session.insert("MemberCalendar.insert", dto);

@@ -15,6 +15,12 @@
 		WHERE m_calendar_id = #{ m_calendar_id} AND member_num = #{ member_num}
 	</select>
 	
+	<select id="getDataByDate" parameterType="MemberCalendarDto" resultType="MemberCalendarDto">
+		SELECT m_calendar_id, member_num, regdate, memo
+		FROM membercalendar
+		WHERE regdate = #{ regdate} AND member_num = #{ member_num}
+	</select>
+	
 	<insert id="insert" parameterType="MemberCalendarDto">
 		INSERT INTO membercalendar (m_calendar_id, member_num, regdate, memo)
 		VALUES (m_calendar_id_seq.NEXTVAL, #{ member_num}, TO_DATE(#{regdate}, 'YYYY-MM-DD'), #{ memo})
