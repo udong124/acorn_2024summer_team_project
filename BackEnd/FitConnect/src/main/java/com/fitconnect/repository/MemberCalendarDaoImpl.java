@@ -34,9 +34,7 @@ public class MemberCalendarDaoImpl implements MemberCalendarDao{
 	@Override
 	public Map<String, Object> getDataByDate(MemberCalendarDto dto) throws NotCalendarIdOneException {
 		try {
-			System.out.println(dto);
 			MemberCalendarDto result = session.selectOne("MemberCalendar.getDataByDate", dto);
-			System.out.println(result);
 			
 			// m_calendar_id 가 1개 있을 때, true와 result 값 반환
 			if(result != null) {

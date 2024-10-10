@@ -19,6 +19,8 @@ import com.fitconnect.dto.MemberCalendarDto;
 import com.fitconnect.repository.MemberCalendarDao;
 import com.fitconnect.service.MemberCalendarService;
 
+import jakarta.websocket.server.PathParam;
+
 
 
 @RestController
@@ -69,10 +71,18 @@ public class MemberCalendarController {
 		return service.getOne(dto);
 	}
 	
-	@GetMapping("/membercalendar/date")
-	public Map<String, Object> getDataByDate(@RequestBody MemberCalendarDto dto){
+	@GetMapping("/membercalendar/date/{regdate}")
+	public Map<String, Object> getDataByDate(
+			@PathParam("regdate") String regdate, 
+			@RequestBody MemberCalendarDto dto){
 		
+		/* 	경로변수로 가져온 regdate를 사용해서 
+		 * 	m_calendar_id 가 없으면 false
+		 * 	하나만 존재하면 true와 함께 result 값으로 캘린더 정보 반환
+		 * 	m_calendar_id 가 2개 이상 조회되면 exception 발생
+		 */
 		
+		dto.setRegdate(regdate);
 		return service.getOneByDate(dto);
 	}
 	
