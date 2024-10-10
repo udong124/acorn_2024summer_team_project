@@ -55,6 +55,18 @@ const Message = () => {
   }, [showModal])
 
 
+    // 날짜 변환 함수: 'YYYY-MM-DD HH:mm' 형식으로 변환
+    const formatDate = (date) => {
+      const d = new Date(date);
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      const hours = String(d.getHours()).padStart(2, '0');
+      const minutes = String(d.getMinutes()).padStart(2, '0');
+      const seconds = String(d.getSeconds()).padStart(2, '0');
+      return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    };
+
   //topic 값이 같을경우에는 출력하지 않기
   const ownTopic = Array.from(new Map(members.map(item=> [item.topic, item])).values());
 
@@ -84,7 +96,7 @@ const Message = () => {
                           <p>{item.name}</p>
                           <p>프로필 이미지: {item.profile}</p>
                           <p>내용: {item.content}</p> 
-                          <p>{item.times}</p>
+                          <p>{formatDate(item.times)}</p>
                         </div>
                       </li>
                     ))}

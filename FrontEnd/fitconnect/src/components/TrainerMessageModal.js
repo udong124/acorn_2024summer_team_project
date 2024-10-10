@@ -144,6 +144,17 @@ const MessageModal = ({ showModal, setShowModal, topic }) => {
     setDeleteMode(prevState => !prevState); 
   };
 
+  
+  // 날짜 변환 함수: 'YYYY-MM-DD HH:mm' 형식으로 변환
+  const formatDate = (date) => {
+    const d = new Date(date);
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    const hours = String(d.getHours()).padStart(2, '0');
+    const minutes = String(d.getMinutes()).padStart(2, '0');
+    return `${month}-${day} ${hours}:${minutes}`;
+  };
+
   return (
     <Modal show={showModal} onHide={() => {
       setMessages([]);
@@ -156,7 +167,8 @@ const MessageModal = ({ showModal, setShowModal, topic }) => {
         <div style={{ height: '400px', lineHeight: 'normal', overflowY: 'scroll', border: '1px solid #ccc', padding: '10px'}}>
           {messages.map((msg, index) => (
             <div style={{flex:1}} key={msg.message_id}>
-              <ChatMessage message={msg.content} isOwnMessage={msg.send_type === message.send_type} isCenter={msg.send_type === "ADMIN"}/>
+              <ChatMessage message={msg.content} isOwnMessage={msg.send_type === message.send_type} isCenter={msg.send_type === "ADMIN"} times={msg.times ? formatDate(msg.times) : 'No time available'} />
+              
               {/* 삭제 모드일 때만 삭제 버튼을 보여줌 */}
               {deleteMode && msg.send_type === "TRAINER" && (
                 <Button 

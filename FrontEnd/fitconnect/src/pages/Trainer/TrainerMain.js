@@ -95,7 +95,6 @@ const Home = () => {
   const profileStyle = {
     width: "200px",
     height: "200px",
-    border: "3px solid #aaa", 
     borderRadius: "50%",
     objectFit: "cover",
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.15)",

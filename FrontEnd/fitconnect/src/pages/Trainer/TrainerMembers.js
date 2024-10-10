@@ -35,34 +35,32 @@ function Members() {
         console.log(res.data.topic)
         axios.get(`/messenger/detail/${res.data.topic}`)
         .then(detailRes =>{
-          if (!detailRes.message_id) {
-          console.log(detailRes.message_id)
-          console.log("위에꺼")
+          //대화 메세지가 있는지 여부
+          const isExist = detailRes.data.msgAll.length > 0
+          if (!isExist) {
+            const firstMessage = {
+              topic: res.data.topic,
+              content: "채팅방이 개설되었습니다.",
+              send_type: "ADMIN",
+            };
+            console.log(firstMessage)
 
-        const firstMessage = {
-          topic: res.data.topic,
-          content: "채팅방이 개설되었습니다.",
-          send_type: "ADMIN",
-        };
-        console.log(firstMessage)
-
-        // 채팅방 생성 post 요청하기
-        axios.post("/messenger/detail", firstMessage, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
+            // 채팅방 생성 post 요청하기
+            axios.post("/messenger/detail", firstMessage, {
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+            })
+            .then(response => {
+              console.log( response.data);
+              navigate("/trainer/message?topic="+firstMessage.topic)
+            })
+            .catch(error => {
+              console.error(error);
+            });
+          }else{
+            alert("이미 채팅방이 존재합니다") 
           }
-        })
-          .then(response => {
-            console.log( response.data);
-            navigate("/trainer/message?topic="+firstMessage.topic)
-            
-          })
-          .catch(error => {
-            console.error(error);
-          });
-        }else{
-          alert("이미 채팅방이 존재합니다") 
-        }
       })
       .catch(err => {
         console.error( err);
