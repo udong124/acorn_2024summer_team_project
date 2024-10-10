@@ -7,8 +7,8 @@ import { useNavigate } from "react-router";
 function Members() {
   const [members, setMembers] = useState([]);
 
-
   const navigate = useNavigate();
+
 
     // 회원목록 가져오는 axios.get요청
     const getMembers = () => {
@@ -51,9 +51,10 @@ function Members() {
                 'Content-Type': 'multipart/form-data'
               }
             })
-            .then(response => {
+            .then(response => {  
               console.log( response.data);
               navigate("/trainer/message?topic="+firstMessage.topic)
+              window.location.reload()
             })
             .catch(error => {
               console.error(error);
@@ -93,6 +94,14 @@ function Members() {
     }
   };
 
+
+  const profileStyle={
+    width: "200px",
+    height: "200px",
+    border: "1px solid #cecece",
+    borderRadius: "50%"
+  }
+
   // 회원목록 출력
   return (
     <div>
@@ -105,22 +114,22 @@ function Members() {
             <Card.Body>
               <ul>
                 {members.map(item => (
-                  <li key={item.id}>
-                    {item.profile_image_url && <img src={item.profile_image_url} alt={`${item.name} 프로필`} />}
+                  <div key={item.id}>
+                    {item.profile && <img src={"http://52.78.38.12:8080/upload/"+item.profile} alt={`${item.name} 프로필`} style={profileStyle}/>}
                     <p>이름: {item.name}</p>
-                    <p>프로필 이미지: {item.profile_image_url}</p>
                     <p>키: {item.member_height}</p>
                     <p>몸무게: {item.member_weight}</p>
                     <p>성별: {item.member_gender}</p>
-                    <p>플랜: {item.member_plan}</p>
+                    <p>플랜: {item.plan}</p>
                     <p>주간플랜: {item.weeklyplan}</p>
+
 
                       
                     {/* 새로운 채팅방 생성 버튼 */}
                     <Button variant='primary' onClick={() => getAndPost(item.id)}>채팅방 생성</Button>
 
                     <Button variant='danger' onClick={() => handleDelete(item.id)}>회원삭제</Button>
-                  </li>
+                  </div>
                 ))}
               </ul>
             </Card.Body>

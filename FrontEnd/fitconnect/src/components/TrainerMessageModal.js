@@ -4,7 +4,7 @@ import mqtt from 'mqtt';
 import { Modal, Button, Form } from 'react-bootstrap';
 import ChatMessage from './ChatMessage';
 
-const MessageModal = ({ showModal, setShowModal, topic }) => {
+const MessageModal = ({ showModal, setShowModal, topic}) => {
   const [message, setMessage] = useState({
     send_type: "TRAINER",  // 기본값 설정
     content: "",        // 메시지 내용
@@ -27,6 +27,7 @@ const MessageModal = ({ showModal, setShowModal, topic }) => {
       axios.get(`/messenger/detail/${topic}`)
         .then(res => {
           setMessages(res.data.msgAll); // 서버에서 받은 메시지 데이터로 상태 업데이트
+
         })
         .catch(error => {
           console.log("Error fetching messages:", error);
@@ -35,9 +36,10 @@ const MessageModal = ({ showModal, setShowModal, topic }) => {
   };
 
   useEffect(() => {
+    console.log("처음열릴때 토픽값:", topic)
     if (topic) {
       client.subscribe(topic); 
-
+      
       client.on('message', (topic, message) => {
         const decodedMessage = JSON.parse(decoder.decode(new Uint8Array(message)));
         setMessages(prevMessages => [...prevMessages, decodedMessage]); // 새로운 메시지를 추가
@@ -85,7 +87,10 @@ const MessageModal = ({ showModal, setShowModal, topic }) => {
     setIsReady(true);
     client.end();
     e.target.content.value = "";
+
   };
+
+
 
   useEffect(()=>{
     if(message.content !== "" && isReady){
@@ -155,16 +160,22 @@ const MessageModal = ({ showModal, setShowModal, topic }) => {
     return `${month}-${day} ${hours}:${minutes}`;
   };
 
+  const handleClose = () =>{
+    setMessages([]);
+    setShowModal(false);
+  }
+
   return (
     <Modal show={showModal} onHide={() => {
       setMessages([]);
       setShowModal(false);
     }}>
-      <Modal.Header closeButton>
-        <Modal.Title>{topic}</Modal.Title>
+      <Modal.Header closeButton={handleClose}>
+        <Modal.Title></Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <div style={{ height: '400px', lineHeight: 'normal', overflowY: 'scroll', border: '1px solid #ccc', padding: '10px'}}>
+  
           {messages.map((msg, index) => (
             <div style={{flex:1}} key={msg.message_id}>
               <ChatMessage message={msg.content} isOwnMessage={msg.send_type === message.send_type} isCenter={msg.send_type === "ADMIN"} times={msg.times ? formatDate(msg.times) : 'No time available'} />
@@ -209,10 +220,7 @@ const MessageModal = ({ showModal, setShowModal, topic }) => {
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={() => {
-          setMessages([]);
-          setShowModal(false);
-        }}>Close</Button>
+        <Button variant="secondary" onClick={() => {handleClose()}}>Close</Button>
       </Modal.Footer>
     </Modal>
   );
