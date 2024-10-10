@@ -1,7 +1,7 @@
 import axios from "axios";
 import { decodeToken } from "jsontokens";
 import { useEffect, useRef, useState } from "react";
-import { Button, Container, Form } from "react-bootstrap";
+import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import MemberMessengerModal from "../../components/MemberMessngerModal";
 import plusimage from "../../assets/images/users/plusimage.png";
@@ -117,92 +117,132 @@ function MemberMessenger() {
   };
 
   return (
-    <>
-      <svg
-        ref={personSvg}
-        style={profileStyle2}
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        fill="currentColor"
-        viewBox="0 0 16 16"
-      >
-        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-        <path
-          fillRule="evenodd"
-          d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
-        />
-      </svg>
-
-      <Container
-        style={{
-          minHeight: "500px",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "column",
-        }}
-      >
-        {trainerInfo && trainerInfo.name ? (
-          // 트레이너 정보가 있을 때
-          <>
-            <Form.Group>
-              <Form.Control
-                ref={imageInput}
-                style={{ display: "none" }}
-                type="file"
-                name="image"
-                accept="image/*"
+    <Row>
+      <Col>
+        <Card>
+          <Card.Header>
+            <svg
+              ref={personSvg}
+              style={profileStyle2}
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+            >
+              <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+              <path
+                fillRule="evenodd"
+                d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
               />
-            </Form.Group>
-            <div className="mb-3">
-              <div style={dropZoneStyle}>
-                <img style={profileStyle} src={imageSrc} alt="프로필 이미지" />
-              </div>
-            </div>
-            <div>
-              <p>이름: {trainerInfo.name}</p>
-              <p>소갯글: {trainerInfo.trainer_intro}</p>
-              <p>아이디: {trainerInfo.userName}</p>
-              <p>이메일: {trainerInfo.email}</p>
-              <p>생성일: {trainerInfo.regdate}</p>
-              <p>트레이너 SNS: {trainerInfo.trainer_insta}</p>
-              <p>헬스장이름: {trainerInfo.gym_name}</p>
-              <p>헬스장위치: {trainerInfo.gym_link}</p>
-            </div>
-            <Button onClick={handleChatClick}>대화시작하기</Button>
-          </>
-        ) : (
-          // 트레이너 정보가 없을 때 '트레이너 찾기' 버튼과 플러스 아이콘이 보이게끔
-          <>
-            <div style={{ textAlign: "center", marginBottom: "20px" }}>
-              <Button
-                variant="light"
-                onClick={handleFindTrainer}
-                style={{ fontSize: "24px" }}
-              >
-                <img
-                  src={plusimage}
-                  alt="플러스 아이콘"
-                  style={{ width: "150px", height: "250px" }}
-                />
-                <p>트레이너 찾기</p>
-              </Button>
-            </div>
-            <div>
-              <p>트레이너가 아직 등록되지 않았습니다.</p>
-              <p>등록하고 맞춤형 관리를 받아보세요.</p>
-            </div>
-          </>
-        )}
-        {/* MessageModal에 topic 값을 전달 */}
-        <MemberMessengerModal
-          showModal={showModal}
-          setShowModal={setShowModal}
-          topic={chatRoom.topic} // 선택된 topic 값을 전달
-        />
-      </Container>
-    </>
+            </svg>
+          </Card.Header>
+        </Card>
+      </Col>
+      <Col>
+        <Card>
+          <Card.Body>
+              {trainerInfo && trainerInfo.name ? (
+              // 트레이너 정보가 있을 때
+              <>
+                <Form.Group>
+                  <Form.Control
+                    ref={imageInput}
+                    style={{ display: "none" }}
+                    type="file"
+                    name="image"
+                    accept="image/*"
+                  />
+                </Form.Group>
+                <div className="mb-3">
+                  <div style={dropZoneStyle}>
+                    <img style={profileStyle} src={imageSrc} alt="프로필 이미지" />
+                  </div>
+                </div>
+                <div>
+                  <Form.Group>
+                    <Form.Text>담당 트레이너</Form.Text>
+                    <br/>
+                    <Form.Label>{trainerInfo.name}</Form.Label>
+                  </Form.Group>
+                  <Form.Group>
+                    <Form.Text>이메일</Form.Text>
+                    <br/>
+                    <Form.Label>{trainerInfo.email}</Form.Label>
+                  </Form.Group>
+                  <Form.Group>
+                    <Form.Text>SNS</Form.Text>
+                    <br/>
+                    <Form.Label><a href={trainerInfo.trainer_insta}>인스타그램</a></Form.Label>
+                  </Form.Group>
+                  <Form.Group>
+                    <Form.Text>소갯글</Form.Text>
+                    <br/>
+                    <Form.Label>{trainerInfo.trainer_intro}</Form.Label>
+                  </Form.Group>
+                  <Form.Group>
+                    <Form.Text>헬스장이름</Form.Text>
+                    <br/>
+                    <Form.Label>{trainerInfo.gym_name}</Form.Label>
+                  </Form.Group>
+                  
+                  <Form.Group>
+                    <Form.Text>헬스장위치</Form.Text>
+                    <br/>
+                    <Form.Label>{trainerInfo.gym_link}</Form.Label>
+                  </Form.Group>
+                </div>
+
+
+                <Button onClick={handleChatClick}>대화시작하기</Button>
+              </>
+            ) : (
+              // 트레이너 정보가 없을 때 '트레이너 찾기' 버튼과 플러스 아이콘이 보이게끔
+              <>
+                <div style={{ textAlign: "center", marginBottom: "20px" }}>
+                  <Button
+                    variant="light"
+                    onClick={handleFindTrainer}
+                    style={{ fontSize: "24px" }}
+                  >
+                    <img
+                      src={plusimage}
+                      alt="플러스 아이콘"
+                      style={{ width: "150px", height: "250px" }}
+                    />
+                    <p>트레이너 찾기</p>
+                  </Button>
+                </div>
+                <div>
+                  <p>트레이너가 아직 등록되지 않았습니다.</p>
+                  <p>등록하고 맞춤형 관리를 받아보세요.</p>
+                </div>
+              </>
+            )}
+            {/* MessageModal에 topic 값을 전달 */}
+            <MemberMessengerModal
+              showModal={showModal}
+              setShowModal={setShowModal}
+              topic={chatRoom.topic} // 선택된 topic 값을 전달
+            />
+          </Card.Body>
+        </Card>
+      </Col>
+    </Row>
+
+
+      // <Container
+      //   style={{
+      //     minHeight: "500px",
+      //     display: "flex",
+      //     justifyContent: "center",
+      //     alignItems: "center",
+      //     flexDirection: "column",
+      //   }}
+      // >
+      
+      // </Container>
+ 
   );
 }
 
