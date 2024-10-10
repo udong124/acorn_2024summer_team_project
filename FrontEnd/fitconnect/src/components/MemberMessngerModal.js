@@ -6,7 +6,7 @@ import ChatMessage from './ChatMessage';
 
 const MemberMessengerModal = ({ showModal, setShowModal, topic }) => {
   const [message, setMessage] = useState({
-    send_type: "TRAINER",  // 기본값 설정
+    send_type: "USER",  // 기본값 설정
     content: "",        // 메시지 내용
     topic: topic || ""  // props에서 받은 topic 값
   });
@@ -58,21 +58,33 @@ const MemberMessengerModal = ({ showModal, setShowModal, topic }) => {
     }));
   }, [topic]);
 
-  // 양식 제출이 일어났을 때 실행되는 핸들러
+
+  //메세지 전송을 눌렀을때 스크롤 처리
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+
+ // 양식 제출이 일어났을 때 실행되는 핸들러
   const sendMessageHandle = (e) => {
     e.preventDefault();
     setMessage({ ...message, content: content })
     // 메시지를 전송하기 전에 필드 상태 확인
     console.log("Sending message:", message);
-
+    scrollToBottom();
     // 모든 필드가 채워져 있는지 확인
 
-      // MQTT로 메시지 전송
-      client.publish(topic, JSON.stringify(message), { qos: 0, retain: false });
+    // MQTT로 메시지 전송
+    client.publish(topic, JSON.stringify(message), { qos: 0, retain: false });
 
-      // 서버로 메시지 저장 요청
-      setIsReady(true);
-
+    // 서버로 메시지 저장 요청
+    setIsReady(true);
+    client.end();
+    e.target.content.value = "";
   };
 
   useEffect(()=>{
@@ -90,7 +102,7 @@ const MemberMessengerModal = ({ showModal, setShowModal, topic }) => {
         
           // 메시지 필드 초기화
           setMessage({
-            send_type: "TRAINER",  // send_type 유지
+            send_type: "USER",  // send_type 유지
             content: "",        // 전송 후 content만 초기화
             topic: topic        // topic 유지
           });
@@ -129,6 +141,16 @@ const MemberMessengerModal = ({ showModal, setShowModal, topic }) => {
     setDeleteMode(prevState => !prevState); 
   };
 
+  // 날짜 변환 함수: 'YYYY-MM-DD HH:mm' 형식으로 변환
+  const formatDate = (date) => {
+    const d = new Date(date);
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    const hours = String(d.getHours()).padStart(2, '0');
+    const minutes = String(d.getMinutes()).padStart(2, '0');
+    return `${month}-${day} ${hours}:${minutes}`;
+  };
+
   return (
     <Modal show={showModal} onHide={() => {
       setMessages([]);
@@ -141,13 +163,20 @@ const MemberMessengerModal = ({ showModal, setShowModal, topic }) => {
         <div style={{ height: '400px', overflowY: 'scroll', border: '1px solid #ccc', padding: '10px' }}>
           {messages.map((msg, index) => (
             <div key={msg.message_id}>
-              <ChatMessage message={msg.content} isOwnMessage={msg.send_type === message.send_type} />
+              <ChatMessage message={msg.content} isOwnMessage={msg.send_type === message.send_type} isCenter={msg.send_type === "ADMIN"} times={msg.times ? formatDate(msg.times) : 'No time available'} />
               {/* 삭제 모드일 때만 삭제 버튼을 보여줌 */}
-              {deleteMode && (
+              {deleteMode && msg.send_type === "USER" && (
                 <Button 
                   variant="danger" 
                   onClick={() => deleteMessage(msg.message_id)} 
-                  style={{ fontSize: '12px',  }}>
+                  style={{ 
+                    fontSize: '10px',   // 작은 글자 크기
+                    padding: '2px 8px', // 작고 간결한 패딩
+                    marginLeft: '400px',
+                    marginTop: '5px',
+                    marginBottom : '5px',
+                    display: 'block'    // 버튼을 블록 요소로 설정하여 아래에 표시
+                  }}>
                   X
                 </Button>
               )}
