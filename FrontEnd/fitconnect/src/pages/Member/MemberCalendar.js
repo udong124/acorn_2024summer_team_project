@@ -9,8 +9,21 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 
 const CalendarComponent = () => {
-  const [m_calendar_id, setMCalendarId]  = useState(null)
-  const [events, setEvents] = useState([])
+  // const [m_calendar_id, setMCalendarId]  = useState(null)
+  const [calendarData, setCalendarData] = useState([]);
+  const [formData, setFormData] = useState({
+    m_calendar_id: 0,
+    member_num: 0,
+    regdate: "",
+    memo: "",
+    isExistExercise: false,
+    isExistDiet: false,
+    memberExerciseDto: {},
+    memberDietDto: {}
+  });
+  const [calendarEvents, setCalendarEvents] = useState([]); // 캘린더 보여주는 정보 저장 리스트
+  const [showEvents, setShowEvents] = useState([]); // 풀캔린더 보여주는 event
+  //////
   const [showModal, setShowModal] = useState(false)
   const [newEventTitle, setNewEventTitle] = useState('')
   const [selectedDate, setSelectedDate] = useState('')
@@ -21,57 +34,55 @@ const CalendarComponent = () => {
   const token = localStorage.getItem('token')
   const navigate = useNavigate()
 
-
-const fetchCalendarEvents = () => {
-  axios.get('/membercalendar')
-    .then(res => {
-      const calendarEvents = res.data.map(event => {
-        let eventColor = '#D3D3D3';
-
-        if (event.memo.includes("식단")) {
-          eventColor = '#FFA500';
-        } else if (event.memo.includes("운동")) {
-          eventColor = '#00BFFF';
-        }
-
-        return {
-          id: event.m_calendar_id.toString(),
-          m_calendar_id: event.m_calendar_id,
-          title: event.memo.includes("식단") ? "식단" : event.memo.includes("운동") ? "운동" : event.memo,
-          date: event.regdate,
-          backgroundColor: eventColor,
-          regdate: event.regdate
-        };
-      });
-      setEvents(calendarEvents);
-    })
-    .catch(error => console.log(error));
-};
-
+  //시작 시 - 각 날짜 메모, 운동, 식단 가져오기 - 표시
   useEffect(() => {
-    fetchCalendarEvents();
-  }, [token]);
-  
+    axios.get('/membercalendar')
+      .then(res => {
+        setCalendarData(res.data);
+        
+        res.data.forEach(event => {
+          if(event.memo != "") {
+            const mcalendarEvent = {
+              id: event.m_calendar_id.toString(),
+              title: event.memo,
+              start: event.regdate,
+              member_num: event.member_num,
+              m_calendar_id: event.m_calendar_id,
+              backgroundColor: '#D3D3D3'
+            }
+            setCalendarEvents([...calendarEvents, mcalendarEvent]);
+          }
 
-  useEffect(() => {
-    if (m_calendar_id) {
-      axios.get(`/membercalendar/${m_calendar_id}`)
-        .then(res => {
-          const calendar = res.data;
-          const fetchedEvents = calendar.map(event => ({
-            id: event.m_calendar_id.toString(),
-            title: event.memo,
-            date: event.regdate,
-            regdate: event.regdate,
-          }));
-          setEvents(fetchedEvents);
+          if (event.isExistDiet) {
+            const dietEvent = {
+              id: event.m_calendar_id.toString(),
+              title: "식단",
+              start: event.regdate,
+              member_num: event.member_num,
+              m_calendar_id: event.m_calendar_id,
+              memberDietDto: event.memberDietDto,
+              backgroundColor: '#FFA500'
+            }  
+            setCalendarEvents([...calendarEvents, dietEvent]);
+          }
+
+          if (event.isExistExercise) {
+            const exerciseEvent = {
+              id: event.m_calendar_id.toString(),
+              title: "운동",
+              start: event.regdate,
+              member_num: event.member_num,
+              m_calendar_id: event.m_calendar_id,
+              memberExerciseDto: event.memberExerciseDto,
+              backgroundColor: '#00BFFF'
+            }  
+            setCalendarEvents([...calendarEvents, exerciseEvent]);
+          }
         })
-        .catch(error => {
-          console.error("에러발생", error);
-        });
-    }
-  }, [m_calendar_id])
-
+        setShowEvents(calendarEvents);
+      })
+      .catch(error => console.log(error));
+  }, [token]);
   
   const handleDateClick = (arg) => {
     setSelectedDate(arg.dateStr);
@@ -89,40 +100,19 @@ const fetchCalendarEvents = () => {
     setShowModal(true);
 
     //식단일떄는?
-  if (clickInfo.event.title === '식단') {
-    const m_calendar_id = clickInfo.event.extendedProps.m_calendar_id; 
-    console.log(m_calendar_id)
-
-    axios.get(`/dietjournal/${m_calendar_id}`) 
-      .then(res => {
-        console.log(res.data.list)
-        setSelectedDietDetails(res.data.list);  
-        setShowModal(true);
-      })
-      .catch(err => {
-        console.error(err);
-      });
-  } 
-   //운동일때는?
-  else if(clickInfo.event.title === '운동') {
-    const m_calendar_id = clickInfo.event.extendedProps.m_calendar_id; 
-    console.log(m_calendar_id)
-
-    axios.get(`/exercisejournal/${m_calendar_id}`) 
-      .then(res => {
-        console.log(res.data.exerJournalList); 
-        setSelectedExerciseDetails(res.data.exerJournalList);  
-        
-        setShowModal(true);
-      })
-      .catch(err => {
-        console.error(err);
-      });
-  } else {
-    setShowModal(true);
+    if (clickInfo.event.title === "식단") {
+      setSelectedDietDetails(clickInfo.event.memberDietDto);
+      setShowModal(true);
+    } 
+    //운동일때는?
+    else if(clickInfo.event.title === "운동") {
+      setSelectedExerciseDetails(clickInfo.event.memberExerciseDto);
+      setShowModal(true);
+    }
+    else {
+      setShowModal(true);
+    }
   }
-  }
-
 
   const handleClose = () => {
     setShowModal(false);
@@ -141,12 +131,11 @@ const fetchCalendarEvents = () => {
           .then(res => {
             res.data.m_calendar_id = selectedEvent.id
             if (res.data.m_calendar_id) {
-              const updatedEvents = events.map(event =>
+              const updatedEvents = showEvents.map(event =>
                 event.id === selectedEvent.id ? { ...event, title: newEventTitle } : event
               );
-              setEvents(updatedEvents);
+              setShowEvents(updatedEvents);
               handleClose();
-              fetchCalendarEvents();
             }
           })
           .catch(error => {
@@ -161,9 +150,8 @@ const fetchCalendarEvents = () => {
         axios.post('/membercalendar', newEvent)
           .then((res) => {
             if (res.data.isSuccess) { 
-              setEvents([...events, { ...newEvent, id: uuidv4(), title: newEventTitle, date: selectedDate }]);
+              setShowEvents([...showEvents, { ...newEvent, id: uuidv4(), title: newEventTitle, date: selectedDate }]);
               handleClose();
-              fetchCalendarEvents();
             }
           })
           .catch(error => {
@@ -180,7 +168,6 @@ const fetchCalendarEvents = () => {
         .then((res) => {
           if (res.data.isSuccess) { 
             handleClose();
-            fetchCalendarEvents();  
           }
         })
         .catch(error => {
@@ -210,7 +197,7 @@ const fetchCalendarEvents = () => {
             <FullCalendar
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                 initialView="dayGridMonth"
-                events={events}
+                events={showEvents}
                 locale="ko"
                 headerToolbar={{
                   left: "dayGridMonth,timeGridWeek,timeGridDay,today",
@@ -318,7 +305,7 @@ const fetchCalendarEvents = () => {
     )}
 
 
-          </Form>
+      </Form>
         </Modal.Body>
           <Modal.Footer>
           {!selectedDietDetails && !selectedExerciseDetails && (

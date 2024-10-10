@@ -34,39 +34,49 @@ function MemberDietJournal(){
   const [dinnerData, setDinnerData] = useState([]);
   
   useEffect(()=>{
-    axios.get('/membercalendar')
+    const formattedSelectedDate = selectedDate.toISOString().split("T")[0];
+
+    axios.get(`/dietjournal/date/${formattedSelectedDate}`)
     .then(res=>{
-      console.log("총괄", res)
-      const formattedSelectedDate = selectedDate.toISOString().split("T")[0];
-      console.log("오늘 날짜 (formattedSelectedDate):", formattedSelectedDate);
-      const filteredData = res.data.filter(item => {
-        return item.regdate.split(" ")[0] === formattedSelectedDate && item.memo === "식단";
-      });
-      console.log("필터링된 데이터 (오늘 날짜와 일치하는 항목):", filteredData);
+      mergedData = mergedData.concat(res.data.list || []);
+      setMergedData(mergedData);
+    })
+    .catch(error => {
+      console.error(`Diet Journal API 요청 실패:`, error);
+    });
 
-      const mCalendarIds = filteredData.map(item => item.m_calendar_id);
-      console.log("m_calendar_id 배열:", mCalendarIds);
+    // axios.get('/membercalendar')
+    // .then(res=>{
+    //   console.log("총괄", res)
+    //   console.log("오늘 날짜 (formattedSelectedDate):", formattedSelectedDate);
+    //   const filteredData = res.data.filter(item => {
+    //     return item.regdate.split(" ")[0] === formattedSelectedDate && item.memo === "식단";
+    //   });
+    //   console.log("필터링된 데이터 (오늘 날짜와 일치하는 항목):", filteredData);
 
-      let mergedData = [];
-      let counter = 0; 
-      mCalendarIds.forEach((m_calendar_id, index) => {
-        axios.get(`/dietjournal/${m_calendar_id}`)
-          .then(res=>{
-            mergedData = mergedData.concat(res.data.list || []);
-            counter++;
-            if (counter === mCalendarIds.length) {
-              console.log("모든 요청 완료, 병합된 데이터:", mergedData);
-              setMergedData(mergedData);
-            }
-          })
-          .catch(error => {
-            console.error(`Diet Journal API 요청 실패 (m_calendar_id: ${m_calendar_id}):`, error);
-          });
-      })
+    //   const mCalendarIds = filteredData.map(item => item.m_calendar_id);
+    //   console.log("m_calendar_id 배열:", mCalendarIds);
+
+    //   let mergedData = [];
+    //   let counter = 0; 
+    //   mCalendarIds.forEach((m_calendar_id, index) => {
+    //     axios.get(`/dietjournal/${m_calendar_id}`)
+    //       .then(res=>{
+    //         mergedData = mergedData.concat(res.data.list || []);
+    //         counter++;
+    //         if (counter === mCalendarIds.length) {
+    //           console.log("모든 요청 완료, 병합된 데이터:", mergedData);
+    //           setMergedData(mergedData);
+    //         }
+    //       })
+    //       .catch(error => {
+    //         console.error(`Diet Journal API 요청 실패 (m_calendar_id: ${m_calendar_id}):`, error);
+    //       });
+    //   })
       
-      console.log(`캘린더아이디 확인 : ${m_calendar_id}`)
-      console.log(`멤버아이디 확인 : ${member_num}`)
-    }).catch(error=> console.log(error))
+    //   console.log(`캘린더아이디 확인 : ${m_calendar_id}`)
+    //   console.log(`멤버아이디 확인 : ${member_num}`)
+    // }).catch(error=> console.log(error))
   }, [selectedDate]);
 
   const getDietByType = (type) => {

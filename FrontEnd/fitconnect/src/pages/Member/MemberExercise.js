@@ -25,33 +25,15 @@ function MemberExercise() {
 
     useEffect(() => {
         const formattedSelectedDate = selectedDate.toISOString().split("T")[0];
-        axios.get('/membercalendar')
+
+        axios.get(`/exercisejournal/date/${formattedSelectedDate}`)
             .then(res => {
-                const filteredData = res.data.filter(item => {
-                    return item.regdate.split(" ")[0] === formattedSelectedDate && item.memo === "운동";
-                });
-                const mCalendarIds = filteredData.map(item => item.m_calendar_id);
-                let mergedData = [];
-                let completedRequests = 0;
-                mCalendarIds.forEach((m_calendar_id) => {
-                    axios.get(`/exercisejournal/${m_calendar_id}`)
-                        .then(res => {
-                            if (res.data.exerJournalList && res.data.exerJournalList.length > 0) {
-                                mergedData = mergedData.concat(res.data.exerJournalList);
-                            }
-                        })
-                        .catch(error => {
-                            console.error(`exercise Journal API 요청 실패 (m_calendar_id: ${m_calendar_id}):`, error);
-                        })
-                        .finally(() => {
-                            completedRequests++;
-                            if (completedRequests === mCalendarIds.length) {
-                                setFormData(mergedData);
-                            }
-                        });
-                });
+                console.log(res.data) //뭐가 올까요
+                setFormData(res.data)
             })
-            .catch(error => console.log(error));
+            .catch(error => {
+                console.error(`exercise Journal 요청 실패`, error);
+            })
     }, [selectedDate]);
 
     const handleDelete = (exercise_id) => {
