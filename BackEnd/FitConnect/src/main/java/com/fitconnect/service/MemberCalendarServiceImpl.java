@@ -1,5 +1,7 @@
 package com.fitconnect.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,8 +12,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.fitconnect.auth.PrincipalDetails;
+import com.fitconnect.dto.DietJournalDto;
+import com.fitconnect.dto.ExerciseJournalDto;
 import com.fitconnect.dto.MemberCalendarDto;
 import com.fitconnect.exception.NotCalendarIdOneException;
+import com.fitconnect.repository.DietJournalDao;
+import com.fitconnect.repository.ExerciseJournalDao;
 import com.fitconnect.repository.MemberCalendarDao;
 
 
@@ -19,15 +25,49 @@ import com.fitconnect.repository.MemberCalendarDao;
 public class MemberCalendarServiceImpl implements MemberCalendarService{
 
 	@Autowired private MemberCalendarDao dao;
+	@Autowired private DietJournalDao dietjournalDao;
+	@Autowired private ExerciseJournalDao exercisejournalDao;
 	
 	@Override
 		//로그인된 사용자 토큰을 이용해서 id 값을 얻어와 user_num 이라는 이름으로 DB 에 담아서 dao 를 실행한다.
 
-	public List<MemberCalendarDto> getAll() {
+	public List<Map<String, Object>> getAll() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		int user_num = ((PrincipalDetails) authentication.getPrincipal()).getDto().getId();
 		
-		return dao.getList(user_num);
+		List<MemberCalendarDto> list = dao.getList(user_num);
+		List<Map<String, Object>> resultList = new ArrayList<Map<String,Object>>();
+		
+		list.forEach(MemberCalendarDto -> {
+			int m_calendar_id = MemberCalendarDto.getM_calendar_id();
+			
+			Map<String, Object> resultMap = new HashMap<>();
+			
+			resultMap.put("m_calendar_id", MemberCalendarDto.getM_calendar_id());
+			resultMap.put("member_num", MemberCalendarDto.getM_calendar_id());
+			resultMap.put("regdate", MemberCalendarDto.getRegdate());
+			resultMap.put("memo", MemberCalendarDto.getMemo());
+			
+			if (!exercisejournalDao.getExerJournalList(m_calendar_id).isEmpty()) {
+
+				resultMap.put("memberExerciseDto", exercisejournalDao.getExerJournalList(m_calendar_id));
+//				System.out.println("Map:" + resultMap);
+				resultList.add(resultMap);
+				
+			}
+			DietJournalDto dietjournalDto = new DietJournalDto();
+			dietjournalDto.setM_calendar_id(m_calendar_id);
+			dietjournalDto.setMember_num(user_num);
+			
+			if (!dietjournalDao.getList(dietjournalDto).isEmpty()) {
+				resultMap.put("memberDietDto", dietjournalDao.getList(dietjournalDto));
+//				System.out.println("다이어트:" + resultMap);
+				resultList.add(resultMap);
+			}
+			
+		});
+		System.out.println(resultList);
+		return resultList;
 	}
 
 	@Override

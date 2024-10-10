@@ -6,7 +6,7 @@ import java.util.Map;
 import com.fitconnect.dto.MemberCalendarDto;
 
 public interface MemberCalendarService {
-	public List<MemberCalendarDto> getAll();
+	public List<Map<String, Object>> getAll();
 	public Map<String, Object> getOne(MemberCalendarDto dto);
 	public Map<String, Object> getOneByDate(MemberCalendarDto dto);
 	

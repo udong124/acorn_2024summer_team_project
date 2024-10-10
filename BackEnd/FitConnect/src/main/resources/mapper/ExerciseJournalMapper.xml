@@ -10,7 +10,7 @@
 		SELECT ej.e_journal_id, ej.m_calendar_id, ej.exercise_id, ej.exercise_order,
 			 ej.exercise_set, ej.exercise_count, ej.exercise_weight,  el.exercise_name, el.exercise_image
 		FROM exercisejournal ej 
-		JOIN exerciselist el ON ej.exercise_id=ej.exercise_id
+		JOIN exerciselist el ON ej.exercise_id=el.exercise_id
 		WHERE ej.m_calendar_id=#{m_calendar_id}
 		
 				

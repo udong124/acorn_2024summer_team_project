@@ -178,6 +178,7 @@ public class ExerciseController {
 		//경로변수로 가져온 regdate 로 MemberCalendar Service 에서 m_calendar_id 값을 읽어온다.
 		MemberCalendarDto membercalendarDto = new MemberCalendarDto();
 		membercalendarDto.setRegdate(regdate);
+		
 		Map<String, Object> getOneByDate = membercalendarService.getOneByDate(membercalendarDto);
 		
 		if((boolean) getOneByDate.get("isSuccess")) { // m_calendar_id 가 1개 있을 때, true를 반환
@@ -259,6 +260,9 @@ public class ExerciseController {
 		membercalendarService.insertByDate(membercalendarDto);
 		//경로변수로 가져온 regdate 를 통해서 m_calendar_id 를 읽어온다.
 		Map<String, Object> getOneByDate = membercalendarService.getOneByDate(membercalendarDto);
+		
+		System.out.println(membercalendarDto);
+		System.out.println(getOneByDate);
 		
 		if((boolean) getOneByDate.get("isSuccess")) {
 			int m_calendar_id = ((MemberCalendarDto) getOneByDate.get("result")).getM_calendar_id();

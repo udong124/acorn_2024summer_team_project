@@ -42,9 +42,11 @@ public class MemberCalendarController {
 	 * 		@return
 	**********************************************************************/
 	@GetMapping("/membercalendar") //
-	public List<MemberCalendarDto> getList(){
+	public List<Map<String, Object>> getList(){
 		
-		List<MemberCalendarDto> list = service.getAll();
+		List<Map<String, Object>> list = service.getAll();
+		
+		
 		return list;
 	}
 	

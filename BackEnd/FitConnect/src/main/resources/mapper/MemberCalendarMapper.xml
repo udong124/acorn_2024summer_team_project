@@ -21,35 +21,6 @@
 		WHERE regdate = TO_DATE(#{ regdate}, 'YYYY-MM-DD') AND member_num = #{ member_num}
 	</select>
 	
-	<select id="getExistDiet">
-		SELECT 	
-				a.m_calendar_id,
-				a.regdate,
-				a.member_num,
-				b.d_journal_id,
-				b.diet_id,
-				b.diet_type,
-				b.foodCount
-		FROM 	
-				membercalendar a join dietjournal b
-		WHERE 	
-				a.regdate = #{ regdate} AND a.member_num = #{ member_num}
-	</select>
-	
-	<select id="getExistExercise">
-		SELECT 	
-				a.m_calendar_id,
-				a.regdate,
-				a.member_num,
-				b.e_journal_id,
-				b.exercise_id,
-				b.exercise_order,
-				b.exercise_set,
-				b.exercise_count,
-				b.exercise_weight
-		FROM 	
-	</select>
-	
 	<insert id="insert" parameterType="MemberCalendarDto">
 		INSERT INTO membercalendar (m_calendar_id, member_num, regdate, memo)
 		VALUES (m_calendar_id_seq.NEXTVAL, #{ member_num}, TO_DATE(#{regdate}, 'YYYY-MM-DD'), #{ memo})
