@@ -31,10 +31,6 @@ function MemberExerciseAdd() {
 
   const token = localStorage.getItem('token')
 
-  // const [m_calendar_id, setMCalendarId] = useState(null);
-  // const [m_calendar_id_max, setMCalendarIdMax] = useState(null);
-
-  const [member_num1, setMemberNum] = useState(null);
 
   useEffect(() => {
     const category = exerciseCategory === "all" ? `` : `/${exerciseCategory}`;
@@ -103,13 +99,13 @@ function MemberExerciseAdd() {
   }
 
   const handleSubmit = () => {
-    const requestData = selectExercise.map(exercise => {
+    const requestData = selectExercise.map((exercise, index) => {
       return {
         exercise_id: exercise.exercise_id,
         exercise_set: exercise.exercise_set,
         exercise_count: exercise.exercise_count,
         exercise_weight: exercise.exercise_weight,
-        exercise_order: 1
+        exercise_order: index +1
       };
     });
 
@@ -178,7 +174,7 @@ function MemberExerciseAdd() {
                   <Dropdown.Item onClick={() => setExerciseCategory("all")}>전체</Dropdown.Item>
                   <Dropdown.Item onClick={() => setExerciseCategory("back")}>등</Dropdown.Item>
                   <Dropdown.Item onClick={() => setExerciseCategory("chest")}>가슴</Dropdown.Item>
-                  <Dropdown.Item onClick={() => setExerciseCategory("shoulger")}>어깨</Dropdown.Item>
+                  <Dropdown.Item onClick={() => setExerciseCategory("shoulder")}>어깨</Dropdown.Item>
                   <Dropdown.Item onClick={() => setExerciseCategory("lower")}>하체</Dropdown.Item>
                   <Dropdown.Item onClick={() => setExerciseCategory("core")}>코어</Dropdown.Item>
                   <Dropdown.Item onClick={() => setExerciseCategory("arm")}>팔</Dropdown.Item>
