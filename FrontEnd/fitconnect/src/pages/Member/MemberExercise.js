@@ -25,40 +25,31 @@ function MemberExercise() {
     const [exercisejournal, setExerJournal] = useState([]);
 
     const token = localStorage.getItem('token');
-
+    //selectedDate에서 년월일 추출하는 식
+    const date = new Date(selectedDate);
+    const year = date.getFullYear();
+    const month = ("0" + (date.getMonth() + 1)).slice(-2); // 월을 두 자리 숫자로 만들기
+    const day = ("0" + date.getDate()).slice(-2);
+    const formattedDate = `${year}-${month}-${day}`;
     useEffect(() => {
-        //selectedDate에서 년월일 추출하는 식
-        const date = new Date(selectedDate);
-        const year = date.getFullYear();
-        const month = ("0" + (date.getMonth() + 1)).slice(-2); // 월을 두 자리 숫자로 만들기
-        const day = ("0" + date.getDate()).slice(-2);
-        const formattedDate = `${year}-${month}-${day}`;
-
         axios.get(`/exercisejournal/date/${formattedDate}`)
-            .then(res => {
-                setExerJournal(res.data.exerJournalList)
-            })
-            .catch(error => {
-                console.error(`exercise Journal 요청 실패`, error);
-            })
+        .then(res => {
+            setExerJournal(res.data.exerJournalList)
+        })
+        .catch(error => {
+            console.error(`exercise Journal 요청 실패`, error);
+        })
     }, [selectedDate]);
 
-    const handleDelete = (exercise_id) => {
-        axios.delete(`/exercisejournal/${exercise_id}/${e_journal_id}`)
-            .then((res) => {
-  
-            })
-            .catch(error => { console.log(error) });
-    };
 
-    const handleDeleteAll = (m_calendar_id) => {
-        axios.delete(`/exercisejournal/${m_calendar_id}`)
+    const handleDeleteAll = () => {
+        axios.delete(`/exercisejournal/${formattedDate}`)
             .then(res => { })
             .catch(error => { console.log(error); alert("삭제실패") });
     };
 
     const handleReserve = () => {
-        navigate(`/member/exerciseadd/${m_calendar_id}/${e_journal_id}?date=${selectedDate.toISOString().split('T')[0]}`);
+        navigate(`/member/exerciseadd?date=${formattedDate}`);
     };
 
     const handleDateChange = (date) => {
@@ -79,14 +70,7 @@ function MemberExercise() {
                         <h3>{selectedDate.toLocaleDateString('ko-KR')}의 운동</h3>
                      
                     </Card.Header>
-                       <div style={{ marginBottom: "20px", display:"none" }}>
-                        <DatePicker
-                            selected={selectedDate}
-                            onChange={handleDateChange}
-                            dateFormat="yyyy년 MM월 dd일"
-                            placeholderText="날짜를 선택하세요"
-                        />
-                        </div>
+
                 </Card>
             </Col>
 
@@ -94,8 +78,8 @@ function MemberExercise() {
                 <Card>
                     <Card.Header as="h6" className="border-bottom p-3 mb-0" style={styleNone}>
                         <div className="d-flex justify-content-end mb-3">
-                            <Button onClick={handleReserve} variant="secondary" className="me-2">reserve</Button>
-                            <Button onClick={handleDeleteAll} variant="secondary">Delete</Button>
+                            <Button onClick={handleReserve} variant="secondary" className="me-2">등록하기</Button>
+                            <Button onClick={handleDeleteAll} variant="secondary">전체 삭제</Button>
                         </div>
                     </Card.Header>
 
@@ -111,7 +95,7 @@ function MemberExercise() {
                                 </tr>
                             </thead>
                             <tbody className="text-center">
-                                {(exercisejournal !== undefined) && exercisejournal.map(item => (
+                                {exercisejournal.map(item => (
                                         <tr key={item.exercise_id}>
                                             <td>{item.exercise_name}</td>
                                             <td>{item.exercise_weight}</td>

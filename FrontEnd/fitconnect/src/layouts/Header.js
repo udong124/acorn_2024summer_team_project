@@ -29,7 +29,7 @@ const Header = () => {
   };
 
    // 로그인/회원가입 페이지 여부 확인
-  const isAuthPage = location.pathname.startsWith("/login") || location.pathname.startsWith("/signup") || location.pathname.startsWith("/") ;
+  const isAuthPage = location.pathname.startsWith("/login") || location.pathname.startsWith("/signup")  ;
 
   //로그인 중 표시를 위하여 로그인 된 사용자이름을 가져오기
   useEffect(() => {

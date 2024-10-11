@@ -99,7 +99,7 @@ const MyPage = () => {
       <Col>
          <Card>
           <Card.Header as="h6" className="border-bottom p-3 mb-0">
-            <h1>Mypage</h1>
+            <p style={{fontSize: "2em", fontWeight: "bold"}}>Mypage</p>
           </Card.Header>
           <Card.Body className="">
             

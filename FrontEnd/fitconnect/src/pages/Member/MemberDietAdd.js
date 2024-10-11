@@ -6,6 +6,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Checkbox, Radio } from "antd";
 import DietListAddModal from "../../components/DietListAddModal";
+//import DietListAddModal from "../../components/DietListAddModal";
 
 function MemberDietJournalAdd() {
     // const [m_calendar_id, setMCalendarId] = useState(null);
@@ -20,12 +21,17 @@ function MemberDietJournalAdd() {
 
     const navigate = useNavigate();
     const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
+    const { regdate }= location.state || {};
+
+    // 오늘 날짜
     const today = new Date();
     const localDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-    const initialDateStr = queryParams.get("date") ? queryParams.get("date") : localDate;
+
+    // location 넘어올 경우 날짜
+    const initialDateStr = regdate ? regdate : localDate;
     const initialDate = new Date(initialDateStr);
     const [selectedDate, setSelectedDate] = useState(initialDate);
+
     const token = localStorage.getItem('token');
     //음식 추가 모달 창을 띄우기 위해
     const [showModal, setShowModal] = useState(false);
@@ -33,11 +39,11 @@ function MemberDietJournalAdd() {
    
 
     useEffect(() => {
-        if (!queryParams.get("date")) {
+        if (!regdate) {
             const formattedDate = selectedDate.toISOString().split("T")[0];
             navigate(`?date=${formattedDate}`, { replace: true });
         }
-    }, [selectedDate, navigate, queryParams]);
+    }, [selectedDate, navigate, regdate]);
 
     useEffect(() => {
 
@@ -49,7 +55,7 @@ function MemberDietJournalAdd() {
                     setDietList(res.data.list);
                 } else {
                     setDietList([]);
-                    console.error('API에서 값을 받아오지 못했습니다', res.data);
+                    
                 }
             })
             .catch(error => console.log(error));
@@ -185,7 +191,7 @@ function MemberDietJournalAdd() {
                             
 
                             <Button className="mb-3" onClick={handleClickAdd}>식단 추가</Button>
-                            <Button className="mb-3"  onClick={()=>{setShowModal(true)}}>식단 추가</Button>
+                            <Button className="mb-3"  onClick={()=>{setShowModal(true)}}>음식 추가</Button>
                             <Table bordered>
                                 <thead>
                                     <tr>
