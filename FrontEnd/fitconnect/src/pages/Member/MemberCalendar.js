@@ -38,23 +38,27 @@ const CalendarComponent = () => {
   useEffect(() => {
     axios.get('/membercalendar')
       .then(res => {
+        console.log("응답: ")
+        console.log(res.data)
         setCalendarData(res.data);
       })
       .catch(error => console.log(error));
   }, [token]);
   
   useEffect(()=>{
+    console.log(calendarData)
     calendarData.forEach(event => {
       if(event.memo != null) {
         const mcalendarEvent = {
           id: event.m_calendar_id.toString(),
           title: event.memo,
           start: event.regdate,
+          end: event.regdate,
           member_num: event.member_num,
           m_calendar_id: event.m_calendar_id,
           backgroundColor: '#D3D3D3'
         }
-        setCalendarEvents([...calendarEvents, mcalendarEvent]);
+        setCalendarEvents((prev) => [...prev, mcalendarEvent]);
       }
 
       if (event.isExistDiet) {
@@ -62,12 +66,13 @@ const CalendarComponent = () => {
           id: event.m_calendar_id.toString(),
           title: "식단",
           start: event.regdate,
+          end: event.regdate,
           member_num: event.member_num,
           m_calendar_id: event.m_calendar_id,
           memberDietDto: event.memberDietDto,
           backgroundColor: '#FFA500'
         }  
-        setCalendarEvents([...calendarEvents, dietEvent]);
+        setCalendarEvents((prev) => [...prev, dietEvent]);
       }
 
       if (event.isExistExercise) {
@@ -75,17 +80,19 @@ const CalendarComponent = () => {
           id: event.m_calendar_id.toString(),
           title: "운동",
           start: event.regdate,
+          end: event.regdate,
           member_num: event.member_num,
           m_calendar_id: event.m_calendar_id,
           memberExerciseDto: event.memberExerciseDto,
           backgroundColor: '#00BFFF'
         }  
-        setCalendarEvents([...calendarEvents, exerciseEvent]);
+        setCalendarEvents((prev) => [...prev, exerciseEvent]);
       }
     })
   }, [calendarData])
 
   useEffect(()=>{
+    console.log(calendarEvents);
     setShowEvents(calendarEvents);
   }, [calendarEvents])
 
@@ -97,22 +104,19 @@ const CalendarComponent = () => {
   };
 
   const handleEventClick = (clickInfo) => {
-    const id = clickInfo.event.id;
-    const eventDate = clickInfo.event.startStr.split('T')[0];
-    setSelectedDate(clickInfo.event.startStr);
-    setNewEventTitle(clickInfo.event.title);
-    setSelectedEvent(clickInfo.event);
-    setShowModal(true);
-
-    //식단일떄는?
     if (clickInfo.event.title === "식단") {
-      setSelectedDietDetails(clickInfo.event.memberDietDto);
-      setShowModal(true);
+      navigate(`/member/dietjournal`, {
+        state: {
+          regdate: clickInfo.event.startStr
+        }
+      })
     } 
-    //운동일때는?
     else if(clickInfo.event.title === "운동") {
-      setSelectedExerciseDetails(clickInfo.event.memberExerciseDto);
-      setShowModal(true);
+      navigate(`/member/exercise`, {
+        state: {
+          regdate: clickInfo.event.startStr
+        }
+      })
     }
     else {
       setShowModal(true);
