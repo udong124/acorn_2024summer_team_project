@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { Button, Card, Col, Modal, Row, Table } from 'react-bootstrap';
-import { Form, useNavigate } from 'react-router-dom';
+import { Button, Card, Col, Form, Modal, Row, Table } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 function DietListAddModal({ showModal, setShowModal }) {
 
@@ -39,7 +39,7 @@ function DietListAddModal({ showModal, setShowModal }) {
                 console.log(res.data);
                 if (res.data.isSuccess) {
                     alert("식단이 등록되었습니다");
-                    navigate(`/member/dietjournal`);
+                    navigate(`/member/dietAdd`);
                 }
             })
             .catch(error => {
@@ -67,7 +67,6 @@ function DietListAddModal({ showModal, setShowModal }) {
                             <th>탄수화물 (g)</th>
                             <th>단백질 (g)</th>
                             <th>지방 (g)</th>
-                            <th>추가</th>
                         </tr>
                     </thead>
                     <tbody>

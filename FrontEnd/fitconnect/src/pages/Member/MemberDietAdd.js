@@ -6,6 +6,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Checkbox, Radio } from "antd";
 import DietListAddModal from "../../components/DietListAddModal";
+//import DietListAddModal from "../../components/DietListAddModal";
 
 function MemberDietJournalAdd() {
     // const [m_calendar_id, setMCalendarId] = useState(null);
@@ -49,7 +50,7 @@ function MemberDietJournalAdd() {
                     setDietList(res.data.list);
                 } else {
                     setDietList([]);
-                    console.error('API에서 값을 받아오지 못했습니다', res.data);
+                    
                 }
             })
             .catch(error => console.log(error));
@@ -185,7 +186,7 @@ function MemberDietJournalAdd() {
                             
 
                             <Button className="mb-3" onClick={handleClickAdd}>식단 추가</Button>
-                            <Button className="mb-3"  onClick={()=>{setShowModal(true)}}>식단 추가</Button>
+                            <Button className="mb-3"  onClick={()=>{setShowModal(true)}}>음식 추가</Button>
                             <Table bordered>
                                 <thead>
                                     <tr>
