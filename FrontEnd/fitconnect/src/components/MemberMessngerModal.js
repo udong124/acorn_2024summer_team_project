@@ -19,6 +19,7 @@ const MemberMessengerModal = ({ showModal, setShowModal, topic }) => {
   const client = mqtt.connect('ws://52.78.38.12:9002'); // mqtt 연결 설정 코드
 
   const [isReady, setIsReady] = useState(false);
+  const [trainerName, setTrainerName] = useState();
 
   // 메시지 목록을 새로고침하는 함수
   const refresh = () => {
@@ -34,10 +35,20 @@ const MemberMessengerModal = ({ showModal, setShowModal, topic }) => {
     }
   };
 
+
+  //트레이너 이름 표시해주는 함수
+  const getTrainerName = () =>{
+    axios.get(`/member/trainer`)
+    .then(res =>
+      setTrainerName(res.data.name)
+    )
+    .catch(err =>console.log(err))
+  }
+
   useEffect(() => {
     if (topic) {
       client.subscribe(topic); 
-
+      getTrainerName()
       client.on('message', (topic, message) => {
         const decodedMessage = JSON.parse(decoder.decode(new Uint8Array(message)));
         setMessages(prevMessages => [...prevMessages, decodedMessage]); // 새로운 메시지를 추가
@@ -51,7 +62,7 @@ const MemberMessengerModal = ({ showModal, setShowModal, topic }) => {
 
   // `topic`이 변경될 때마다 message.topic을 업데이트
   useEffect(() => {
-    refresh();
+    refresh()
     setMessage(prevMessage => ({
       ...prevMessage,
       topic: topic // topic을 업데이트
@@ -99,6 +110,7 @@ const MemberMessengerModal = ({ showModal, setShowModal, topic }) => {
           console.log("Message sent successfully:", res.data);
           refresh(); // 메시지 전송 후 새로고침
           setIsReady(false);
+          
         
           // 메시지 필드 초기화
           setMessage({
@@ -151,13 +163,15 @@ const MemberMessengerModal = ({ showModal, setShowModal, topic }) => {
     return `${month}-${day} ${hours}:${minutes}`;
   };
 
+  
+
   return (
     <Modal show={showModal} onHide={() => {
       setMessages([]);
       setShowModal(false);
     }}>
       <Modal.Header closeButton>
-        <Modal.Title>{topic}</Modal.Title>
+        <Modal.Title>{trainerName}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <div style={{ height: '400px', overflowY: 'scroll', border: '1px solid #ccc', padding: '10px' }}>
