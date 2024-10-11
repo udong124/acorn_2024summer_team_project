@@ -40,25 +40,26 @@ public class MemberCalendarServiceImpl implements MemberCalendarService{
 		
 		list.forEach(MemberCalendarDto -> {
 			int m_calendar_id = MemberCalendarDto.getM_calendar_id();
-
+			
+			
 			Map<String, Object> resultMap = new HashMap<>();
 			// resultMap에 등록된 캘린더를 반복문을 실행하여 차례대로 담아준다.
 			resultMap.put("m_calendar_id", MemberCalendarDto.getM_calendar_id());
 			resultMap.put("member_num", MemberCalendarDto.getMember_num());
 			resultMap.put("regdate", MemberCalendarDto.getRegdate());
 			resultMap.put("memo", MemberCalendarDto.getMemo());
-			resultList.add(resultMap);
+			
 			
 			if (!exercisejournalDao.getExerJournalList(m_calendar_id).isEmpty()) {
 				// m_calendar_id 에 운동일지가 담겨져 있다면
 				resultMap.put("memberExerciseDto", exercisejournalDao.getExerJournalList(m_calendar_id));
 				resultMap.put("isExistExercise", true);
-				resultList.add(resultMap);
 				
 			}else {
 				//일지가 없다면
 				resultMap.put("isExistExercise", false);
 			}
+			
 			// 식단일지의 dao.getList가 dietjournalDto를 input으로 받기 때문에 따로 Dto를 만들어주고
 			DietJournalDto dietjournalDto = new DietJournalDto();
 			// m_calendar_id에 해당한 식단일지 정보를 받아오기 위해 초기 값을 넣어준다.
@@ -69,14 +70,15 @@ public class MemberCalendarServiceImpl implements MemberCalendarService{
 				// 식단일지가 있다면
 				resultMap.put("memberDietDto", dietjournalDao.getList(dietjournalDto));
 				resultMap.put("isExistDiet", true);
-				resultList.add(resultMap);
+				
 			}else {
 				// 식단일지가 없다면
 				resultMap.put("isExistDiet", false);
 			}
 			
-			
+			resultList.add(resultMap);
 		});
+		System.out.println(resultList);
 		return resultList;
 	}
 
@@ -147,9 +149,11 @@ public class MemberCalendarServiceImpl implements MemberCalendarService{
 	}
 	
 	@Override
-	public boolean delete(int m_calendar_id) {
+	public boolean delete(String regdate) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		int user_num = ((PrincipalDetails) authentication.getPrincipal()).getDto().getId();
+		
+		int m_calendar_id = dao.getMcalendarId(regdate);
 		
 		boolean isSuccess = dao.delete(user_num, m_calendar_id);
 		
