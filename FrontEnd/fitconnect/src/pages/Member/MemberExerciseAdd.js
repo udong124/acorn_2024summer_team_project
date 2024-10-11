@@ -11,15 +11,12 @@ function MemberExerciseAdd() {
 
   const navigate = useNavigate()
   const location = useLocation()
-  const { regdate }= location.state || {};
+  const queryParams = new URLSearchParams(location.search)
     
-  // 오늘 날짜
   const today = new Date()
   const localDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
-
-  // location 넘어올 경우 날짜
-  const initialDateStr = regdate ? regdate : localDate;
-  const initialDate = new Date(initialDateStr);
+  const initialDateStr = queryParams.get("date") ? queryParams.get("date") : localDate
+  const initialDate = new Date(initialDateStr)
   const [selectedDate, setSelectedDate] = useState(initialDate);
 
   const [exerciseCategory, setExerciseCategory] = useState("all");
@@ -295,3 +292,4 @@ function MemberExerciseAdd() {
 }
 
 export default MemberExerciseAdd;
+

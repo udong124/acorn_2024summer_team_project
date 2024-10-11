@@ -7,9 +7,6 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 function MemberDietJournal(){
-  const [member_num, setMemberNum] = useState(null)
-  const [m_calendar_id, setMCalendarId] = useState(null)
-  const [d_journal_id, setDJournalId] = useState(null)
 
   const [formData,setFormData] = useState([])
   const [totalCarbs, setTotalCarbs] = useState(0)
@@ -35,63 +32,32 @@ function MemberDietJournal(){
   const [breakfastData, setBreakfastData] = useState([]);
   const [lunchData, setLunchData] = useState([]);
   const [dinnerData, setDinnerData] = useState([]);
-  
+
+  //selectedDate에서 년월일 추출하는 식
+  const date = new Date(selectedDate);
+  const year = date.getFullYear();
+  const month = ("0" + (date.getMonth() + 1)).slice(-2); // 월을 두 자리 숫자로 만들기
+  const day = ("0" + date.getDate()).slice(-2);
+  const formattedDate = `${year}-${month}-${day}`;
+
   useEffect(()=>{
-    //selectedDate에서 년월일 추출하는 식
-    const date = new Date(selectedDate);
-    const year = date.getFullYear();
-    const month = ("0" + (date.getMonth() + 1)).slice(-2); // 월을 두 자리 숫자로 만들기
-    const day = ("0" + date.getDate()).slice(-2);
-    const formattedDate = `${year}-${month}-${day}`;
+
 
     console.log("날짜: " + formattedDate)
 
     axios.get(`/dietjournal/date/${formattedDate}`)
     .then(res=>{
-      mergedData = mergedData.concat(res.data.list || []);
-      setMergedData(mergedData);
+      setMergedData(res.data.list)
     })
     .catch(error => {
       console.error(`Diet Journal API 요청 실패:`, error);
     });
 
-    // axios.get('/membercalendar')
-    // .then(res=>{
-    //   console.log("총괄", res)
-    //   console.log("오늘 날짜 (formattedSelectedDate):", formattedSelectedDate);
-    //   const filteredData = res.data.filter(item => {
-    //     return item.regdate.split(" ")[0] === formattedSelectedDate && item.memo === "식단";
-    //   });
-    //   console.log("필터링된 데이터 (오늘 날짜와 일치하는 항목):", filteredData);
+  }, []);
 
-    //   const mCalendarIds = filteredData.map(item => item.m_calendar_id);
-    //   console.log("m_calendar_id 배열:", mCalendarIds);
-
-    //   let mergedData = [];
-    //   let counter = 0; 
-    //   mCalendarIds.forEach((m_calendar_id, index) => {
-    //     axios.get(`/dietjournal/${m_calendar_id}`)
-    //       .then(res=>{
-    //         mergedData = mergedData.concat(res.data.list || []);
-    //         counter++;
-    //         if (counter === mCalendarIds.length) {
-    //           console.log("모든 요청 완료, 병합된 데이터:", mergedData);
-    //           setMergedData(mergedData);
-    //         }
-    //       })
-    //       .catch(error => {
-    //         console.error(`Diet Journal API 요청 실패 (m_calendar_id: ${m_calendar_id}):`, error);
-    //       });
-    //   })
-      
-    //   console.log(`캘린더아이디 확인 : ${m_calendar_id}`)
-    //   console.log(`멤버아이디 확인 : ${member_num}`)
-    // }).catch(error=> console.log(error))
-  }, [selectedDate]);
-
-  const getDietByType = (type) => {
-    return formData.filter(data => data.diet_type === type)
-  }
+  // const getDietByType = (type) => {
+  //   return formData.filter(data => data.diet_type === type)
+  // }
   
   useEffect(() => {
     if (mergedData.length > 0) {
@@ -120,9 +86,6 @@ function MemberDietJournal(){
       setLunchData(lunchItems);
       setDinnerData(dinnerItems);
 
-      console.log("아침 항목의 개수:", morningItems.length);
-      console.log("점심 항목의 개수:", lunchItems.length);
-      console.log("저녁 항목의 개수:", dinnerItems.length);
     }
   }, [mergedData]);
 
@@ -134,13 +97,12 @@ function MemberDietJournal(){
   }
 
   const handleAllDelete=()=>{
-    axios.delete(`/dietjournal/all/${m_calendar_id}`)
+    
+    axios.delete(`/dietjournal/all/${formattedDate}`)
     .then(res=>{
       if(res.data.isSuccess){
         alert("삭제 완료되었습니다.")
         navigate('/member/calendar')
-      }else{
-        alert("식단 삭제 실패")
       }
     })
     .catch(error=>{
@@ -150,9 +112,7 @@ function MemberDietJournal(){
   }  
 
   const handleReserve = () =>{
-    console.log(selectedDate)
     const formattedDate2 = `${selectedDate.getFullYear()}-${String(selectedDate.getMonth() + 1).padStart(2, '0')}-${String(selectedDate.getDate()).padStart(2, '0')}`;
-    console.log(formattedDate2);
     navigate(`/member/dietadd/?date=${formattedDate2}`)
   }
   
@@ -161,7 +121,6 @@ function MemberDietJournal(){
   const graphFat = (totalFat/100) * 100 // 한국인 평균 지방 섭취량 53.9g 
   const graphKcal = (totalKcal / 4000) * 100 // 한국인 성인 남성 평균 2500kcal~3600kcal 섭취
 
-  console.log(location)
   // 메인페이지에서 아침,점심,저녁 카드가 아래로 쌓이게 할 설정
   const width = location.pathname === "/member" ? 12 : 4
   //메인페이지에서 reserve / Delete 버튼을 보이지않게 하기 위한 설정
@@ -173,15 +132,7 @@ function MemberDietJournal(){
         <Col>
           <Card>
             <Card.Header as="h6" className="border-bottom p-3 mb-0">
-              <p style={{fontSize: "1.5em", fontWeight: "bold"}}>{selectedDate.toLocaleDateString('ko-KR')}의 식단</p>
-              <div style={{ marginBottom: "20px", display:"none" }}>
-                      <DatePicker
-                      selected={selectedDate}
-                      onChange={handleDateChange}
-                      dateFormat="yyyy년 MM월 dd일"
-                      placeholderText="날짜를 선택하세요"
-                      />
-              </div>
+              <h3>{selectedDate.toLocaleDateString('ko-KR')}의 식단</h3>
             </Card.Header>
           </Card>
         </Col>

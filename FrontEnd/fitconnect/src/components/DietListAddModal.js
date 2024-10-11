@@ -49,6 +49,7 @@ function DietListAddModal({ showModal, setShowModal }) {
                 }
                 alert("식단 데이터 추가 실패!");
             });
+        
     };
 
     return (
