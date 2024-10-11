@@ -1,9 +1,9 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { Button, Card, Col, Row, Table } from 'react-bootstrap';
+import { Button, Card, Col, Modal, Row, Table } from 'react-bootstrap';
 import { Form, useNavigate } from 'react-router-dom';
 
-function DietListAddModal() {
+function DietListAddModal({ showModal, setShowModal }) {
 
     //새로운 음식 추가 후 dietAdd 페이지로 이동을 위한 hook
     const navigate = useNavigate();
@@ -52,80 +52,77 @@ function DietListAddModal() {
     };
 
     return (
-        <>
-            <Row>
-                <Col>
-                    <Card>
-                        <Card.Header>식단추가</Card.Header>
-                        <Card.Body>
-                            <Table bordered>
-                                <thead>
-                                    <tr>
-                                        <th>음식</th>
-                                        <th>칼로리 (kcal)</th>
-                                        <th>탄수화물 (g)</th>
-                                        <th>단백질 (g)</th>
-                                        <th>지방 (g)</th>
-                                        <th>추가</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <Form.Control
-                                                name="food"
-                                                placeholder="음식"
-                                                value={newFood.food}
-                                                onChange={FoodHandleChange}
-                                            />
-                                        </td>
-                                        <td>
-                                            <Form.Control
-                                                name="calories"
-                                                type="number"
-                                                placeholder="kcal"
-                                                value={newFood.calories}
-                                                onChange={FoodHandleChange}
-                                            />
-                                        </td>
-                                        <td>
-                                            <Form.Control
-                                                name="carbs"
-                                                type="number"
-                                                placeholder="g"
-                                                value={newFood.carbs}
-                                                onChange={FoodHandleChange}
-                                            />
-                                        </td>
-                                        <td>
-                                            <Form.Control
-                                                name="protein"
-                                                type="number"
-                                                placeholder="g"
-                                                value={newFood.protein}
-                                                onChange={FoodHandleChange}
-                                            />
-                                        </td>
-                                        <td>
-                                            <Form.Control
-                                                name="fat"
-                                                type="number"
-                                                placeholder="g"
-                                                value={newFood.fat}
-                                                onChange={FoodHandleChange}
-                                            />
-                                        </td>
-                                        <td>
-                                            <Button onClick={handleFoodDataAdd}>추가</Button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </Table>
-                        </Card.Body>
-                    </Card>
-                </Col>
-            </Row>
-        </>
+        <Modal show={showModal} onHide={() => {
+            setShowModal(false);
+        }}>
+            <Modal.Header>
+                <Modal.Title>식단추가</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <Table bordered>
+                    <thead>
+                        <tr>
+                            <th>음식</th>
+                            <th>칼로리 (kcal)</th>
+                            <th>탄수화물 (g)</th>
+                            <th>단백질 (g)</th>
+                            <th>지방 (g)</th>
+                            <th>추가</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <Form.Control
+                                    name="food"
+                                    placeholder="음식"
+                                    value={newFood.food}
+                                    onChange={FoodHandleChange}
+                                />
+                            </td>
+                            <td>
+                                <Form.Control
+                                    name="calories"
+                                    type="number"
+                                    placeholder="kcal"
+                                    value={newFood.calories}
+                                    onChange={FoodHandleChange}
+                                />
+                            </td>
+                            <td>
+                                <Form.Control
+                                    name="carbs"
+                                    type="number"
+                                    placeholder="g"
+                                    value={newFood.carbs}
+                                    onChange={FoodHandleChange}
+                                />
+                            </td>
+                            <td>
+                                <Form.Control
+                                    name="protein"
+                                    type="number"
+                                    placeholder="g"
+                                    value={newFood.protein}
+                                    onChange={FoodHandleChange}
+                                />
+                            </td>
+                            <td>
+                                <Form.Control
+                                    name="fat"
+                                    type="number"
+                                    placeholder="g"
+                                    value={newFood.fat}
+                                    onChange={FoodHandleChange}
+                                />
+                            </td>
+                        </tr>
+                    </tbody>
+                </Table>
+            </Modal.Body>
+            <Modal.Footer><Button onClick={handleFoodDataAdd}>추가</Button></Modal.Footer>
+        </Modal>
+
     );
 }
 

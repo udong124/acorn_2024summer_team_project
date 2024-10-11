@@ -25,6 +25,7 @@ function MemberExercise() {
 
     useEffect(() => {
         const formattedSelectedDate = selectedDate.toISOString().split("T")[0];
+        console.log(initialDateStr)
 
         axios.get(`/exercisejournal/date/${formattedSelectedDate}`)
             .then(res => {

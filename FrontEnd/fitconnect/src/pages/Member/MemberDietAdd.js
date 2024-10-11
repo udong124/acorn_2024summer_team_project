@@ -5,6 +5,7 @@ import { Modal, Button, Card, Row, Col, InputGroup, DropdownButton, Dropdown, Fo
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Checkbox, Radio } from "antd";
+import DietListAddModal from "../../components/DietListAddModal";
 
 function MemberDietJournalAdd() {
     // const [m_calendar_id, setMCalendarId] = useState(null);
@@ -16,14 +17,7 @@ function MemberDietJournalAdd() {
     const [select, setSelect] = useState([]);
     const [selectedRowIndex, setSelectedRowIndex] = useState(null);
     const [formData, setFormData] = useState({});
-    const [newFood, setNewFood] = useState({
-        food: "",
-        calories: "",
-        carbs: "",
-        protein: "",
-        fat: ""
-    });
-    const [m_calendar_id_max, setMCalendarIdMax] = useState(null);
+
     const navigate = useNavigate();
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
@@ -33,7 +27,9 @@ function MemberDietJournalAdd() {
     const initialDate = new Date(initialDateStr);
     const [selectedDate, setSelectedDate] = useState(initialDate);
     const token = localStorage.getItem('token');
-
+    //음식 추가 모달 창을 띄우기 위해
+    const [showModal, setShowModal] = useState(false);
+    const handleShow = () => setShowModal(true);
    
 
     useEffect(() => {
@@ -184,21 +180,12 @@ function MemberDietJournalAdd() {
                                     </div>
                                 </Form>
                             <InputGroup className="mb-3">
-                                
-                                {/* <DropdownButton
-                                    variant="outline-secondary"
-                                    title={dietType}
-                                    id="input-group-dropdown-1"
-                                >
-                                    <Dropdown.Item onClick={() => setDietType('아침')}>아침</Dropdown.Item>
-                                    <Dropdown.Item onClick={() => setDietType('점심')}>점심</Dropdown.Item>
-                                    <Dropdown.Item onClick={() => setDietType('저녁')}>저녁</Dropdown.Item>
-                                </DropdownButton> */}
                                 <Form.Control onChange={handleChange} placeholder="식단검색" type="text" />
                             </InputGroup>
                             
 
                             <Button className="mb-3" onClick={handleClickAdd}>식단 추가</Button>
+                            <Button className="mb-3"  onClick={()=>{setShowModal(true)}}>식단 추가</Button>
                             <Table bordered>
                                 <thead>
                                     <tr>
@@ -284,8 +271,13 @@ function MemberDietJournalAdd() {
                         </Card.Body>
                         <Button onClick={handleSubmit} variant="primary">완료</Button>
                     </Card>
+                    <DietListAddModal
+                        showModal={showModal}
+                        setShowModal={setShowModal}
+                    />
                 </Col>
             </Row>
+
         </div>
     );
 
