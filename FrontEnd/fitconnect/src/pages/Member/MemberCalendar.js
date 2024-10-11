@@ -39,51 +39,56 @@ const CalendarComponent = () => {
     axios.get('/membercalendar')
       .then(res => {
         setCalendarData(res.data);
-        
-        res.data.forEach(event => {
-          if(event.memo != "") {
-            const mcalendarEvent = {
-              id: event.m_calendar_id.toString(),
-              title: event.memo,
-              start: event.regdate,
-              member_num: event.member_num,
-              m_calendar_id: event.m_calendar_id,
-              backgroundColor: '#D3D3D3'
-            }
-            setCalendarEvents([...calendarEvents, mcalendarEvent]);
-          }
-
-          if (event.isExistDiet) {
-            const dietEvent = {
-              id: event.m_calendar_id.toString(),
-              title: "식단",
-              start: event.regdate,
-              member_num: event.member_num,
-              m_calendar_id: event.m_calendar_id,
-              memberDietDto: event.memberDietDto,
-              backgroundColor: '#FFA500'
-            }  
-            setCalendarEvents([...calendarEvents, dietEvent]);
-          }
-
-          if (event.isExistExercise) {
-            const exerciseEvent = {
-              id: event.m_calendar_id.toString(),
-              title: "운동",
-              start: event.regdate,
-              member_num: event.member_num,
-              m_calendar_id: event.m_calendar_id,
-              memberExerciseDto: event.memberExerciseDto,
-              backgroundColor: '#00BFFF'
-            }  
-            setCalendarEvents([...calendarEvents, exerciseEvent]);
-          }
-        })
-        setShowEvents(calendarEvents);
       })
       .catch(error => console.log(error));
   }, [token]);
   
+  useEffect(()=>{
+    calendarData.forEach(event => {
+      if(event.memo != null) {
+        const mcalendarEvent = {
+          id: event.m_calendar_id.toString(),
+          title: event.memo,
+          start: event.regdate,
+          member_num: event.member_num,
+          m_calendar_id: event.m_calendar_id,
+          backgroundColor: '#D3D3D3'
+        }
+        setCalendarEvents([...calendarEvents, mcalendarEvent]);
+      }
+
+      if (event.isExistDiet) {
+        const dietEvent = {
+          id: event.m_calendar_id.toString(),
+          title: "식단",
+          start: event.regdate,
+          member_num: event.member_num,
+          m_calendar_id: event.m_calendar_id,
+          memberDietDto: event.memberDietDto,
+          backgroundColor: '#FFA500'
+        }  
+        setCalendarEvents([...calendarEvents, dietEvent]);
+      }
+
+      if (event.isExistExercise) {
+        const exerciseEvent = {
+          id: event.m_calendar_id.toString(),
+          title: "운동",
+          start: event.regdate,
+          member_num: event.member_num,
+          m_calendar_id: event.m_calendar_id,
+          memberExerciseDto: event.memberExerciseDto,
+          backgroundColor: '#00BFFF'
+        }  
+        setCalendarEvents([...calendarEvents, exerciseEvent]);
+      }
+    })
+  }, [calendarData])
+
+  useEffect(()=>{
+    setShowEvents(calendarEvents);
+  }, [calendarEvents])
+
   const handleDateClick = (arg) => {
     setSelectedDate(arg.dateStr);
     setNewEventTitle('');
