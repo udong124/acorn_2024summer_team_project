@@ -43,23 +43,18 @@ function MemberMessenger() {
   const navigate = useNavigate();
 
   const dropZoneStyle = {
-    minHeight: "250px",
-    minWidth: "250px",
-    border: "3px solid #cecece",
     borderRadius: "10px",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
   };
   const profileStyle = {
-    width: "200px",
-    height: "200px",
+    maxWidth: "100%",
     border: "1px solid #cecece",
     borderRadius: "50%",
   };
   const profileStyle2 = {
-    width: "200px",
-    height: "200px",
+    maxWidth: "100%",
     border: "1px solid #cecece",
     borderRadius: "50%",
     display: "none",
@@ -161,9 +156,12 @@ function MemberMessenger() {
 
   return (
     <Row>
-      <Col>
+      <Col lg={12}>
         <Card>
-          <Card.Header>
+          <Card.Header as="h6" className="border-bottom p-3 mb-0">
+            <h3>담당 트레이너</h3>
+          </Card.Header>
+        </Card>
             <svg
               ref={personSvg}
               style={profileStyle2}
@@ -179,11 +177,9 @@ function MemberMessenger() {
                 d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
               />
             </svg>
-          </Card.Header>
-        </Card>
       </Col>
       <Col>
-        <Card>
+        <Card >
           <Card.Body>
               {trainerInfo && trainerInfo.name ? (
               // 트레이너 정보가 있을 때

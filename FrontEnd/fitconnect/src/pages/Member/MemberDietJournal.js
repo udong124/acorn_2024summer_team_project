@@ -150,6 +150,12 @@ function MemberDietJournal(){
   const graphProtein = (totalProtein/120) * 100 // 성인 기준 체중 kg 당 0.73g 단백질 섭취
   const graphFat = (totalFat/100) * 100 // 한국인 평균 지방 섭취량 53.9g 
   const graphKcal = (totalKcal / 4000) * 100 // 한국인 성인 남성 평균 2500kcal~3600kcal 섭취
+
+  console.log(location)
+  // 메인페이지에서 아침,점심,저녁 카드가 아래로 쌓이게 할 설정
+  const width = location.pathname === "/member" ? 12 : 4
+  //메인페이지에서 reserve / Delete 버튼을 보이지않게 하기 위한 설정
+  const styleNone = location.pathname === "/member" ? {display:"none"} : {display:"flex"}
   return (
     <>
     <div>
@@ -157,8 +163,8 @@ function MemberDietJournal(){
         <Col>
           <Card>
             <Card.Header as="h6" className="border-bottom p-3 mb-0">
-              <h1>{selectedDate.toLocaleDateString('ko-KR')}의 식단</h1>
-              <div style={{ marginBottom: "20px" }}>
+              <h3>{selectedDate.toLocaleDateString('ko-KR')}의 식단</h3>
+              <div style={{ marginBottom: "20px", display:"none" }}>
                       <DatePicker
                       selected={selectedDate}
                       onChange={handleDateChange}
@@ -171,9 +177,9 @@ function MemberDietJournal(){
         </Col>
       </Row>
       <Row>
-        <Col xs={24} md={12}>
+        <Col md={12}>
             <Card>
-            <Card.Header as="h6" className="border-bottom p-3 mb-0">
+            <Card.Header as="h6" className="border-bottom p-3 mb-0" style={styleNone}>
             <div className="d-flex justify-content-end mb-3">
               <Button onClick={handleReserve} variant="secondary" className="me-2">reserve</Button>
               <Button onClick={handleAllDelete} variant="secondary">Delete</Button>
@@ -182,7 +188,7 @@ function MemberDietJournal(){
             <Card.Body className="">
             <div>
               <Row className="align-items-center">
-                <Col xs={1}>
+                <Col xs={4}>
                 <span>탄수화물</span><br/>
                 <span style={{fontSize: "10px", color: "grey"}}>기준: 500g</span>
                 </Col>
@@ -195,7 +201,7 @@ function MemberDietJournal(){
               </Row>
                 <br/>
                 <Row className="align-items-center">
-                <Col xs={1}>
+                <Col xs={4}>
                   <span>단백질</span><br/>
                   <span style={{fontSize: "10px", color: "grey"}}>기준: 120g</span>
                 </Col>
@@ -208,7 +214,7 @@ function MemberDietJournal(){
               </Row>
                 <br/>
                 <Row className="align-items-center">
-                <Col xs={1}>
+                <Col xs={4}>
                   <span>지방</span><br/>
                   <span style={{fontSize: "10px", color: "grey"}}>기준: 100g</span>
                 </Col>
@@ -221,7 +227,7 @@ function MemberDietJournal(){
               </Row>
                 <br/>
                 <Row className="align-items-center">
-                <Col xs={1}>
+                <Col xs={4}>
                   <span>칼로리</span><br/>
                   <span style={{fontSize: "10px", color: "grey"}}>기준: 4000g</span>
                 </Col>
@@ -240,58 +246,58 @@ function MemberDietJournal(){
      </div>
      <div>
       <Row className="g-3">
-            <Col xs={12} md={4}>
+            <Col xs={12} sm={12} md={width}>
               <Card>
                 <Card.Header as="h6" className="border-bottom p-3 mb-0 d-flex justify-content-between align-items-center">
                   아침
                 </Card.Header>
                 <Card.Body>
                 <ul>
-              {breakfastData.map((item, index) => (
-                <li key={index}>
-                  {item.food} -  {item.foodCount} g- {item.calories} kcal
-                </li>
-              ))}
-            </ul>
+                  {breakfastData.map((item, index) => (
+                    <li key={index}>
+                      {item.food} -  {item.foodCount} g- {item.calories} kcal
+                    </li>
+                  ))}
+                </ul>
                 </Card.Body>
               </Card>
             </Col>
       
-            <Col xs={12} md={4}>
+            <Col xs={12} sm={12} md={width}>
               <Card>
                 <Card.Header as="h6" className="border-bottom p-3 mb-0 d-flex justify-content-between align-items-center">
                   점심
                 </Card.Header>
                 <Card.Body>
                 <ul>
-              {lunchData.map((item, index) => (
-                <li key={index}>
-                  {item.food} -  {item.foodCount} g- {item.calories} kcal
-                </li>
-              ))}
-            </ul>
+                  {lunchData.map((item, index) => (
+                    <li key={index}>
+                      {item.food} -  {item.foodCount} g- {item.calories} kcal
+                    </li>
+                  ))}
+                </ul>
                 </Card.Body>
               </Card>
             </Col>
     
-            <Col xs={12} md={4}>
+            <Col  xs={12} sm={12} md={width}>
               <Card>
                 <Card.Header as="h6" className="border-bottom p-3 mb-0 d-flex justify-content-between align-items-center">
                   저녁
                 </Card.Header>
                 <Card.Body>
                 <ul>
-              {dinnerData.map((item, index) => (
-                <li key={index}>
-                  {item.food} -  {item.foodCount} g- {item.calories} kcal
-                </li>
-              ))}
-            </ul>
-                </Card.Body>
-              </Card>
-            </Col>
-      </Row>
-    </div>
+                  {dinnerData.map((item, index) => (
+                    <li key={index}>
+                      {item.food} -  {item.foodCount} g- {item.calories} kcal
+                    </li>
+                  ))}
+                </ul>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      </div>
      </>
   )
 }

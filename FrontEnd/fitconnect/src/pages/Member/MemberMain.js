@@ -125,12 +125,32 @@ const Starter = () => {
                   </div>
                 </Col>
                 <Col>
-                    <p>이름: {memberInfo.name}</p>
-                    <p>키: {memberInfo.member_height}</p>
-                    <p>몸무게: {memberInfo.member_weight}</p>
-                    <p>성별: {memberInfo.member_gender}</p>
-                    <p>목표: {memberInfo.plan}</p>
-                    <p>주간 목표: {memberInfo.weeklyplan}</p>
+                  <div>
+                    <Form.Group>
+                      <Form.Text>이름</Form.Text>
+                      <br/>
+                      <Form.Label>{memberInfo.name}</Form.Label>
+                    </Form.Group>
+                    <Form.Group>
+                      <Form.Text>키 : </Form.Text>
+                      <Form.Label>{memberInfo.member_height}</Form.Label>
+                      <Form.Text>    몸무게 : </Form.Text>
+                      <Form.Label>{memberInfo.member_weight}</Form.Label>
+                      <Form.Text>    성별 : </Form.Text>
+                      <Form.Label>{memberInfo.member_gender}</Form.Label>
+                    </Form.Group>
+                    <Form.Group>
+                      <Form.Text>목표</Form.Text>
+                      <br/>
+                      <Form.Label>{memberInfo.plan}</Form.Label>
+                    </Form.Group>
+                    
+                    <Form.Group>
+                      <Form.Text>주간 목표</Form.Text>
+                      <br/>
+                      <Form.Label>{memberInfo.weeklypla}</Form.Label>
+                    </Form.Group>
+                  </div>
                 </Col>
               </Row>
           
@@ -146,17 +166,17 @@ const Starter = () => {
     <Container>
       {/***Blog Cards***/}
       <Row>
-      <Col sm={12} md={6} lg={4} className='leftside'>
+        <Col >
           <Card>
             <MemberMessenger/>            
           </Card>
         </Col>
-        <Col sm={12} md={6} lg={4}  className='leftside'>
+        <Col  >
           <Card >
             <MemberDietJournal/>
           </Card>
         </Col>
-        <Col sm={12} md={6} lg={4} className='leftside'>
+        <Col >
           <Card>
             <MemberExercise/>            
           </Card>

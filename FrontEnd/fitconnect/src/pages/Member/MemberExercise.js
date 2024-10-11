@@ -67,13 +67,16 @@ function MemberExercise() {
         navigate(`?date=${formattedDate}`, { replace: true });
     };
 
+    //메인페이지에서 reserve / Delete 버튼을 보이지않게 하기 위한 설정
+    const styleNone = location.pathname === "/member" ? {display:"none"} : {display:"flex"}
+
     return (
         <Row>
             <Col>
                 <Card>
                     <Card.Header as="h6" className="border-bottom p-3 mb-0">
-                        <h1>{selectedDate.toLocaleDateString('ko-KR')}의 운동</h1>
-                        <div style={{ marginBottom: "20px" }}>
+                        <h3>{selectedDate.toLocaleDateString('ko-KR')}의 운동</h3>
+                        <div style={{ marginBottom: "20px", display:"none" }}>
                             <DatePicker
                                 selected={selectedDate}
                                 onChange={handleDateChange}
@@ -87,7 +90,7 @@ function MemberExercise() {
 
             <Col md={48} lg={40}>
                 <Card>
-                    <Card.Header as="h6" className="border-bottom p-3 mb-0">
+                    <Card.Header as="h6" className="border-bottom p-3 mb-0" style={styleNone}>
                         <div className="d-flex justify-content-end mb-3">
                             <Button onClick={handleReserve} variant="secondary" className="me-2">reserve</Button>
                             <Button onClick={handleDeleteAll} variant="secondary">Delete</Button>
@@ -106,7 +109,7 @@ function MemberExercise() {
                                 </tr>
                             </thead>
                             <tbody className="text-center">
-                                {[...formData]
+                                {/* {[...formData]
                                     .sort((a, b) => a.exercise_order - b.exercise_order)
                                     .map((data) => (
                                         <tr key={data.exercise_id}>
@@ -117,7 +120,7 @@ function MemberExercise() {
                                             <td>{data.exercise_order}</td>
                                         </tr>
                                     ))
-                                }
+                                } */}
                             </tbody>
                         </Table>
                     </Card.Body>

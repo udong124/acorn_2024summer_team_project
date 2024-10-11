@@ -53,46 +53,6 @@ function MemberExerciseAdd() {
     setSearch(e.target.value);
   };
 
-  // useEffect(() => {
-  //   axios.get('/membercalendar')
-  //     .then(res => {
-  //       const getMaxCalendarId = (data) => {
-  //         if (!data || data.length === 0) {
-  //           return null;
-  //         }
-  //         return Math.max(...data.map(event => event.m_calendar_id));
-  //       };
-              
-  //       const maxCalendarId = getMaxCalendarId(res.data) + 1;
-  //       setMCalendarIdMax(maxCalendarId);
-  //       setMCalendarId(res.data.m_calendar_id)
-  //     })
-  //     .catch(error => console.log(error));
-
-  //   axios.get(`/membercalendar`)
-  //     .then(res => {
-  //       const formattedSelectedDate = selectedDate.toISOString().split("T")[0];
-  //       const temp_member_num = res.data[0]?.member_num || null;
-  //       setMemberNum(temp_member_num)
-  //       const filteredData = res.data.filter(item => {
-  //         return item.regdate.split(" ")[0] === formattedSelectedDate && item.memo === "운동";
-  //       });
-  //       const mCalendarIds = filteredData.map(item => item.m_calendar_id);
-  //       let mergedData = [];
-  //       mCalendarIds.forEach(m_calendar_id => {
-  //         axios.get(`/exercisejournal/${m_calendar_id}`)
-  //           .then(res => {
-  //             mergedData = mergedData.concat(res.data.exerJournalList || []);
-  //             setSelectExercise([...mergedData]);
-  //           })
-  //           .catch(error => {
-  //             console.error(`exercise Journal API 요청 실패 (m_calendar_id: ${m_calendar_id}):`, error);
-  //           });
-  //       })
-  //     })
-  //     .catch(error => console.log(error));
-  // }, [selectedDate])
-
   const exerciseSearch = Array.isArray(exerciseData) 
     ? exerciseData.filter((data) =>
         (data.exercise_name || "").toLowerCase().includes((search || "").toLowerCase())
@@ -145,33 +105,28 @@ function MemberExerciseAdd() {
   const handleSubmit = () => {
     const requestData = selectExercise.map(exercise => {
       return {
-        exercise_name: exercise.name,
-        exercise_id: parseInt(exercise.exercise_id, 10),
-        exercise_set: parseInt(exercise.exercise_set, 10),
-        exercise_count: parseInt(exercise.exercise_count, 10),
-        exercise_order: exercise.exercise_order !== undefined ? parseInt(exercise.exercise_order, 10) : 0,
-        exercise_weight: parseFloat(exercise.exercise_weight, 10),
+        exercise_id: exercise.exercise_id,
+        exercise_set: exercise.exercise_set,
+        exercise_count: exercise.exercise_count,
+        exercise_weight: exercise.exercise_weight,
+        exercise_order: 1
       };
     });
 
-    // const exercise_add_to_calendar = {
-    //   member_num: member_num1,
-    //   memo: "운동",
-    //   regdate: selectedDate.toISOString().split("T")[0],
-    // };
-
-    // axios.post('/membercalendar', exercise_add_to_calendar)
-    //   .then((res) => {
-    //     console.log("calend", res)
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //     alert("저장 에러");
-    //   });
+    const exercise_add_to_calendar = {
+      memo: "운동",
+      regdate: selectedDate.toISOString().split("T")[0],
+    };
                 
-    axios.post(`/exercisejournal/date/${selectedDate}`, requestData)
+    console.log(requestData)
+    axios.post(`/exercisejournal/date/${exercise_add_to_calendar.regdate}`, requestData, {
+      headers: {
+        'Content-Type': 'application/json' // JSON 형식으로 전송
+      }
+    })
       .then((res) => {
-        if (res.data.isSuccess) {
+        if (res) {
+
           console.log("운동 추가 및 수정 완료");
         } else {
           console.error("응답 실패:", res.data);
