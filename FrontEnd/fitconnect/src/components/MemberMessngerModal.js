@@ -53,7 +53,6 @@ const MemberMessengerModal = ({ showModal, setShowModal, topic }) => {
         const decodedMessage = JSON.parse(decoder.decode(new Uint8Array(message)));
         setMessages(prevMessages => [...prevMessages, decodedMessage]); // 새로운 메시지를 추가
       });
-
       return () => {
         client.end(); // 컴포넌트 언마운트 시 MQTT 연결 해제
       };
@@ -69,6 +68,10 @@ const MemberMessengerModal = ({ showModal, setShowModal, topic }) => {
     }));
   }, [topic]);
 
+ useEffect(()=>{
+  refresh()
+ }, [showModal])
+
 
   //메세지 전송을 눌렀을때 스크롤 처리
   const scrollToBottom = () => {
@@ -77,13 +80,13 @@ const MemberMessengerModal = ({ showModal, setShowModal, topic }) => {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, showModal]);
 
 
  // 양식 제출이 일어났을 때 실행되는 핸들러
   const sendMessageHandle = (e) => {
     e.preventDefault();
-    setMessage({ ...message, content: content })
+    setMessage({ ...message, content: content, times: new Date().toISOString()})
     // 메시지를 전송하기 전에 필드 상태 확인
     console.log("Sending message:", message);
     scrollToBottom();
@@ -108,7 +111,10 @@ const MemberMessengerModal = ({ showModal, setShowModal, topic }) => {
       })
         .then(res => {
           console.log("Message sent successfully:", res.data);
-          refresh(); // 메시지 전송 후 새로고침
+          setMessages([
+            ...messages,
+            message
+          ])
           setIsReady(false);
           
         
@@ -163,7 +169,10 @@ const MemberMessengerModal = ({ showModal, setShowModal, topic }) => {
     return `${month}-${day} ${hours}:${minutes}`;
   };
 
-  
+  const handleClose =() =>{
+    setMessages([]);
+    setShowModal(false)
+  }
 
   return (
     <Modal show={showModal} onHide={() => {
@@ -218,10 +227,7 @@ const MemberMessengerModal = ({ showModal, setShowModal, topic }) => {
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={() => {
-          setMessages([]);
-          setShowModal(false);
-        }}>Close</Button>
+        <Button variant="secondary" onClick={handleClose}>Close</Button>
       </Modal.Footer>
     </Modal>
   );

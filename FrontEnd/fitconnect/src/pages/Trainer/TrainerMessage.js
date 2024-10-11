@@ -45,7 +45,6 @@ const Message = () => {
   // 특정 멤버 클릭 시 topic 값을 설정하는 함수
   const handleMemberClick = (topic) => {
     setSelectedTopic(topic); // 클릭한 멤버의 topic 값을 상태로 저장
-    console.log("선택됬을때 띄우는 토픽값", topic)
     setIsReady(true); // 모달을 보여줌
   };
 
@@ -61,6 +60,7 @@ const Message = () => {
   useEffect(()=>{
     if(showModal === false){
       setParams({})
+      setSelectedTopic("")
     }
   }, [showModal])
 
@@ -112,7 +112,7 @@ const Message = () => {
                         }}>
                           
                         <div onClick={() => handleMemberClick(item.topic)} style={{ flex: 1 }}>
-                        {item.profile && <img src={"http://52.78.38.12:8080/upload/"+item.profile} alt={`${item.name} 프로필`} style={profileStyle}/>}
+                        <img src={item.profile ? "http://52.78.38.12:8080/upload/"+item.profile : "https://www.gravatar.com/avatar/?d=mp&s=200"} alt={`${item.name || "Unknown"} 프로필`} style={profileStyle}/>
                           <p>{item.name}</p>
                           <p>내용: {item.content}</p> 
                           <p>{formatDate(item.times)}</p>

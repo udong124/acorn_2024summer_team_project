@@ -24,6 +24,8 @@ function MemberMessenger() {
     gym_link: "",
   });
 
+  const[topicManage, setTopicManage] = useState();
+
 
   //채팅방 정보
   const [chatRoom, setChatRoom] = useState({});
@@ -106,7 +108,6 @@ function MemberMessenger() {
   //대화하기를 눌렀을 때 실행할 함수
     // 반복문으로 출력한 id(member_num) 값으로 topic값 가져오기
   const handleChatClick = (member_num) => {
-
     axios.get(`/messenger`, { params: { member_num } })  
       .then(res => {
         console.log(res.data.topic)
@@ -121,16 +122,17 @@ function MemberMessenger() {
               send_type: "ADMIN",
             };
             console.log(firstMessage)
+            setTopicManage(firstMessage)
 
             // 채팅방 생성 post 요청하기
-            axios.post("/messenger/detail", firstMessage, {
+            axios.post("/messenger/detail", topicManage, {
               headers: {
                 'Content-Type': 'multipart/form-data'
               }
             })
             .then(response => {
               console.log( response.data);
-           
+              setTopicManage(null)
             })
             .catch(error => {
               console.error(error);
