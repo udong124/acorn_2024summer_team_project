@@ -74,6 +74,7 @@ public class MemberCalendarDaoImpl implements MemberCalendarDao{
 	
 	@Override
 	public boolean delete(int member_num, int m_calendar_id) {
+		
 		Map<String, Object> params = new HashMap<>();
 		params.put("member_num", member_num);
 		params.put("m_calendar_id", m_calendar_id);

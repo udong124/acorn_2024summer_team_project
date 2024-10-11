@@ -21,4 +21,5 @@ public class MemberCalendarDto {
 	private String regdate;
 	private String memo;
 	
+	
 }

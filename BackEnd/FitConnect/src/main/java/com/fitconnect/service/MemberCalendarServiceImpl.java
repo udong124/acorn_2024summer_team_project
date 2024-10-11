@@ -29,44 +29,54 @@ public class MemberCalendarServiceImpl implements MemberCalendarService{
 	@Autowired private ExerciseJournalDao exercisejournalDao;
 	
 	@Override
-		//로그인된 사용자 토큰을 이용해서 id 값을 얻어와 user_num 이라는 이름으로 DB 에 담아서 dao 를 실행한다.
-
 	public List<Map<String, Object>> getAll() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		int user_num = ((PrincipalDetails) authentication.getPrincipal()).getDto().getId();
 		
+		//리스트는 회원에 등록된 전체 캘린더를 담아준다.
 		List<MemberCalendarDto> list = dao.getList(user_num);
 		List<Map<String, Object>> resultList = new ArrayList<Map<String,Object>>();
 		
+		
 		list.forEach(MemberCalendarDto -> {
 			int m_calendar_id = MemberCalendarDto.getM_calendar_id();
-			
+
 			Map<String, Object> resultMap = new HashMap<>();
-			
+			// resultMap에 등록된 캘린더를 반복문을 실행하여 차례대로 담아준다.
 			resultMap.put("m_calendar_id", MemberCalendarDto.getM_calendar_id());
-			resultMap.put("member_num", MemberCalendarDto.getM_calendar_id());
+			resultMap.put("member_num", MemberCalendarDto.getMember_num());
 			resultMap.put("regdate", MemberCalendarDto.getRegdate());
 			resultMap.put("memo", MemberCalendarDto.getMemo());
+			resultList.add(resultMap);
 			
 			if (!exercisejournalDao.getExerJournalList(m_calendar_id).isEmpty()) {
-
+				// m_calendar_id 에 운동일지가 담겨져 있다면
 				resultMap.put("memberExerciseDto", exercisejournalDao.getExerJournalList(m_calendar_id));
-//				System.out.println("Map:" + resultMap);
+				resultMap.put("isExistExercise", true);
 				resultList.add(resultMap);
 				
+			}else {
+				//일지가 없다면
+				resultMap.put("isExistExercise", false);
 			}
+			// 식단일지의 dao.getList가 dietjournalDto를 input으로 받기 때문에 따로 Dto를 만들어주고
 			DietJournalDto dietjournalDto = new DietJournalDto();
+			// m_calendar_id에 해당한 식단일지 정보를 받아오기 위해 초기 값을 넣어준다.
 			dietjournalDto.setM_calendar_id(m_calendar_id);
 			dietjournalDto.setMember_num(user_num);
 			
 			if (!dietjournalDao.getList(dietjournalDto).isEmpty()) {
+				// 식단일지가 있다면
 				resultMap.put("memberDietDto", dietjournalDao.getList(dietjournalDto));
-//				System.out.println("다이어트:" + resultMap);
+				resultMap.put("isExistDiet", true);
 				resultList.add(resultMap);
+			}else {
+				// 식단일지가 없다면
+				resultMap.put("isExistDiet", false);
 			}
 			
+			
 		});
-		System.out.println(resultList);
 		return resultList;
 	}
 
