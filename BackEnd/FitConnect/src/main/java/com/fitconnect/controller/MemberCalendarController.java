@@ -155,11 +155,12 @@ public class MemberCalendarController {
 	 * 		@param m_calendar_id
 	 * 		@return
 	**********************************************************************/
-	@DeleteMapping("/membercalendar/{m_calendar_id}")
+	@DeleteMapping("/membercalendar/{regdate}")
 	public Map<String, Object> deleteCal(
-			@PathVariable("m_calendar_id") int m_calendar_id) {
+			@PathVariable("regdate") String regdate) {
 		
-		boolean isSuccess = service.delete(m_calendar_id);
+		boolean isSuccess = service.delete(regdate);
+		
 		return Map.of("isSuccess", isSuccess);
 	}
 	
