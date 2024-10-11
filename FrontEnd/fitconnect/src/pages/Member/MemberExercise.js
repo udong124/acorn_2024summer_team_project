@@ -20,6 +20,7 @@ function MemberExercise() {
     const [selectedDate, setSelectedDate] = useState(initialDate);
 
     const [formData, setFormData] = useState([]);
+    
 
     const token = localStorage.getItem('token');
 
@@ -36,6 +37,7 @@ function MemberExercise() {
             })
     }, [selectedDate]);
 
+   
     const handleDelete = (exercise_id) => {
         axios.delete(`/exercisejournal/${exercise_id}/${e_journal_id}`)
             .then((res) => {
@@ -75,7 +77,7 @@ function MemberExercise() {
             <Col>
                 <Card>
                     <Card.Header as="h6" className="border-bottom p-3 mb-0">
-                        <h3>{selectedDate.toLocaleDateString('ko-KR')}의 운동</h3>
+                        <p style={{fontSize: "1.5rem", fontWeight: "bold"}}>{selectedDate.toLocaleDateString('ko-KR')}의 운동</p>
                         <div style={{ marginBottom: "20px", display:"none" }}>
                             <DatePicker
                                 selected={selectedDate}

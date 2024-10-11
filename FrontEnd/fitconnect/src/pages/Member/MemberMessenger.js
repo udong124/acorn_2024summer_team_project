@@ -156,7 +156,7 @@ function MemberMessenger() {
       <Col lg={12}>
         <Card>
           <Card.Header as="h6" className="border-bottom p-3 mb-0">
-            <h3>담당 트레이너</h3>
+            <p style={{fontSize: "1.5em", fontWeight: "bold"}}>담당 트레이너</p>
           </Card.Header>
         </Card>
             <svg

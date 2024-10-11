@@ -45,13 +45,17 @@ if (localStorage.token) {
 }
 
 // Redux 초기 상태 설정
-const initialState = {
-  userName: userName,
-  role: userRole
+const preloadedState = {
+  user: 
+  {userName: userName,
+  role: userRole},
+  modal: {
+
+  }
 };
 
 // Redux 스토어 생성
-const store = createStore(rootReducer, initialState);
+const store = createStore(rootReducer, preloadedState);
 
 // React 애플리케이션 렌더링
 root.render(
