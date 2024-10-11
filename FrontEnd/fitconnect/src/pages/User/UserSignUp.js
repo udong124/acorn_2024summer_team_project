@@ -91,6 +91,7 @@ function UserSignUp() {
     setStep(2);
   };
 
+  //프로필 이미지를 다시 클릭해서 수정해서 올릴 수 있는 기능 
   const handleImageChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
@@ -99,7 +100,14 @@ function UserSignUp() {
         "file":selectedFile,
         "profile":URL.createObjectURL(selectedFile)
       })
+    } else {
+      setFormData({
+        ...formData,
+        "file": null,
+        "profile": null
+      })
     }
+
   };
 
   const handleSubmit = (e)=>{
@@ -261,6 +269,7 @@ function UserSignUp() {
                         alt="Profile Preview"
                         roundedCircle
                         style={{ width: "150px", height: "150px", objectFit: "cover" }}
+                        onClick={() => document.getElementById("profileImg").click()}
                       />
                     ) : (
                       <div
@@ -292,7 +301,7 @@ function UserSignUp() {
                     {
                       !formData.file &&
                       <small className="text-muted mt-2">
-                        프로필 사진을 등록해주세요 (이미지는 JPG 파일만 등록 가능)
+                        이미지 파일을 선택하세요 (JPG, PNG, WebP 등 다양한 형식 지원)
                       </small>
                     }
                   </div>

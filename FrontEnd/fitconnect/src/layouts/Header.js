@@ -23,9 +23,9 @@ const Header = () => {
   // 로그아웃 핸들러
   const handleLogout = () => {
     localStorage.removeItem("token"); // 로그인 토큰 삭제
-    navigate("/login"); // 로그인 페이지로 리다이렉트
     localStorage.removeItem("userName"); //-로그인중 사라지도록 삭제
     setUserName(null); //-상태 원래되로
+    navigate("/login"); // 로그인 페이지로 리다이렉트
   };
 
    // 로그인/회원가입 페이지 여부 확인

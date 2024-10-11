@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import MemberMessengerModal from "../../components/MemberMessngerModal";
-import plusimage from "../../assets/images/users/plusimage.png";
+import searchicon from "../../assets/images/users/searchicon.png";
 
 function MemberMessenger() {
   const result = decodeToken(localStorage.token.substring(7));
@@ -24,9 +24,6 @@ function MemberMessenger() {
     gym_link: "",
   });
 
-
-
-   
 
   //채팅방 정보
   const [chatRoom, setChatRoom] = useState({});
@@ -236,25 +233,31 @@ function MemberMessenger() {
                 <Button onClick={() => handleChatClick(member_num)}>대화시작하기</Button>
               </>
             ) : (
-              // 트레이너 정보가 없을 때 '트레이너 찾기' 버튼과 플러스 아이콘이 보이게끔
+              // 트레이너 정보가 없을 때 '트레이너 찾기' 버튼과 검색 아이콘이 보이게끔
               <>
                 <div style={{ textAlign: "center", marginBottom: "20px" }}>
                   <Button
                     variant="light"
                     onClick={handleFindTrainer}
-                    style={{ fontSize: "24px" }}
+                    style={{
+                      fontSize: "18px",
+                      border: "1px solid #007bff", 
+                      borderRadius: "8px", 
+                      boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)", 
+                      padding: "15px", 
+                      cursor: "pointer" 
+                    }}
                   >
                     <img
-                      src={plusimage}
-                      alt="플러스 아이콘"
-                      style={{ width: "150px", height: "250px" }}
+                      src={searchicon}
+                      alt="검색 아이콘"
+                      style={{ width: "130px", height: "150px" }}
                     />
                     <p>트레이너 찾기</p>
                   </Button>
                 </div>
                 <div>
-                  <p>트레이너가 아직 등록되지 않았습니다.</p>
-                  <p>등록하고 맞춤형 관리를 받아보세요.</p>
+                  <p>나만의 트레이너를 찾아 메시지를 보내고, 맞춤형 코칭을 받아보세요!</p>
                 </div>
               </>
             )}
@@ -268,19 +271,6 @@ function MemberMessenger() {
         </Card>
       </Col>
     </Row>
-
-
-      // <Container
-      //   style={{
-      //     minHeight: "500px",
-      //     display: "flex",
-      //     justifyContent: "center",
-      //     alignItems: "center",
-      //     flexDirection: "column",
-      //   }}
-      // >
-      
-      // </Container>
  
   );
 }
