@@ -23,5 +23,5 @@ public class ChatRoomDto {
 	private String times;
 	private String content;
 	private String name;
-	private String proflie;
+	private String profile;
 }
