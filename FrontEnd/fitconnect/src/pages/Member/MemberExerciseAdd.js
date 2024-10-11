@@ -239,15 +239,15 @@ function MemberExerciseAdd() {
                               >
                                 <td>{data.exercise_name}</td>
                                 <td>
-                                  <Form.Control name="exercise_weight" type="number" value={data.exercise_weight || ""} placeholder="무게"
+                                  <Form.Control min="1" name="exercise_weight" type="number" value={data.exercise_weight || ""} placeholder="무게"
                                     onChange={(e) => handleInputChange(e, data.e_journal_id, "exercise_weight")}/>
                                 </td>
                                 <td>
-                                  <Form.Control name="exercise_count" type="number" value={data.exercise_count || ""} placeholder="횟수"
+                                  <Form.Control min="1" name="exercise_count" type="number" value={data.exercise_count || ""} placeholder="횟수"
                                     onChange={(e) => handleInputChange(e, data.e_journal_id, "exercise_count")}/>
                                 </td>
                                 <td>
-                                  <Form.Control name="exercise_set" type="number" value={data.exercise_set || ""} placeholder="세트"
+                                  <Form.Control min="1" name="exercise_set" type="number" value={data.exercise_set || ""} placeholder="세트"
                                     onChange={(e) => handleInputChange(e, data.e_journal_id, "exercise_set")}/>
                                 </td>
                                 <td>{index + 1}</td>

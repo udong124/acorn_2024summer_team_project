@@ -19,7 +19,7 @@ function MemberExercise() {
     const initialDate = new Date(initialDateStr);
     const [selectedDate, setSelectedDate] = useState(initialDate);
 
-    const [formData, setFormData] = useState([]);
+    const [exercisejournal, setExerJournal] = useState([]);
 
     const token = localStorage.getItem('token');
 
@@ -28,8 +28,8 @@ function MemberExercise() {
 
         axios.get(`/exercisejournal/date/${formattedSelectedDate}`)
             .then(res => {
-                console.log(res.data) //뭐가 올까요
-                setFormData(res.data)
+                console.log(res.data.exerJournalList) //뭐가 올까요
+                setExerJournal(res.data.exerJournalList)
             })
             .catch(error => {
                 console.error(`exercise Journal 요청 실패`, error);
@@ -39,20 +39,14 @@ function MemberExercise() {
     const handleDelete = (exercise_id) => {
         axios.delete(`/exercisejournal/${exercise_id}/${e_journal_id}`)
             .then((res) => {
-                if (res.data.isSuccess) {
-                    const updatedSelect = formData.filter(item => item.exercise_id !== exercise_id);
-                    setFormData(updatedSelect);
-                } else {
-                    console.log(res.data);
-                    alert("삭제실패");
-                }
+  
             })
             .catch(error => { console.log(error) });
     };
 
     const handleDeleteAll = (m_calendar_id) => {
         axios.delete(`/exercisejournal/${m_calendar_id}`)
-            .then(res => { if (res.data.isSuccess) setFormData([]); navigate('/mem/MemberCalendar') })
+            .then(res => { })
             .catch(error => { console.log(error); alert("삭제실패") });
     };
 
@@ -76,15 +70,16 @@ function MemberExercise() {
                 <Card>
                     <Card.Header as="h6" className="border-bottom p-3 mb-0">
                         <h3>{selectedDate.toLocaleDateString('ko-KR')}의 운동</h3>
-                        <div style={{ marginBottom: "20px", display:"none" }}>
-                            <DatePicker
-                                selected={selectedDate}
-                                onChange={handleDateChange}
-                                dateFormat="yyyy년 MM월 dd일"
-                                placeholderText="날짜를 선택하세요"
-                            />
-                        </div>
+                     
                     </Card.Header>
+                       <div style={{ marginBottom: "20px", display:"none" }}>
+                        <DatePicker
+                            selected={selectedDate}
+                            onChange={handleDateChange}
+                            dateFormat="yyyy년 MM월 dd일"
+                            placeholderText="날짜를 선택하세요"
+                        />
+                        </div>
                 </Card>
             </Col>
 
@@ -109,18 +104,16 @@ function MemberExercise() {
                                 </tr>
                             </thead>
                             <tbody className="text-center">
-                                {/* {[...formData]
-                                    .sort((a, b) => a.exercise_order - b.exercise_order)
-                                    .map((data) => (
-                                        <tr key={data.exercise_id}>
-                                            <td>{data.exercise_name}</td>
-                                            <td>{data.exercise_weight}</td>
-                                            <td>{data.exercise_count}</td>
-                                            <td>{data.exercise_set}</td>
-                                            <td>{data.exercise_order}</td>
+                                {exercisejournal.map(item => (
+                                        <tr key={item.exercise_id}>
+                                            <td>{item.exercise_name}</td>
+                                            <td>{item.exercise_weight}</td>
+                                            <td>{item.exercise_count}</td>
+                                            <td>{item.exercise_set}</td>
+                                            <td>{item.exercise_order}</td>
                                         </tr>
                                     ))
-                                } */}
+                                }
                             </tbody>
                         </Table>
                     </Card.Body>
