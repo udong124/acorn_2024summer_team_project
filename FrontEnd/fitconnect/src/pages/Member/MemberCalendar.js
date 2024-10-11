@@ -104,27 +104,17 @@ const CalendarComponent = () => {
   };
 
   const handleEventClick = (clickInfo) => {
-    // const id = clickInfo.event.id;
-    // const eventDate = clickInfo.event.startStr.split('T')[0];
-    // setSelectedDate(clickInfo.event.startStr);
-    // setNewEventTitle(clickInfo.event.title);
-    // setSelectedEvent(clickInfo.event);
-    // setShowModal(true);
-    console.log(clickInfo)
-
-    //식단일떄는?
     if (clickInfo.event.title === "식단") {
       navigate(`/memeber/diet`, {
         state: {
-          date: clickInfo.event.regdate
+          regdate: clickInfo.event.startStr
         }
       })
     } 
-    //운동일때는?
     else if(clickInfo.event.title === "운동") {
       navigate(`/member/exercise`, {
         state: {
-          date: clickInfo.event.regdate
+          regdate: clickInfo.event.startStr
         }
       })
     }
