@@ -105,7 +105,7 @@ const CalendarComponent = () => {
 
   const handleEventClick = (clickInfo) => {
     if (clickInfo.event.title === "식단") {
-      navigate(`/memeber/diet`, {
+      navigate(`/member/dietjournal`, {
         state: {
           regdate: clickInfo.event.startStr
         }
