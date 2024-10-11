@@ -63,20 +63,22 @@ public class DietJournalController {
 			DietJournalDto dto){
 		MemberCalendarDto membercalendarDto = new MemberCalendarDto();
 		membercalendarDto.setRegdate(regdate);
+		// 캘린더Dto에 날짜를 담아서 서비스에 넘겨주면 멤버캘린더서비스에서 회원번호를 담아서 dao를 실행시킨다.
+		// getOneByDate 에는 경로변수로 받은 날짜에 해당하는 캘린더 정보(id, num, regdate, memo)와 isSuccess 로 boolean 값이 담겨져 있다.
 		Map<String, Object> getOneByDate= membercalendarService.getOneByDate(membercalendarDto);
 		
-		System.out.println(getOneByDate);
-		
-		//regdate 넣었을 때, m_calendar_id 가 여러개이면 exception, 한 개면 true, 0 개면 false
+		// m_calendar_id 값이 1개여서 반환된 boolean 값이 true이면
 		if((boolean) getOneByDate.get("isSuccess")) {
+			// 담겨져 있는 regdate를 활용해서 m_calendar_id 만 추출하고
 			int m_calendar_id = ((MemberCalendarDto)getOneByDate.get("result")).getM_calendar_id();
+			//dto에 담아준다.
 			dto.setM_calendar_id(m_calendar_id);
-			
+			//해당 날짜에 해당하는 식단일지 정보와 true 값을 담아서 리턴해준다.
 			List<DietJournalDto> list = service.getList(dto);
 			return Map.of("isSuccess", true,
 							"list", list);
 		}else {
-			// m_calendar_id 가 없을 때
+			// m_calendar_id 가 없으면 false, 값이 여러개 조회되면 exception 처리
 			return Map.of("isSuccess", false);
 		}
 	}
@@ -193,6 +195,14 @@ public class DietJournalController {
 			@PathVariable("m_calendar_id") int m_calendar_id){
 		
 		boolean isSuccess = service.deleteAll(m_calendar_id);
+		return Map.of("isSuccess", isSuccess);
+	}
+	
+	@DeleteMapping("/dietjournal/all/date/{regdate}")
+	public Map<String, Object> deleteAll(
+			@PathVariable("regdate") String regdate){
+		
+		boolean isSuccess = service.deleteAllByDate(regdate);
 		return Map.of("isSuccess", isSuccess);
 	}
 }

@@ -114,7 +114,7 @@ public class MemberCalendarController {
 	public Map<String, Object> insertCalByDate(@RequestBody MemberCalendarDto dto) {
 		
 		boolean isSuccess = service.insertByDate(dto);
-		// m_calendar_id
+		
 		return Map.of("isSuccess", isSuccess);
 	}
 	
@@ -156,10 +156,12 @@ public class MemberCalendarController {
 	 * 		@return
 	**********************************************************************/
 	@DeleteMapping("/membercalendar/{regdate}")
-	public Map<String, Object> deleteCal(
-			@PathVariable("regdate") String regdate) {
+	public Map<String, Object> deleteCalByDate(
+			@PathVariable("regdate") String regdate,
+			MemberCalendarDto dto) {
+		dto.setRegdate(regdate);
 		
-		boolean isSuccess = service.delete(regdate);
+		boolean isSuccess = service.deleteByDate(dto);
 		
 		return Map.of("isSuccess", isSuccess);
 	}

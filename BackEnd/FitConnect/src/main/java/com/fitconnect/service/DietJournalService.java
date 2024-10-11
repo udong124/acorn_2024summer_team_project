@@ -11,5 +11,7 @@ public interface DietJournalService {
 	public boolean insert(List<DietJournalDto> dietjournalList);
 	public boolean update(DietJournalDto dto);
 	public boolean delete(int d_journal_id);
+	
 	public boolean deleteAll(int m_calendar_id);
+	public boolean deleteAllByDate(String regdate);
 }

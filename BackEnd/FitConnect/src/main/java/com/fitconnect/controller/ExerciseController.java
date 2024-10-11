@@ -357,6 +357,16 @@ public class ExerciseController {
 		return Map.of("isSuccess", isSuccess);
 	}
 	
+	@ApiResponses({
+        @ApiResponse(responseCode = "200", description = "성공"),
+        @ApiResponse(responseCode = "400", description = "실패")
+	})
+	@Operation(summary = "특정 날짜 운동 일지 삭제", description = "운동 일지 내 등록된 특정 날짜의 전체 운동 삭제하기")
+	@DeleteMapping("/exercisejournal/calendar/date/{regdate}")
+	public Map<String, Object> deleteExerAllByDate(@PathVariable("regdate") String regdate){
+		boolean isSuccess =service.deleteExerAllByDate(regdate);
+		return Map.of("isSuccess", isSuccess);
+	}
 	
 	
 	

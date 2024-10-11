@@ -40,4 +40,14 @@ public class ExceptionController {
 		
 		return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED); // 401 에러 응답
 	}
+	
+	@ExceptionHandler(NullCalendarIdException.class)
+	public ResponseEntity<Object> nullcalendaridException(NullCalendarIdException ne){
+		//예외메세지
+		String msg = ne.getMessage();
+		//에러 응답
+		ErrorResponse response = ErrorResponse.builder()
+										.code(401).message(msg).build();
+		return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED); // 401 에러 응답
+	}
 }

@@ -13,11 +13,13 @@ import org.springframework.stereotype.Service;
 import com.fitconnect.auth.PrincipalDetails;
 import com.fitconnect.dto.DietJournalDto;
 import com.fitconnect.repository.DietJournalDao;
+import com.fitconnect.repository.MemberCalendarDao;
 
 @Service
 public class DietJournalServiceImpl implements DietJournalService{
 
 	@Autowired DietJournalDao dao;
+	@Autowired MemberCalendarDao membercalendarDao;
 	/**
 	 * 로그인된 사용자 토큰으로 id 값을 받아와 특정 사용자를 지칭하고 dto 에 담아준다.
 	 */
@@ -70,6 +72,19 @@ public class DietJournalServiceImpl implements DietJournalService{
 		int user_num = ((PrincipalDetails) authentication.getPrincipal()).getDto().getId();
 		
 		boolean isSuccess = dao.deleteAll(user_num, m_calendar_id);
+		return isSuccess;
+	}
+
+	@Override
+	public boolean deleteAllByDate(String regdate) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		int user_num = ((PrincipalDetails) authentication.getPrincipal()).getDto().getId();
+		
+		int m_calendar_id = membercalendarDao.getMcalendarId(regdate);
+		System.out.println("삭제 캘린더 번호:" + m_calendar_id);
+		boolean isSuccess = dao.deleteAll(user_num, m_calendar_id);
+		
+		
 		return isSuccess;
 	}
 

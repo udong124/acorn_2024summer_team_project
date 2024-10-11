@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.fitconnect.dto.MemberCalendarDto;
 import com.fitconnect.exception.NotCalendarIdOneException;
+import com.fitconnect.exception.NullCalendarIdException;
 
 
 @Repository
@@ -32,7 +33,7 @@ public class MemberCalendarDaoImpl implements MemberCalendarDao{
 	}
 
 	@Override
-	public Map<String, Object> getDataByDate(MemberCalendarDto dto) throws NotCalendarIdOneException {
+	public Map<String, Object> getDataByDate(MemberCalendarDto dto) throws NotCalendarIdOneException, NullPointerException {
 		try {
 			MemberCalendarDto result = session.selectOne("MemberCalendar.getDataByDate", dto);
 			
@@ -40,12 +41,18 @@ public class MemberCalendarDaoImpl implements MemberCalendarDao{
 			if(result != null) {
 				return Map.of("isSuccess", true,
 								"result", result);
+				
 			}else {	// m_calendar_id 가 없을 때 false 반환
 				return Map.of("isSuccess", false);
+				
 			}
 			// m_calendar_id 가 여러개 있을 때 예외처리
 		}catch(org.mybatis.spring.MyBatisSystemException e) {
 			throw new NotCalendarIdOneException("2개 이상의 캘린더 아이디 조회됨");
+			
+		}catch(NullPointerException e) {
+			//m_calendar_id 가 없는 경우
+			throw new NullCalendarIdException("존재하지 않는 값 입니다.");
 		}
 			
 	}
@@ -91,10 +98,11 @@ public class MemberCalendarDaoImpl implements MemberCalendarDao{
 	@Override
 	public boolean getCalendarId(String regdate) throws NotCalendarIdOneException{
 		try {
-			MemberCalendarDto result = session.selectOne("MemberCalendar.getCalendarId", regdate);
+			MemberCalendarDto result = session.selectOne("MemberCalendar.getMcalendaridToDto", regdate);
 			if(result != null) {
 				return true;
 			}else {
+				// exception이 발생하면 false 반환값을 exception 에서 처리
 				return false;
 			}
 		}catch(org.mybatis.spring.MyBatisSystemException e) {
@@ -103,9 +111,19 @@ public class MemberCalendarDaoImpl implements MemberCalendarDao{
 	}
 
 	@Override
-	public int getMcalendarId(String regdate) {
+	public int getMcalendarId(String regdate) throws NotCalendarIdOneException, NullCalendarIdException{
+		try {
+			// exception 발생 시 false 값 반환
+			return session.selectOne("MemberCalendar.getMcalendaridToInt",regdate);
+			
+		}catch(org.mybatis.spring.MyBatisSystemException e) {
+			//m_calendar_id 가 2개 이상이 존재하는 경우
+			throw new NotCalendarIdOneException("2개 이상의 캘린더 아이디 조회됨");
+		}catch(NullPointerException e) {
+			//m_calendar_id 가 없는 경우
+			throw new NullCalendarIdException("존재하지 않는 값 입니다.");
+		}
 		
-		return session.selectOne("MemberCalendar.getMCalendarId",regdate);
 	}
 
 }

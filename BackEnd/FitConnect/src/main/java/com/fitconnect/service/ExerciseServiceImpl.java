@@ -15,12 +15,14 @@ import com.fitconnect.dto.ExerciseJournalDto;
 import com.fitconnect.dto.ExerciseListDto;
 import com.fitconnect.repository.ExerciseJournalDao;
 import com.fitconnect.repository.ExerciseListDao;
+import com.fitconnect.repository.MemberCalendarDao;
 
 @Service
 public class ExerciseServiceImpl implements ExerciseService {
 
 	@Autowired private ExerciseListDao listDao;
 	@Autowired private ExerciseJournalDao journalDao;
+	@Autowired private MemberCalendarDao membercalendarDao;
 	
 	@Value("${file.location}")
 	private String fileLocation;
@@ -116,6 +118,15 @@ public class ExerciseServiceImpl implements ExerciseService {
 	 */
 	@Override
 	public boolean deleteExerAll(int m_calendar_id) {
+		boolean isSuccess = journalDao.deleteAll(m_calendar_id);
+		return isSuccess;
+	}
+	
+	@Override
+	public boolean deleteExerAllByDate(String regdate) {
+		int m_calendar_id = membercalendarDao.getMcalendarId(regdate);
+		System.out.println("삭제 캘린더 번호:" + m_calendar_id);
+		
 		boolean isSuccess = journalDao.deleteAll(m_calendar_id);
 		return isSuccess;
 	}
@@ -224,4 +235,6 @@ public class ExerciseServiceImpl implements ExerciseService {
 		boolean isSuccess = listDao.insertExetList(dto);
 		return isSuccess;
 	}
+
+
 }

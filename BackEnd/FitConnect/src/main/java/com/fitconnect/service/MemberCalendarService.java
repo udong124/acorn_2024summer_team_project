@@ -14,7 +14,9 @@ public interface MemberCalendarService {
 	public boolean insertByDate(MemberCalendarDto dto);
 	
 	public boolean update(MemberCalendarDto dto);
-	public boolean delete(String regdate);
+	public boolean deleteByDate(MemberCalendarDto dto);
+	
+	
 	public boolean getCalendarId(String regdate);
 	public int getMCalendarId(String regdate);
 }
