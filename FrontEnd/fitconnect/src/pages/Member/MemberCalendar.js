@@ -228,13 +228,9 @@ const CalendarComponent = () => {
 
       <Modal show={showModal} onHide={handleClose}>
         <Modal.Header closeButton>
-        <Modal.Title>
-      {selectedDietDetails
-        ? "식단 정보 확인"
-        : selectedExerciseDetails
-        ? "운동 정보 확인"
-        : "메모 추가/수정"}
-    </Modal.Title>
+          <Modal.Title>
+            "메모 추가/수정"
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
         <Form>
@@ -251,72 +247,25 @@ const CalendarComponent = () => {
         </Form.Group>
       )}
 
-       {/* 식단 출력 */}
-      {selectedDietDetails && Array.isArray(selectedDietDetails) && selectedDietDetails.length > 0 && (
-        <div>
-          <h4><b>오늘의 식단 정보<Button style={{marginLeft: '150px', backgroundColor:'#FFA500', border:'none'}} onClick={()=>navigate(`/member/dietjournal`)}>수정하기</Button></b></h4><br/>
-          {selectedDietDetails.map((diet, index) => (
-            <div key={index} style={{ 
-              marginBottom: '15px',
-              padding: '15px',
-              borderRadius: '10px',
-              backgroundColor: '#f8f9fa',
-              borderLeft: '5px solid #FFA500',
-              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-             }}>
-
-              <p style={{fontSize:'18px'}}><strong>{diet.diet_type}</strong></p>
-              <p><strong>{diet.food} {diet.foodCount}개</strong></p>
-              <p style={{ margin: '5px 0', fontSize: '16px'}}><strong>칼로리 -</strong> {diet.calories}kcal</p>
-              <p style={{ margin: '5px 0', fontSize: '16px'}}><strong>탄수화물 -</strong> {diet.carbs}g</p>
-              <p style={{ margin: '5px 0', fontSize: '16px'}}><strong>단백질 -</strong> {diet.protein}g</p>
-              <p style={{ margin: '5px 0', fontSize: '16px'}}><strong>지방 -</strong> {diet.fat}g</p>
-            </div>
-          ))}
-        </div>
-      )}
-
-       {/* 운동 출력 */}
-    {selectedExerciseDetails && Array.isArray(selectedExerciseDetails) && selectedExerciseDetails.length > 0 && (
-      <div>
-        <h4><b>오늘의 운동리스트<Button style={{marginLeft: '150px'}} onClick={()=>navigate(`/member/exercise`)}>수정하기</Button></b></h4><br/>
-        {selectedExerciseDetails.map((exercise, index) => (
-          <div key={index} style={{
-            marginBottom: '15px',
-            padding: '15px',
-            borderRadius: '10px',
-            backgroundColor: '#f8f9fa',
-            borderLeft: '5px solid #00BFFF',
-            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-          }}>
-            <h3 style={{
-              color: '#343a40',
-              fontSize: '18px',
-              fontWeight: 'bold',
-              marginBottom: '10px',
-            }}>{exercise.exercise_name}</h3>
-            
-            <p style={{ margin: '5px 0', fontSize: '16px'}}>
-              <strong>세트 수:</strong> {exercise.exercise_set}
-            </p>
-            <p style={{ margin: '5px 0', fontSize: '16px'}}>
-              <strong>횟수:</strong> {exercise.exercise_count}
-            </p>
-            <p style={{ margin: '5px 0', fontSize: '16px'}}>
-              <strong>순서:</strong> {exercise.exercise_order}
-            </p>
-            <p style={{ margin: '5px 0', fontSize: '16px'}}>
-              <strong>운동 중량:</strong> {exercise.exercise_weight}
-            </p>
-          </div>
-        ))}
-      </div>
-    )}
-
-
       </Form>
         </Modal.Body>
           <Modal.Footer>
+          {!selectedDietDetails && (
+            <Button variant='info' onClick={
+              ()=>navigate(`/member/dietadd`, {
+                state: {
+                  regdate: selectedDate
+                }
+              })}>식단 추가</Button>
+          )}
+          {!selectedExerciseDetails && (
+            <Button variant='info' onClick={
+              ()=>navigate(`/member/exerciseadd`, {
+                state: {
+                  regdate: selectedDate
+                }
+              })}>운동 추가</Button>
+          )}
           {!selectedDietDetails && !selectedExerciseDetails && (
             <Button onClick={handleSaveEvent}>저장</Button>
           )}
