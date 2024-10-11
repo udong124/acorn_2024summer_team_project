@@ -11,11 +11,14 @@ function MemberExercise() {
 
     const navigate = useNavigate();
     const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
+    const { regdate }= location.state || {};
 
+    // 오늘 날짜
     const today = new Date();
     const localDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-    const initialDateStr = queryParams.get("date") ? queryParams.get("date") : localDate;
+
+    // location 넘어올 경우 날짜
+    const initialDateStr = regdate ? regdate : localDate;
     const initialDate = new Date(initialDateStr);
     const [selectedDate, setSelectedDate] = useState(initialDate);
 
@@ -24,12 +27,15 @@ function MemberExercise() {
     const token = localStorage.getItem('token');
 
     useEffect(() => {
-        const formattedSelectedDate = selectedDate.toISOString().split("T")[0];
-        console.log(initialDateStr)
+        //selectedDate에서 년월일 추출하는 식
+        const date = new Date(selectedDate);
+        const year = date.getFullYear();
+        const month = ("0" + (date.getMonth() + 1)).slice(-2); // 월을 두 자리 숫자로 만들기
+        const day = ("0" + date.getDate()).slice(-2);
+        const formattedDate = `${year}-${month}-${day}`;
 
-        axios.get(`/exercisejournal/date/${formattedSelectedDate}`)
+        axios.get(`/exercisejournal/date/${formattedDate}`)
             .then(res => {
-                console.log(res.data.exerJournalList) //뭐가 올까요
                 setExerJournal(res.data.exerJournalList)
             })
             .catch(error => {
@@ -58,7 +64,7 @@ function MemberExercise() {
     const handleDateChange = (date) => {
         setSelectedDate(date);
         const formattedDate = date.toISOString().split("T")[0];
-        queryParams.set("date", formattedDate);
+        regdate.set("date", formattedDate);
         navigate(`?date=${formattedDate}`, { replace: true });
     };
 

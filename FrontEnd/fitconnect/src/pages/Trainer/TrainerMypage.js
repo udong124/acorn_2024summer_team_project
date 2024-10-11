@@ -105,7 +105,7 @@ const MyPage = () => {
               <Row>
                 <Col>
                   <Form.Group>
-                    <Form.Label>프로필 이미지 </Form.Label>
+                    <Form.Label></Form.Label>
                     <Form.Control ref={imageInput} style={{display:"none"}} type="file" name="image" accept="image/*"/>
                   </Form.Group>
                   <div className="mb-3">

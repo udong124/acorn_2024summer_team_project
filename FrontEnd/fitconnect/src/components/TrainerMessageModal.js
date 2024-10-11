@@ -19,6 +19,7 @@ const MessageModal = ({ showModal, setShowModal, topic}) => {
   const client = mqtt.connect('ws://52.78.38.12:9002'); // mqtt 연결 설정 코드
 
   const [isReady, setIsReady] = useState(false);
+  const [memberName, setMemberName] = useState();
 
   // 메시지 목록을 새로고침하는 함수
   const refresh = () => {
@@ -27,7 +28,6 @@ const MessageModal = ({ showModal, setShowModal, topic}) => {
       axios.get(`/messenger/detail/${topic}`)
         .then(res => {
           setMessages(res.data.msgAll); // 서버에서 받은 메시지 데이터로 상태 업데이트
-
         })
         .catch(error => {
           console.log("Error fetching messages:", error);
@@ -35,11 +35,26 @@ const MessageModal = ({ showModal, setShowModal, topic}) => {
     }
   };
 
+  
+  //멤버 이름 표시해주는 함수
+  const getMemberName = () =>{
+    axios.get(`/messenger/list`)
+    .then(res =>{
+      const member = res.data.find(item => item.topic === topic);
+      if(member) {
+        setMemberName(member.name)
+      } else {
+        console.log("멤버이름이 없습니다.")
+        }
+  })
+    .catch(err =>console.log(err))
+  }
+
+
   useEffect(() => {
-    console.log("처음열릴때 토픽값:", topic)
     if (topic) {
       client.subscribe(topic); 
-      
+      getMemberName();
       client.on('message', (topic, message) => {
         const decodedMessage = JSON.parse(decoder.decode(new Uint8Array(message)));
         setMessages(prevMessages => [...prevMessages, decodedMessage]); // 새로운 메시지를 추가
@@ -74,11 +89,16 @@ const MessageModal = ({ showModal, setShowModal, topic}) => {
   // 양식 제출이 일어났을 때 실행되는 핸들러
   const sendMessageHandle = (e) => {
     e.preventDefault();
-    setMessage({ ...message, content: content })
+    setMessage({ ...message, 
+      content: content,
+      topic: topic,
+      times: new Date().toISOString()
+    })
     // 메시지를 전송하기 전에 필드 상태 확인
     console.log("Sending message:", message);
     scrollToBottom();
     // 모든 필드가 채워져 있는지 확인
+    console.log(message)
 
     // MQTT로 메시지 전송
     client.publish(topic, JSON.stringify(message), { qos: 0, retain: false });
@@ -94,7 +114,7 @@ const MessageModal = ({ showModal, setShowModal, topic}) => {
 
   useEffect(()=>{
     if(message.content !== "" && isReady){
-      console.log(message)
+      console.log("여기는 뭐담겼냐",message)
       axios.post("/messenger/detail", message, {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -171,7 +191,7 @@ const MessageModal = ({ showModal, setShowModal, topic}) => {
       setShowModal(false);
     }}>
       <Modal.Header closeButton={handleClose}>
-        <Modal.Title></Modal.Title>
+        <Modal.Title>{memberName}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <div style={{ height: '400px', lineHeight: 'normal', overflowY: 'scroll', border: '1px solid #ccc', padding: '10px'}}>
@@ -227,4 +247,3 @@ const MessageModal = ({ showModal, setShowModal, topic}) => {
 };
 
 export default MessageModal;
-

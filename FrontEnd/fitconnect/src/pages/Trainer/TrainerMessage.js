@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Card, Row, Col, Button, Modal, Form } from "react-bootstrap";
-import MessageModal from '../../components/TrainerMessageModal';
+import TrainerMessageModal from '../../components/TrainerMessageModal';
 import { useSearchParams } from 'react-router-dom';
 
 
 const Message = () => {
   const [showModal, setShowModal] = useState(false);
   const [members, setMembers] = useState([]);
-  const [selectedTopic, setSelectedTopic] = useState(''); // 선택된 topic 값을 저장하는 상태
+  const [selectedTopic, setSelectedTopic] = useState(); // 선택된 topic 값을 저장하는 상태
   const [isReady, setIsReady] = useState(false);
 
 
@@ -45,6 +45,7 @@ const Message = () => {
   // 특정 멤버 클릭 시 topic 값을 설정하는 함수
   const handleMemberClick = (topic) => {
     setSelectedTopic(topic); // 클릭한 멤버의 topic 값을 상태로 저장
+    console.log("선택됬을때 띄우는 토픽값", topic)
     setIsReady(true); // 모달을 보여줌
   };
 
@@ -52,7 +53,6 @@ const Message = () => {
     if(isReady && selectedTopic !== ""){
       setShowModal(true); // 모달을 보여줌
       setParams({selectedTopic})
-      setSelectedTopic("")
     }
   }, [isReady, selectedTopic])
 
@@ -64,6 +64,14 @@ const Message = () => {
     }
   }, [showModal])
 
+
+  const profileStyle = {
+    width: "200px",
+    height: "200px",
+    borderRadius: "50%",
+    objectFit: "cover",
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.15)",
+  };
 
     // 날짜 변환 함수: 'YYYY-MM-DD HH:mm' 형식으로 변환
     const formatDate = (date) => {
@@ -104,7 +112,7 @@ const Message = () => {
                         }}>
                           
                         <div onClick={() => handleMemberClick(item.topic)} style={{ flex: 1 }}>
-                        {item.profile && <img src={"http://52.78.38.12:8080/upload/"+item.profile} alt={`${item.name} 프로필`} />}
+                        {item.profile && <img src={"http://52.78.38.12:8080/upload/"+item.profile} alt={`${item.name} 프로필`} style={profileStyle}/>}
                           <p>{item.name}</p>
                           <p>내용: {item.content}</p> 
                           <p>{formatDate(item.times)}</p>
@@ -113,7 +121,7 @@ const Message = () => {
                     ))}
                   </ul>
                   {/* MessageModal에 topic 값을 전달 */}
-                  <MessageModal 
+                  <TrainerMessageModal 
                     showModal={showModal} 
                     setShowModal={setShowModal} 
                     topic={selectedTopic} // 선택된 topic 값을 전달
