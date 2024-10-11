@@ -155,7 +155,8 @@ public class MessageServiceImpl implements MessageService {
 	@Override
 	public boolean deleteChat(String topic) {
 		boolean isSuccess = false;
-		if(dao.deleteMsgAll(topic) && dao.deleteChat(topic)) {
+		dao.deleteMsgAll(topic);
+		if(dao.deleteChat(topic)) {
 			isSuccess=true;
 		}else {
 			isSuccess = false;
