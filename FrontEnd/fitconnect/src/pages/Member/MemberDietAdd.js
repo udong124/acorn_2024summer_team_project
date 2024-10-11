@@ -68,7 +68,7 @@ function MemberDietJournalAdd() {
 
 
     const handleClickAdd = () => {
-        if (dietType === null ) {
+        if (dietType === "" ) {
             alert("식단 유형을 선택해주세요.");
             return;
         }
@@ -129,14 +129,10 @@ function MemberDietJournalAdd() {
                 foodCount:item.foodcount
             }})
             console.log(addDiet)
-        axios.post(`/exercisejournal/date/${formattedDate}`, addDiet, {
-            headers: {
-              'Content-Type': 'application/json' // JSON 형식으로 전송
-            }
-          })
+        axios.post(`/dietjournal/date/${formattedDate}`, addDiet)
             .then((res) => {
               if (res) {
-      
+                
                 console.log("운동 추가 및 수정 완료");
               } else {
                 console.error("응답 실패:", res.data);
@@ -180,11 +176,11 @@ function MemberDietJournalAdd() {
                     <Card>
                         <Card.Header as="h6" className="border-bottom p-3 mb-0">식단선택</Card.Header>
                             <Card.Body>
-                                <Form onCheck={(e) => setDietType(e.target.label)}>
+                                <Form>
                                     <div className="d-flex" >
-                                        <Form.Check type="radio" label="아침" name="meal"/>
-                                        <Form.Check type="radio" label="점심" name="meal"/>
-                                        <Form.Check type="radio" label="저녁" name="meal"/>                                    
+                                        <Form.Check onChange={() => setDietType('아침')} type="radio" label="아침" name="meal"/>
+                                        <Form.Check onChange={() => setDietType('점심')} type="radio" label="점심" name="meal"/>
+                                        <Form.Check onChange={() => setDietType('저녁')} type="radio" label="저녁" name="meal"/>                                    
                                     </div>
                                 </Form>
                             <InputGroup className="mb-3">
