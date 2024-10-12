@@ -27,10 +27,12 @@ const UserLogin = () => {
   
       const userRole = payload?.userRole;
       const decodedUserName = payload?.userName; 
+      const name = payload?.name;
   
-      if (userRole && decodedUserName) {
+      if (userRole && decodedUserName && name) {
         localStorage.setItem("role", userRole);
         localStorage.setItem("userName", decodedUserName);
+        localStorage.setItem("name", name);
   
         // 로그인 성공 알림
         alert(`${decodedUserName} 님 로그인 되었습니다.`);
@@ -59,10 +61,12 @@ const UserLogin = () => {
 
           const userRole = payload?.userRole;
           const decodedUserName = payload?.userName; 
+          const name = payload?.name;
 
-          if (userRole && decodedUserName) {
+          if (userRole && decodedUserName && name) {
             localStorage.setItem("role", userRole);
             localStorage.setItem("userName", decodedUserName);
+            localStorage.setItem("name", name)
 
             // 로그인 성공 알림
             alert(`${decodedUserName} 님 로그인 되었습니다.`);

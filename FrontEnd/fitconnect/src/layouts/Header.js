@@ -116,7 +116,7 @@ const Header = () => {
         {/* 로그인 여부에 따라 로그인,로그아웃 버튼 표시 */}
         { userName ? (
           <>
-            <span style={{ color: "#fff", marginRight: 20 }}>{userName}님 로그인 중</span>
+            <span style={{ color: "#fff", marginRight: 20 }}>{localStorage.getItem("name")} 님 로그인 중</span>
             <Button
             variant="danger"
             style={{ zIndex: 9999, position: 'relative' }} // 인라인 스타일로 z-index 적용
