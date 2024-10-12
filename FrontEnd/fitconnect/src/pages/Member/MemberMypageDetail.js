@@ -131,7 +131,7 @@ const MyPageDetail = () => {
       })
       .catch(err => console.log(err));
   
-      navigate(`/member/mypage`);
+      navigate(`/member/mypage`, 0);
     }
   }, [memberInfo.trainer_num, isReady])
 
