@@ -51,13 +51,13 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
 		//URL 에 토큰을 포함하는 방식		
 	    String redirectUrl;
 	    if ("USER".equals(role)) {
-	        redirectUrl = "http://localhost:3000/googlelogin?token=" + jwtToken + "&id=" + id + "&role=" + role;
+	        redirectUrl = "http://52.78.38.12:3000/googlelogin?token=" + jwtToken + "&id=" + id + "&role=" + role;
 	    } else if ("TRAINER".equals(role)) {
-	        redirectUrl = "http://localhost:3000/login?token=" + jwtToken + "&role=" + role;
+	        redirectUrl = "http://52.78.38.12:3000/login?token=" + jwtToken + "&role=" + role;
 	    } else if ("MEMBER".equals(role)) {
-	        redirectUrl = "http://localhost:3000/login?token=" + jwtToken + "&role=" + role;
+	        redirectUrl = "http://52.78.38.12:3000/login?token=" + jwtToken + "&role=" + role;
 	    } else {
-	        redirectUrl = "http://localhost:3000/";
+	        redirectUrl = "http://52.78.38.12:3000/";
 	    }
 	    
         response.sendRedirect(redirectUrl);
