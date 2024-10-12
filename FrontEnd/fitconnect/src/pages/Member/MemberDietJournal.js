@@ -54,7 +54,7 @@ function MemberDietJournal(){
       console.error(`Diet Journal API 요청 실패:`, error);
     });
 
-  }, []);
+  }, [formattedDate]);
 
   // const getDietByType = (type) => {
   //   return formData.filter(data => data.diet_type === type)
@@ -93,8 +93,10 @@ function MemberDietJournal(){
   const handleDateChange = (date)=>{
      setSelectedDate(date)
      const formattedDate = date.toISOString().split("T")[0]
-     regdate.set("date",formattedDate)
-     navigate(`/dietjournal/date/${formattedDate}`, { replace: true })
+     navigate(`/member/dietjournal`, {
+      state: {
+        regdate: formattedDate
+      }})
   }
 
   const handleAllDelete=()=>{
