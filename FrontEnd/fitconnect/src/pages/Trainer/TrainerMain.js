@@ -37,6 +37,9 @@ const Home = () => {
 };
 
 useEffect(() => {
+  setTodayEvents(null)
+  setImageSrc(null)
+  setTrainerInfo(null)
   const todayDate = new Date();
   const events = []; // 결과를 저장할 배열
 
