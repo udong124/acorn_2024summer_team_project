@@ -36,14 +36,14 @@ const Home = () => {
   return `${year}-${month}-${day}`;
 };
 
+
 useEffect(() => {
-  setTodayEvents(null)
-  setImageSrc(null)
-  setTrainerInfo(null)
+  setTodayEvents([])
+  setImageSrc("")
+  setTrainerInfo({})
   const todayDate = new Date();
   const events = []; // 결과를 저장할 배열
 
-  // 4일치 데이터 가져오기
   const fetchEvents = () => {
     for (let i = 0; i < 4; i++) {
       const currentDate = new Date(todayDate);
@@ -53,7 +53,9 @@ useEffect(() => {
       // Axios GET 요청
       axios.get('/trainercalendar')
         .then(res => {
-          const filteredEvents = res.data.calList.filter(event => 
+          // calList가 null이 아닐 때만 filter 수행
+          const calList = res.data.calList || []; // 기본값을 빈 배열로 설정
+          const filteredEvents = calList.filter(event => 
             event.regdate.startsWith(formattedDate)
           );
           events.push(...filteredEvents); // 결과 배열에 추가
@@ -65,14 +67,14 @@ useEffect(() => {
           }
         })
         .catch(err => console.log(err));
-    }
-  };
-
-  fetchEvents();
+      }
+    };
+  
+    fetchEvents(); // 함수 호출
+  
 
     axios.get(`/user`)
       .then(res => {
-        setTrainerInfo(null)
         setTrainerInfo(prevInfo => ({
           ...prevInfo,
           ...res.data
@@ -143,6 +145,10 @@ useEffect(() => {
     border: "2px solid #bbb", // 일정 카드 외곽선 두께 조정
     borderRadius: "10px",
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+    overflowY: "auto",  // 세로 스크롤 활성화
+    overflowX: "hidden", // 가로 스크롤 비활성화
+    maxHeight: "300px",  // 최대 높이 설정 (필요에 따라 조정)
+
   };
 
   const eventCardBodyStyle = {
@@ -150,6 +156,11 @@ useEffect(() => {
     fontSize: "14px",
     color: "#555",
     textAlign: "center",
+    display: "flex",              // Flexbox 사용
+    flexDirection: "column",      // 세로 방향으로 배치
+    alignItems: "center",         // 수평 가운데 정렬
+    justifyContent: "center",     // 수직 가운데 정렬
+
   };
 
   const profileCardStyle = {
@@ -179,6 +190,10 @@ useEffect(() => {
 
   return (
     <div className="home" style={pageStyle}>
+      <svg ref={personSvg} style={profileStyle}  xmlns="http://www.w3.org/2000/svg" display="none" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+        <path fillRule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+      </svg>
       <Row>
         <Col lg={12}>
           <Card>
@@ -208,17 +223,20 @@ useEffect(() => {
                           <Card.Header style={{ textAlign: "center", fontWeight: "bold", color: "#444" }}>
                             {currentDate.getFullYear()}년 {currentDate.getMonth() + 1}월 {currentDate.getDate()}일
                           </Card.Header>
-                          {eventsForDate.length > 0 ? (
+                          <Card.Body style={eventCardBodyStyle}>
+                            {eventsForDate.length > 0 ? (
                             eventsForDate.map(event => (
-                              <Card.Body key={event.t_calendar_id} style={eventCardBodyStyle}>
+                              <Row key={event.t_calendar_id} >
                                 {event.name} {new Date(event.regdate).toLocaleTimeString()}
-                              </Card.Body>
+                              </Row>
                             ))
                           ) : (
-                            <Card.Body style={eventCardBodyStyle}>
+                            <Row style={eventCardBodyStyle}>
                               <p>오늘의 일정이 없습니다.</p>
-                            </Card.Body>
+                            </Row>
                           )}
+                          </Card.Body>
+
                         </Card>
                       </Col>
                     );
