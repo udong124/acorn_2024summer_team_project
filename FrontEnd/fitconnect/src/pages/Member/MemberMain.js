@@ -148,7 +148,7 @@ const Starter = () => {
                     <Form.Group>
                       <Form.Text>주간 목표</Form.Text>
                       <br/>
-                      <Form.Label>{memberInfo.weeklypla}</Form.Label>
+                      <Form.Label>{memberInfo.weeklyplan}</Form.Label>
                     </Form.Group>
                   </div>
                 </Col>
