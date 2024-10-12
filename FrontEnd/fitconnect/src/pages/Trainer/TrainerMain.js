@@ -2,6 +2,7 @@ import { Card, Row, Col, Form } from "react-bootstrap";
 import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import Message from "./TrainerMessage";
+import { formatDate } from "fullcalendar/index.js";
 
 
 const Home = () => {
@@ -26,29 +27,49 @@ const Home = () => {
     gym_link: ''
   });
 
-    // 시간 표기 관련 함수
-  const getTodayDate = () => {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
+
+// 날짜 포맷팅 함수
+  const formatDate = (date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
+useEffect(() => {
+  const todayDate = new Date();
+  const events = []; // 결과를 저장할 배열
+
+  // 4일치 데이터 가져오기
+  const fetchEvents = () => {
+    for (let i = 0; i < 4; i++) {
+      const currentDate = new Date(todayDate);
+      currentDate.setDate(todayDate.getDate() + i); // 오늘부터 i일 후의 날짜 설정
+      const formattedDate = formatDate(currentDate); // 포맷팅
+
+      // Axios GET 요청
+      axios.get('/trainercalendar')
+        .then(res => {
+          const filteredEvents = res.data.calList.filter(event => 
+            event.regdate.startsWith(formattedDate)
+          );
+          events.push(...filteredEvents); // 결과 배열에 추가
+
+          // 마지막 날짜에 도달했을 때 상태 업데이트
+          if (i === 3) {
+            setTodayEvents(events);
+            console.log(events);
+          }
+        })
+        .catch(err => console.log(err));
+    }
   };
 
-
-  useEffect(() => {
-    const todayDate = getTodayDate();
-    axios.get(`/trainercalendar`)
-      .then(res => {
-        const filteredEvents = res.data.calList.filter(event => 
-          event.regdate.startsWith(todayDate) 
-        );
-        setTodayEvents(filteredEvents);
-      })
-      .catch(err => console.log(err));
+  fetchEvents();
 
     axios.get(`/user`)
       .then(res => {
+        setTrainerInfo(null)
         setTrainerInfo(prevInfo => ({
           ...prevInfo,
           ...res.data
