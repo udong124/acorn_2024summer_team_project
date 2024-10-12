@@ -11,13 +11,17 @@ function MemberExerciseAdd() {
 
   const navigate = useNavigate()
   const location = useLocation()
-  const queryParams = new URLSearchParams(location.search)
+  const { regdate }= location.state || {};
     
-  const today = new Date()
-  const localDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
-  const initialDateStr = queryParams.get("date") ? queryParams.get("date") : localDate
-  const initialDate = new Date(initialDateStr)
+  // 오늘 날짜
+  const today = new Date();
+  const localDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+  
+  // location 넘어올 경우 날짜
+  const initialDateStr = regdate ? regdate : localDate;
+  const initialDate = new Date(initialDateStr);
   const [selectedDate, setSelectedDate] = useState(initialDate);
+  const [formattedDate, setFormattedDate] = useState();
 
   const [exerciseCategory, setExerciseCategory] = useState("all");
   const [exerciseData, setExerciseData] = useState([]);
@@ -31,6 +35,14 @@ function MemberExerciseAdd() {
 
   const token = localStorage.getItem('token')
 
+  useEffect(() => {
+    //selectedDate에서 년월일 추출하는 식
+    const date = new Date(selectedDate);
+    const year = date.getFullYear();
+    const month = ("0" + (date.getMonth() + 1)).slice(-2); // 월을 두 자리 숫자로 만들기
+    const day = ("0" + date.getDate()).slice(-2);
+    setFormattedDate(`${year}-${month}-${day}`);
+  }, [selectedDate])
 
   useEffect(() => {
     const category = exerciseCategory === "all" ? `` : `/${exerciseCategory}`;
@@ -93,9 +105,11 @@ function MemberExerciseAdd() {
 
   const handleDateChange = (date) => {
     setSelectedDate(date)
-    const formattedDate = date.toISOString().split("T")[0]
-    navigate(`/member/exerciseadd?date=${formattedDate}`, { replace: true });
-    window.location.reload();
+    navigate(`/member/exerciseadd`, {
+      state: {
+        regdate: formattedDate
+      }
+    })
   }
 
   const handleSubmit = () => {
@@ -121,26 +135,18 @@ function MemberExerciseAdd() {
       }
     })
       .then((res) => {
-        if (res) {
+        alert("운동 일지가 추가 되었습니다.")
+        navigate(`/member/exercisejournal`, {
+          state: {
+            regdate: exercise_add_to_calendar.regdate
+          }
+        })
 
-          console.log("운동 추가 및 수정 완료");
-        } else {
-          console.error("응답 실패:", res.data);
-          alert("저장에 실패했습니다.");
-        }
       })
       .catch((error) => {
         console.error("에러 발생:", error);
-        if (error.response) {
-          console.error("응답 데이터:", error.response.data);
-          console.error("응답 상태 코드:", error.response.status);
-          console.error("응답 헤더:", error.response.headers);
-          alert(`에러 발생: ${JSON.stringify(error.response.data)}`);
-        } else {
-          console.error("에러 메시지:", error.message);
-          alert(`에러 발생: ${error.message}`);
-        }
       });
+
   };  
 
   return (

@@ -21,17 +21,23 @@ function MemberExercise() {
     const initialDateStr = regdate ? regdate : localDate;
     const initialDate = new Date(initialDateStr);
     const [selectedDate, setSelectedDate] = useState(initialDate);
+    const [formattedDate, setFormattedDate] = useState();
 
     const [exercisejournal, setExerJournal] = useState([]);
 
     const token = localStorage.getItem('token');
-    //selectedDate에서 년월일 추출하는 식
-    const date = new Date(selectedDate);
-    const year = date.getFullYear();
-    const month = ("0" + (date.getMonth() + 1)).slice(-2); // 월을 두 자리 숫자로 만들기
-    const day = ("0" + date.getDate()).slice(-2);
-    const formattedDate = `${year}-${month}-${day}`;
+
     useEffect(() => {
+        //selectedDate에서 년월일 추출하는 식
+        const date = new Date(selectedDate);
+        const year = date.getFullYear();
+        const month = ("0" + (date.getMonth() + 1)).slice(-2); // 월을 두 자리 숫자로 만들기
+        const day = ("0" + date.getDate()).slice(-2);
+        setFormattedDate(`${year}-${month}-${day}`);
+    }, [selectedDate])
+
+    useEffect(() => {
+        setExerJournal([])
         axios.get(`/exercisejournal/date/${formattedDate}`)
         .then(res => {
             setExerJournal(res.data.exerJournalList)
@@ -49,16 +55,20 @@ function MemberExercise() {
     };
 
     const handleReserve = () => {
-        navigate(`/member/exerciseadd?date=${formattedDate}`);
+        navigate(`/member/exerciseadd`, {
+            state: {
+              regdate: formattedDate
+            }
+        })
     };
 
     const handleDateChange = (date) => {
         setSelectedDate(date);
-        const formattedDate = date.toISOString().split("T")[0];
         navigate(`/member/exercisejournal`, {
             state: {
               regdate: formattedDate
-            }})
+            }
+        })
 
     };
 
