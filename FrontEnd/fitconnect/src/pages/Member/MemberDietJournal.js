@@ -94,7 +94,7 @@ function MemberDietJournal(){
      setSelectedDate(date)
      const formattedDate = date.toISOString().split("T")[0]
      regdate.set("date",formattedDate)
-     navigate(`?date=${formattedDate}`, { replace: true })
+     navigate(`/dietjournal/date/${formattedDate}`, { replace: true })
   }
 
   const handleAllDelete=()=>{
@@ -134,6 +134,14 @@ function MemberDietJournal(){
           <Card>
             <Card.Header as="h6" className="border-bottom p-3 mb-0">
               <h3>{selectedDate.toLocaleDateString('ko-KR')}의 식단</h3>
+              <div style={{ marginBottom: "20px" }}>
+                <DatePicker
+                  selected={selectedDate}
+                  onChange={handleDateChange}
+                  dateFormat="yyyy년 MM월 dd일"
+                  placeholderText="날짜를 선택하세요"
+                />
+              </div>
             </Card.Header>
           </Card>
         </Col>

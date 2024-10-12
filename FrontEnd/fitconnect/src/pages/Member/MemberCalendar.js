@@ -112,7 +112,7 @@ const CalendarComponent = () => {
       })
     } 
     else if(clickInfo.event.title === "운동") {
-      navigate(`/member/exercise`, {
+      navigate(`/member/exercisejournal`, {
         state: {
           regdate: clickInfo.event.startStr
         }
