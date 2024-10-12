@@ -49,8 +49,16 @@ function MemberExercise() {
 
 
     const handleDeleteAll = () => {
-        axios.delete(`/exercisejournal/${formattedDate}`)
-            .then(res => { })
+        axios.delete(`/exercisejournal/calendar/date/${formattedDate}`)
+            .then(res => {
+                alert("운동일지가 삭제되었습니다.")
+                navigate(`/member/exercisejournal`, {
+                    state: {
+                      regdate: formattedDate
+                    }
+                })
+        
+            })
             .catch(error => { console.log(error); alert("삭제실패") });
     };
 

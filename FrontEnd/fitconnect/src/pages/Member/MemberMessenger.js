@@ -48,12 +48,12 @@ function MemberMessenger() {
     alignItems: "center",
   };
   const profileStyle = {
-    maxWidth: "100%",
+    maxWidth: "70%",
     border: "1px solid #cecece",
     borderRadius: "50%",
   };
   const profileStyle2 = {
-    maxWidth: "100%",
+    maxWidth: "70%",
     border: "1px solid #cecece",
     borderRadius: "50%",
     display: "none",
@@ -61,9 +61,7 @@ function MemberMessenger() {
 
   // 트레이너 info를 가져오기
   useEffect(() => {
-    console.log(member_num);
-    axios
-      .get(`/member/trainer`)
+    axios.get(`/member/trainer`)
       .then((res) => {
         console.log(res.data);
         if (res.data) {
@@ -75,9 +73,7 @@ function MemberMessenger() {
             //없다면
             // person svg 이미지를 읽어들여서 data url 로 만든다음 imageSrc 에 반영하기
             // svg 이미지를 2 진 데이터 문자열로 읽어들여서
-            const svgString = new XMLSerializer().serializeToString(
-              personSvg.current
-            );
+            const svgString=new XMLSerializer().serializeToString(personSvg.current)
             // 2진데이터 문자열을 btoa (binary to ascii) 함수를 이용해서 ascii 코드로 변경
             const encodedData = btoa(svgString);
             // 변경된 ascii 코드를 이용해서 dataUrl 을 구성한다
@@ -90,8 +86,7 @@ function MemberMessenger() {
         }
       })
       .catch((error) => console.log(error));
-    setTrainerInfo(null);
-    console.log(member_num);
+    
 
     axios
       .get(`/messenger`, {
@@ -165,8 +160,7 @@ function MemberMessenger() {
               ref={personSvg}
               style={profileStyle2}
               xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
+              maxWidth="70%" 
               fill="currentColor"
               viewBox="0 0 16 16"
             >

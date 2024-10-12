@@ -42,17 +42,16 @@ function MemberDietJournalAdd() {
         const month = ("0" + (date.getMonth() + 1)).slice(-2); // 월을 두 자리 숫자로 만들기
         const day = ("0" + date.getDate()).slice(-2);
         setFormattedDate(`${year}-${month}-${day}`);
-      }, [selectedDate])
+      }, [selectedDate]);
 
     useEffect(() => {
         axios.get('/dietlist')
             .then(res => {
                 console.log("전체 식단 리스트", res.data.list);
+                
+                setDietList([]);
                 if (Array.isArray(res.data.list)) {
                     setDietList(res.data.list);
-                } else {
-                    setDietList([]);
-                    
                 }
             })
             .catch(error => console.log(error));
@@ -61,7 +60,6 @@ function MemberDietJournalAdd() {
     const handleChange = (e) => {
         setSearch(e.target.value);
     };
-
 
 
     const handleClickAdd = () => {
@@ -148,6 +146,7 @@ function MemberDietJournalAdd() {
         })
 
     };
+
 
     return (
         <div>
