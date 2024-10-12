@@ -9,12 +9,13 @@ default:
 ---
 spring:
   config:
+    import: "classpath:custom-${spring.profiles.active}.properties"
     activate:
       on-profile: local
       
   datasource:
     driver-class-name: oracle.jdbc.OracleDriver
-    url: jdbc:oracle:thin:@localhost:1522:xe
+    url: jdbc:oracle:thin:@localhost:1521:xe
     username: scott
     password: tiger
 server:
@@ -26,6 +27,7 @@ server:
 ---
 spring:
   config:
+    import: "classpath:custom-${spring.profiles.active}.properties"
     activate:
       on-profile: server
       
