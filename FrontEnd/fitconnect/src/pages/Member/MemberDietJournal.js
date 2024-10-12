@@ -133,7 +133,7 @@ function MemberDietJournal(){
         <Col>
           <Card>
             <Card.Header as="h6" className="border-bottom p-3 mb-0">
-              <h3>{selectedDate.toLocaleDateString('ko-KR')}의 식단</h3>
+              <p style={{fontSize: "1.5em", fontWeight: "bold"}}>{selectedDate.toLocaleDateString('ko-KR')}의 식단</p>
             </Card.Header>
           </Card>
         </Col>
