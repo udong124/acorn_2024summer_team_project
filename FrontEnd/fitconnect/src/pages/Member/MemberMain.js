@@ -166,17 +166,17 @@ const Starter = () => {
     <Container>
       {/***Blog Cards***/}
       <Row>
-        <Col >
+        <Col sm={12} mb={12} lg={4}>
           <Card>
             <MemberMessenger/>            
           </Card>
         </Col>
-        <Col  >
+        <Col  sm={12} mb={12} lg={4}>
           <Card >
             <MemberDietJournal/>
           </Card>
         </Col>
-        <Col >
+        <Col  sm={12} mb={12} lg={4}>
           <Card>
             <MemberExercise/>            
           </Card>
