@@ -48,12 +48,12 @@ function MemberMessenger() {
     alignItems: "center",
   };
   const profileStyle = {
-    maxWidth: "70%",
+    maxWidth: "100%",
     border: "1px solid #cecece",
     borderRadius: "50%",
   };
   const profileStyle2 = {
-    maxWidth: "70%",
+    maxWidth: "100%",
     border: "1px solid #cecece",
     borderRadius: "50%",
     display: "none",
@@ -61,7 +61,9 @@ function MemberMessenger() {
 
   // 트레이너 info를 가져오기
   useEffect(() => {
-    axios.get(`/member/trainer`)
+    console.log(member_num);
+    axios
+      .get(`/member/trainer`)
       .then((res) => {
         console.log(res.data);
         if (res.data) {
@@ -73,7 +75,9 @@ function MemberMessenger() {
             //없다면
             // person svg 이미지를 읽어들여서 data url 로 만든다음 imageSrc 에 반영하기
             // svg 이미지를 2 진 데이터 문자열로 읽어들여서
-            const svgString=new XMLSerializer().serializeToString(personSvg.current)
+            const svgString = new XMLSerializer().serializeToString(
+              personSvg.current
+            );
             // 2진데이터 문자열을 btoa (binary to ascii) 함수를 이용해서 ascii 코드로 변경
             const encodedData = btoa(svgString);
             // 변경된 ascii 코드를 이용해서 dataUrl 을 구성한다
@@ -86,7 +90,8 @@ function MemberMessenger() {
         }
       })
       .catch((error) => console.log(error));
-    
+    setTrainerInfo(null);
+    console.log(member_num);
 
     axios
       .get(`/messenger`, {
@@ -160,7 +165,8 @@ function MemberMessenger() {
               ref={personSvg}
               style={profileStyle2}
               xmlns="http://www.w3.org/2000/svg"
-              maxWidth="70%" 
+              width="16"
+              height="16"
               fill="currentColor"
               viewBox="0 0 16 16"
             >
@@ -226,7 +232,7 @@ function MemberMessenger() {
                 </div>
 
 
-                <Button onClick={() => handleChatClick(member_num)}>대화시작하기</Button>
+                <Button onClick={() => handleChatClick(member_num)}>대화하기</Button>
               </>
             ) : (
               // 트레이너 정보가 없을 때 '트레이너 찾기' 버튼과 검색 아이콘이 보이게끔

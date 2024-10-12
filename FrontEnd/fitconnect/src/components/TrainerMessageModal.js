@@ -14,6 +14,8 @@ const MessageModal = ({ showModal, setShowModal, topic}) => {
   const [deleteMode, setDeleteMode] = useState(false); // 삭제 모드 상태 추가
   const messagesEndRef = useRef(null);
   const [content, setContent] = useState("");
+  const [decodedMessage, setDecodedMessage] = useState("");
+
   const decoder = new TextDecoder('utf-8');
 
   const client = mqtt.connect('ws://52.78.38.12:9002'); // mqtt 연결 설정 코드
@@ -56,15 +58,18 @@ const MessageModal = ({ showModal, setShowModal, topic}) => {
       client.subscribe(topic); 
       getMemberName();
       client.on('message', (topic, message) => {
-        const decodedMessage = JSON.parse(decoder.decode(new Uint8Array(message)));
-        setMessages(prevMessages => [...prevMessages, decodedMessage]); // 새로운 메시지를 추가
+        setDecodedMessage(JSON.parse(decoder.decode(new Uint8Array(message))));
       });
-
-      return () => {
-        client.end(); // 컴포넌트 언마운트 시 MQTT 연결 해제
-      };
     }
   }, [topic]);
+
+  useEffect(()=>{
+    if(decodedMessage != "") {
+      setMessages(prevMessages => [...prevMessages, decodedMessage]); // 새로운 메시지를 추가
+      console.log("디코드메세지",decodedMessage)
+      setDecodedMessage("")
+    }
+  }, [decodedMessage])
 
   // `topic`이 변경될 때마다 message.topic을 업데이트
   useEffect(() => {
@@ -94,23 +99,22 @@ const MessageModal = ({ showModal, setShowModal, topic}) => {
       topic: topic,
       times: new Date().toISOString()
     })
-    // 메시지를 전송하기 전에 필드 상태 확인
-    console.log("Sending message:", message);
-    scrollToBottom();
-    // 모든 필드가 채워져 있는지 확인
-    console.log(message)
-
-    // MQTT로 메시지 전송
-    client.publish(topic, JSON.stringify(message), { qos: 0, retain: false });
-
-    // 서버로 메시지 저장 요청
-    setIsReady(true);
-    client.end();
     e.target.content.value = "";
-
   };
 
+  useEffect(()=>{
+    if(message.content != "") {
+      // 메시지를 전송하기 전에 필드 상태 확인
+      console.log("Sending message:", message);
+      scrollToBottom();
 
+      // MQTT로 메시지 전송
+      client.publish(topic, JSON.stringify(message), { qos: 0, retain: false });
+
+      // 서버로 메시지 저장 요청
+      setIsReady(true);
+    }
+  }, [message.content])
 
   useEffect(()=>{
     if(message.content !== "" && isReady){
@@ -122,19 +126,14 @@ const MessageModal = ({ showModal, setShowModal, topic}) => {
       })
         .then(res => {
           console.log("Message sent successfully:", res.data);
-          setMessages([
-            ...messages,
-            message
-          ])
+          // setMessages(prevMessages => [...prevMessages, message])
           setIsReady(false);
         
           // 메시지 필드 초기화
-          setMessage({
-            send_type: "TRAINER",  // send_type 유지
-            content: "",        // 전송 후 content만 초기화
-            topic: topic        // topic 유지
-          });
-          setContent("")
+          setMessage(prevMessage => ({
+            ...prevMessage,
+            content: "" // 전송 후 content 초기화
+          }));
         })
         .catch(error => {
           console.error("Error sending message:", error);
@@ -166,6 +165,7 @@ const MessageModal = ({ showModal, setShowModal, topic}) => {
 
   // 삭제 모달을 키는 함수
   const toggleDeleteMode = () => {
+    refresh();
     setDeleteMode(prevState => !prevState); 
   };
 
@@ -183,6 +183,7 @@ const MessageModal = ({ showModal, setShowModal, topic}) => {
   const handleClose = () =>{
     setMessages([]);
     setShowModal(false);
+    client.end()
   }
 
   return (
@@ -195,11 +196,9 @@ const MessageModal = ({ showModal, setShowModal, topic}) => {
       </Modal.Header>
       <Modal.Body>
         <div style={{ height: '400px', lineHeight: 'normal', overflowY: 'scroll', border: '1px solid #ccc', padding: '10px'}}>
-  
           {messages.map((msg, index) => (
             <div style={{flex:1}} key={msg.message_id}>
               <ChatMessage message={msg.content} isOwnMessage={msg.send_type === message.send_type} isCenter={msg.send_type === "ADMIN"} times={msg.times ? formatDate(msg.times) : 'No time available'} />
-              
               {/* 삭제 모드일 때만 삭제 버튼을 보여줌 */}
               {deleteMode && msg.send_type === "TRAINER" && (
                 <Button 
