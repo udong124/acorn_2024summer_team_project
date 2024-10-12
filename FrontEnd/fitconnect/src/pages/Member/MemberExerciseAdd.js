@@ -42,7 +42,7 @@ function MemberExerciseAdd() {
     const month = ("0" + (date.getMonth() + 1)).slice(-2); // 월을 두 자리 숫자로 만들기
     const day = ("0" + date.getDate()).slice(-2);
     setFormattedDate(`${year}-${month}-${day}`);
-  }, [selectedDate])
+  }, [selectedDate, exerciseCategory])
 
   useEffect(() => {
     const category = exerciseCategory === "all" ? `` : `/${exerciseCategory}`;
@@ -55,7 +55,7 @@ function MemberExerciseAdd() {
         setExerciseData(validExerciseData)
       })
       .catch((error) => { console.error("운동목록 불러오기 실패", error) });
-  }, [token, exerciseCategory]);
+  }, [selectedDate, exerciseCategory]);
 
   const handleChange = (e) => {
     setSearch(e.target.value);

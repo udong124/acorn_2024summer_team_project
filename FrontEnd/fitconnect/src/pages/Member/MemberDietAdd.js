@@ -127,15 +127,13 @@ function MemberDietJournalAdd() {
             console.log(addDiet)
         axios.post(`/dietjournal/date/${formattedDate}`, addDiet)
             .then((res) => {
-              if (res) {
-                
-                console.log("운동 추가 및 수정 완료");
-              } else {
-                console.error("응답 실패:", res.data);
-                alert("저장에 실패했습니다.");
-              }
+                alert("운동 추가 완료");
+                navigate(`/member/dietjournal`, {
+                    state: {
+                      regdate: formattedDate
+                    }})
             })
-            .catch((error) => {})
+            .catch((error) => {console.error("응답 실패:")})
         
     })
 
