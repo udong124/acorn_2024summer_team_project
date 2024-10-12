@@ -42,12 +42,13 @@ public class JwtUtil {
         return extractExpiration(token).before(new Date());
     }
     //토큰을 만들어서 리턴해주는 메소드 
-    public String generateToken(String username, int num, String role) {
+    public String generateToken(String username, int num, String role, String name) {
         Map<String, Object> claims = new HashMap<>();
         //추가 정보(claims) 도 테스트로 담아보기
         claims.put("id", num);
         claims.put("userName", username); // 애들이 userName으로 구현했으면 편의를 위해
         claims.put("userRole", role); 
+        claims.put("name", name);
         return createToken(claims, username);
     }
  

@@ -88,7 +88,8 @@ public class UserController {
 		String userName = dto.getUserName();
 		int id = userDao.getData(userName).getId();
 		String role = userDao.getData(userName).getRole();
-		String token=jwtUtil.generateToken(userName, id, role);
+		String name = userDao.getData(userName).getName();
+		String token=jwtUtil.generateToken(userName, id, role, name);
 		return "Bearer+"+token;
 	}
 	
