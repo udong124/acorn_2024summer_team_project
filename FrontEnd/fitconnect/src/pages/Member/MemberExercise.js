@@ -95,7 +95,7 @@ function MemberExercise() {
                                 </tr>
                             </thead>
                             <tbody className="text-center">
-                                {exercisejournal.map(item => (
+                                {(exercisejournal !== undefined) && exercisejournal.map(item => (
                                         <tr key={item.exercise_id}>
                                             <td>{item.exercise_name}</td>
                                             <td>{item.exercise_weight}</td>

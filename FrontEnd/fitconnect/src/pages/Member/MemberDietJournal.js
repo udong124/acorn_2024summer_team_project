@@ -48,6 +48,7 @@ function MemberDietJournal(){
     axios.get(`/dietjournal/date/${formattedDate}`)
     .then(res=>{
       setMergedData(res.data.list)
+
     })
     .catch(error => {
       console.error(`Diet Journal API 요청 실패:`, error);
@@ -60,7 +61,7 @@ function MemberDietJournal(){
   // }
   
   useEffect(() => {
-    if (mergedData.length > 0) {
+    if (mergedData != null) {
       const morningItems = mergedData.filter(item => item.diet_type === "아침");
       const lunchItems = mergedData.filter(item => item.diet_type === "점심");
       const dinnerItems = mergedData.filter(item => item.diet_type === "저녁");
