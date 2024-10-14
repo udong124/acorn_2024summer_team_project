@@ -14,7 +14,11 @@ const Message = () => {
 
   // axios.get요청으로 전체 회원리스트 가져오기
   const getMembers = () => {
-    axios.get(`/messenger/list`)
+    axios.get(`/messenger/list`, {
+      headers: {
+        Authorization: localStorage.getItem('token')
+      }
+    })
       .then(res => {
         const updatedMembers = res.data.map(item => ({
           ...item,

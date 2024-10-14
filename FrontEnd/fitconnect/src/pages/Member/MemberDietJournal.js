@@ -47,7 +47,11 @@ function MemberDietJournal(){
   useEffect(()=>{
     console.log("날짜: " + formattedDate)
     setMergedData([])
-    axios.get(`/dietjournal/date/${formattedDate}`)
+    axios.get(`/dietjournal/date/${formattedDate}`, {
+      headers: {
+        Authorization: localStorage.getItem('token')
+      }
+    })
     .then(res=>{
       setMergedData(res.data.list)
 

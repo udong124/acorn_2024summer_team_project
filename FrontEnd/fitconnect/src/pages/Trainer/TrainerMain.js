@@ -51,7 +51,11 @@ useEffect(() => {
       const formattedDate = formatDate(currentDate); // 포맷팅
 
       // Axios GET 요청
-      axios.get('/trainercalendar')
+      axios.get('/trainercalendar', {
+        headers: {
+          Authorization: localStorage.getItem('token')
+        }
+      })
         .then(res => {
           // calList가 null이 아닐 때만 filter 수행
           const calList = res.data.calList || []; // 기본값을 빈 배열로 설정
@@ -73,7 +77,11 @@ useEffect(() => {
     fetchEvents(); // 함수 호출
   
 
-    axios.get(`/user`)
+    axios.get(`/user`, {
+      headers: {
+        Authorization: localStorage.getItem('token')
+      }
+    })
       .then(res => {
         setTrainerInfo(prevInfo => ({
           ...prevInfo,
@@ -94,7 +102,11 @@ useEffect(() => {
           console.log(dataUrl)
         }
 
-        axios.get(`/trainer`)
+        axios.get(`/trainer`, {
+          headers: {
+            Authorization: localStorage.getItem('token')
+          }
+        })
           .then(res => { 
             setTrainerInfo(prevInfo => ({
               ...prevInfo,

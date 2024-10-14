@@ -38,7 +38,11 @@ function MemberExercise() {
 
     useEffect(() => {
         setExerJournal([])
-        axios.get(`/exercisejournal/date/${formattedDate}`)
+        axios.get(`/exercisejournal/date/${formattedDate}`,{
+            headers: {
+              Authorization: localStorage.getItem('token')
+            }
+          })
         .then(res => {
             setExerJournal(res.data.exerJournalList)
         })
