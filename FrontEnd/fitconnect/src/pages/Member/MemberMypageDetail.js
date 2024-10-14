@@ -30,7 +30,6 @@ const MyPageDetail = () => {
     const storedTrainerName = localStorage.getItem('selectedTrainerName'); // 로컬 스토리지에서 트레이너 이름 가져오기
     if (storedTrainerName && storedTrainerName !== "") {
       setTrainerName(storedTrainerName);
-      localStorage.removeItem('selectedTrainerName');
     } else {
       //트레이너 이름이 없으면 불러오지 않기
       setTrainerName(null);
