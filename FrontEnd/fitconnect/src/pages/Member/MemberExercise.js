@@ -40,11 +40,14 @@ function MemberExercise() {
         setExerJournal([])
         axios.get(`/exercisejournal/date/${formattedDate}`)
         .then(res => {
-            setExerJournal(res.data.exerJournalList)
+        // 응답 데이터가 정의되었는지 확인 후 상태 설정
+        setExerJournal(res.data?.exerJournalList || []); // 옵셔널 체이닝 사용
         })
         .catch(error => {
             console.error(`exercise Journal 요청 실패`, error);
         })
+
+        console.log(exercisejournal)
     }, [formattedDate]);
 
 
@@ -80,21 +83,33 @@ function MemberExercise() {
 
     };
 
+
     //메인페이지에서 reserve / Delete 버튼을 보이지않게 하기 위한 설정
     const styleNone = location.pathname === "/member" ? {display:"none"} : {display:"flex"}
+    const styleNone2 = location.pathname === "/member/exercisejournal" ? {display:"none"} : {display:"flex"}
 
     return (
         <Row>
             <Col>
                 <Card>
                     <Card.Header as="h6" className="border-bottom p-3 mb-0">
-                        <p style={{fontSize: "1.5em", fontWeight: "bold"}}>{selectedDate.toLocaleDateString('ko-KR')}의 운동</p>
+                        <p style={{fontSize: "1.5em", fontWeight: "bold"}}>{selectedDate.toLocaleDateString('ko-KR')}의 운동                        
+                        </p>
+                        { exercisejournal.length === 0 && (
+                            <p>해당 일자의 운동 일지를 등록해 주세요
+                            <Button onClick={handleReserve} style={styleNone2}>
+                            등록
+                            </Button>
+                            </p>
+                        )}
+
                         <DatePicker
                             selected={selectedDate}
                             onChange={handleDateChange}
                             dateFormat="yyyy년 MM월 dd일"
                             placeholderText="날짜를 선택하세요"
                         />
+
                     </Card.Header>
 
                 </Card>

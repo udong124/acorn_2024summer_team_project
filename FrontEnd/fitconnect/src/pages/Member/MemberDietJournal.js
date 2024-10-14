@@ -49,7 +49,7 @@ function MemberDietJournal(){
     setMergedData([])
     axios.get(`/dietjournal/date/${formattedDate}`)
     .then(res=>{
-      setMergedData(res.data.list)
+      setMergedData(res.data.list || []) 
 
     })
     .catch(error => {
@@ -133,6 +133,8 @@ function MemberDietJournal(){
   const width = location.pathname === "/member" ? 12 : 4
   //메인페이지에서 reserve / Delete 버튼을 보이지않게 하기 위한 설정
   const styleNone = location.pathname === "/member" ? {display:"none"} : {display:"flex"}
+  const styleNone2 = location.pathname === "/member/dietjournal" ? {display:"none"} : {display:"flex"}
+
   return (
     <>
     <div>
@@ -141,6 +143,14 @@ function MemberDietJournal(){
           <Card>
             <Card.Header as="h6" className="border-bottom p-3 mb-0">
               <p style={{fontSize: "1.5em", fontWeight: "bold"}}>{selectedDate.toLocaleDateString('ko-KR')}의 식단</p>
+              { mergedData.length === 0 && (
+                  <p>해당 일자의 식단 일지를 등록해 주세요
+                  <Button onClick={handleReserve} style={styleNone2}>
+                  등록
+                  </Button>
+                  </p>
+              )}
+
                 <DatePicker
                   selected={selectedDate}
                   onChange={handleDateChange}
