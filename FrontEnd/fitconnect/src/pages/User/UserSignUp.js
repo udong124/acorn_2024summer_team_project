@@ -188,6 +188,7 @@ function UserSignUp() {
         localStorage.setItem("userName", formData.userName); //로그인된 사용자이름 표시해주기 위해
         localStorage.setItem("role", formData.role)
         localStorage.setItem("name", formData.name)
+        localStorage.removeItem('selectedTrainerName')
 
         setIsReady(true);
       })
