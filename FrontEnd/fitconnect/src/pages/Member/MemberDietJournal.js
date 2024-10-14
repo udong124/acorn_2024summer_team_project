@@ -141,14 +141,13 @@ function MemberDietJournal(){
           <Card>
             <Card.Header as="h6" className="border-bottom p-3 mb-0">
               <p style={{fontSize: "1.5em", fontWeight: "bold"}}>{selectedDate.toLocaleDateString('ko-KR')}의 식단</p>
-              <div style={{ marginBottom: "20px" }}>
                 <DatePicker
                   selected={selectedDate}
                   onChange={handleDateChange}
                   dateFormat="yyyy년 MM월 dd일"
                   placeholderText="날짜를 선택하세요"
+                  style={{ width: "80%", boxSizing: "border-box" }} 
                 />
-              </div>
             </Card.Header>
           </Card>
         </Col>
