@@ -95,6 +95,7 @@ const MemberTrainerList = () => {
         .then((response) => {
           if (response.data.isSuccess) {
             alert("트레이너가 성공적으로 등록되었습니다.");
+            navigate(-1, 0)
             //채팅방 생성
             axios.post("/messenger", formData)
             .then((responseMessenger) => {
@@ -134,6 +135,7 @@ const MemberTrainerList = () => {
       }
   
       setIsReady(true);
+      
     };
 
   return (
