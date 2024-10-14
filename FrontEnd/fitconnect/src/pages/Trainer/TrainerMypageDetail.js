@@ -58,7 +58,11 @@ const MyPageDetail = () => {
   //회원정보 수정 페이지에서 본인의 정보를 가져오는 axios.get요청
   useEffect(() => {
 
-    axios.get(`/user`)
+    axios.get(`/user`, {
+      headers: {
+        Authorization: localStorage.getItem('token')
+      }
+    })
     .then(res => {
       setTrainerInfo(prevInfo => ({
         ...prevInfo,
@@ -79,7 +83,11 @@ const MyPageDetail = () => {
         console.log(dataUrl)
       }
 
-      axios.get(`/trainer`)
+      axios.get(`/trainer`, {
+        headers: {
+          Authorization: localStorage.getItem('token')
+        }
+      })
       .then(res => {
         setTrainerInfo(prevInfo => ({
           ...prevInfo,

@@ -63,7 +63,11 @@ function MemberMessenger() {
   useEffect(() => {
     console.log(member_num);
     axios
-      .get(`/member/trainer`)
+      .get(`/member/trainer`, {
+        headers: {
+          Authorization: localStorage.getItem('token')
+        }
+      })
       .then((res) => {
         console.log(res.data);
         if (res.data) {

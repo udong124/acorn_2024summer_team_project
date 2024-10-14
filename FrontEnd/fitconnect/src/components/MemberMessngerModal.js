@@ -40,7 +40,11 @@ const MemberMessengerModal = ({ showModal, setShowModal, topic }) => {
 
   //트레이너 이름 표시해주는 함수
   const getTrainerName = () =>{
-    axios.get(`/member/trainer`)
+    axios.get(`/member/trainer`, {
+      headers: {
+        Authorization: localStorage.getItem('token')
+      }
+    })
     .then(res =>
       setTrainerName(res.data.name)
     )

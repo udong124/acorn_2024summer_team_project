@@ -76,7 +76,11 @@ const MyPageDetail = () => {
 
   //회원정보 수정 페이지에서 본인의 정보를 가져오는 axios.get요청
   useEffect(() => {
-    axios.get(`/user`)
+    axios.get(`/user`,{
+      headers: {
+        Authorization: localStorage.getItem('token')
+      }
+    })
     .then(res => {
       setMemberInfo(prevInfo => ({
         ...prevInfo,
@@ -97,7 +101,11 @@ const MyPageDetail = () => {
         console.log(dataUrl)
       }
 
-      axios.get(`/member`)
+      axios.get(`/member`, {
+        headers: {
+          Authorization: localStorage.getItem('token')
+        }
+      })
       .then(res => {
         setMemberInfo(prevInfo => ({
           ...prevInfo,

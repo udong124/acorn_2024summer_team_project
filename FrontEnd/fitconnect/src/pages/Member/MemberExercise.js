@@ -38,7 +38,11 @@ function MemberExercise() {
 
     useEffect(() => {
         setExerJournal([])
-        axios.get(`/exercisejournal/date/${formattedDate}`)
+        axios.get(`/exercisejournal/date/${formattedDate}`,{
+            headers: {
+              Authorization: localStorage.getItem('token')
+            }
+          })
         .then(res => {
         // 응답 데이터가 정의되었는지 확인 후 상태 설정
         setExerJournal(res.data?.exerJournalList || []); // 옵셔널 체이닝 사용
