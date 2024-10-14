@@ -48,12 +48,12 @@ function MemberMessenger() {
     alignItems: "center",
   };
   const profileStyle = {
-    maxWidth: "100%",
+    maxWidth: "70%",
     border: "1px solid #cecece",
     borderRadius: "50%",
   };
   const profileStyle2 = {
-    maxWidth: "100%",
+    maxWidth: "70%",
     border: "1px solid #cecece",
     borderRadius: "50%",
     display: "none",
@@ -165,8 +165,7 @@ function MemberMessenger() {
               ref={personSvg}
               style={profileStyle2}
               xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
+              maxWidth="70%"
               fill="currentColor"
               viewBox="0 0 16 16"
             >
@@ -227,7 +226,7 @@ function MemberMessenger() {
                   <Form.Group>
                     <Form.Text>헬스장위치</Form.Text>
                     <br/>
-                    <Form.Label>{trainerInfo.gym_link}</Form.Label>
+                    <Form.Label><a href={trainerInfo.gym_link}>네이버 지도</a></Form.Label>
                   </Form.Group>
                 </div>
 
