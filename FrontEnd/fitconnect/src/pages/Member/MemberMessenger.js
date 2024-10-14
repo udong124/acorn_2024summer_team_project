@@ -7,8 +7,9 @@ import MemberMessengerModal from "../../components/MemberMessngerModal";
 import searchicon from "../../assets/images/users/searchicon.png";
 
 function MemberMessenger() {
-  const result = decodeToken(localStorage.token.substring(7));
-  const member_num = result.payload.id;
+
+
+  
 
   //트레이너 info 정보
   const [trainerInfo, setTrainerInfo] = useState({
@@ -25,6 +26,7 @@ function MemberMessenger() {
   });
 
   const[topicManage, setTopicManage] = useState();
+  const [member_num, setMember_num] = useState()
 
 
   //채팅방 정보
@@ -61,6 +63,19 @@ function MemberMessenger() {
 
   // 트레이너 info를 가져오기
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token && token.startsWith("Bearer+")) {
+      try {
+        const { payload } = decodeToken(token.substring(7));
+        if (payload && payload.id) {
+          setMember_num(payload.id); // 토큰에서 가져온 id를 member_num으로 설정
+        } else {
+          console.error("토큰에 id 정보가 없습니다.");
+        }
+      } catch (error) {
+        console.error("토큰 처리 중 오류:", error);
+      }
+    }
     console.log(member_num);
     axios
       .get(`/member/trainer`, {
