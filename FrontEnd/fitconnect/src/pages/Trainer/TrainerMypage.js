@@ -3,6 +3,7 @@ import axios from 'axios';
 import binder from 'classnames/bind'
 import { Col, Container, Row, Card, Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import TrainerMypage from './css/TrainerMypage.css'
 
 
 const MyPage = () => {
@@ -27,28 +28,7 @@ const MyPage = () => {
 
   const navigate = useNavigate();
 
-  const dropZoneStyle={
-    minHeight:"250px",
-    minWidth:"250px",
-    border:"3px solid #cecece",
-    borderRadius:"10px",
-    display:"flex",
-    justifyContent:"center",
-    alignItems:"center"
-  }
-  const profileStyle={
-    width: "200px",
-    height: "200px",
-    border: "1px solid #cecece",
-    borderRadius: "50%"
-  }
-  const profileStyle2={
-    width: "200px",
-    height: "200px",
-    border: "1px solid #cecece",
-    borderRadius: "50%",
-    display: "none"
-  }
+
 
   // 본인정보를 가져오는 axios.get 요청
   useEffect(() => {
@@ -97,34 +77,34 @@ const MyPage = () => {
 
   return (
     <>
-      <svg ref={personSvg} style={profileStyle2}  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+      <svg ref={personSvg} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
         <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
         <path fillRule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
       </svg>
-      <Container>
+      <Container className='TrainerMypage-container'>
       <Row>
       <Col>
          <Card>
-          <Card.Header as="h6" className="border-bottom p-3 mb-0">
+          <Card.Header as="h6" className='TrainerMypage-header'>
             <p style={{fontSize: "2em", fontWeight: "bold"}}>Mypage</p>
           </Card.Header>
           <Card.Body className="">
             
-              <Row>
-                <Col>
-                  <Form.Group>
-                    <Form.Label></Form.Label>
+              <Row className='TrainerMypage-row'>
+                <Col className='TrainerMypage-left'>
+                <Form.Group>
+                <Form.Label></Form.Label>
                     <Form.Control ref={imageInput} style={{display:"none"}} type="file" name="image" accept="image/*"/>
-                  </Form.Group>
-                  <div className="mb-3">
-                    <div style={dropZoneStyle}>
-                        <img style={profileStyle} src={imageSrc} alt="프로필 이미지"/>
+                    </Form.Group>
+                  <div className="Trainerdrop-zone">
+                    <div>
+                        <img className="TrainerProfile-image" src={imageSrc} alt="프로필 이미지"/>
                     </div>
                   </div>
+                  <p className='TrainerProfile-name'>{trainerInfo.name}</p>
+                  <p className='TrainerProfile-intro'>소갯글: {trainerInfo.trainer_intro}</p>
                 </Col>
-                <Col>
-                  <p>이름: {trainerInfo.name}</p>
-                  <p>소갯글: {trainerInfo.trainer_intro}</p>
+                <Col className='TrainerMypage-right TrainerMypage-info'>
                   <p>아이디: {trainerInfo.userName}</p>
                   <p>이메일: {trainerInfo.email}</p>
                   <p>생성일: {trainerInfo.regdate}</p>
@@ -141,8 +121,7 @@ const MyPage = () => {
                   </p>
                 </Col>
               </Row>
-              <Button type="submit"  onClick={()=> navigate('/trainer/mypagedetail')}>회원정보수정</Button>
-          
+              <Button className='update-button'  onClick={()=> navigate('/trainer/mypagedetail')}>회원정보수정</Button>
             </Card.Body>
           </Card>
         </Col>
