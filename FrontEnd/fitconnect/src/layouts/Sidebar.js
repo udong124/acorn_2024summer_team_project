@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import user1 from "../assets/images/users/user4.jpg";
 import probg from "../assets/images/bg/download.jpg";
 import { FcCalendar, FcViewDetails } from "react-icons/fc";
+import { useRef } from "react";
 
 const Sidebar = () => {
   const showMobilemenu = () => {
@@ -42,6 +43,8 @@ const Sidebar = () => {
       { title: "Sign Up", href: "/signup", icon: "bi bi-person-plus" }
     ];
   }
+
+  const closeBtn=useRef()
 /* 이 밑은 사이드의 프로필빼고는 건들일이.. */
   return (
     <div>
@@ -49,7 +52,7 @@ const Sidebar = () => {
       <div className="profilebg" style={{ background: `url(${probg}) no-repeat` }}>
         <div className="p-3 d-flex">
           <img src={user1} alt="user" width="50" className="rounded-circle" />
-          <Button
+          <Button ref={closeBtn}
             variant="white"
             className="ms-auto text-white d-lg-none"
             onClick={showMobilemenu}
@@ -67,6 +70,7 @@ const Sidebar = () => {
           {navigation.map((navi, index) => (
             <Nav.Item key={index} className="sidenav-bg">
               <Nav.Link
+                onClick={()=>closeBtn.current.click()}
                 as={Link}
                 to={navi.href}
                 className={
