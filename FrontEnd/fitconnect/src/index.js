@@ -18,6 +18,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 // token이 존재한다면 token에서 값을 읽어와서 저장할 변수 만들기
 let userName = null;
 let userRole = null;
+let name = null;
 
 // 만일 토큰이 존재한다면
 if (localStorage.token) {
@@ -48,7 +49,8 @@ if (localStorage.token) {
 const preloadedState = {
   user: 
   {userName: userName,
-  role: userRole},
+  role: userRole,
+  name: name},
   modal: {
 
   }

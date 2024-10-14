@@ -1,12 +1,27 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { Button, Card, Col, Form, Modal, Row, Table } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function DietListAddModal({ showModal, setShowModal }) {
 
     //새로운 음식 추가 후 dietAdd 페이지로 이동을 위한 hook
     const navigate = useNavigate();
+
+    // const location = useLocation();
+    // const { regdate }= location.state || {};
+
+    // // 오늘 날짜
+    // const today = new Date();
+    // const localDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+
+    // // location 넘어올 경우 날짜
+    // const initialDateStr = regdate ? regdate : localDate;
+    // const initialDate = new Date(initialDateStr);
+    // const [selectedDate, setSelectedDate] = useState(initialDate);
+    // const [formattedDate, setFormattedDate] = useState();
+
+    // const token = localStorage.getItem('token');
 
     // 새로 추가할 음식 값을 관리
     const [newFood, setNewFood] = useState({
@@ -16,6 +31,7 @@ function DietListAddModal({ showModal, setShowModal }) {
         protein: "",
         fat: ""
     });
+
 
     // 음식 내용을 담았을때 change 이벤트
     const FoodHandleChange = (e) => {
@@ -35,23 +51,24 @@ function DietListAddModal({ showModal, setShowModal }) {
             protein: parseInt(newFood.protein, 10),
             fat: parseInt(newFood.fat, 10)
         })
-            .then(res => {
-                console.log(res.data);
-                if (res.data.isSuccess) {
-                    alert("식단이 등록되었습니다");
-                    navigate(`/member/dietAdd`);
-                }
-            })
-            .catch(error => {
-                console.log("데이터 전송 오류:", error);
-                if (error.response) {
-                    console.log("서버 응답 데이터:", error.response.data);
-                }
-                alert("식단 데이터 추가 실패!");
-            });
-        
-    };
+        .then(res => {
+            console.log(res.data);
+            if (res.data.isSuccess) {
+                alert("식단이 등록되었습니다");
+                setShowModal(false); // 모달 숨기기
+                navigate(0); // 페이지 이동
 
+
+            }
+        })
+        .catch(error => {
+            console.log("데이터 전송 오류:", error);
+            if (error.response) {
+                console.log("서버 응답 데이터:", error.response.data);
+            }
+            alert("식단 데이터 추가 실패!");
+        });
+    };
     return (
         <Modal show={showModal} onHide={() => {
             setShowModal(false);

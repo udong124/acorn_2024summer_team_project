@@ -7,6 +7,7 @@ import { Modal, Button, Card, Row, Col, Form } from "react-bootstrap";
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
+import MemberCalendar from './css/MemberCalendar.css';
 
 const CalendarComponent = () => {
   // const [m_calendar_id, setMCalendarId]  = useState(null)
@@ -112,16 +113,21 @@ const CalendarComponent = () => {
       })
     } 
     else if(clickInfo.event.title === "운동") {
-      navigate(`/member/exercise`, {
+      navigate(`/member/exercisejournal`, {
         state: {
           regdate: clickInfo.event.startStr
         }
       })
     }
-    else {
-      setShowModal(true);
+    else if (clickInfo.event.title !== null) {
+          // 메모를 상태에 저장
+          setNewEventTitle(clickInfo.event.title);
+          setSelectedEvent(clickInfo.event);
+          setShowModal(true);
+       
+      }
+    
     }
-  }
 
   const handleClose = () => {
     setShowModal(false);
@@ -189,7 +195,7 @@ const CalendarComponent = () => {
   const renderEventContent = (eventInfo) => {
     return (
       <div>
-        <b style={{marginLeft: '10px', fontSize: '15px'}}>{eventInfo.event.title}</b>
+        <b>{eventInfo.event.title}</b>
       </div>
     );
   };

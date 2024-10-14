@@ -18,18 +18,18 @@ const Sidebar = () => {
   if (location.pathname.startsWith("/member")) {
     // 멤버 관련 경로일 때 보여줄 메뉴 설정
     navigation = [
-      { title: "Dashboard", href: "/member", icon: "bi bi-speedometer2" },
-      { title: "Member MyPage", href: "/member/mypage", icon: "bi bi-link" },
-      { title: "Member Calendar", href: "/member/calendar", icon: <FcCalendar /> },
-      { title: "Diet Journal", href: "/member/dietjournal", icon: <FcViewDetails /> },
-      { title: "Add Diet", href: "/member/dietadd", icon: <FcViewDetails /> },
-      { title: "Add Exercise", href: "/member/exerciseadd", icon: <FcViewDetails /> },
-      { title: "Exercise", href: "/member/exercise", icon: <FcViewDetails /> }
+      { title: "메인 페이지", href: "/member", icon: "bi bi-speedometer2" },
+      { title: "마이페이지", href: "/member/mypage", icon: "bi bi-link" },
+      { title: "캘린더", href: "/member/calendar", icon: <FcCalendar /> },
+      { title: "식단 일지", href: "/member/dietjournal", icon: <FcViewDetails /> },
+      { title: "식단 등록", href: "/member/dietadd", icon: <FcViewDetails /> },
+      { title: "운동 일지", href: "/member/exercisejournal", icon: <FcViewDetails /> },
+      { title: "운동 등록", href: "/member/exerciseadd", icon: <FcViewDetails /> }
     ];
   } else if (location.pathname.startsWith("/tr")) {
     // 트레이너 관련 경로일 때 보여줄 메뉴 설정
     navigation = [
-      { title: "MainPage", href: "/trainer", icon: "bi bi-speedometer2" },
+      { title: "메인 페이지", href: "/trainer", icon: "bi bi-speedometer2" },
       { title: "캘린더", href: "/trainer/calendar", icon: "bi bi-people" },
       { title: "메신저", href: "/trainer/message", icon: "bi bi-list-task" },
       { title: "회원목록", href: "/trainer/members", icon: "bi bi-calendar-event" },

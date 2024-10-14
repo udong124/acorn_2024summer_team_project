@@ -9,9 +9,6 @@ import DietListAddModal from "../../components/DietListAddModal";
 //import DietListAddModal from "../../components/DietListAddModal";
 
 function MemberDietJournalAdd() {
-    // const [m_calendar_id, setMCalendarId] = useState(null);
-    const [d_journal_id, setDJournalId] = useState(null);
-
     const [dietType, setDietType] = useState("");
     const [search, setSearch] = useState("");
     const [dietList, setDietList] = useState([]);
@@ -31,42 +28,38 @@ function MemberDietJournalAdd() {
     const initialDateStr = regdate ? regdate : localDate;
     const initialDate = new Date(initialDateStr);
     const [selectedDate, setSelectedDate] = useState(initialDate);
+    const [formattedDate, setFormattedDate] = useState();
 
     const token = localStorage.getItem('token');
     //음식 추가 모달 창을 띄우기 위해
     const [showModal, setShowModal] = useState(false);
     const handleShow = () => setShowModal(true);
    
+    useEffect(() => {
+        //selectedDate에서 년월일 추출하는 식
+        const date = new Date(selectedDate);
+        const year = date.getFullYear();
+        const month = ("0" + (date.getMonth() + 1)).slice(-2); // 월을 두 자리 숫자로 만들기
+        const day = ("0" + date.getDate()).slice(-2);
+        setFormattedDate(`${year}-${month}-${day}`);
+      }, [selectedDate]);
 
     useEffect(() => {
-        if (!regdate) {
-            const formattedDate = selectedDate.toISOString().split("T")[0];
-            navigate(`?date=${formattedDate}`, { replace: true });
-        }
-    }, [selectedDate, navigate, regdate]);
-
-    useEffect(() => {
-
-
         axios.get('/dietlist')
             .then(res => {
                 console.log("전체 식단 리스트", res.data.list);
+                
+                setDietList([]);
                 if (Array.isArray(res.data.list)) {
                     setDietList(res.data.list);
-                } else {
-                    setDietList([]);
-                    
                 }
             })
             .catch(error => console.log(error));
-
-
     }, [token, selectedDate]);
 
     const handleChange = (e) => {
         setSearch(e.target.value);
     };
-
 
 
     const handleClickAdd = () => {
@@ -122,7 +115,6 @@ function MemberDietJournalAdd() {
     };
 
     const handleSubmit = (()=>{
-        const formattedDate = selectedDate.toISOString().split("T")[0];
         const addDiet = select.map(item=>
             {
                 return{
@@ -133,15 +125,13 @@ function MemberDietJournalAdd() {
             console.log(addDiet)
         axios.post(`/dietjournal/date/${formattedDate}`, addDiet)
             .then((res) => {
-              if (res) {
-                
-                console.log("운동 추가 및 수정 완료");
-              } else {
-                console.error("응답 실패:", res.data);
-                alert("저장에 실패했습니다.");
-              }
+                alert("운동 추가 완료");
+                navigate(`/member/dietjournal`, {
+                    state: {
+                      regdate: formattedDate
+                    }})
             })
-            .catch((error) => {})
+            .catch((error) => {console.error("응답 실패:")})
         
     })
 
@@ -149,10 +139,14 @@ function MemberDietJournalAdd() {
 
     const handleDateChange = (date) => {
         setSelectedDate(date);
-        const formattedDate = date.toISOString().split("T")[0];
-        navigate(`/member/dietadd?date=${formattedDate}`, { replace: true });
-        window.location.reload();
+        navigate(`/member/dietadd`, {
+            state: {
+              regdate: formattedDate
+            }
+        })
+
     };
+
 
     return (
         <div>

@@ -60,7 +60,8 @@ function Members() {
               console.error(error);
             });
           }else{
-            alert("이미 채팅방이 존재합니다") 
+            navigate("/trainer/message?topic="+res.data.topic)
+            console.log(res.data.topic)
           }
       })
       .catch(err => {
@@ -126,7 +127,7 @@ function Members() {
 
                       
                     {/* 새로운 채팅방 생성 버튼 */}
-                    <Button variant='primary' onClick={() => getAndPost(item.id)}>채팅방 생성</Button>
+                    <Button variant='primary' onClick={() => getAndPost(item.id)}>대화하기</Button>
 
                     <Button variant='danger' onClick={() => handleDelete(item.id)}>회원삭제</Button>
                   </div>

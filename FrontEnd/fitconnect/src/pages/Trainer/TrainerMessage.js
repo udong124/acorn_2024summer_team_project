@@ -61,6 +61,7 @@ const Message = () => {
     if(showModal === false){
       setParams({})
       setSelectedTopic("")
+      getMembers();
     }
   }, [showModal])
 
@@ -85,8 +86,21 @@ const Message = () => {
       return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     };
 
+     // Topic별 가장 최근 내용을 가진 객체로 변환
+  const latestMessages = members.reduce((acc, item) => {
+    if (!item.topic) return acc;
+    
+    // 이미 해당 topic이 존재하는 경우, 시간을 비교하여 업데이트
+    if (!acc[item.topic] || new Date(item.times) > new Date(acc[item.topic].times)) {
+      acc[item.topic] = item;
+    }
+    return acc;
+  }, {});
+  
+
+
   //topic 값이 같을경우에는 출력하지 않기
-  const ownTopic = Array.from(new Map(members.map(item=> [item.topic, item])).values());
+  const ownTopic = Object.values(latestMessages)
 
   return (
     <>

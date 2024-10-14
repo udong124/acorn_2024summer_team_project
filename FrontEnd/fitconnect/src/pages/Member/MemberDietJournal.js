@@ -19,6 +19,7 @@ function MemberDietJournal(){
   const navigate = useNavigate()
   const location = useLocation()
   const { regdate }= location.state || {};
+  const [formattedDate, setFormattedDate] = useState();
 
   // 오늘 날짜
   const today = new Date()
@@ -33,18 +34,19 @@ function MemberDietJournal(){
   const [lunchData, setLunchData] = useState([]);
   const [dinnerData, setDinnerData] = useState([]);
 
-  //selectedDate에서 년월일 추출하는 식
-  const date = new Date(selectedDate);
-  const year = date.getFullYear();
-  const month = ("0" + (date.getMonth() + 1)).slice(-2); // 월을 두 자리 숫자로 만들기
-  const day = ("0" + date.getDate()).slice(-2);
-  const formattedDate = `${year}-${month}-${day}`;
+  useEffect(() => {
+    //selectedDate에서 년월일 추출하는 식
+    const date = new Date(selectedDate);
+    const year = date.getFullYear();
+    const month = ("0" + (date.getMonth() + 1)).slice(-2); // 월을 두 자리 숫자로 만들기
+    const day = ("0" + date.getDate()).slice(-2);
+    setFormattedDate(`${year}-${month}-${day}`);
+  }, [selectedDate])
+
 
   useEffect(()=>{
-
-
     console.log("날짜: " + formattedDate)
-
+    setMergedData([])
     axios.get(`/dietjournal/date/${formattedDate}`)
     .then(res=>{
       setMergedData(res.data.list)
@@ -54,7 +56,7 @@ function MemberDietJournal(){
       console.error(`Diet Journal API 요청 실패:`, error);
     });
 
-  }, []);
+  }, [formattedDate]);
 
   // const getDietByType = (type) => {
   //   return formData.filter(data => data.diet_type === type)
@@ -93,8 +95,10 @@ function MemberDietJournal(){
   const handleDateChange = (date)=>{
      setSelectedDate(date)
      const formattedDate = date.toISOString().split("T")[0]
-     regdate.set("date",formattedDate)
-     navigate(`?date=${formattedDate}`, { replace: true })
+     navigate(`/member/dietjournal`, {
+      state: {
+        regdate: formattedDate
+      }})
   }
 
   const handleAllDelete=()=>{
@@ -103,8 +107,8 @@ function MemberDietJournal(){
     .then(res=>{
       if(res.data.isSuccess){
         alert("삭제 완료되었습니다.")
-        navigate('/member/calendar')
-      }
+        navigate(`/member/calendar`)
+    }
     })
     .catch(error=>{
       console.log(error)
@@ -113,9 +117,12 @@ function MemberDietJournal(){
   }  
 
   const handleReserve = () =>{
-    const formattedDate2 = `${selectedDate.getFullYear()}-${String(selectedDate.getMonth() + 1).padStart(2, '0')}-${String(selectedDate.getDate()).padStart(2, '0')}`;
-    navigate(`/member/dietadd/?date=${formattedDate2}`)
-  }
+    navigate(`/member/dietadd`, {
+      state: {
+        regdate: formattedDate
+      }
+  })
+}
   
   const graphCarbs = (totalCarbs/500) * 100 // 한국 성인 남성 탄수화물 섭취량 약 304g
   const graphProtein = (totalProtein/120) * 100 // 성인 기준 체중 kg 당 0.73g 단백질 섭취
@@ -134,6 +141,14 @@ function MemberDietJournal(){
           <Card>
             <Card.Header as="h6" className="border-bottom p-3 mb-0">
               <p style={{fontSize: "1.5em", fontWeight: "bold"}}>{selectedDate.toLocaleDateString('ko-KR')}의 식단</p>
+              <div style={{ marginBottom: "20px" }}>
+                <DatePicker
+                  selected={selectedDate}
+                  onChange={handleDateChange}
+                  dateFormat="yyyy년 MM월 dd일"
+                  placeholderText="날짜를 선택하세요"
+                />
+              </div>
             </Card.Header>
           </Card>
         </Col>
