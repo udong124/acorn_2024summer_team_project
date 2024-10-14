@@ -77,7 +77,7 @@ const MemberSignUp = () => {
       <Col>
          <Card>
           <Card.Header as="h6" className="border-bottom p-3 mb-0">
-            <h4> 회원 기본 설정 </h4>
+          <p style={{fontSize: "1.5em", fontWeight: "bold"}}> 회원 기본 설정 </p>
           </Card.Header>
           <Card.Body className="">
           <Form onSubmit={handleSubmit}>

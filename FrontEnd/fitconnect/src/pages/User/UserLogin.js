@@ -116,7 +116,7 @@ const UserLogin = () => {
           <Card>
             <Card.Header as="h6" className="border-bottom p-3 mb-0">
               <div>
-                <h1>로그인</h1>
+                <p style={{fontSize: "2em", fontWeight: "bold"}}>로그인</p>
                 <p>로그인하여 FitConnect를 이용해보세요.</p>
               </div>
             </Card.Header>

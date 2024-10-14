@@ -25,6 +25,7 @@ const MemberTrainerList = () => {
     localStorage.setItem('selectedTrainerName', trainer.name); // 트레이너 이름을 로컬 스토리지에 저장
   };
 
+  
   const profileStyle={
     width: "200px",
     height: "200px",

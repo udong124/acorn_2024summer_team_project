@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Row, Col, Card, Button, Form, Container, Image } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -20,11 +20,20 @@ function UserSignUp() {
     profile:"",
     provider:"normal",
     providerid:"",
-    file:""
   });
   const [isReady, setIsReady] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [emailErrorMessage, setEmailErrorMessage] = useState("");
+  // 프로필 이미지 src 에 적용할 값을 state 로 관리 하기
+  const [imageSrc, setImageSrc] = useState(null)
+  // 이미지 input 요소의 참조값을 사용하기 위해 
+  const imageInput = useRef()
+
+  const [userInfo, setuserInfo] = useState({
+    name:"",
+    email:"",
+    image:""
+  })
 
   const navigate = useNavigate();
 
@@ -69,6 +78,10 @@ function UserSignUp() {
         ...formData,
         [name]:value
     })
+    setuserInfo({
+      ...userInfo,
+      [name]:value
+    })
   }
 
   const handleNext = () => {
@@ -91,24 +104,38 @@ function UserSignUp() {
     setStep(2);
   };
 
-  //프로필 이미지를 다시 클릭해서 수정해서 올릴 수 있는 기능 
-  const handleImageChange = (e) => {
-    const selectedFile = e.target.files[0];
-    if (selectedFile) {
-      setFormData({
-        ...formData,
-        "file":selectedFile,
-        "profile":URL.createObjectURL(selectedFile)
-      })
-    } else {
-      setFormData({
-        ...formData,
-        "file": null,
-        "profile": null
-      })
+
+    // input type="file" 요소에 change 이벤트가 일어 났을때 호출되는 함수 
+    const handleImageChange = (e)=>{
+      //선택한 파일 객체
+      const image=e.target.files[0]
+
+      if (image) {
+        // 파일의 타입이 이미지인지 확인 (image/* 타입만 허용)
+        const reg = /image/;
+        if (!reg.test(image.type)) {
+          console.error("이미지 파일이 아닙니다.");
+          return;
+        }
+    
+      }
+      //파일로 부터 데이터를 읽어들일 객체 생성
+      const reader=new FileReader()
+      //파일을 DataURL 형식의 문자열로 읽어들이기
+      reader.readAsDataURL(image)
+      //로딩이 완료(파일데이터를 모드 읽었을때) 되었을때 실행할 함수 등록
+      reader.onload=(event)=>{
+          //읽은 파일 데이터 얻어내기 
+          const data=event.target.result
+          setImageSrc(data)
+      }
+
+      setuserInfo(prevInfo => ({
+        ...prevInfo,
+        image: image
+      }));
     }
 
-  };
 
   const handleSubmit = (e)=>{
     e.preventDefault()
@@ -118,6 +145,7 @@ function UserSignUp() {
       return;
     }
 
+    console.log(formData)
     //입력한 회원정보를 전송하기
     axios.post("/user", formData)
     .then(res=>{
@@ -132,8 +160,8 @@ function UserSignUp() {
         return
       }
 
-      if(formData.file){
-        axios.patch("/user/update/info", formData, {
+      if(userInfo){
+        axios.patch("/user/update/info", userInfo, {
           headers: { "Content-Type": "multipart/form-data" },
         })
         .then((profileResponse) => {
@@ -159,6 +187,7 @@ function UserSignUp() {
         localStorage.setItem("token", token);
         localStorage.setItem("userName", formData.userName); //로그인된 사용자이름 표시해주기 위해
         localStorage.setItem("role", formData.role)
+        localStorage.setItem("name", formData.name)
 
         setIsReady(true);
       })
@@ -171,6 +200,31 @@ function UserSignUp() {
         console.log(error)
     })
   };
+
+
+  const dropZoneStyle={
+    minHeight:"250px",
+    minWidth:"250px",
+    border:"3px solid #cecece",
+    borderRadius:"10px",
+    display:"flex",
+    justifyContent:"center",
+    alignItems:"center",
+    cursor:"pointer"
+  }
+  const profileStyle={
+    width: "200px",
+    height: "200px",
+    border: "1px solid #cecece",
+    borderRadius: "50%"
+  }
+  const profileStyle2={
+    width: "200px",
+    height: "200px",
+    border: "1px solid #cecece",
+    borderRadius: "50%",
+    display: "none"
+  }
 
   return (
     <Container >
@@ -262,49 +316,21 @@ function UserSignUp() {
                 </Form.Group>
                 <Form.Group >
                   <Form.Label>프로필 이미지 업로드</Form.Label>
-                  <div>
-                    {formData.profile ? (
-                      <Image
-                        src={formData.profile}
-                        alt="Profile Preview"
-                        roundedCircle
-                        style={{ width: "150px", height: "150px", objectFit: "cover" }}
-                        onClick={() => document.getElementById("profileImg").click()}
-                      />
-                    ) : (
-                      <div
-                        style={{
-                          width: "150px",
-                          height: "150px",
-                          backgroundColor: "#f0f0f0",
-                          borderRadius: "50%",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          cursor: "pointer",
-                          color: "#999",
-                        }}
-                        onClick={() => document.getElementById("profileImg").click()}
-                      >
-                        <span>이미지 추가</span>
-                      </div>
-                    )}
-                    <input
-                      type="file"
-                      id="profileImg"
-                      onChange={handleImageChange}
-                      accept="image/*"
-                      style={{ display: "none" }}
-                    />
-                    {formData.file && <> <br/> <span className="mt-2">{formData.file.name}</span> </>}
-                    {/* 사용자 위해서 안내 메시지 넣어주기 */}
-                    {
-                      !formData.file &&
-                      <small className="text-muted mt-2">
-                        이미지 파일을 선택하세요 (JPG, PNG, WebP 등 다양한 형식 지원)
-                      </small>
-                    }
-                  </div>
+                  <Form.Group>
+                    <Form.Label>프로필사진 ( click or drag-drop to Edit ) </Form.Label>
+                    <Form.Control onChange={handleImageChange} ref={imageInput} style={{display:"none"}} type="file" name="image" accept="image/*"/>
+                </Form.Group>
+                <div className="mb-3">
+                    <a href="about:blank" onClick={(e)=>{
+                        e.preventDefault()
+                        // input  type="file" 요소를 강제 클릭 
+                        imageInput.current.click()
+                    }}>
+                        <div style={dropZoneStyle}  onDragOver={(e)=>e.preventDefault()} >
+                            <img style={profileStyle} src={imageSrc} alt="프로필 이미지"/>
+                        </div>
+                    </a>
+                </div>
                 </Form.Group>
                 <Form.Group >
                   <Form.Label >사용자 구분</Form.Label>
