@@ -213,6 +213,11 @@ const MyPageDetail = () => {
     setIsReady(true);
   };
 
+  const handleCancel = (e)=>{
+    localStorage.removeItem('memberInfo');
+    localStorage.removeItem('updatedInfo');
+  }
+
   return (
     <Container>
       <Row>
@@ -357,7 +362,8 @@ const MyPageDetail = () => {
                 <Button variant="primary" type="submit" className="ml-2">
                   저장
                 </Button>
-                <Button variant="secondary" onClick={() => navigate('/member/mypage')} className="ml-2">
+                <Button variant="secondary" onClick={handleCancel}
+                  as={Link} to="/member/mypage" className="ml-2">
                   취소
                 </Button>
               </Form>
