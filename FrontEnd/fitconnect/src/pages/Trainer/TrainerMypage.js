@@ -17,7 +17,8 @@ const MyPage = () => {
     trainer_insta: '',
     trainer_intro: '',
     gym_name: '',
-    gym_link: ''
+    gym_link: '',
+    password:'',
   });
   // 프로필 이미지 src 에 적용할 값을 state 로 관리 하기
   const [imageSrc, setImageSrc] = useState(null);
@@ -77,10 +78,7 @@ const MyPage = () => {
 
   return (
     <>
-      <svg ref={personSvg} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-        <path fillRule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-      </svg>
+      <img src={`/img/—Pngtree—instagram icon instagram logo_3584853.png`} alt="" />
       <Container className='TrainerMypage-container'>
       <Row>
       <Col>
@@ -108,6 +106,8 @@ const MyPage = () => {
                   <p>아이디: {trainerInfo.userName}</p>
                   <p>이메일: {trainerInfo.email}</p>
                   <p>생성일: {trainerInfo.regdate}</p>
+                  <p>패스워드: {trainerInfo.password}</p>
+  
                   <p>
                     {<a href={trainerInfo.trainer_insta} target="_blank" rel="noopener noreferrer">
                         <b>트레이너 SNS</b>

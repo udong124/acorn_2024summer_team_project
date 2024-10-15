@@ -4,8 +4,13 @@ import { useEffect, useState } from "react";
 import { Card, Row, Col, Button } from "react-bootstrap";
 import { useNavigate } from "react-router";
 
+
 function Members() {
   const [members, setMembers] = useState([]);
+  const [dietJournalModal, setDieJournalModal] = useState(false);
+  const [exerciseModal, setExerciseModal] = useState(false);
+
+
 
   const navigate = useNavigate();
 
@@ -14,7 +19,6 @@ function Members() {
     const getMembers = () => {
       axios.get(`/trainer/list/member`)
         .then(res => {
-          console.log(res.data);
           setMembers(res.data);
         })
         .catch(err => console.log(err));
@@ -29,10 +33,10 @@ function Members() {
   // 반복문으로 출력한 id(member_num) 값으로 topic값 가져오기
   const getAndPost = (id) => {
     const member_num = id;
-    console.log(member_num);
+   
     axios.get(`/messenger`, { params: { member_num } })  
       .then(res => {
-        console.log(res.data.topic)
+      
         axios.get(`/messenger/detail/${res.data.topic}`)
         .then(detailRes =>{
           //대화 메세지가 있는지 여부
@@ -43,8 +47,7 @@ function Members() {
               content: "채팅방이 개설되었습니다.",
               send_type: "ADMIN",
             };
-            console.log(firstMessage)
-
+          
             // 채팅방 생성 post 요청하기
             axios.post("/messenger/detail", firstMessage, {
               headers: {
@@ -52,16 +55,14 @@ function Members() {
               }
             })
             .then(response => {  
-              console.log( response.data);
-              navigate("/trainer/message?topic="+firstMessage.topic)
-              window.location.reload()
+              navigate("/trainer/message?selectedTopic="+firstMessage.topic)
             })
             .catch(error => {
               console.error(error);
             });
           }else{
-            navigate("/trainer/message?topic="+res.data.topic)
-            console.log(res.data.topic)
+            navigate("/trainer/message?selectedTopic="+res.data.topic)
+            console.log("/trainer/message?selectedTopic="+res.data.topic)
           }
       })
       .catch(err => {
@@ -79,14 +80,13 @@ function Members() {
     const confirmDelete = window.confirm("정말로 이 회원을 삭제하시겠습니까?");
     
     if (confirmDelete) {
-      console.log(id)
       const formData = new FormData();
       formData.append('member_num', id); // member_num 추가
     
       // PUT 요청
       axios.put('/trainercalendar/detail', formData)
         .then(res => {
-          console.log(res.data)
+         
           getMembers(); // 삭제 후 회원 목록을 갱신
         })
         .catch(err => console.log(err));
@@ -100,7 +100,8 @@ function Members() {
     width: "200px",
     height: "200px",
     border: "1px solid #cecece",
-    borderRadius: "50%"
+    borderRadius: "50%",
+    objectFit: "cover"
   }
 
   // 회원목록 출력
@@ -114,9 +115,9 @@ function Members() {
             </Card.Header>
             <Card.Body>
               <ul>
-                {members.map(item => (
+                {members.map((item) => (
                   <div key={item.id}>
-                    {item.profile && <img src={"http://52.78.38.12:8080/upload/"+item.profile} alt={`${item.name} 프로필`} style={profileStyle}/>}
+                    <img src={item.profile && item.profile !== null ? "http://52.78.38.12:8080/upload/"+item.profile : `/img/none.png`} alt={`${item.name} 프로필`} style={profileStyle}/>
                     <p>이름: {item.name}</p>
                     <p>키: {item.member_height}</p>
                     <p>몸무게: {item.member_weight}</p>
@@ -124,11 +125,11 @@ function Members() {
                     <p>플랜: {item.plan}</p>
                     <p>주간플랜: {item.weeklyplan}</p>
 
-
                       
                     {/* 새로운 채팅방 생성 버튼 */}
                     <Button variant='primary' onClick={() => getAndPost(item.id)}>대화하기</Button>
-
+                    <Button>운동일지</Button>
+                    <Button>식단목록</Button>
                     <Button variant='danger' onClick={() => handleDelete(item.id)}>회원삭제</Button>
                   </div>
                 ))}

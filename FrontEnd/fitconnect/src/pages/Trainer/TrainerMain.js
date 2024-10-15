@@ -143,7 +143,7 @@ useEffect(() => {
     borderBottom: "2px solid #ccc", // 헤더 아래 구분선
     textAlign: "center",
     fontWeight: "bold",
-    fontSize: "16px",
+    fontSize: "20px",
     padding: "10px",
     color: "#333",
     borderTopLeftRadius: "10px",

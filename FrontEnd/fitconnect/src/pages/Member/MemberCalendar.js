@@ -217,7 +217,7 @@ const CalendarComponent = () => {
                 headerToolbar={{
                   left: "dayGridMonth,timeGridWeek,timeGridDay,today",
                   center: "title",
-                  right: "addEventButton,prev,next"
+                  right: "prev,next"
                 }}
                
                 dateClick={handleDateClick} // 날짜 클릭 시 호출되는 핸들러
