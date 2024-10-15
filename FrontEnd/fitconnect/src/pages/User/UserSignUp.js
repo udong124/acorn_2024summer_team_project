@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { Row, Col, Card, Button, Form, Container, Image } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import profile from "../../assets/images/users/profile.png";
 
 import { decodeToken } from 'jsontokens';
 import { Provider } from "react-redux";
@@ -214,7 +213,13 @@ function UserSignUp() {
     alignItems:"center",
     cursor:"pointer"
   }
-  
+  const profileStyle={
+    width: "200px",
+    height: "200px",
+    border: "1px solid #cecece",
+    borderRadius: "50%"
+  }
+
   return (
     <Container >
     <Row>
@@ -316,7 +321,7 @@ function UserSignUp() {
                         imageInput.current.click()
                     }}>
                         <div style={dropZoneStyle}  onDragOver={(e)=>e.preventDefault()} >
-                            <img src={profile} style={{width: "300px", height: "220px" }}/>
+                            <img style={profileStyle} src={imageSrc} />
                         </div>
                     </a>
                 </div>
