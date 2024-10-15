@@ -60,7 +60,7 @@
 	</update>
 	
 	
-	<select id="getExerJournal" parameterType="exerciseJournalDto" resultType="exerciseJournal">
+	<select id="getExerJournal" parameterType="exerciseJournalDto" resultType="exerciseJournalDto">
 		SELECT
 			mi.member_num,
 			ej.e_journal_id, 
