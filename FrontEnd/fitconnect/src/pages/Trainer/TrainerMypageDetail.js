@@ -20,10 +20,11 @@ const MyPageDetail = () => {
   });
   const [isReady, setIsReady] = useState(false);
 
+  
+  const navigate = useNavigate();
+
   // 프로필 이미지 src 에 적용할 값을 state 로 관리 하기
   const [imageSrc, setImageSrc] = useState(null)
-
-  const navigate = useNavigate();
 
   // 이미지 input 요소의 참조값을 사용하기 위해 
   const imageInput = useRef()
