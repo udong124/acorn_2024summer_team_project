@@ -16,7 +16,7 @@ const Sidebar = () => {
   // 경로에 따라 다른 네비게이션 메뉴 설정
   let navigation = [];
 
-  if (location.pathname.startsWith("/member")) {
+  if (location.pathname.startsWith("/member") && localStorage.getItem("role") == "MEMBER") {
     // 멤버 관련 경로일 때 보여줄 메뉴 설정
     navigation = [
       { title: "메인 페이지", href: "/member", icon: "bi bi-speedometer2" },
@@ -27,7 +27,7 @@ const Sidebar = () => {
       { title: "운동 일지", href: "/member/exercisejournal", icon: <FcViewDetails /> },
       { title: "운동 등록", href: "/member/exerciseadd", icon: <FcViewDetails /> }
     ];
-  } else if (location.pathname.startsWith("/tr")) {
+  } else if (location.pathname.startsWith("/tr") && localStorage.getItem("role") == "TRAINER" ) {
     // 트레이너 관련 경로일 때 보여줄 메뉴 설정
     navigation = [
       { title: "메인 페이지", href: "/trainer", icon: "bi bi-speedometer2" },
@@ -35,12 +35,6 @@ const Sidebar = () => {
       { title: "메신저", href: "/trainer/message", icon: "bi bi-list-task" },
       { title: "회원목록", href: "/trainer/members", icon: "bi bi-calendar-event" },
       { title: "마이페이지", href: "/trainer/mypage", icon: "bi bi-calendar-event" },
-    ];
-  } else {
-    // 로그인 또는 회원가입 경로일 때 보여줄 메뉴 설정
-    navigation = [
-      { title: "Login", href: "/login", icon: "bi bi-box-arrow-in-right" },
-      { title: "Sign Up", href: "/signup", icon: "bi bi-person-plus" }
     ];
   }
 

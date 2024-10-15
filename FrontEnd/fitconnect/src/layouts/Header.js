@@ -66,7 +66,7 @@ const Header = () => {
     );
   }else {
       navbarBrand = (
-        <Navbar.Brand href="">
+        <Navbar.Brand href="" onClick={(e)=> e.preventDefault()}>
           <LogoWhite className="d-lg-none" />
         </Navbar.Brand>
     );
