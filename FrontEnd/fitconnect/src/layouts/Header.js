@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Logo from "./Logo";
 import { ReactComponent as LogoWhite } from "../assets/images/logos/FitConnectLogo.svg";
 import user1 from "../assets/images/users/user4.jpg";
+import { decodeToken } from "jsontokens";
 
 const Header = () => {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -32,7 +33,7 @@ const Header = () => {
   };
 
    // 로그인/회원가입 페이지 여부 확인
-  const isAuthPage = location.pathname.startsWith("/login") || location.pathname.startsWith("/signup")  ;
+   const isAuthPage = location.pathname.startsWith("/login") || location.pathname.startsWith("/signup") || location.pathname.startsWith("/membersignup") || location.pathname.startsWith("/trainersignup");
 
   //로그인 중 표시를 위하여 로그인 된 사용자이름을 가져오기
   useEffect(() => {
@@ -117,7 +118,7 @@ const Header = () => {
         <Nav className="me-auto">{/* 빈 네비게이션 */}</Nav>
 
         {/* 로그인 여부에 따라 로그인,로그아웃 버튼 표시 */}
-        { userName ? (
+        { !isAuthPage && userName ? (
           <>
             <span style={{ color: "#fff", marginRight: 20 }}>{localStorage.getItem("name")} 님 로그인 중</span>
             <Button
@@ -129,7 +130,7 @@ const Header = () => {
             </Button>
           </>
         ) : ""}
-        { userName ? (
+        { !isAuthPage && userName ? (
           <Dropdown show={dropdownOpen} onToggle={toggle}>
             <Dropdown.Toggle variant="transparent">
               <img

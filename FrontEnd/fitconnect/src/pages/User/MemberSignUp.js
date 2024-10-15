@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Form, Container, Card, Row, Col } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { decodeToken } from "jsontokens";
 
 const MemberSignUp = () => {
 
@@ -38,8 +39,17 @@ const MemberSignUp = () => {
       })
       .then((response) => {
         if(response.data.isSuccess){
-          
-          navigate("/trainerid");
+          const token = localStorage.getItem('token');
+          const { payload } = decodeToken(token.substring(7));
+          if(payload?.id !== 0){
+            localStorage.setItem("role", "MEMBER")
+            localStorage.setItem("userName", payload?.userName)
+            localStorage.setItem("name", payload?.name)
+            navigate("/trainerid");
+          }else {
+            
+            navigate("/trainerid")
+          } 
         }
       })
       .catch((error) => {

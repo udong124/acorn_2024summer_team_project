@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Form, Container, Row, Col, Card } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { decodeToken } from 'jsontokens';
 
 const TrainerSignUp = () => {
   const [formData, setFormData] = useState({
@@ -35,7 +36,14 @@ const TrainerSignUp = () => {
       })
       .then(response => {
         if(response.data.isSuccess){
-          navigate(`/trainer`); 
+          const token = localStorage.getItem('token');
+          const { payload } = decodeToken(token.substring(7));
+          
+          localStorage.setItem("role", "TRAINER")
+          localStorage.setItem("userName", payload?.userName)
+          localStorage.setItem("name", payload?.name)
+          navigate(`/trainer`);
+
         }
       })
       .catch(error => {

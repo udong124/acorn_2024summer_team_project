@@ -12,11 +12,14 @@ const Sidebar = () => {
 
   // 현재 경로 가져오기
   const location = useLocation();
+  
+  // 로그인에 포함되는 페이지를 알려주고, 로그인 페이지에 표시되면 안 되는 목록들을 검열
+  const isAuthPage = location.pathname.startsWith("/login") || location.pathname.startsWith("/signup") || location.pathname.startsWith("/membersignup") || location.pathname.startsWith("/trainersignup");
 
   // 경로에 따라 다른 네비게이션 메뉴 설정
   let navigation = [];
 
-  if (location.pathname.startsWith("/member") && localStorage.getItem("role") == "MEMBER") {
+  if (!isAuthPage && location.pathname.startsWith("/member") && localStorage.getItem("role") == "MEMBER") {
     // 멤버 관련 경로일 때 보여줄 메뉴 설정
     navigation = [
       { title: "메인 페이지", href: "/member", icon: "bi bi-speedometer2" },
@@ -27,7 +30,7 @@ const Sidebar = () => {
       { title: "운동 일지", href: "/member/exercisejournal", icon: <FcViewDetails /> },
       { title: "운동 등록", href: "/member/exerciseadd", icon: <FcViewDetails /> }
     ];
-  } else if (location.pathname.startsWith("/tr") && localStorage.getItem("role") == "TRAINER" ) {
+  } else if (!isAuthPage && location.pathname.startsWith("/tr") && localStorage.getItem("role") == "TRAINER" ) {
     // 트레이너 관련 경로일 때 보여줄 메뉴 설정
     navigation = [
       { title: "메인 페이지", href: "/trainer", icon: "bi bi-speedometer2" },
