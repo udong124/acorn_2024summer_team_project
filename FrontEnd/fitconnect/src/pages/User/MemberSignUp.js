@@ -41,15 +41,14 @@ const MemberSignUp = () => {
         if(response.data.isSuccess){
           const token = localStorage.getItem('token');
           const { payload } = decodeToken(token.substring(7));
-          if(payload?.id !== 0){
-            localStorage.setItem("role", "MEMBER")
-            localStorage.setItem("userName", payload?.userName)
-            localStorage.setItem("name", payload?.name)
-            navigate("/trainerid");
-          }else {
-            
-            navigate("/trainerid")
-          } 
+
+          localStorage.setItem("role", "MEMBER")
+          localStorage.setItem("userName", payload?.userName)
+          localStorage.setItem("name", payload?.name)
+          navigate("/trainerid");
+        
+          navigate("/trainerid")
+          
         }
       })
       .catch((error) => {
