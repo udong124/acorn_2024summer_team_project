@@ -125,7 +125,7 @@ function MemberDietJournalAdd() {
             console.log(addDiet)
         axios.post(`/dietjournal/date/${formattedDate}`, addDiet)
             .then((res) => {
-                alert("운동 추가 완료");
+                alert("식단 추가 완료");
                 navigate(`/member/dietjournal`, {
                     state: {
                       regdate: formattedDate

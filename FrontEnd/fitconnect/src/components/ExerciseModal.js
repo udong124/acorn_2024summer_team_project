@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-function ExerciseModal({ showModal, setShowModal, member_num, name }) {
+function ExerciseModal({ exerciseModal, setExerciseModal, member_num, name }) {
     const [m_calendar_id, setMCalendarId] = useState(null);
     const [e_journal_id, setEJournalId] = useState(null);
 
@@ -77,9 +77,9 @@ function ExerciseModal({ showModal, setShowModal, member_num, name }) {
 
     return (
 
-        <Modal show={showModal} onHide={() => {
+        <Modal show={exerciseModal} onHide={() => {
       setExerJournal([]);
-      setShowModal(false);
+      setExerciseModal(false);
     }}>
             <Modal.Header  as="h6" className="border-bottom p-3 mb-0">
                 <p style={{fontSize: "1.5em", fontWeight: "bold"}}>{selectedDate.toLocaleDateString('ko-KR')}의 운동                        

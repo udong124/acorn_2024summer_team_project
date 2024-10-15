@@ -6,7 +6,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom"
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-function DietModal({ showModal, setShowModal, member_num, name }){
+function DietModal({ dietModal, setDietModal, member_num, name }){
 
   const [formData,setFormData] = useState([])
   const [totalCarbs, setTotalCarbs] = useState(0)
@@ -116,9 +116,9 @@ function DietModal({ showModal, setShowModal, member_num, name }){
  
 
   return (
-    <Modal show={showModal} onHide={() => {
+    <Modal show={dietModal} onHide={() => {
       setMergedData([]);
-      setShowModal(false);
+      setDietModal(false);
     }}>
         <Modal.Header as="h6" className="border-bottom p-3 mb-0">
             <p style={{fontSize: "1.5em", fontWeight: "bold"}}>{selectedDate.toLocaleDateString('ko-KR')}의 식단</p>
