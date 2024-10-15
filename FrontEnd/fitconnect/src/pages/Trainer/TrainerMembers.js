@@ -23,6 +23,7 @@ function Members() {
       axios.get(`/trainer/list/member`)
         .then(res => {
           setMembers(res.data);
+          console.log(res.data)
         })
         .catch(err => console.log(err));
     };
@@ -72,16 +73,6 @@ function Members() {
         console.error( err);
       });
     })
-  };
-
-  const handleDietClick = (member_num) => {
-    setMemberNum(member_num);
-    setDietModal(true); // 모달을 보여줌
-  };
-
-  const handleExerciseClick =(member_num) =>{
-    setMemberNum(member_num);
-    setExerciseModal(true);
   };
 
   
@@ -139,18 +130,18 @@ function Members() {
                       
                     {/* 새로운 채팅방 생성 버튼 */}
                     <Button variant='primary' onClick={() => getAndPost(item.id)}>대화하기</Button>
-                    <Button onClick={() => handleExerciseClick(item.member_num)}>운동일지</Button>
-                    <Button onClick={() => handleDietClick(item.member_num)}>식단목록</Button>
+                    <Button onClick={() => {setExerciseModal(true)}}>운동일지</Button>
+                    <Button onClick={() => {setDietModal(true)}}>식단목록</Button>
                     <Button variant='danger' onClick={() => handleDelete(item.id)}>회원삭제</Button>
                     <DietModal
                     dietModal={dietModal}
                     setDietModal={setDietModal}
-                    member_num={memberNum}
+                    member_num={item.id}
                   />
                     <ExerciseModal
                     exerciseModal={exerciseModal}
                     setExerciseModal={exerciseModal}
-                    member_num={memberNum}
+                    member_num={item.id}
                     />
                   </div>
                 ))}
