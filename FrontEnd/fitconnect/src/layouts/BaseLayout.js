@@ -9,17 +9,17 @@ const BaseLayout = () => {
 
   // 현재 경로에 따라 헤더나 사이드바의 내용이 변경되도록 설정
   const getLayoutConfig = () => {
-    if (location.pathname.startsWith("/member")) {
+    if (location.pathname.startsWith("/member") && !location.pathname.startsWith("/membersignup")) {
       return { showSidebar: true, showContent: true };
     } 
-    else if (location.pathname.startsWith("/trainer")) {
+    else if (location.pathname.startsWith("/trainer") && !location.pathname.startsWith("/trainersignup")) {
       return { showSidebar: true, showContent: true };
     } 
     else {
-      return { showSidebar: false, showContent: true ,}; // 기본 페이지
+      return { showSidebar: false, showContent: true }; // 기본 페이지
     }
   };
-
+  
   const { headerTitle, showSidebar, showContent } = getLayoutConfig();
 
   return (
