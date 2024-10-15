@@ -63,66 +63,70 @@ function MemberMessenger() {
 
   // 트레이너 info를 가져오기
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token && token.startsWith("Bearer+")) {
-      try {
-        const { payload } = decodeToken(token.substring(7));
-        if (payload && payload.id) {
-          setMember_num(payload.id); // 토큰에서 가져온 id를 member_num으로 설정
-        } else {
-          console.error("토큰에 id 정보가 없습니다.");
-        }
-      } catch (error) {
-        console.error("토큰 처리 중 오류:", error);
-      }
-    }
-    console.log(member_num);
-    axios
-      .get(`/member/trainer`, {
-        headers: {
-          Authorization: localStorage.getItem('token')
-        }
-      })
-      .then((res) => {
-        console.log(res.data);
-        if (res.data) {
-          setTrainerInfo(res.data);
-          //만일 등록된 프로필 이미지가 있다면
-          if (res.data.profile) {
-            setImageSrc(`http://52.78.38.12:8080/upload/${res.data.profile}`);
+      console.log(member_num)
+      const token = localStorage.getItem("token");
+      if (token && token.startsWith("Bearer+")) {
+        try {
+          const { payload } = decodeToken(token.substring(7));
+          if (payload && payload.id) {
+            setMember_num(payload.id); // 토큰에서 가져온 id를 member_num으로 설정
           } else {
-            //없다면
-            // person svg 이미지를 읽어들여서 data url 로 만든다음 imageSrc 에 반영하기
-            // svg 이미지를 2 진 데이터 문자열로 읽어들여서
-            const svgString = new XMLSerializer().serializeToString(
-              personSvg.current
-            );
-            // 2진데이터 문자열을 btoa (binary to ascii) 함수를 이용해서 ascii 코드로 변경
-            const encodedData = btoa(svgString);
-            // 변경된 ascii 코드를 이용해서 dataUrl 을 구성한다
-            const dataUrl = "data:image/svg+xml;base64," + encodedData;
-            setImageSrc(dataUrl);
-            console.log(dataUrl);
+            console.error("토큰에 id 정보가 없습니다.");
           }
-        } else {
-          setTrainerInfo(null);
+        } catch (error) {
+          console.error("토큰 처리 중 오류:", error);
         }
-      })
-      .catch((error) => console.log(error));
-    setTrainerInfo(null);
-    console.log(member_num);
+      }
 
-    axios
-      .get(`/messenger`, {
-        params: { member_num: member_num },
-      })
-      .then((res) => {
-        console.log(res.data);
-        setChatRoom(res.data);
-      })
-      .catch((error) => console.log(error));
+      axios
+        .get(`/member/trainer`, {
+          headers: {
+            Authorization: localStorage.getItem('token')
+          }
+        })
+        .then((res) => {
+          console.log(res.data);
+          if (res.data) {
+            setTrainerInfo(res.data);
+            //만일 등록된 프로필 이미지가 있다면
+            if (res.data.profile) {
+              setImageSrc(`http://52.78.38.12:8080/upload/${res.data.profile}`);
+            } else {
+              //없다면
+              // person svg 이미지를 읽어들여서 data url 로 만든다음 imageSrc 에 반영하기
+              // svg 이미지를 2 진 데이터 문자열로 읽어들여서
+              const svgString = new XMLSerializer().serializeToString(
+                personSvg.current
+              );
+              // 2진데이터 문자열을 btoa (binary to ascii) 함수를 이용해서 ascii 코드로 변경
+              const encodedData = btoa(svgString);
+              // 변경된 ascii 코드를 이용해서 dataUrl 을 구성한다
+              const dataUrl = "data:image/svg+xml;base64," + encodedData;
+              setImageSrc(dataUrl);
+              console.log(dataUrl);
+            }
+          } else {
+            setTrainerInfo(null);
+          }
+        })
+        .catch((error) => console.log(error));
+      setTrainerInfo(null);
   }, []);
 
+  useEffect(()=>{
+    if(member_num){ //member_num 이 설정되면 실행
+      console.log(member_num);
+      axios
+        .get(`/messenger`, {
+          params: { member_num: member_num },
+        })
+        .then((res) => {
+          console.log(res.data);
+          setChatRoom(res.data);
+        })
+        .catch((error) => console.log(error));
+    }
+  }, [member_num])
   
   //대화하기를 눌렀을 때 실행할 함수
     // 반복문으로 출력한 id(member_num) 값으로 topic값 가져오기

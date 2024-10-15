@@ -24,6 +24,9 @@ const Header = () => {
   const handleLogout = () => {
     localStorage.removeItem("token"); // 로그인 토큰 삭제
     localStorage.removeItem("userName"); //-로그인중 사라지도록 삭제
+    localStorage.removeItem("role");
+    localStorage.removeItem("userRole");
+    localStorage.removeItem("name");
     setUserName(null); //-상태 원래되로
     navigate("/login"); // 로그인 페이지로 리다이렉트
   };

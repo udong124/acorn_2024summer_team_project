@@ -45,21 +45,22 @@ function MemberDietJournal(){
 
 
   useEffect(()=>{
-    console.log("날짜: " + formattedDate)
-    setMergedData([])
-    axios.get(`/dietjournal/date/${formattedDate}`, {
-      headers: {
-        Authorization: localStorage.getItem('token')
-      }
-    })
-    .then(res=>{
-      setMergedData(res.data.list || []) 
+    if(formattedDate){ // formatteedDate 가 설정된 후에만 실행
+      console.log("날짜: " + formattedDate)
+      setMergedData([])
+      axios.get(`/dietjournal/date/${formattedDate}`, {
+        headers: {
+          Authorization: localStorage.getItem('token')
+        }
+      })
+      .then(res=>{
+        setMergedData(res.data.list || []) 
 
-    })
-    .catch(error => {
-      console.error(`Diet Journal API 요청 실패:`, error);
-    });
-
+      })
+      .catch(error => {
+        console.error(`Diet Journal API 요청 실패:`, error);
+      });
+    }
   }, [formattedDate]);
 
   // const getDietByType = (type) => {

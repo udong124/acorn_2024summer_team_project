@@ -38,20 +38,23 @@ function MemberExercise() {
 
     useEffect(() => {
         setExerJournal([])
-        axios.get(`/exercisejournal/date/${formattedDate}`,{
-            headers: {
-              Authorization: localStorage.getItem('token')
-            }
-          })
-        .then(res => {
-        // 응답 데이터가 정의되었는지 확인 후 상태 설정
-        setExerJournal(res.data?.exerJournalList || []); // 옵셔널 체이닝 사용
-        })
-        .catch(error => {
-            console.error(`exercise Journal 요청 실패`, error);
-        })
+        if(formattedDate){  // formattedDate 가 설정된 후에만 실행
+            console.log(formattedDate)
+            axios.get(`/exercisejournal/date/${formattedDate}`,{
+                headers: {
+                Authorization: localStorage.getItem('token')
+                }
+            })
+            .then(res => {
+            // 응답 데이터가 정의되었는지 확인 후 상태 설정
+            setExerJournal(res.data?.exerJournalList || []); // 옵셔널 체이닝 사용
+            })
+            .catch(error => {
+                console.error(`exercise Journal 요청 실패`, error);
+            })
 
-        console.log(exercisejournal)
+            console.log(exercisejournal)
+        }
     }, [formattedDate]);
 
 
