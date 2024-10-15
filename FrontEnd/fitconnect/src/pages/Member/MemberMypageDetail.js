@@ -209,6 +209,7 @@ const MyPageDetail = () => {
     }
     console.log(memberInfo)
     localStorage.removeItem('memberInfo');
+    localStorage.removeItem('updatedInfo');
     setIsReady(true);
   };
 
