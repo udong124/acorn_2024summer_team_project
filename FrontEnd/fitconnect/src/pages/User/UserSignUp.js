@@ -219,13 +219,6 @@ function UserSignUp() {
     border: "1px solid #cecece",
     borderRadius: "50%"
   }
-  const profileStyle2={
-    width: "200px",
-    height: "200px",
-    border: "1px solid #cecece",
-    borderRadius: "50%",
-    display: "none"
-  }
 
   return (
     <Container >
@@ -233,7 +226,7 @@ function UserSignUp() {
       <Col>
          <Card>
           <Card.Header as="h6" className="border-bottom p-3 mb-0">
-            <h3>회원가입</h3>
+            <p className="h3">회원가입</p>
           </Card.Header>
           <Card.Body className="">
               {step === 1 && (

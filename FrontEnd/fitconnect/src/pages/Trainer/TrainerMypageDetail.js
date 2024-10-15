@@ -251,6 +251,7 @@ const MyPageDetail = () => {
                     value={trainerInfo.userName}
                     disabled
                   />
+                  <Form.Text className="text-muted">아이디는 수정할 수 없습니다.</Form.Text>
                 </Form.Group>
                 <Form.Group controlId="formEmail">
                   <Form.Label>이메일</Form.Label>
@@ -269,6 +270,7 @@ const MyPageDetail = () => {
                     value={trainerInfo.regdate}
                     disabled
                   />
+                  <Form.Text className="text-muted">생성일은 수정할 수 없습니다.</Form.Text>
                 </Form.Group>
                 <Form.Group controlId="formInsta">
                   <Form.Label>트레이너 SNS</Form.Label>
