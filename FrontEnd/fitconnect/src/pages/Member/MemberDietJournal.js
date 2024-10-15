@@ -8,6 +8,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 function MemberDietJournal(){
 
+  const [m_calendar_id, setMCalendarId] = useState(0);
   const [formData,setFormData] = useState([])
   const [totalCarbs, setTotalCarbs] = useState(0)
   const [totalProtein, setTotalProtein] = useState(0)
@@ -54,6 +55,8 @@ function MemberDietJournal(){
         }
       })
       .then(res=>{
+        const newMCalendarId = res.data.list[0]?.m_calendar_id; // 옵셔널 체이닝으로 안전하게 접근
+        setMCalendarId(newMCalendarId);
         setMergedData(res.data.list || []) 
 
       })
@@ -63,9 +66,6 @@ function MemberDietJournal(){
     }
   }, [formattedDate]);
 
-  // const getDietByType = (type) => {
-  //   return formData.filter(data => data.diet_type === type)
-  // }
   
   useEffect(() => {
     if (mergedData != null) {
@@ -108,11 +108,11 @@ function MemberDietJournal(){
 
   const handleAllDelete=()=>{
     
-    axios.delete(`/dietjournal/all/${formattedDate}`)
+    axios.delete(`/dietjournal/all/${m_calendar_id}`)
     .then(res=>{
       if(res.data.isSuccess){
         alert("삭제 완료되었습니다.")
-        navigate(`/member/calendar`)
+        navigate(`/dietjournal`, 0)
     }
     })
     .catch(error=>{
@@ -172,8 +172,8 @@ function MemberDietJournal(){
             <Card>
             <Card.Header as="h6" className="border-bottom p-3 mb-0" style={styleNone}>
             <div className="d-flex justify-content-end mb-3">
-              <Button onClick={handleReserve} variant="secondary" className="me-2">reserve</Button>
-              <Button onClick={handleAllDelete} variant="secondary">Delete</Button>
+              <Button onClick={handleReserve} variant="secondary" className="me-2">등록하기</Button>
+              <Button onClick={handleAllDelete} variant="secondary">삭제하기</Button>
             </div>
             </Card.Header>
             <Card.Body className="">

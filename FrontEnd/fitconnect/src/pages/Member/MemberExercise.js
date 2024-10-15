@@ -6,7 +6,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 function MemberExercise() {
-    const [m_calendar_id, setMCalendarId] = useState(null);
+    const [m_calendar_id, setMCalendarId] = useState(0);
     const [e_journal_id, setEJournalId] = useState(null);
 
     const navigate = useNavigate();
@@ -45,9 +45,11 @@ function MemberExercise() {
                 Authorization: localStorage.getItem('token')
                 }
             })
-            .then(res => {
-            // 응답 데이터가 정의되었는지 확인 후 상태 설정
-            setExerJournal(res.data?.exerJournalList || []); // 옵셔널 체이닝 사용
+            .then(res => {  
+                const newMCalendarId = res.data.exerJournalList[0]?.m_calendar_id; // 옵셔널 체이닝으로 안전하게 접근
+                setMCalendarId(newMCalendarId);
+                // 응답 데이터가 정의되었는지 확인 후 상태 설정
+                setExerJournal(res.data?.exerJournalList || []); // 옵셔널 체이닝 사용
             })
             .catch(error => {
                 console.error(`exercise Journal 요청 실패`, error);
@@ -59,14 +61,10 @@ function MemberExercise() {
 
 
     const handleDeleteAll = () => {
-        axios.delete(`/exercisejournal/calendar/date/${formattedDate}`)
+        axios.delete(`/exercisejournal/calendar/${m_calendar_id}`)
             .then(res => {
                 alert("운동일지가 삭제되었습니다.")
-                navigate(`/member/exercisejournal`, {
-                    state: {
-                      regdate: formattedDate
-                    }
-                })
+                navigate(`/member/exercisejournal`, 0)
         
             })
             .catch(error => { console.log(error); alert("삭제실패") });
