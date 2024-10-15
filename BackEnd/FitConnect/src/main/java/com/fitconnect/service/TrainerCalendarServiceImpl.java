@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.fitconnect.auth.PrincipalDetails;
 import com.fitconnect.dto.ChatRoomDto;
+import com.fitconnect.dto.DietJournalDto;
 import com.fitconnect.dto.ExerciseJournalDto;
 import com.fitconnect.dto.MemberDto;
 import com.fitconnect.dto.TrainerCalendarDto;
@@ -187,6 +188,39 @@ public class TrainerCalendarServiceImpl implements TrainerCalendarService  {
 
 	      return isSuccess;
 	   }
+
+	/**
+	 * <PRE>
+	 * 1. MethodName	: disconnect
+	 * 2. ClassName		: TrainerCalendarServiceImpl
+	 * 3. Commnet			: 특정 회원의 특정 날짜에 등록된 식단 일지를 조회하는 메소드
+	 * 4. 작성자				: songminjung
+	 * 5. 작성일				: 2024. 9. 30. 오후 2:49:56
+	 * </PRE>
+	 * 		@param dto
+	 * 		@return List<DietJournalDto>
+	 */
+	@Override
+	public List<DietJournalDto> getDietJournal(DietJournalDto dto) {
+		
+		return calDao.getDietJournal(dto);
+	}
+
+	/**
+	 * <PRE>
+	 * 1. MethodName	: disconnect
+	 * 2. ClassName		: TrainerCalendarServiceImpl
+	 * 3. Commnet			: 특정 회원의 특정 날짜에 등록된 운동 일지를 조회하는 메소드
+	 * 4. 작성자				: songminjung
+	 * 5. 작성일				: 2024. 9. 30. 오후 2:49:56
+	 * </PRE>
+	 * 		@param dto
+	 * 		@return <ExerciseJournalDto>
+	 */
+	@Override
+	public List<ExerciseJournalDto> getExerJournal(ExerciseJournalDto dto) {
+		return calDao.getExerJournal(dto);
+	}
 
 
 }

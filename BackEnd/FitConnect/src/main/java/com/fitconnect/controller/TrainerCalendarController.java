@@ -15,8 +15,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fitconnect.dto.DietJournalDto;
+import com.fitconnect.dto.ExerciseJournalDto;
+import com.fitconnect.dto.MemberCalendarDto;
 import com.fitconnect.dto.MemberDto;
 import com.fitconnect.dto.TrainerCalendarDto;
+import com.fitconnect.service.MemberCalendarService;
 import com.fitconnect.service.TrainerCalendarService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,6 +32,7 @@ import lombok.Delegate;
 public class TrainerCalendarController {
 
 	@Autowired private TrainerCalendarService service;
+	@Autowired private MemberCalendarService membercalendarService;
 	
 	/**********************************************************************
 	 * <PRE> * 메소드 정보 *
@@ -188,4 +193,81 @@ public class TrainerCalendarController {
 		
 		return Map.of("isSuccess", isSuccess);
 	}
+	
+	/**********************************************************************
+	 * <PRE> * 메소드 정보 *
+	 * 1. MethodName	: getDietJournal
+	 * 2. ClassName		: TrainerCalendarController
+	 * 3. 작성자			: songminjung
+	 * 4. 작성일			: 2024. 9. 30. 오후 12:49:35
+	 * 5. 설명			: 특정 회원의 특정 날짜에 등록된 식단 일지를 조회하는 메소드
+	 * 					  경로변수로 받아온 regdate 를 이용하여 m_calendar_id 값과 파라미터로 받아온 member_num 을 담아 해당 값과 일치하는 식단 일지를 조회한다.
+	 * </PRE>
+	 * 		@return Map<String,Object> "isSuccess", true or false, "list", list
+	 * 		@param regdate, member_num
+	 * 		@return
+	**********************************************************************/
+	@GetMapping("/trainer/memberlist/dietjournal/{regdate}")
+	public Map<String, Object> getDietJournal(@PathVariable("regdate") String regdate, @RequestParam int member_num){
+		MemberCalendarDto membercalendarDto = new MemberCalendarDto();
+		membercalendarDto.setRegdate(regdate);
+		// 캘린더Dto에 날짜를 담아서 서비스에 넘겨주면 멤버캘린더서비스에서 회원번호를 담아서 dao를 실행시킨다.
+		// getOneByDate 에는 경로변수로 받은 날짜에 해당하는 캘린더 정보(id, num, regdate, memo)와 isSuccess 로 boolean 값이 담겨져 있다.
+		Map<String, Object> getOneByDate= membercalendarService.getOneByDate(membercalendarDto);
+		DietJournalDto dto = new DietJournalDto();
+		// m_calendar_id 값이 1개여서 반환된 boolean 값이 true이면
+		if((boolean) getOneByDate.get("isSuccess")) {
+			// 담겨져 있는 regdate를 활용해서 m_calendar_id 만 추출하고
+			int m_calendar_id = ((MemberCalendarDto)getOneByDate.get("result")).getM_calendar_id();
+			//dto에 담아준다.
+			dto.setM_calendar_id(m_calendar_id);
+			dto.setMember_num(member_num);
+			//해당 날짜에 해당하는 식단일지 정보와 true 값을 담아서 리턴해준다.
+			List<DietJournalDto> list = service.getDietJournal(dto);
+			return Map.of("isSuccess", true,
+							"list", list);
+		}else {
+			// m_calendar_id 가 없으면 false, 값이 여러개 조회되면 exception 처리
+			return Map.of("isSuccess", false);
+		}
+	}
+	
+	/**********************************************************************
+	 * <PRE> * 메소드 정보 *
+	 * 1. MethodName	: getExerJournal
+	 * 2. ClassName		: TrainerCalendarController
+	 * 3. 작성자			: songminjung
+	 * 4. 작성일			: 2024. 9. 30. 오후 12:49:35
+	 * 5. 설명			: 특정 회원의 특정 날짜에 등록된 운동 일지를 조회하는 메소드
+	 * 					  경로변수로 받아온 regdate 를 이용하여 m_calendar_id 값과 파라미터로 받아온 member_num 을 담아 해당 값과 일치하는 운동 일지를 조회한다.
+	 * </PRE>
+	 * 		@return Map<String,Object> "isSuccess", true or false, "list", list
+	 * 		@param regdate, member_num
+	 * 		@return
+	**********************************************************************/
+	@GetMapping("/trainer/memberlist/exerjournal/{regdate}")
+	public Map<String, Object> getExerJournal(@PathVariable("regdate") String regdate, @RequestParam int member_num){
+		MemberCalendarDto membercalendarDto = new MemberCalendarDto();
+		membercalendarDto.setRegdate(regdate);
+		// 캘린더Dto에 날짜를 담아서 서비스에 넘겨주면 멤버캘린더서비스에서 회원번호를 담아서 dao를 실행시킨다.
+		// getOneByDate 에는 경로변수로 받은 날짜에 해당하는 캘린더 정보(id, num, regdate, memo)와 isSuccess 로 boolean 값이 담겨져 있다.
+		Map<String, Object> getOneByDate= membercalendarService.getOneByDate(membercalendarDto);
+		ExerciseJournalDto dto = new ExerciseJournalDto();
+		// m_calendar_id 값이 1개여서 반환된 boolean 값이 true이면
+		if((boolean) getOneByDate.get("isSuccess")) {
+			// 담겨져 있는 regdate를 활용해서 m_calendar_id 만 추출하고
+			int m_calendar_id = ((MemberCalendarDto)getOneByDate.get("result")).getM_calendar_id();
+			//dto에 담아준다.
+			dto.setM_calendar_id(m_calendar_id);
+			dto.setMember_num(member_num);
+			//해당 날짜에 해당하는 식단일지 정보와 true 값을 담아서 리턴해준다.
+			List<ExerciseJournalDto> list = service.getExerJournal(dto);
+			return Map.of("isSuccess", true,
+							"list", list);
+		}else {
+			// m_calendar_id 가 없으면 false, 값이 여러개 조회되면 exception 처리
+			return Map.of("isSuccess", false);
+		}
+	}
+	
 }

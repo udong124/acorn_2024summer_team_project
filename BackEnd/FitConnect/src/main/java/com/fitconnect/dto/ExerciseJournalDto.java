@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Alias("exerciseJournalDto")
 public class ExerciseJournalDto {
+	private int member_num;
 	private int e_journal_id;
 	private int m_calendar_id;
 	private int exercise_order;

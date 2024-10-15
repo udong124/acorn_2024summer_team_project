@@ -58,4 +58,25 @@
 		SET trainer_num=null
 		WHERE member_num=#{member_num}
 	</update>
+	
+	
+	<select id="getExerJournal" parameterType="exerciseJournalDto" resultType="exerciseJournal">
+		SELECT
+			mi.member_num,
+			ej.e_journal_id, 
+			ej.m_calendar_id, 
+			ej.exercise_id, 
+			ej.exercise_order,
+			ej.exercise_set, 
+			ej.exercise_count, 
+			ej.exercise_weight,  
+			el.exercise_name
+		FROM
+			exercisejournal ej
+			JOIN exerciselist el ON ej.exercise_id=el.exercise_id
+			JOIN membercalendar mi ON mi.m_calendar_id = ej.m_calendar_id
+		WHERE ej.m_calendar_id = #{ m_calendar_id} AND member_num = #{ member_num}
+	
+	</select>
+	
 </mapper>
