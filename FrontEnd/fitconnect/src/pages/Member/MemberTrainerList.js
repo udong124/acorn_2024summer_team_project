@@ -75,9 +75,9 @@ const MemberTrainerList = () => {
     //검색어조건(헬스장이름, 트레이너인스타에 따라)
     const filteredList = trainerList.filter((trainer) => {
       if (searchCondition === "gym_name") {
-        return trainer.gym_name.toLowerCase().includes(keyword);
+        return trainer.gym_name && trainer.gym_name.toLowerCase().includes(keyword);
       } else if (searchCondition === "trainer_insta") {
-        return trainer.trainer_insta.toLowerCase().includes(keyword);
+        return  trainer.trainer_insta && trainer.trainer_insta.toLowerCase().includes(keyword);
       }
       return false;
     });
