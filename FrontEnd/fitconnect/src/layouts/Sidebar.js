@@ -2,7 +2,7 @@ import { Button, Nav } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
 import user1 from "../assets/images/users/user4.jpg";
 import probg from "../assets/images/bg/download.jpg";
-import { FcCalendar, FcViewDetails } from "react-icons/fc";
+import { FcAutomatic, FcCalendar, FcConferenceCall, FcGenericSortingDesc, FcHome, FcIphone, FcMenu, FcShop, FcSportsMode, FcViewDetails } from "react-icons/fc";
 import { useRef } from "react";
 
 const Sidebar = () => {
@@ -22,22 +22,22 @@ const Sidebar = () => {
   if (!isAuthPage && location.pathname.startsWith("/member") && localStorage.getItem("role") == "MEMBER") {
     // 멤버 관련 경로일 때 보여줄 메뉴 설정
     navigation = [
-      { title: "메인 페이지", href: "/member", icon: "bi bi-speedometer2" },
-      { title: "마이페이지", href: "/member/mypage", icon: "bi bi-link" },
+      { title: "메인 페이지", href: "/member", icon: <FcGenericSortingDesc /> },
       { title: "캘린더", href: "/member/calendar", icon: <FcCalendar /> },
-      { title: "식단 일지", href: "/member/dietjournal", icon: <FcViewDetails /> },
+      { title: "식단 일지", href: "/member/dietjournal", icon: <FcShop /> },
       { title: "식단 등록", href: "/member/dietadd", icon: <FcViewDetails /> },
-      { title: "운동 일지", href: "/member/exercisejournal", icon: <FcViewDetails /> },
-      { title: "운동 등록", href: "/member/exerciseadd", icon: <FcViewDetails /> }
+      { title: "운동 일지", href: "/member/exercisejournal", icon: <FcSportsMode /> },
+      { title: "운동 등록", href: "/member/exerciseadd", icon: <FcViewDetails /> },
+      { title: "마이페이지", href: "/member/mypage", icon: <FcHome /> },
     ];
   } else if (!isAuthPage && location.pathname.startsWith("/tr") && localStorage.getItem("role") == "TRAINER" ) {
     // 트레이너 관련 경로일 때 보여줄 메뉴 설정
     navigation = [
-      { title: "메인 페이지", href: "/trainer", icon: "bi bi-speedometer2" },
-      { title: "캘린더", href: "/trainer/calendar", icon: "bi bi-people" },
-      { title: "메신저", href: "/trainer/message", icon: "bi bi-list-task" },
-      { title: "회원목록", href: "/trainer/members", icon: "bi bi-calendar-event" },
-      { title: "마이페이지", href: "/trainer/mypage", icon: "bi bi-calendar-event" },
+      { title: "메인 페이지", href: "/trainer", icon: <FcGenericSortingDesc /> },
+      { title: "회원목록", href: "/trainer/members", icon: <FcConferenceCall />},
+      { title: "캘린더", href: "/trainer/calendar", icon: <FcCalendar /> },
+      { title: "메신저", href: "/trainer/message", icon: <FcIphone /> },
+      { title: "마이페이지", href: "/trainer/mypage", icon: <FcHome /> },
     ];
   }
 

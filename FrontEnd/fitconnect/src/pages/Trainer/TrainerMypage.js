@@ -86,19 +86,7 @@ const MyPage = () => {
     .catch(err => console.log(err));
   }, []);
 
-  const handleDelete = () =>{
-    const confirmDelete = window.confirm("정말로 삭제하시겠습니까? 모든정보가 사라집니다.");
-    if(confirmDelete){
-      axios.delete(`/user`)
-      .then(
-        alert("삭제되었습니다")
-      ).then(
-        navigate((`/`))
-      )
-    }else{
-      console.log("취소됨")
-    }
-  }
+
 
 
 
@@ -152,7 +140,6 @@ const MyPage = () => {
                 </Col>
               </Row>
               <Button className='update-button1'  onClick={()=> navigate('/trainer/mypagedetail')}>회원정보수정</Button>
-              <Button className='update-button2' onClick={handleDelete}>회원탈퇴</Button>
             </Card.Body>
           </Card>
         </Col>
