@@ -5,6 +5,9 @@ import ProgressBar from 'react-bootstrap/ProgressBar'
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Modalcss from "./css/Modal.css"
+
 
 function DietModal({ dietModal, setDietModal, member_num, name }){
 

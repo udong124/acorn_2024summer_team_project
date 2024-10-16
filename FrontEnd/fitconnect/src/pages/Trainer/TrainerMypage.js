@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 import TrainerMypage from './css/TrainerMypage.css'
 
 
-
 const MyPage = () => {
   const [trainerInfo, setTrainerInfo] = useState({
     name:'',
@@ -19,7 +18,6 @@ const MyPage = () => {
     trainer_intro: '',
     gym_name: '',
     gym_link: '',
-    password:'',
   });
   // 프로필 이미지 src 에 적용할 값을 state 로 관리 하기
   const [imageSrc, setImageSrc] = useState(null);
@@ -92,7 +90,6 @@ const MyPage = () => {
 
   return (
     <>
-      <img src={`/img/—Pngtree—instagram icon instagram logo_3584853.png`} alt="" />
       <Container className='TrainerMypage-container'>
       <Row>
       <Col>
@@ -124,8 +121,7 @@ const MyPage = () => {
                   <p>아이디: {trainerInfo.userName}</p>
                   <p>이메일: {trainerInfo.email}</p>
                   <p>생성일: {trainerInfo.regdate}</p>
-                  <p>패스워드: {trainerInfo.password}</p>
-  
+                  <img src="" alt="" />
                   <p>
                     {<a href={trainerInfo.trainer_insta} target="_blank" rel="noopener noreferrer">
                         <b>트레이너 SNS</b>
