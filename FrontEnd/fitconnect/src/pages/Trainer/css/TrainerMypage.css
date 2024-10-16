@@ -1,13 +1,4 @@
-.TrainerMypage-container {
-  margin:  auto; /* 여백을 더 줌 */
-  max-width: auto; /* 더 넓게 조정 */
-  background-color: #f5f5f5;
-  border-radius: 12px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
-  border-radius: 2%;
-  overflow: hidden;
-  padding: 30px; /* 내부 패딩 추가 */
-}
+
 
 /* Header styling */
 .TrainerMypage-header {

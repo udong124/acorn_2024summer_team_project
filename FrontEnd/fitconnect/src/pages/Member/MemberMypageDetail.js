@@ -218,6 +218,23 @@ const MyPageDetail = () => {
     localStorage.removeItem('updatedInfo');
   }
 
+  const handleDelete = () =>{
+    const confirmDelete = window.confirm("정말로 삭제하시겠습니까? 모든정보가 사라집니다.");
+    if(confirmDelete){
+      axios.delete(`/member`)
+      .then(() =>
+        axios.delete(`/user`)
+        .then(()=> {
+          alert("삭제되었습니다");
+          navigate((`/`));}
+        )
+      )
+    }else{
+      console.log("취소됨")
+    }
+  }
+
+
   return (
     <Container>
       <Row>
@@ -366,6 +383,7 @@ const MyPageDetail = () => {
                   as={Link} to="/member/mypage" className="ml-2">
                   취소
                 </Button>
+                <Button variant="danger" onClick={handleDelete}>회원탈퇴</Button>
               </Form>
             </Card.Body>
           </Card>
