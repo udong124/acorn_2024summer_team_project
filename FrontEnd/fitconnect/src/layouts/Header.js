@@ -123,7 +123,8 @@ const Header = () => {
             <span style={{ color: "#fff", marginRight: 20 }}>{localStorage.getItem("name")} 님 로그인 중</span>
             <Button
             variant="danger"
-            style={{ zIndex: 9999, position: 'relative' }} // 인라인 스타일로 z-index 적용
+            // zIndex 수치 적용 시 로그아웃 버튼이 사이드바 보다 앞에 위치해서 부적절한 형태를 가짐
+            style={{ zIndex: 0, position: 'relative' }} // 인라인 스타일로 z-index 적용
             onClick={handleLogout}
             >
               로그아웃
