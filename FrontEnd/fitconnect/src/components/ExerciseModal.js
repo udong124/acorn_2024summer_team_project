@@ -81,8 +81,8 @@ function ExerciseModal({ exerciseModal, setExerciseModal, member_num, name }) {
             setExerJournal([]);
             setExerciseModal(false);
         }}>
-            <Modal.Header  as="h6" className="border-bottom p-3 mb-0">
-                <p style={{fontSize: "1.5em", fontWeight: "bold"}}>{selectedDate.toLocaleDateString('ko-KR')}의 운동                        
+            <Modal.Header  as="h6" className="border-bottom p-3 mb-0"  closeButton>
+                <p style={{fontSize: "1.5em", fontWeight: "bold", margin:"auto"}}>{selectedDate.toLocaleDateString('ko-KR')}의 운동                        
                 </p>
                     <DatePicker
                         selected={selectedDate}
@@ -92,29 +92,35 @@ function ExerciseModal({ exerciseModal, setExerciseModal, member_num, name }) {
                     />
             </Modal.Header>
             <Modal.Body>
-            <Table bordered>
-                <thead className="text-center">
-                    <tr>
-                        <th>운동명</th>
-                        <th>무게</th>
-                        <th>횟수</th>
-                        <th>세트</th>
-                        <th>순서</th>
-                    </tr>
-                </thead>
-                <tbody className="text-center">
-                    {(exercisejournal !== undefined) && exercisejournal.map(item => (
-                            <tr key={item.exercise_id}>
-                                <td>{item.exercise_name}</td>
-                                <td>{item.exercise_weight}</td>
-                                <td>{item.exercise_count}</td>
-                                <td>{item.exercise_set}</td>
-                                <td>{item.exercise_order}</td>
-                            </tr>
-                        ))
-                    }
-                </tbody>
-            </Table>
+            {exercisejournal.length === 0 ? (
+                <div className="text-center">
+                    <p>등록된 일지가 없습니다.</p>
+                </div>
+            ) : (
+                <Table bordered>
+                    <thead className="text-center">
+                        <tr>
+                            <th>운동명</th>
+                            <th>무게</th>
+                            <th>횟수</th>
+                            <th>세트</th>
+                            <th>순서</th>
+                        </tr>
+                    </thead>
+                    <tbody className="text-center">
+                        {(exercisejournal !== undefined) && exercisejournal.map(item => (
+                                <tr key={item.exercise_id}>
+                                    <td>{item.exercise_name}</td>
+                                    <td>{item.exercise_weight}</td>
+                                    <td>{item.exercise_count}</td>
+                                    <td>{item.exercise_set}</td>
+                                    <td>{item.exercise_order}</td>
+                                </tr>
+                            ))
+                        }
+                    </tbody>
+                </Table>
+             )}
             </Modal.Body>
         </Modal>
 

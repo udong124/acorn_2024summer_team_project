@@ -85,8 +85,7 @@ const Header = () => {
         <div className="d-lg-block d-none me-5 pe-3">
           <Logo />
         </div>
-        {console.log(role)}
-        {navbarBrand}
+
         
         {/* 로그인 페이지에서는 이 버튼이 나타나지 않도록 조건부 렌더링 */}
         {!isAuthPage && userName && (
@@ -94,6 +93,9 @@ const Header = () => {
             <i className="bi bi-list"></i>
           </Button>
         )}
+        {console.log(role)}
+        {navbarBrand}
+
       </div>
 
       <div className="hstack gap-2">
@@ -123,7 +125,7 @@ const Header = () => {
             <span style={{ color: "#fff", marginRight: 20 }}>{localStorage.getItem("name")} 님 로그인 중</span>
             <Button
             variant="danger"
-            style={{ zIndex: 0, position: 'relative' }} // 인라인 스타일로 z-index 적용
+            style={{ zIndex: 0, position: 'relative', marginRight:"10px"}} // 인라인 스타일로 z-index 적용
             onClick={handleLogout}
             >
               로그아웃
@@ -132,14 +134,7 @@ const Header = () => {
         ) : ""}
         { !isAuthPage && userName ? (
           <Dropdown show={dropdownOpen} onToggle={toggle}>
-            <Dropdown.Toggle variant="transparent">
-              <img
-                src={user1}
-                alt="profile"
-                className="rounded-circle"
-                width="30"
-              />
-            </Dropdown.Toggle>
+
           </Dropdown>): ""}
       </Navbar.Collapse>
     </Navbar>

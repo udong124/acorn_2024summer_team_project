@@ -46,19 +46,19 @@ const Sidebar = () => {
   return (
     <div>
       <div className="d-flex align-items-center"></div>
-      <div className="profilebg" style={{ background: `url(${probg}) no-repeat` }}>
+      <div className="profilebg" >
         <div className="p-3 d-flex">
-          <img src={user1} alt="user" width="50" className="rounded-circle" />
+          
           <Button ref={closeBtn}
-            variant="white"
-            className="ms-auto text-white d-lg-none"
+            variant="black"
+            className="ms-auto d-lg-none"
             onClick={showMobilemenu}
           >
             <i className="bi bi-x"></i>
           </Button>
         </div>
         {/* 경로에 따라 동적 사용자 정보 표시 */}
-        <div className="bg-dark text-white p-2 opacity-75">
+        <div>
         </div>
       </div>
       <div className="p-3 mt-2">
