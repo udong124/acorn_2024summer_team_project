@@ -128,7 +128,6 @@ function MemberExerciseAdd() {
       regdate: selectedDate.toISOString().split("T")[0],
     };
                 
-    console.log(requestData)
     axios.post(`/exercisejournal/date/${exercise_add_to_calendar.regdate}`, requestData, {
       headers: {
         'Content-Type': 'application/json' // JSON 형식으로 전송

@@ -47,8 +47,6 @@ function MemberDietJournalAdd() {
     useEffect(() => {
         axios.get('/dietlist')
             .then(res => {
-                console.log("전체 식단 리스트", res.data.list);
-                
                 setDietList([]);
                 if (Array.isArray(res.data.list)) {
                     setDietList(res.data.list);
@@ -122,7 +120,6 @@ function MemberDietJournalAdd() {
                 diet_type:item.diet_type,
                 foodCount:item.foodcount
             }})
-            console.log(addDiet)
         axios.post(`/dietjournal/date/${formattedDate}`, addDiet)
             .then((res) => {
                 alert("식단 추가 완료");

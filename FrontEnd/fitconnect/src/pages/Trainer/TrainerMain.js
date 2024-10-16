@@ -67,7 +67,7 @@ useEffect(() => {
           // 마지막 날짜에 도달했을 때 상태 업데이트
           if (i === 3) {
             setTodayEvents(events);
-            console.log(events);
+
           }
         })
         .catch(err => console.log(err));
@@ -99,7 +99,6 @@ useEffect(() => {
           // 변경된 ascii 코드를 이용해서 dataUrl 을 구성한다 
           const dataUrl = "data:image/svg+xml;base64," + encodedData;
           setImageSrc(dataUrl)
-          console.log(dataUrl)
         }
 
         axios.get(`/trainer`, {

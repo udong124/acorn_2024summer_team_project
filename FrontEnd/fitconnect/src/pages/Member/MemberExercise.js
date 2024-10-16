@@ -39,7 +39,6 @@ function MemberExercise() {
     useEffect(() => {
         setExerJournal([])
         if(formattedDate){  // formattedDate 가 설정된 후에만 실행
-            console.log(formattedDate)
             axios.get(`/exercisejournal/date/${formattedDate}`,{
                 headers: {
                 Authorization: localStorage.getItem('token')
@@ -55,7 +54,6 @@ function MemberExercise() {
                 console.error(`exercise Journal 요청 실패`, error);
             })
 
-            console.log(exercisejournal)
         }
     }, [formattedDate]);
 

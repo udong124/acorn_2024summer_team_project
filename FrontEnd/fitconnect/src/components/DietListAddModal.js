@@ -52,7 +52,6 @@ function DietListAddModal({ showModal, setShowModal }) {
             fat: parseInt(newFood.fat, 10)
         })
         .then(res => {
-            console.log(res.data);
             if (res.data.isSuccess) {
                 alert("식단이 등록되었습니다");
                 setShowModal(false); // 모달 숨기기
@@ -63,9 +62,6 @@ function DietListAddModal({ showModal, setShowModal }) {
         })
         .catch(error => {
             console.log("데이터 전송 오류:", error);
-            if (error.response) {
-                console.log("서버 응답 데이터:", error.response.data);
-            }
             alert("식단 데이터 추가 실패!");
         });
     };

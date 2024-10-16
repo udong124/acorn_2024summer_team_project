@@ -48,7 +48,6 @@ function DietModal({ dietModal, setDietModal, member_num, name }){
 
 
   useEffect(()=>{
-    console.log("날짜: " + formattedDate)
     if(dietModal === false)return
     setMergedData([])
     axios.get(`/trainer/memberlist/dietjournal/${formattedDate}`, 

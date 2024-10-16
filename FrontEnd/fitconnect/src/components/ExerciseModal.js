@@ -38,7 +38,6 @@ function ExerciseModal({ exerciseModal, setExerciseModal, member_num, name }) {
 
     useEffect(() => {
         if(exerciseModal === false)return;
-        console.log(formattedDate+"|"+member_num)
         setExerJournal([])
         axios.get(`/trainer/memberlist/exerjournal/${formattedDate}`,
             {
