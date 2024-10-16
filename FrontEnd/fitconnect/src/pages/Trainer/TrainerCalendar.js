@@ -193,7 +193,7 @@ function Calendar() {
                 <Modal.Body>
                   <Form>
                     <Form.Group controlId="formEventMemberNum">
-                      <Form.Label>회원 번호</Form.Label>
+                      <Form.Label>회원 이름</Form.Label>
                       <Form.Select
                         value={newEvent.member_num}
                         onChange={(e) => setNewEvent({ ...newEvent, member_num: e.target.value })}

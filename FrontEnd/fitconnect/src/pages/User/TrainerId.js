@@ -71,6 +71,8 @@ const TrainerId = () => {
         return trainer.gym_name && trainer.gym_name.toLowerCase().includes(keyword);
       } else if (searchCondition === "trainer_insta") {
         return trainer.gym_insta && trainer.trainer_insta.toLowerCase().includes(keyword);
+      }else if (searchCondition === "name") {
+        return trainer.name && trainer.name.toLowerCase().includes(keyword);
       }
       return false;
     });
@@ -150,6 +152,7 @@ const TrainerId = () => {
                         <option value="trainer_insta">
                           트레이너 인스타그램
                         </option>
+                        <option value="name">트레이너 이름</option>
                       </Form.Select>
                     </Form.Group>
                   </Col>
