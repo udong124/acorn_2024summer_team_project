@@ -121,7 +121,9 @@ const MyPage = () => {
                       alt="Instagram Logo"
                       style={{ width: '40px', height: '40px' }} 
                     /></a></p>
-                  <p className='TrainerProfile-intro'>소갯글: {trainerInfo.trainer_intro}</p>
+                    <p> {<a href={trainerInfo.gym_link} target="_blank" rel="noopener noreferrer">
+                        <b>{trainerInfo.gym_name}</b>
+                      </a>}</p>
                 </Col>
                 <Col className='TrainerMypage-right TrainerMypage-info'>
                   <p>아이디: {trainerInfo.userName}</p>
@@ -130,11 +132,9 @@ const MyPage = () => {
                   <img src="" alt="" />
                   <p>
                   </p>
-                  <p>헬스장이름: {trainerInfo.gym_name}</p>
                   <p>
-                    {<a href={trainerInfo.gym_link} target="_blank" rel="noopener noreferrer">
-                        <b>헬스장 위치</b>
-                      </a>}
+                   
+                      <p className='TrainerProfile-intro'>소갯글: {trainerInfo.trainer_intro}</p>
                   </p>
                      
                 </Col>
