@@ -12,7 +12,6 @@ const Header = () => {
   const [userName, setUserName] = useState(""); //로그인 후 표시를 위한 userName
   const location = useLocation(); // 현재 경로 가져오기
   const navigate = useNavigate(); // 페이지 이동을 위한 navigate 설정
-
   const toggle = () => setDropdownOpen((prevState) => !prevState);
   const Handletoggle = () => {
     setIsOpen(!isOpen);
@@ -93,7 +92,6 @@ const Header = () => {
             <i className="bi bi-list"></i>
           </Button>
         )}
-        {console.log(role)}
         {navbarBrand}
 
       </div>

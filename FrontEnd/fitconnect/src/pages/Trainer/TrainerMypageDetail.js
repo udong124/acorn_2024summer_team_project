@@ -201,6 +201,7 @@ const MyPageDetail = () => {
         axios.delete(`/user`)
         .then(()=> {
           alert("삭제되었습니다");
+          localStorage.removeItem("userName")
           navigate((`/`));}
         )
       )
