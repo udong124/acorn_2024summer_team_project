@@ -82,15 +82,25 @@ public class MemberController {
         
         //채팅방 삭제
          UserDto userDto = ((PrincipalDetails)authentication.getPrincipal()).getDto();
-         ChatRoomDto chatDto= MsgService.getChatRoom(userDto.getId()); 
-         String topic = chatDto.getTopic();
-         MsgService.deleteChat(topic);
+         
+         ChatRoomDto chatDto= MsgService.getChatRoom(userDto.getId());
+         
+         boolean isSuccess = false;
+         // 채팅방이 없는 상태에서 삭제하는 경우와 채팅방이 있는 상태에서 삭제하는 경우로 나뉜다.
+         if(chatDto == null) {
+        	 isSuccess = service.deleteMember(userName);
+         }else {
+        	 String topic = chatDto.getTopic();
+        	 MsgService.deleteChat(topic);
+        	 isSuccess = service.deleteMember(userName);
+         }
+
          /*
           * 토큰 값에 담긴 MemberNum을 이용해서 해당 멤버와 멤버의 메신저 내용을 가져온 뒤, 해당 메신저의 토큰 값을 이용하여
           * 특정 멤버의 메신저 삭제. 
           */     
          //트레이너 정보 삭제
-         boolean isSuccess = service.deleteMember(userName);
+         
       return Map.of("isSuccess", isSuccess);
    }
    
