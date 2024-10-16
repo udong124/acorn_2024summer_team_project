@@ -25,7 +25,6 @@ const GoogleLogin = () => {
       axios
       .patch("/user/update/role", { id, role: selectedRole })
       .then((res) => {
-        console.log(res.data)
         setStep(2)
       })
       .catch((error) => {

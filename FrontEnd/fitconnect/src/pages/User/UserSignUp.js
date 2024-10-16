@@ -145,7 +145,7 @@ function UserSignUp() {
       return;
     }
 
-    console.log(formData)
+
     //입력한 회원정보를 전송하기
     axios.post("/user", formData)
     .then(res=>{

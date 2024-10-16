@@ -81,7 +81,6 @@ const MyPageDetail = () => {
         // 변경된 ascii 코드를 이용해서 dataUrl 을 구성한다 
         const dataUrl = "data:image/svg+xml;base64," + encodedData;
         setImageSrc(dataUrl)
-        console.log(dataUrl)
       }
 
       axios.get(`/trainer`, {
@@ -188,7 +187,6 @@ const MyPageDetail = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log(trainerInfo)
     setIsReady(true);
   };
 

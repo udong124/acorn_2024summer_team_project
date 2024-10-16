@@ -24,7 +24,6 @@ function Members() {
       axios.get(`/trainer/list/member`)
         .then(res => {
           setMembers(res.data);
-          console.log(res.data)
         })
         .catch(err => console.log(err));
     };

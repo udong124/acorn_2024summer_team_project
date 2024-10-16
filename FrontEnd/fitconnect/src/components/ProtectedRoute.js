@@ -30,14 +30,10 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
         }
     })
     .then(res=>{
-        console.log("Pretected axios /user :" + res.data.role)
         setUserRole(res.data.role)
     })
     .catch(err=>{console.log(err)})
 
-    // 토큰을 읽어올수있는지 (토큰 정보 확인)
-    console.log('Decoded Token:', decodedToken);
-    console.log('userRole:', userRole);
 
     useEffect(() => {
         // 로그인이 되어 있지 않은 경우

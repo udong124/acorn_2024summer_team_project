@@ -47,7 +47,6 @@ function MemberDietJournal(){
 
   useEffect(()=>{
     if(formattedDate){ // formatteedDate 가 설정된 후에만 실행
-      console.log("날짜: " + formattedDate)
       setMergedData([])
       axios.get(`/dietjournal/date/${formattedDate}`, {
         headers: {

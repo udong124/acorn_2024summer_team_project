@@ -23,7 +23,6 @@ const UserLogin = () => {
 
       // 토큰에서 payload 정보 얻어오기
       const { payload } = decodeToken(google_token.substring(7));
-      console.log("토큰 안의 payload 확인:", payload); 
   
       const userRole = payload?.userRole;
       const decodedUserName = payload?.userName; 
@@ -47,7 +46,6 @@ const UserLogin = () => {
 
   useEffect(()=>{
     if(isReady) {
-      console.log(userName + " " + password)
       axios
       .post("/auth", { userName, password })
       .then((response) => {
@@ -57,7 +55,7 @@ const UserLogin = () => {
 
           // 토큰에서 payload 정보 얻어오기
           const { payload } = decodeToken(token.substring(7));
-          console.log("토큰 안의 payload 확인:", payload); 
+
 
           const userRole = payload?.userRole;
           const decodedUserName = payload?.userName; 
