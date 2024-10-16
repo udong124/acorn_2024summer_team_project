@@ -33,14 +33,13 @@ const MyPage = () => {
   const dropZoneStyle={
     minHeight:"250px",
     minWidth:"250px",
-    border:"3px solid #cecece",
     borderRadius:"10px",
     display:"flex",
     justifyContent:"center",
     alignItems:"center"
   }
   const profileStyle={
-    width: "200px",
+    maxWidth: "200px",
     height: "200px",
     border: "1px solid #cecece",
     borderRadius: "50%"
@@ -107,7 +106,7 @@ const MyPage = () => {
       <Container>
       <Row>
       <Col>
-         <Card>
+         <Card sm={6} mb={6}>
           <Card.Header as="h6" className="border-bottom p-3 mb-0">
             <p style={{fontSize: "2em", fontWeight: "bold"}}>Mypage</p>
           </Card.Header>
@@ -116,7 +115,6 @@ const MyPage = () => {
               <Row>
                 <Col>
                   <Form.Group>
-                    <Form.Label>프로필 이미지 </Form.Label>
                     <Form.Control ref={imageInput} style={{display:"none"}} type="file" name="image" accept="image/*"/>
                   </Form.Group>
                   <div className="mb-3">
@@ -125,7 +123,7 @@ const MyPage = () => {
                     </div>
                   </div>
                 </Col>
-                <Col>
+                <Col sm={6} mb={6}>
                     <p>이름: {memberInfo.name}</p>
                     <p>생성일: {memberInfo.regdate}</p>
                     <p>아이디: {memberInfo.userName}</p>
