@@ -1,0 +1,81 @@
+/* Main container for the messenger chatroom list */
+.chatroom {
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+  }
+  
+  /* Styling for each list item */
+  .chatroom ul {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .chatroom li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    background-color: white;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  
+  /* Hover effect for each chat item */
+  .chatroom li:hover {
+    background-color: #f1f1f1;
+    transform: translateY(-8px);
+    cursor: pointer;
+  }
+  
+  /* Profile image styling */
+  .chatroom img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Name and content text styling */
+  .chatroom p {
+    margin: 0;
+    color: #333;
+    font-size: 14px;
+  }
+  
+  /* Name in bold */
+  .chatroom p:first-child {
+    font-weight: bold;
+    font-size: 16px;
+  }
+  
+  /* Time text styling */
+  .chatroom p:last-child {
+    color: #888;
+    font-size: 12px;
+  }
+  
+  /* Chatroom Header Styling */
+  .card-header {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+  }
+  
+  /* Modal close button and overlay */
+  .modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal-content {
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+  }
+  

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Card, Row, Col, Button, Modal, Form } from "react-bootstrap";
 import TrainerMessageModal from '../../components/TrainerMessageModal';
 import { useSearchParams } from 'react-router-dom';
-
+import TrainerMessage from './css/TrainerMessage.css'
 
 const Message = () => {
   const [showModal, setShowModal] = useState(false);
