@@ -221,19 +221,19 @@ function MemberMessenger() {
                 </div>
                 <div>
                   <Form.Group>
-                    <Form.Text>담당 트레이너</Form.Text>
+                    <Form.Text>담당 트레이너</Form.Text> 
                     <br/>
                     <Form.Label>{trainerInfo.name}</Form.Label>
+                    <Form.Label><a href={trainerInfo.trainer_insta} target="_blank" rel="noopener noreferrer"><img
+                      src="/img/instagramlogo.png"
+                      alt="Instagram Logo"
+                      style={{ width: '40px', height: '40px' }} 
+                    /></a></Form.Label>
                   </Form.Group>
                   <Form.Group>
                     <Form.Text>이메일</Form.Text>
                     <br/>
                     <Form.Label>{trainerInfo.email}</Form.Label>
-                  </Form.Group>
-                  <Form.Group>
-                    <Form.Text>SNS</Form.Text>
-                    <br/>
-                    <Form.Label><a href={trainerInfo.trainer_insta}>인스타그램</a></Form.Label>
                   </Form.Group>
                   <Form.Group>
                     <Form.Text>소갯글</Form.Text>

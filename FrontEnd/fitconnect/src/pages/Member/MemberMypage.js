@@ -102,6 +102,8 @@ const MyPage = () => {
       axios.delete(`/user`)
       .then(
         alert("삭제되었습니다")
+      ).then(
+        navigate((`/`))
       )
     }else{
       console.log("취소됨")

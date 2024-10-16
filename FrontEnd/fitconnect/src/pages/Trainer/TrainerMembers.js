@@ -146,7 +146,7 @@ function Members() {
                     <Button onClick={() => handleExModal(item.id)}>운동일지</Button>
                     <Button onClick={() => handleDiModal(item.id)}>식단목록</Button>
                     <Button variant='danger' onClick={() => handleDelete(item.id)}>회원삭제</Button>
-                    
+
                   </div>
                 ))}
               </ul>

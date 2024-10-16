@@ -272,9 +272,11 @@ useEffect(() => {
                     <p style={profileTextStyle}>이메일: {trainerInfo.email}</p>
                     <p style={profileTextStyle}>생성일: {trainerInfo.regdate}</p>
                     <p>
-                      <a href={trainerInfo.trainer_insta} target="_blank" rel="noopener noreferrer" style={profileLinkStyle}>
-                        트레이너 SNS
-                      </a>
+                    <a href={trainerInfo.trainer_insta} target="_blank" rel="noopener noreferrer"><img
+                      src="/img/instagramlogo.png"
+                      alt="Instagram Logo"
+                      style={{ width: '40px', height: '40px' }} 
+                    /></a>
                     </p>
                     <p style={profileTextStyle}>헬스장이름: {trainerInfo.gym_name}</p>
                     <p>

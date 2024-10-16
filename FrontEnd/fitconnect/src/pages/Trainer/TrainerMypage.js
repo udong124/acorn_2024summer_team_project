@@ -86,6 +86,20 @@ const MyPage = () => {
     .catch(err => console.log(err));
   }, []);
 
+  const handleDelete = () =>{
+    const confirmDelete = window.confirm("정말로 삭제하시겠습니까? 모든정보가 사라집니다.");
+    if(confirmDelete){
+      axios.delete(`/user`)
+      .then(
+        alert("삭제되었습니다")
+      ).then(
+        navigate((`/`))
+      )
+    }else{
+      console.log("취소됨")
+    }
+  }
+
 
 
   return (
@@ -114,7 +128,11 @@ const MyPage = () => {
                         <img className="TrainerProfile-image" style={profileStyle} src={imageSrc} alt="프로필 이미지"/>
                     </div>
                   </div>
-                  <p className='TrainerProfile-name'>{trainerInfo.name}</p>
+                  <p className='TrainerProfile-name'>{trainerInfo.name} <a href={trainerInfo.trainer_insta} target="_blank" rel="noopener noreferrer"><img
+                      src="/img/instagramlogo.png"
+                      alt="Instagram Logo"
+                      style={{ width: '40px', height: '40px' }} 
+                    /></a></p>
                   <p className='TrainerProfile-intro'>소갯글: {trainerInfo.trainer_intro}</p>
                 </Col>
                 <Col className='TrainerMypage-right TrainerMypage-info'>
@@ -123,9 +141,6 @@ const MyPage = () => {
                   <p>생성일: {trainerInfo.regdate}</p>
                   <img src="" alt="" />
                   <p>
-                    {<a href={trainerInfo.trainer_insta} target="_blank" rel="noopener noreferrer">
-                        <b>트레이너 SNS</b>
-                      </a>}
                   </p>
                   <p>헬스장이름: {trainerInfo.gym_name}</p>
                   <p>
@@ -133,9 +148,11 @@ const MyPage = () => {
                         <b>헬스장 위치</b>
                       </a>}
                   </p>
+                     
                 </Col>
               </Row>
-              <Button className='update-button'  onClick={()=> navigate('/trainer/mypagedetail')}>회원정보수정</Button>
+              <Button className='update-button1'  onClick={()=> navigate('/trainer/mypagedetail')}>회원정보수정</Button>
+              <Button className='update-button2' onClick={handleDelete}>회원탈퇴</Button>
             </Card.Body>
           </Card>
         </Col>
