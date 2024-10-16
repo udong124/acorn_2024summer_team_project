@@ -192,6 +192,23 @@ const MyPageDetail = () => {
     setIsReady(true);
   };
 
+  // 회원탈퇴 핸들러
+  const handleDelete = () =>{
+    const confirmDelete = window.confirm("정말로 삭제하시겠습니까? 모든정보가 사라집니다.");
+    if(confirmDelete){
+      axios.delete(`/member`)
+      .then(() =>
+        axios.delete(`/user`)
+        .then(()=> {
+          alert("삭제되었습니다");
+          navigate((`/`));}
+        )
+      )
+    }else{
+      console.log("취소됨")
+    }
+  }
+
   return (
     <Container>
     <Row>
@@ -309,6 +326,7 @@ const MyPageDetail = () => {
             <Button variant="secondary" onClick={() => navigate('/trainer/mypage')} className="ml-2">
               취소
             </Button>
+            <Button className='update-button2' onClick={handleDelete}>회원탈퇴</Button>
           </Form>
 
           </Card.Body>

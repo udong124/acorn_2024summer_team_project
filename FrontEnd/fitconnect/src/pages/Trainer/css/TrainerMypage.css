@@ -1,15 +1,5 @@
 
 
-/* Header styling */
-.TrainerMypage-header {
-  background-color: gray;
-  color: white;
-  font-size: 12px;
-  font-weight: bold;
-  text-align: center;
-  padding: 20px 0;
-}
-
 /* Row Layout */
 .TrainerMypage-row {
   padding: 30px;
