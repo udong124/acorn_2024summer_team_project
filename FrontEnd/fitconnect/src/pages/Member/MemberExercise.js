@@ -78,6 +78,7 @@ function MemberExercise() {
 
     const handleDateChange = (date) => {
         setSelectedDate(date);
+        const formattedDate = date.toISOString().split("T")[0]
         navigate(`/member/exercisejournal`, {
             state: {
               regdate: formattedDate
