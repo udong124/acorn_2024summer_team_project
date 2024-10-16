@@ -123,8 +123,8 @@ function DietModal({ dietModal, setDietModal, member_num, name }){
       setMergedData([]);
       setDietModal(false);
     }}>
-        <Modal.Header as="h6" className="border-bottom p-3 mb-0">
-            <p style={{fontSize: "1.5em", fontWeight: "bold"}}>{selectedDate.toLocaleDateString('ko-KR')}의 식단</p>
+        <Modal.Header as="h6" className="border-bottom p-3 mb-0"  closeButton>
+            <p style={{fontSize: "1.5em", fontWeight: "bold", margin:"auto"}}>{selectedDate.toLocaleDateString('ko-KR')}의 식단</p>
             <DatePicker
                 selected={selectedDate}
                 onChange={handleDateChange}
@@ -134,115 +134,127 @@ function DietModal({ dietModal, setDietModal, member_num, name }){
             />
         </Modal.Header>
         <Modal.Body>
-        <div>
-              <Row className="align-items-center">
-                <Col xs={4}>
-                <span>탄수화물</span><br/>
-                <span style={{fontSize: "10px", color: "grey"}}>기준: 500g</span>
-                </Col>
-                <Col>
-                <ProgressBar striped variant="success" animated now={graphCarbs} style={{height:'30px'}} />
-                </Col>
-                <Col xs="auto">
-                <span>{graphCarbs.toFixed(1)}%</span>
-                </Col>
-              </Row>
-                <br/>
-                <Row className="align-items-center">
-                <Col xs={4}>
-                  <span>단백질</span><br/>
-                  <span style={{fontSize: "10px", color: "grey"}}>기준: 120g</span>
-                </Col>
-                <Col>
-                <ProgressBar striped variant="info" animated now={graphProtein} style={{height:'30px'}}/>
-                </Col>
-                <Col xs="auto">
-                <span>{graphProtein.toFixed(1)}%</span>
-                </Col>
-              </Row>
-                <br/>
-                <Row className="align-items-center">
-                <Col xs={4}>
-                  <span>지방</span><br/>
-                  <span style={{fontSize: "10px", color: "grey"}}>기준: 100g</span>
-                </Col>
-                <Col>
-                <ProgressBar striped variant="warning" animated now={graphFat} style={{height:'30px'}}/>
-                </Col>
-                <Col xs="auto">
-                  <span>{graphFat.toFixed(1)}%</span>
-                </Col>
-              </Row>
-                <br/>
-                <Row className="align-items-center">
-                <Col xs={4}>
-                  <span>칼로리</span><br/>
-                  <span style={{fontSize: "10px", color: "grey"}}>기준: 4000g</span>
-                </Col>
-                <Col>
-                <ProgressBar striped variant="danger" animated now={graphKcal} style={{height:'30px'}}/>
-                </Col>
-                <Col xs="auto">
-                  <span>{graphKcal.toFixed(1)}%</span>
-                </Col>
-              </Row>
+          {mergedData.length === 0 ? (
+            <div className="text-center">
+                <p>등록된 일지가 없습니다.</p>
             </div>
-        </Modal.Body>
-        <Modal.Footer>
+          ) : (
             <div>
-                <Row className="g-3">
-                    <Col xs={12} sm={12} md={12}>
-                    <Card>
-                        <Card.Header as="h6" className="border-bottom p-3 mb-0 d-flex justify-content-between align-items-center">
-                        아침
-                        </Card.Header>
-                        <Card.Body>
-                        <ul>
-                        {breakfastData.map((item, index) => (
-                            <li key={index}>
-                            {item.food} -  {item.foodCount} g- {item.calories} kcal
-                            </li>
-                        ))}
-                        </ul>
+                <Row className="align-items-center">
+                  <Col xs={4}>
+                  <span>탄수화물</span><br/>
+                  <span style={{fontSize: "10px", color: "grey"}}>기준: 500g</span>
+                  </Col>
+                  <Col>
+                  <ProgressBar striped variant="success" animated now={graphCarbs} style={{height:'30px'}} />
+                  </Col>
+                  <Col xs="auto">
+                  <span>{graphCarbs.toFixed(1)}%</span>
+                  </Col>
+                </Row>
+                  <br/>
+                  <Row className="align-items-center">
+                  <Col xs={4}>
+                    <span>단백질</span><br/>
+                    <span style={{fontSize: "10px", color: "grey"}}>기준: 120g</span>
+                  </Col>
+                  <Col>
+                  <ProgressBar striped variant="info" animated now={graphProtein} style={{height:'30px'}}/>
+                  </Col>
+                  <Col xs="auto">
+                  <span>{graphProtein.toFixed(1)}%</span>
+                  </Col>
+                </Row>
+                  <br/>
+                  <Row className="align-items-center">
+                  <Col xs={4}>
+                    <span>지방</span><br/>
+                    <span style={{fontSize: "10px", color: "grey"}}>기준: 100g</span>
+                  </Col>
+                  <Col>
+                  <ProgressBar striped variant="warning" animated now={graphFat} style={{height:'30px'}}/>
+                  </Col>
+                  <Col xs="auto">
+                    <span>{graphFat.toFixed(1)}%</span>
+                  </Col>
+                </Row>
+                  <br/>
+                  <Row className="align-items-center">
+                  <Col xs={4}>
+                    <span>칼로리</span><br/>
+                    <span style={{fontSize: "10px", color: "grey"}}>기준: 4000g</span>
+                  </Col>
+                  <Col>
+                  <ProgressBar striped variant="danger" animated now={graphKcal} style={{height:'30px'}}/>
+                  </Col>
+                  <Col xs="auto">
+                    <span>{graphKcal.toFixed(1)}%</span>
+                  </Col>
+                </Row>
+              </div>
+        )}
+          </Modal.Body>
+          <Modal.Footer className="d-flex justify-content-center">
+            {mergedData.length === 0 ? (
+              <div className="w-100 text-center">
+                  <h3>등록된 일지가 없습니다.</h3>
+              </div>
+            ) : (
+              <div>
+                  <Row className="g-3">
+                      <Col>
+                      <Card className="mx-auto">
+                          <Card.Header as="h6" className="border-bottom p-3 mb-0 d-flex justify-content-between align-items-center">
+                          아침
+                          </Card.Header>
+                          <Card.Body>
+                          <ul>
+                          {breakfastData.map((item, index) => (
+                              <li key={index}>
+                              {item.food} -  {item.foodCount} g- {item.calories} kcal
+                              </li>
+                          ))}
+                          </ul>
+                          </Card.Body>
+                      </Card>
+                      </Col>
+              
+                      <Col xs={12} sm={12} md={12}>
+                      <Card>
+                          <Card.Header>
+                          점심
+                          </Card.Header>
+                          <Card.Body>
+                          <ul>
+                          {lunchData.map((item, index) => (
+                              <li key={index}>
+                              {item.food} -  {item.foodCount} g- {item.calories} kcal
+                              </li>
+                          ))}
+                          </ul>
+                          </Card.Body>
+                      </Card>
+                      </Col>
+              
+                      <Col  xs={12} sm={12} md={12}>
+                      <Card>
+                          <Card.Header as="h6" className="border-bottom p-3 mb-0 d-flex justify-content-between align-items-center">
+                          저녁
+                          </Card.Header>
+                          <Card.Body>
+                          <ul>
+                          {dinnerData.map((item, index) => (
+                              <li key={index}>
+                              {item.food} -  {item.foodCount} g- {item.calories} kcal
+                              </li>
+                          ))}
+                          </ul>
                         </Card.Body>
-                    </Card>
-                    </Col>
-            
-                    <Col xs={12} sm={12} md={12}>
-                    <Card>
-                        <Card.Header>
-                        점심
-                        </Card.Header>
-                        <Card.Body>
-                        <ul>
-                        {lunchData.map((item, index) => (
-                            <li key={index}>
-                            {item.food} -  {item.foodCount} g- {item.calories} kcal
-                            </li>
-                        ))}
-                        </ul>
-                        </Card.Body>
-                    </Card>
-                    </Col>
-            
-                    <Col  xs={12} sm={12} md={12}>
-                    <Card>
-                        <Card.Header as="h6" className="border-bottom p-3 mb-0 d-flex justify-content-between align-items-center">
-                        저녁
-                        </Card.Header>
-                        <Card.Body>
-                        <ul>
-                        {dinnerData.map((item, index) => (
-                            <li key={index}>
-                            {item.food} -  {item.foodCount} g- {item.calories} kcal
-                            </li>
-                        ))}
-                        </ul>
-                    </Card.Body>
-                    </Card>
-                </Col>
-            </Row>
-        </div>
+                      </Card>
+                  </Col>
+              </Row>
+          </div>
+          )}
         </Modal.Footer>
     </Modal>
 
