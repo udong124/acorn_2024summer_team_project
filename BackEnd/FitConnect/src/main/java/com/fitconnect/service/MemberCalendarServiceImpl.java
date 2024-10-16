@@ -106,6 +106,14 @@ public class MemberCalendarServiceImpl implements MemberCalendarService{
 		
 		return getByDate;
 	}
+	
+	@Override
+	public Map<String, Object> getOneByDateTrainer(MemberCalendarDto dto) {
+		
+		Map<String, Object> getByDate = dao.getDataByDate(dto);
+		
+		return getByDate;
+	}
 
 	@Override
 	public boolean insert(MemberCalendarDto dto) {

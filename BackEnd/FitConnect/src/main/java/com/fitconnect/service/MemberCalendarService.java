@@ -9,6 +9,7 @@ public interface MemberCalendarService {
 	public List<Map<String, Object>> getAll();
 	public Map<String, Object> getOne(MemberCalendarDto dto);
 	public Map<String, Object> getOneByDate(MemberCalendarDto dto);
+	public Map<String, Object> getOneByDateTrainer(MemberCalendarDto dto);
 	
 	public boolean insert(MemberCalendarDto dto);
 	public boolean insertByDate(MemberCalendarDto dto);
@@ -19,4 +20,5 @@ public interface MemberCalendarService {
 	
 	public boolean getCalendarId(String regdate);
 	public int getMCalendarId(String regdate);
+	
 }

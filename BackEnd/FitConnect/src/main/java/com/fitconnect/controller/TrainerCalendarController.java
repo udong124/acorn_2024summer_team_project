@@ -211,9 +211,10 @@ public class TrainerCalendarController {
 	public Map<String, Object> getDietJournal(@PathVariable("regdate") String regdate, @RequestParam int member_num){
 		MemberCalendarDto membercalendarDto = new MemberCalendarDto();
 		membercalendarDto.setRegdate(regdate);
+		membercalendarDto.setMember_num(member_num);
 		// 캘린더Dto에 날짜를 담아서 서비스에 넘겨주면 멤버캘린더서비스에서 회원번호를 담아서 dao를 실행시킨다.
 		// getOneByDate 에는 경로변수로 받은 날짜에 해당하는 캘린더 정보(id, num, regdate, memo)와 isSuccess 로 boolean 값이 담겨져 있다.
-		Map<String, Object> getOneByDate= membercalendarService.getOneByDate(membercalendarDto);
+		Map<String, Object> getOneByDate= membercalendarService.getOneByDateTrainer(membercalendarDto);
 		DietJournalDto dto = new DietJournalDto();
 		// m_calendar_id 값이 1개여서 반환된 boolean 값이 true이면
 		if((boolean) getOneByDate.get("isSuccess")) {
@@ -249,9 +250,10 @@ public class TrainerCalendarController {
 	public Map<String, Object> getExerJournal(@PathVariable("regdate") String regdate, @RequestParam int member_num){
 		MemberCalendarDto membercalendarDto = new MemberCalendarDto();
 		membercalendarDto.setRegdate(regdate);
+		membercalendarDto.setMember_num(member_num);
 		// 캘린더Dto에 날짜를 담아서 서비스에 넘겨주면 멤버캘린더서비스에서 회원번호를 담아서 dao를 실행시킨다.
 		// getOneByDate 에는 경로변수로 받은 날짜에 해당하는 캘린더 정보(id, num, regdate, memo)와 isSuccess 로 boolean 값이 담겨져 있다.
-		Map<String, Object> getOneByDate= membercalendarService.getOneByDate(membercalendarDto);
+		Map<String, Object> getOneByDate= membercalendarService.getOneByDateTrainer(membercalendarDto);
 		ExerciseJournalDto dto = new ExerciseJournalDto();
 		// m_calendar_id 값이 1개여서 반환된 boolean 값이 true이면
 		if((boolean) getOneByDate.get("isSuccess")) {
