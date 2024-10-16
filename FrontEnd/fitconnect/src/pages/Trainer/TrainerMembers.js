@@ -140,7 +140,7 @@ function Members() {
                   />
                     <ExerciseModal
                     exerciseModal={exerciseModal}
-                    setExerciseModal={exerciseModal}
+                    setExerciseModal={setExerciseModal}
                     member_num={item.id}
                     />
                   </div>

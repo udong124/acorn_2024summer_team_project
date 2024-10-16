@@ -96,20 +96,31 @@
 }
 
 /* Update Button Styling */
-.update-button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 15px 25px; /* 버튼 크기 확대 */
+.update-button1 {
+  background-color: white;
+  color: #007bff;
+  border-color: #007bff;
   border-radius: 8px;
+  border-width: 0.1px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-top: 30px;
-  font-size: 1.1em; /* 폰트 크기 확대 */
 }
 
-.update-button:hover {
-  background-color: #0056b3;
+.update-button1:hover {
+  background-color: #007bff;
+}
+
+.update-button2 {
+  background-color: white;
+  color: crimson;
+  border-color: crimson;
+  border-radius: 8px;
+  border-width: 0.1px;
+  cursor: pointer;
+}
+
+.update-button2:hover {
+  background-color: crimson;
+  border-color: red;
 }
 
 /* Responsive Design */
