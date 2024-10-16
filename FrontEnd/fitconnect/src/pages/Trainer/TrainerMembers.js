@@ -7,11 +7,12 @@ import DietModal from "../../components/DietModal";
 import ExerciseModal from "../../components/ExerciseModal";
 
 
+let member_num;
+
 function Members() {
   const [members, setMembers] = useState([]);
   const [dietModal, setDietModal] = useState(false);
   const [exerciseModal, setExerciseModal] = useState(false);
-  const [memberNum, setMemberNum] = useState();
 
 
 
@@ -106,6 +107,18 @@ function Members() {
     objectFit: "cover"
   }
 
+
+  const handleExModal = (id)=>{
+    member_num=id
+    setExerciseModal(true)
+  }
+
+  const handleDiModal = (id)=>{
+    member_num=id
+    setDietModal(true)
+  }
+
+
   // 회원목록 출력
   return (
     <div>
@@ -130,19 +143,10 @@ function Members() {
                       
                     {/* 새로운 채팅방 생성 버튼 */}
                     <Button variant='primary' onClick={() => getAndPost(item.id)}>대화하기</Button>
-                    <Button onClick={() => {setExerciseModal(true)}}>운동일지</Button>
-                    <Button onClick={() => {setDietModal(true)}}>식단목록</Button>
+                    <Button onClick={() => handleExModal(item.id)}>운동일지</Button>
+                    <Button onClick={() => handleDiModal(item.id)}>식단목록</Button>
                     <Button variant='danger' onClick={() => handleDelete(item.id)}>회원삭제</Button>
-                    <DietModal
-                    dietModal={dietModal}
-                    setDietModal={setDietModal}
-                    member_num={item.id}
-                  />
-                    <ExerciseModal
-                    exerciseModal={exerciseModal}
-                    setExerciseModal={exerciseModal}
-                    member_num={item.id}
-                    />
+                    
                   </div>
                 ))}
               </ul>
@@ -150,6 +154,16 @@ function Members() {
           </Card>
         </Col>
       </Row>
+      <DietModal
+        dietModal={dietModal}
+          setDietModal={setDietModal}
+          member_num={member_num}
+      />
+      <ExerciseModal
+        exerciseModal={exerciseModal}
+        setExerciseModal={setExerciseModal}
+        member_num={member_num}
+      />
     </div>
   );
 }

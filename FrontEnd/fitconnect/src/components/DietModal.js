@@ -49,6 +49,7 @@ function DietModal({ dietModal, setDietModal, member_num, name }){
 
   useEffect(()=>{
     console.log("날짜: " + formattedDate)
+    if(dietModal === false)return
     setMergedData([])
     axios.get(`/trainer/memberlist/dietjournal/${formattedDate}`, 
         {
@@ -57,13 +58,12 @@ function DietModal({ dietModal, setDietModal, member_num, name }){
     )
     .then(res=>{
       setMergedData(res.data.list || []) 
-
     })
     .catch(error => {
       console.error(`Diet Journal API 요청 실패:`, error);
     });
 
-  }, [formattedDate]);
+  }, [formattedDate, dietModal]);
 
   
   useEffect(() => {

@@ -37,24 +37,24 @@ function ExerciseModal({ exerciseModal, setExerciseModal, member_num, name }) {
     }, [selectedDate])
 
     useEffect(() => {
-        console.log(formattedDate)
+        if(exerciseModal === false)return;
+        console.log(formattedDate+"|"+member_num)
         setExerJournal([])
         axios.get(`/trainer/memberlist/exerjournal/${formattedDate}`,
             {
-        params : {member_num : member_num }
+                params : {member_num}
             }
           )
         .then(res => {
-        // 응답 데이터가 정의되었는지 확인 후 상태 설정
-        setExerJournal(res.data?.exerJournalList || []); // 옵셔널 체이닝 사용
-        console.log(exercisejournal)
+            // 응답 데이터가 정의되었는지 확인 후 상태 설정
+            setExerJournal(res.data?.list || []); // 옵셔널 체이닝 사용
         })
         .catch(error => {
             console.error(`exercise Journal 요청 실패`, error);
         })
 
         console.log(exercisejournal)
-    }, [formattedDate]);
+    }, [formattedDate, exerciseModal]);
 
 
 
@@ -78,9 +78,9 @@ function ExerciseModal({ exerciseModal, setExerciseModal, member_num, name }) {
     return (
 
         <Modal show={exerciseModal} onHide={() => {
-      setExerJournal([]);
-      setExerciseModal(false);
-    }}>
+            setExerJournal([]);
+            setExerciseModal(false);
+        }}>
             <Modal.Header  as="h6" className="border-bottom p-3 mb-0">
                 <p style={{fontSize: "1.5em", fontWeight: "bold"}}>{selectedDate.toLocaleDateString('ko-KR')}의 운동                        
                 </p>
