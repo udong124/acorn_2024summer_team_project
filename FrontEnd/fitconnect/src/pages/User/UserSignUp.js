@@ -49,15 +49,13 @@ function UserSignUp() {
           }
         });
         window.location.reload()
-        
-      } else if(formData.role === "MEMBER") {
+      } else if (formData.role === "MEMBER") {
         navigate("/membersignup", {
           state: {
             member_num: formData.id
           }
         });
         window.location.reload()
-
       } else if (formData.role === "ADMIN") {
         const token = localStorage.getItem('token');
         if (token) {
@@ -148,6 +146,7 @@ function UserSignUp() {
     }
 
     console.log(formData);
+
    // 입력한 회원정보를 전송하기
     axios.post("/user", formData)
       .then(res => {
@@ -161,29 +160,38 @@ function UserSignUp() {
           return;
         }
 
-      if(userInfo){
-        axios.patch("/user/update/info", userInfo, {
-          headers: { 
-            "Content-Type": "multipart/form-data",
-            "Authorization": localStorage.getItem('token')
-           }
-        })
-        .then((profileResponse) => {
-          if (profileResponse.data) {
-            console.log("프로필 이미지 등록 성공", profileResponse.data);
-          }
-        })
-        .catch((error) => {
-          if (error.response && error.response.data) {
-            console.error(
-              "프로필 이미지 등록 실패:",
-              error.response.data.message
-            );
-          } else {
-            console.error("프로필 이미지 등록 실패:", error.message);
-          }
-        });
-      }
+        const formImage = new FormData();
+        formImage.append("name", userInfo.name);
+        formImage.append("email", userInfo.email);
+        formImage.append("userName", formData.userName);
+        
+
+        if(userInfo.image) {
+          //현재 선택한 파일을 form data 에 담아야한다 
+          formImage.append("image", imageInput.current.files[0]);
+          console.log(imageInput.current.files[0])
+          axios.patch("/user/update/info", formImage, {
+            headers: { 
+              "Content-Type": "multipart/form-data" , 
+              "Authorization": localStorage.getItem('token')
+            }
+          })
+            .then((profileResponse) => {
+              if (profileResponse.data) {
+                console.log("프로필 이미지 등록 성공", profileResponse.data);
+              }
+            })
+            .catch((error) => {
+              if (error.response && error.response.data) {
+                console.error(
+                  "프로필 이미지 등록 실패:",
+                  error.response.data.message
+                );
+              } else {
+                console.error("프로필 이미지 등록 실패:", error.message);
+              }
+            });
+        }
 
         axios.post("/auth", formData)
           .then((authResponse) => {
