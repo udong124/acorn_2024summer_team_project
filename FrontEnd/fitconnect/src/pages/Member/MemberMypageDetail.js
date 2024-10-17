@@ -228,7 +228,10 @@ const MyPageDetail = () => {
         .then(()=> {
           alert("삭제되었습니다");
           localStorage.removeItem("userName")
-          navigate((`/`));}
+          localStorage.removeItem("memberInfo")
+          navigate((`/`));
+          window.location.reload()
+          }
         )
       )
     }else{

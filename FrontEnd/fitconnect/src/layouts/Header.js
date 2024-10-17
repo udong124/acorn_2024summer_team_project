@@ -27,6 +27,7 @@ const Header = () => {
     localStorage.removeItem("role");
     localStorage.removeItem("userRole");
     localStorage.removeItem("name");
+    localStorage.removeItem("memberInfo");
     setUserName(null); //-상태 원래되로
     navigate("/login"); // 로그인 페이지로 리다이렉트
   };
@@ -46,19 +47,19 @@ const Header = () => {
 
   const role = localStorage.getItem("role");
   let navbarBrand;
-  if (role === "MEMBER"){
+  if (!isAuthPage && role === "MEMBER"){
     navbarBrand = (
       <Navbar.Brand href="/member">
         <LogoWhite className="d-lg-none" />
       </Navbar.Brand>
     );
-  } else if (role === "TRAINER"){
+  } else if (!isAuthPage && role === "TRAINER"){
     navbarBrand = (
       <Navbar.Brand href="/trainer">
         <LogoWhite className="d-lg-none" />
       </Navbar.Brand>
     );
-  } else if (role === "ADMIN"){
+  } else if (!isAuthPage && role === "ADMIN"){
     navbarBrand = (
       <Navbar.Brand href="/">
         <LogoWhite className="d-lg-none" />

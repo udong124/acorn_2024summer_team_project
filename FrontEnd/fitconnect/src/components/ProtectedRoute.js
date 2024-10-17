@@ -37,19 +37,19 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
 
     useEffect(() => {
         // 로그인이 되어 있지 않은 경우
-        if(userRole){   //userRole 이 들어왔을 때 실행
-            if (!isLogin) {
-                const payload = {
-                    show: true,
-                    message: "해당 페이지는 로그인이 필요합니다!",
-                    url: location.pathname + location.search
-                };
-                dispatch({ type: "LOGIN_MODAL", payload });
-                setActiveModal('login'); // 로그인 모달이 뜨도록
-                setShowModal(true); 
-            } 
+        if (!isLogin) {
+            const payload = {
+                show: true,
+                message: "해당 페이지는 로그인이 필요합니다!",
+                url: location.pathname + location.search
+            };
+            dispatch({ type: "LOGIN_MODAL", payload });
+            setActiveModal('login'); // 로그인 모달이 뜨도록
+            setShowModal(true); 
+        } 
             // role에 따라 접근할 수 없는 페이지에 들어가지 못하도록
-            else if (allowedRoles && !allowedRoles.includes(userRole)) {
+        else if (allowedRoles && !allowedRoles.includes(userRole)) {
+            if(userRole){   //userRole 이 들어왔을 때 실행
                 const payload = {
                     show: true,
                     message: `해당 페이지는 ${allowedRoles.join(', ')} 전용 페이지입니다!`, // 접근 제한 메시지
@@ -68,8 +68,9 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
                         setActiveModal('ADMIN');
                     }
                 }
-            } else {
+                else {
                 setShowModal(false); // 올바른 접근 시 모달 비활성화
+                }
             }
         }
     }, [isLogin, userRole, allowedRoles, location.pathname, location.search, dispatch]);

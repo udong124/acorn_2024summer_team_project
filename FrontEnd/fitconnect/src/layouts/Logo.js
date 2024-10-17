@@ -10,7 +10,7 @@ const Logo = () => {
     role = null
   }
   const location = useLocation(); // 현재 경로 가져오기
-  const isAuthPage = location.pathname.startsWith("/login") || location.pathname.startsWith("/signup")
+  const isAuthPage = location.pathname.startsWith("/login") || location.pathname.startsWith("/signup") || location.pathname.startsWith("/membersignup") || location.pathname.startsWith("/trainersignup");
 
   return (
     <>
@@ -19,7 +19,7 @@ const Logo = () => {
             <LogoDark />
           </Link>
         :
-          <Link to={role}>
+          <Link to={role} onClick={(e)=>e.preventDefault()}>
             <LogoDark style={{cursor:"default"}}/>
           </Link>
       }

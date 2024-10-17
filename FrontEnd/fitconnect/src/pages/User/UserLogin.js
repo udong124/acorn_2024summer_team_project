@@ -83,9 +83,10 @@ const UserLogin = () => {
           "로그인 실패: 아이디 또는 비밀번호가 틀렸습니다.";
         setErrorMessage(errorMsg);
         console.error("로그인 실패:", errorMsg);
+        setIsReady(false)
       });
     }
-  }, [userName, password, isReady])
+  }, [isReady])
 
   const handleLogin = (e) => {
     e.preventDefault();

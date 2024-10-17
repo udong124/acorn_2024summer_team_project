@@ -45,12 +45,16 @@ function UserSignUp() {
             trainer_num: formData.id
           }
         });
+        window.location.reload()
+        
       } else if(formData.role === "MEMBER") {
         navigate("/membersignup", {
           state: {
             member_num: formData.id
           }
         });
+        window.location.reload()
+
       } else if (formData.role === "ADMIN") {
         // role:Admin 을 눌렀을 경우 Authentication token(required) 로 관리자를 구분하기
         const token = localStorage.getItem('token');
@@ -162,7 +166,10 @@ function UserSignUp() {
 
       if(userInfo){
         axios.patch("/user/update/info", userInfo, {
-          headers: { "Content-Type": "multipart/form-data" },
+          headers: { 
+            "Content-Type": "multipart/form-data",
+            "Authorization": localStorage.getItem('token')
+           }
         })
         .then((profileResponse) => {
           if (profileResponse.data) {
