@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Col, Container, Row, Form, Button, Card } from 'react-bootstrap';
+import './css/TrainerMypage.css'; 
 
 const MyPageDetail = () => {
   const [trainerInfo, setTrainerInfo] = useState({
@@ -213,128 +214,142 @@ const MyPageDetail = () => {
 
   return (
     <Container>
-    <Row>
-      <Col>
-         <Card>
-          <Card.Header as="h6" className="border-bottom p-3 mb-0">
-            <p style={{fontSize: "2em", fontWeight: "bold"}}>수정페이지</p>
-          </Card.Header>
-          <Card.Body className="">
-
-          <svg ref={personSvg} style={profileStyle2}  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-            <path fillRule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-          </svg>
-          <Form onSubmit={handleSubmit}>
-            <Row>
-              <Col className='leftside'>
-                <Form.Group>
-                    <Form.Label>프로필사진 ( click or drag-drop to Edit ) </Form.Label>
-                    <Form.Control onChange={handleImageChange} ref={imageInput} style={{display:"none"}} type="file" name="image" accept="image/*"/>
-                </Form.Group>
-                <div className="mb-3">
-                    <a href="about:blank" onClick={(e)=>{
-                        e.preventDefault()
-                        // input  type="file" 요소를 강제 클릭 
-                        imageInput.current.click()
-                    }}>
-                        <div style={dropZoneStyle} ref={dropZone} onDragOver={(e)=>e.preventDefault()} onDrop={handleDrop}>
-                            <img style={profileStyle} src={imageSrc} alt="프로필 이미지"/>
+      <Row>
+        <Col>
+          <Card>
+            <Card.Header className="Header">
+              수정페이지
+            </Card.Header>
+            <Card.Body>
+              <svg
+                ref={personSvg}
+                style={profileStyle2}
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+              >
+                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                <path
+                  fillRule="evenodd"
+                  d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
+                />
+              </svg>
+              <Form onSubmit={handleSubmit}>
+                <Row className="TrainerMypage-row">
+                  <Col className="TrainerMypage-left">
+                    <Form.Group>
+                      <Form.Label>프로필사진 ( click or drag-drop to Edit )</Form.Label>
+                      <Form.Control
+                        onChange={handleImageChange}
+                        ref={imageInput}
+                        style={{ display: "none" }}
+                        type="file"
+                        name="image"
+                        accept="image/*"
+                      />
+                    </Form.Group>
+                    <div className="mb-3">
+                      <a
+                        href="about:blank"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          imageInput.current.click();
+                        }}
+                      >
+                        <div
+                          style={dropZoneStyle}
+                          ref={dropZone}
+                          onDragOver={(e) => e.preventDefault()}
+                          onDrop={handleDrop}
+                        >
+                          <img style={profileStyle} src={imageSrc} alt="프로필 이미지" />
                         </div>
-                    </a>
-                </div>
-                <Form.Group controlId="formName">
-                  <Form.Label>이름</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="name"
-                    value={trainerInfo.name}
-                    onChange={handleInputChange}
-                  />
-                </Form.Group>
-                <Form.Group controlId="formIntro">
-                  <Form.Label>소갯글</Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    name="trainer_intro"
-                    value={trainerInfo.trainer_intro}
-                    onChange={handleInputChange}
-                  />
-                </Form.Group>
-              </Col>
-              <Col className='rightside'>
-                <Form.Group controlId="formId">
-                  <Form.Label>아이디</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="userName"
-                    value={trainerInfo.userName}
-                    disabled
-                  />
-                  <Form.Text className="text-muted">아이디는 수정할 수 없습니다.</Form.Text>
-                </Form.Group>
-                <Form.Group controlId="formEmail">
-                  <Form.Label>이메일</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="email"
-                    value={trainerInfo.email}
-                    onChange={handleInputChange}
-                  />
-                </Form.Group>
-                <Form.Group controlId="formRegDate">
-                  <Form.Label>생성일</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="regdate"
-                    value={trainerInfo.regdate}
-                    disabled
-                  />
-                  <Form.Text className="text-muted">생성일은 수정할 수 없습니다.</Form.Text>
-                </Form.Group>
-                <Form.Group controlId="formInsta">
-                  <Form.Label>트레이너 SNS</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="trainer_insta"
-                    value={trainerInfo.trainer_insta}
-                    onChange={handleInputChange}
-                  />
-                </Form.Group>
-                <Form.Group controlId="formGymName">
-                  <Form.Label>헬스장이름</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="gym_name"
-                    value={trainerInfo.gym_name}
-                    onChange={handleInputChange}
-                  />
-                </Form.Group>
-                <Form.Group controlId="formGymLink">
-                  <Form.Label>헬스장위치</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="gym_link"
-                    value={trainerInfo.gym_link}
-                    onChange={handleInputChange}
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
-            <br/>
-            <Button variant="primary" type="submit" className="ml-2">
-              저장
-            </Button>
-            <Button variant="secondary" onClick={() => navigate('/trainer/mypage')} className="ml-2">
-              취소
-            </Button>
-            <Button className='update-button2' onClick={handleDelete}>회원탈퇴</Button>
-          </Form>
-
-          </Card.Body>
-        </Card>
-      </Col>
-    </Row>     
+                      </a>
+                    </div>
+                    <Form.Group controlId="formName">
+                      <Form.Label>이름</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="name"
+                        value={trainerInfo.name}
+                        onChange={handleInputChange}
+                      />
+                    </Form.Group>
+                    <Form.Group controlId="formId">
+                      <Form.Label>아이디</Form.Label>
+                      <Form.Control type="text" name="userName" value={trainerInfo.userName} disabled />
+                      <Form.Text className="text-muted">아이디는 수정할 수 없습니다.</Form.Text>
+                    </Form.Group>
+                  </Col>
+                  <Col className="TrainerMypage-right">
+                  <Form.Group controlId="formRegDate">
+                      <Form.Label>생성일</Form.Label>
+                      <Form.Control type="text" name="regdate" value={trainerInfo.regdate} disabled />
+                      <Form.Text className="text-muted">생성일은 수정할 수 없습니다.</Form.Text>
+                    </Form.Group>
+                    <Form.Group controlId="formEmail">
+                      <Form.Label>이메일</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="email"
+                        value={trainerInfo.email}
+                        onChange={handleInputChange}
+                      />
+                    </Form.Group>
+                    <Form.Group controlId="formInsta">
+                      <Form.Label>트레이너 SNS</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="trainer_insta"
+                        value={trainerInfo.trainer_insta}
+                        onChange={handleInputChange}
+                      />
+                    </Form.Group>
+                    <Form.Group controlId="formGymName">
+                      <Form.Label>헬스장이름</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="gym_name"
+                        value={trainerInfo.gym_name}
+                        onChange={handleInputChange}
+                      />
+                    </Form.Group>
+                    <Form.Group controlId="formGymLink">
+                      <Form.Label>헬스장위치</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="gym_link"
+                        value={trainerInfo.gym_link}
+                        onChange={handleInputChange}
+                      />
+                    </Form.Group>
+                    <Form.Group controlId="formIntro">
+                      <Form.Label>소갯글</Form.Label>
+                      <Form.Control
+                        as="textarea"
+                        name="trainer_intro"
+                        value={trainerInfo.trainer_intro}
+                        onChange={handleInputChange}
+                      />
+                    </Form.Group>
+                  </Col>
+                </Row>
+                <Button variant="primary" type="submit">
+                  저장
+                </Button>
+                <Button variant="secondary" onClick={() => navigate("/trainer/mypage")}>
+                  취소
+                </Button>
+                <Button variant="danger" style={{ marginLeft: 950 }} onClick={handleDelete}>
+                  회원탈퇴
+                </Button>
+              </Form>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
     </Container>
   );
 };

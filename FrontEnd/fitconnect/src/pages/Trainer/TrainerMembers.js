@@ -124,7 +124,7 @@ function Members() {
       <Row>
         <Col>
           <Card>
-            <Card.Header as="h6" className="border-bottom p-3 mb-0">
+            <Card.Header className="Header">
               회원 목록
             </Card.Header>
             <Card.Body>

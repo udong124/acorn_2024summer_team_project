@@ -24,6 +24,7 @@ function UserSignUp() {
   const [isReady, setIsReady] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [emailErrorMessage, setEmailErrorMessage] = useState("");
+  const [existUserName, setExistUserName] = useState(false);
   // 프로필 이미지 src 에 적용할 값을 state 로 관리 하기
   const [imageSrc, setImageSrc] = useState(null);
   // 이미지 input 요소의 참조값을 사용하기  위해
@@ -90,10 +91,12 @@ function UserSignUp() {
   };
 
   const handleNext = () => {
+
     if (!formData.userName || !formData.password || !formData.newPassword) {
       setErrorMessage("모든 필드를 입력해 주세요.");
       return;
     }
+
 
     if (formData.password !== formData.newPassword) {
       setErrorMessage("비밀번호가 일치하지 않습니다.");

@@ -5,6 +5,8 @@ import Logo from "./Logo";
 import { ReactComponent as LogoWhite } from "../assets/images/logos/FitConnectLogo.svg";
 import user1 from "../assets/images/users/user4.jpg";
 import { decodeToken } from "jsontokens";
+import './css/Header.css'; // 커스텀 CSS 파일 임포트
+
 
 const Header = () => {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -68,21 +70,19 @@ const Header = () => {
   }else {
       navbarBrand = (
         <Navbar.Brand href="" onClick={(e)=> e.preventDefault()}>
-          <LogoWhite className="d-lg-none" />
+          <LogoWhite className="d-lg-none"/>
         </Navbar.Brand>
     );
   }
 
   return (
     <Navbar
-      bg="dark"
-      variant="dark"
+      className="custom-navbar"
       expand="md"
-      className="fix-header"
       expanded={isOpen}
     >
       <div className="d-flex align-items-center">
-        <div className="d-lg-block d-none me-5 pe-3">
+        <div style={{marginLeft: 60}}>
           <Logo />
         </div>
 
@@ -121,13 +121,13 @@ const Header = () => {
         {/* 로그인 여부에 따라 로그인,로그아웃 버튼 표시 */}
         { !isAuthPage && userName ? (
           <>
-            <span style={{ color: "#fff", marginRight: 20 }}>{localStorage.getItem("name")} 님 로그인 중</span>
+            <span style={{ color: "#fff", marginRight:"20px"  }}>{localStorage.getItem("name")} 님 로그인 중</span>
             <Button
             variant="danger"
-            style={{ zIndex: 0, position: 'relative', marginRight:"10px"}} // 인라인 스타일로 z-index 적용
+            style={{ zIndex: 0, position: 'relative', marginRight:"100px"}} // 인라인 스타일로 z-index 적용
             onClick={handleLogout}
             >
-              로그아웃
+              <img src="/img/logout2.png" alt="" style={{width:18, height:18}}/>
             </Button>
           </>
         ) : ""}

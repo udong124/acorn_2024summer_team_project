@@ -69,8 +69,10 @@ const Message = () => {
 
 
   const profileStyle = {
-    width: "200px",
-    height: "200px",
+    border: `1px solid #ccc`,
+    margin: "24px",
+    width: "170px",
+    height: "170px",
     borderRadius: "50%",
     objectFit: "cover",
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.15)",
@@ -110,30 +112,32 @@ const Message = () => {
         <Row>
           <Col>
             <Card>
-              <Card.Header as="h6" className="border-bottom p-3 mb-0">
+              <Card.Header className="Header">
                 MQTT Chat
               </Card.Header>
               <Card.Body className="">
                 <div className="chatroom">
                   <ul style={{ listStyle: 'none', padding: 0 }}>
                     {ownTopic.filter(item => item.topic !== null).map(item => (
-                      <li
-                        key={item.topic}
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          alignItems: 'center',
-                          borderBottom: '1px solid #ccc',
-                          padding: '10px'
-                        }}>
-                        <div onClick={() => handleMemberClick(item.topic)} style={{ flex: 1 }}>
+                       <li
+                       key={item.topic}
+                       style={{
+                         display: 'flex',
+                         justifyContent: 'space-between',
+                         alignItems: 'center',
+                         borderBottom: '1px solid #ccc',
+                         padding: '10px'
+                       }}>
+                        <div onClick={() => handleMemberClick(item.topic)} style={{ display: 'flex', alignItems: 'center', flex: 1}}>
                           <img src={item.profile ? "http://52.78.38.12:8080/upload/"+item.profile : "/img/none.png"} alt={`${item.name} 프로필`} style={profileStyle} 
                             onError={(e) => {
                             e.target.onerror = null;
                             e.target.src = "/img/none.png";}} />
-                          <p>{item.name}</p>
-                          <p>내용: {item.content}</p>
-                          <p>{formatDate(item.times)}</p>
+                          <div style={{marginLeft: "50px", paddingLeft: "50px", borderLeft: "2px solid #ccc"}}>
+                          <p style={{fontSize:28, marginBottom: 20, fontWeight: 550}}>{item.name}</p>
+                          <p style={{fontSize:19, marginBottom: 20, fontweight: 300, opacity:0.95}}>{item.content}</p>
+                          <p style={{fontSize:13, opacity:0.7}}>{formatDate(item.times)}</p>
+                          </div>
                         </div>
                       </li>
                     ))}

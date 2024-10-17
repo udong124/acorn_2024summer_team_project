@@ -33,13 +33,15 @@ const MyPage = () => {
     width: "200px",
     height: "200px",
     border: "1px solid #cecece",
-    borderRadius: "50%"
+    borderRadius: "50%",
+    marginLeft: "60px"
   }
   const profileStyle2={
     width: "200px",
     height: "200px",
     border: "1px solid #cecece",
     borderRadius: "50%",
+    marginLeft: "60px",
     display: "none"
   }
 
@@ -95,8 +97,8 @@ const MyPage = () => {
       <Row>
       <Col>
          <Card>
-          <Card.Header as="h6" className='TrainerMypage-header'>
-            <p style={{fontSize: "2em", fontWeight: "bold"}}>Mypage</p>
+          <Card.Header className="Header">
+            마이페이지
           </Card.Header>
           <Card.Body className="">
           <svg ref={personSvg} style={profileStyle2}  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
@@ -115,30 +117,24 @@ const MyPage = () => {
                         <img className="TrainerProfile-image" style={profileStyle} src={imageSrc} alt="프로필 이미지"/>
                     </div>
                   </div>
-                  <p className='TrainerProfile-name'>{trainerInfo.name} <a href={trainerInfo.trainer_insta} target="_blank" rel="noopener noreferrer"><img
+                  <p className='TrainerProfile-name' style={{marginLeft:105}}>{trainerInfo.name}<a href={trainerInfo.trainer_insta} target="_blank" rel="noopener noreferrer" style={{marginLeft:30 }}><img
                       src="/img/instagramlogo.png"
                       alt="Instagram Logo"
                       style={{ width: '40px', height: '40px' }} 
                     /></a></p>
-                    <p> {<a href={trainerInfo.gym_link} target="_blank" rel="noopener noreferrer">
-                        <b>{trainerInfo.gym_name}</b>
+                    <p>
+                      {<a href={trainerInfo.gym_link} target="_blank" rel="noopener noreferrer" style={{marginLeft:90, justifyContent:"center", textAlign:"center", fontWeight:550, textDecoration:"none", color:"#328DF4"}}>
+                        {trainerInfo.gym_name}
                       </a>}</p>
                 </Col>
                 <Col className='TrainerMypage-right TrainerMypage-info'>
-                  <p>아이디: {trainerInfo.userName}</p>
-                  <p>이메일: {trainerInfo.email}</p>
-                  <p>생성일: {trainerInfo.regdate}</p>
-                  <img src="" alt="" />
-                  <p>
-                  </p>
-                  <p>
-                   
-                      <p className='TrainerProfile-intro'>소갯글: {trainerInfo.trainer_intro}</p>
-                  </p>
-                     
+                  <p style={{marginBottom:40}}><b style={{fontSize:20}}>아이디</b> <p style={{opacity:0.9}}>{trainerInfo.userName}</p></p>
+                  <p style={{marginBottom:40}}><b style={{fontSize:20}}>이메일</b> <p style={{opacity:0.9}}>{trainerInfo.email}</p></p>
+                  <p style={{marginBottom:40}}><b style={{fontSize:20}}>생성일</b> <p style={{opacity:0.9}}>{trainerInfo.regdate}</p></p>
+                  <p style={{marginBottom:40}}><b style={{fontSize:20}}>소갯글</b> <p style={{opacity:0.9}}>{trainerInfo.trainer_intro}</p></p> 
                 </Col>
               </Row>
-              <Button className='update-button1'  onClick={()=> navigate('/trainer/mypagedetail')}>회원정보수정</Button>
+              <Button onClick={()=> navigate('/trainer/mypagedetail')}>회원정보수정</Button>
             </Card.Body>
           </Card>
         </Col>

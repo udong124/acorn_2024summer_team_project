@@ -1,0 +1,20 @@
+/* Header.css */
+.custom-navbar {
+    background-color: #1e1f24; /* 원하는 배경색으로 설정 */
+    color: #ccc; /* 텍스트 색상 설정 */  
+    font-weight: 520;
+    height: 63px; /* 원하는 높이로 설정 */
+    padding: 10px 20px; /* 상하 패딩과 좌우 패딩을 추가 */
+    box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+  }
+  
+  .custom-navbar .navbar-nav .nav-link {
+    color: #ffffff; /* 네비게이션 링크 색상 */
+  }
+  
+  .custom-navbar .btn {
+    color: #ffffff; /* 버튼 텍스트 색상 */
+    border-color: #ffffff;
+    border-width: 0.1;
+  }
+  
