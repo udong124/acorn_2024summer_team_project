@@ -69,7 +69,6 @@ const Message = () => {
 
 
 
-
   // 날짜 변환 함수: 'YYYY-MM-DD HH:mm' 형식으로 변환
   const formatDate = (date) => {
     const d = new Date(date);
