@@ -97,7 +97,19 @@ const Header = () => {
 
       </div>
 
-
+      <div className="hstack gap-2">
+        {/* 로그인 페이지에서는 이 버튼도 나타나지 않도록 설정 */}
+        {!isAuthPage && userName && (
+          <Button
+            variant="danger"
+            size="sm"
+            className="d-sm-block d-md-none"
+            onClick={Handletoggle}
+          >
+            <img src="/img/logout2.png" alt="" style={{width:18, height:18}}/>
+          </Button>
+        )}
+      </div>
 
       <Navbar.Collapse>
         <Nav className="me-auto">{/* 빈 네비게이션 */}</Nav>
