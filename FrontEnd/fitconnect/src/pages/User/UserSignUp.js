@@ -83,17 +83,18 @@ function UserSignUp() {
     axios.get(`/user/check/${userName}`)
       .then(res => {
         console.log(res);
-        // 사용 가능 여부에 따라 상태를 업데이트
-        if (res.data.canUse===true) {
+        if (res.data.canUse === true) {
           setIsUsernameAvailable(true);
+          setErrorMessage(""); // 이전 에러 메시지 초기화
         } else {
           setIsUsernameAvailable(false);
+          setErrorMessage(""); // 이전 에러 메시지 초기화
         }
       })
       .catch(error => {
         console.log(error);
-        // 오류 발생 시 false로 설정할 수도 있습니다.
         setIsUsernameAvailable(false);
+        setErrorMessage("아이디 체크 중 오류가 발생했습니다."); // 에러 메시지 설정
       });
   };
 
@@ -112,6 +113,17 @@ function UserSignUp() {
 
     if (formData.password.length < 6) {
       setErrorMessage("비밀번호는 6자 이상이어야 합니다.");
+      return;
+    }
+    // 아이디 중복 확인 여부 체크
+    if (isUsernameAvailable === null) {
+      setErrorMessage("아이디 중복 확인을 해주세요.");
+      return;
+    }
+
+    // 아이디 사용 가능 여부 확인
+    if (isUsernameAvailable === false) {
+      setErrorMessage("사용 불가능한 아이디입니다. 다른 아이디를 입력해 주세요.");
       return;
     }
 
@@ -265,17 +277,12 @@ function UserSignUp() {
                       required
                     />
                       <Button onClick={handleCheck} type="button">중복 확인</Button> {/* type="button" 추가 */}
-                      {isUsernameAvailable !== null && ( // null이 아닐 때만 피드백 메시지 표시
-                        isUsernameAvailable ? (
-                          <Form.Control.Feedback type="valid">
-                            사용 가능한 아이디 입니다
-                          </Form.Control.Feedback>
-                        ) : (
-                          <Form.Control.Feedback type="invalid">
-                            사용 불가능한 아이디 입니다
-                          </Form.Control.Feedback>
-                        )
-                      )}
+                      <Form.Control.Feedback type="valid" style={{ display: isUsernameAvailable ? 'block' : 'none' }}>
+                        사용 가능한 아이디 입니다
+                      </Form.Control.Feedback>
+                      <Form.Control.Feedback type="invalid" style={{ display: isUsernameAvailable === false ? 'block' : 'none' }}>
+                        사용 불가능한 아이디 입니다
+                      </Form.Control.Feedback>
                   </Form.Group>
                   <Form.Group>
                     <Form.Label>비밀번호</Form.Label>
