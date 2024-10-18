@@ -67,3 +67,31 @@
     align-items: center;
   }
  
+  .button-container {
+    display: flex;
+    flex-direction: column; /* 기본적으로 세로로 나열 */
+    gap: 10px; /* 버튼 간의 간격 */
+    align-items: flex-end; /* 오른쪽 끝에 정렬 */
+  }
+  
+  @media (max-width: 768px) { /* 화면 너비가 768px 이하일 경우 */
+    .button-container {
+      flex-direction: row; /* 가로로 나열 */
+      justify-content: flex-end; /* 오른쪽 정렬 */
+    }
+  }
+
+  .row-container {
+    display: flex;
+    flex-wrap: wrap; /* 요소가 넘칠 경우 다음 줄로 감싸도록 설정 */
+  }
+  
+  @media (max-width: 768px) { /* 화면 너비가 768px 이하일 경우 */
+    .row-container {
+      flex-direction: column; /* 세로로 나열 */
+    }
+  
+    .button-container {
+      align-items: flex-start; /* 버튼을 왼쪽 정렬 */
+    }
+  }

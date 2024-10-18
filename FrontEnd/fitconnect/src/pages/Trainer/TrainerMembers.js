@@ -128,31 +128,51 @@ function Members() {
               회원 목록
             </Card.Header>
             <Card.Body>
-              <ul>
+              <ul style={{ listStyle: 'none', padding: 0 }}>
                 {members.map((item) => (
-                  <div key={item.id}>
-                    <img src={item.profile && item.profile !== null ? "http://52.78.38.12:8080/upload/"+item.profile : `/img/none.png`} alt={`${item.name} 프로필`} style={profileStyle}/>
-                    <p>이름: {item.name}</p>
-                    <p>키: {item.member_height}</p>
-                    <p>몸무게: {item.member_weight}</p>
-                    <p>성별: {item.member_gender}</p>
-                    <p>플랜: {item.plan}</p>
-                    <p>주간플랜: {item.weeklyplan}</p>
+                  <li  className="row-container" key={item.id} style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    borderBottom: '1px solid #ccc',
+                    padding: '10px'
+                  }}>
+                    
+                    <Col  style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+                      <img 
+                        src={item.profile && item.profile !== null ? "http://52.78.38.12:8080/upload/" + item.profile : '/img/none.png'} 
+                        alt={`${item.name} 프로필`} 
+                        style={profileStyle} 
+                      />
+                      </Col>
+                      <Col style={{ paddingLeft: "50px"}}>
+                        <p>이름: {item.name}</p>
+                        <p>키: {item.member_height}</p>
+                        <p>몸무게: {item.member_weight}</p>
+                        <p>성별: {item.member_gender}</p>
+                        <p>플랜: {item.plan}</p>
+                        <p>주간플랜: {item.weeklyplan}</p>                        
+                      </Col>
 
-                      
-                    {/* 새로운 채팅방 생성 버튼 */}
-                    <Button variant='primary' onClick={() => getAndPost(item.id)}>대화하기</Button>
-                    <Button onClick={() => handleExModal(item.id)}>운동일지</Button>
-                    <Button onClick={() => handleDiModal(item.id)}>식단목록</Button>
-                    <Button variant='danger' onClick={() => handleDelete(item.id)}>회원삭제</Button>
+                      {/* 새로운 채팅방 생성 버튼 */}
+                      <Col style={{ display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'end' }}>
+                        <div className="button-container">
+                          <Button variant='primary' onClick={() => getAndPost(item.id)}>대화하기</Button>
+                          <Button onClick={() => handleExModal(item.id)}>운동일지</Button>
+                          <Button onClick={() => handleDiModal(item.id)}>식단목록</Button>
+                          <Button variant='danger' onClick={() => handleDelete(item.id)}>회원삭제</Button>                        
+                        </div>
+                      </Col>
 
-                  </div>
+                    
+                  </li>
                 ))}
               </ul>
             </Card.Body>
           </Card>
         </Col>
       </Row>
+
       <DietModal
         dietModal={dietModal}
           setDietModal={setDietModal}
