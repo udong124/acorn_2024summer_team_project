@@ -196,7 +196,6 @@ const TrainerId = () => {
                       <h4>선택된 트레이너</h4>
                       <p>이름: {selectedTrainer.name}</p>
                       <p>이메일: {selectedTrainer.email}</p>
-                      <p style={{right: 20}}>프로필: {selectedTrainer.profile}</p>
                       <p>인스타그램: <Link to="/{selectedTrainer.trainer_insta}">{selectedTrainer.trainer_insta}</Link></p>
                       <p>자기소개: {selectedTrainer.trainer_intro}</p>
                       <p>헬스장: {selectedTrainer.gym_name}</p>

@@ -178,11 +178,11 @@ function MemberDietJournalAdd() {
                                 </Form>
                             <InputGroup className="mb-3">
                                 <Form.Control onChange={handleChange} placeholder="식단검색" type="text" />
+                                <Button onClick={handleClickAdd}>식단 추가</Button>
                             </InputGroup>
                             
-
-                            <Button className="mb-3" onClick={handleClickAdd}>식단 추가</Button>
                             <Button className="mb-3"  onClick={()=>{setShowModal(true)}}>음식 추가</Button>
+                            
                             <Table bordered>
                                 <thead>
                                     <tr>
