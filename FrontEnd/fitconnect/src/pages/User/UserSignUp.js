@@ -257,6 +257,7 @@ function UserSignUp() {
                 <Form onSubmit={handleSubmit}>
                   <Form.Label>아이디</Form.Label>
                   <Form.Group style={{ display: 'flex', alignItems: 'center' }}>
+
                     <div style={{ flexGrow: 1 }}>
                       <Form.Control
                         type="text"
@@ -267,13 +268,14 @@ function UserSignUp() {
                       />
                     </div>
                     <Button onClick={handleCheck} type="button" style={{ marginLeft: '10px' }}>중복 확인</Button>
-                    <Form.Control.Feedback type="valid" style={{ display: isUsernameAvailable ? 'block' : 'none' }}>
-                      사용 가능한 아이디 입니다
-                    </Form.Control.Feedback>
-                    <Form.Control.Feedback type="invalid" style={{ display: isUsernameAvailable === false ? 'block' : 'none' }}>
-                      사용 불가능한 아이디 입니다
-                    </Form.Control.Feedback>
                   </Form.Group>
+                  <Form.Control.Feedback type="valid" style={{ display: isUsernameAvailable ? 'block' : 'none' }}>
+                    사용 가능한 아이디 입니다
+                  </Form.Control.Feedback>
+                  <Form.Control.Feedback type="invalid" style={{ display: isUsernameAvailable === false ? 'block' : 'none' }}>
+                    사용 불가능한 아이디 입니다
+                  </Form.Control.Feedback>
+
                   <Form.Group>
                     <Form.Label>비밀번호</Form.Label>
                     <Form.Control
