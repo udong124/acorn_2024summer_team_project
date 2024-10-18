@@ -7,7 +7,7 @@ import { Modal, Button, Card, Row, Col, Form } from "react-bootstrap";
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
-import MemberCalendar from './css/MemberCalendar.css';
+import './css/MemberCalendar.css';
 
 const CalendarComponent = () => {
   // const [m_calendar_id, setMCalendarId]  = useState(null)
