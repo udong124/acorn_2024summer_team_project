@@ -1,0 +1,41 @@
+.link-container {
+    display: flex;
+    flex-direction: column; /* 기본적으로 세로로 나열 */
+    gap: 10px; /* 버튼 간의 간격 */
+    align-items: flex-end; /* 오른쪽 끝에 정렬 */
+  }
+.link-container a{
+    text-decoration: none;
+    color: rgb(85, 84, 84);
+    text-align: center;
+    justify-content: center;
+    padding: 10px;
+    border-bottom: 1px solid rgb(85, 84, 84);
+    font-family: 'nanumsquare';
+    margin-right: 40px;
+    font-weight: 550;
+    
+}
+.link-container a:hover{
+    color: rgb(147, 147, 167);
+}
+
+.membercontent p{
+    font-family: 'nanumsquare';
+}
+
+@font-face {
+    font-family: 'Tenada';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2210-2@1.0/Tenada.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'S-CoreDream-3Light';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@import url('https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css');

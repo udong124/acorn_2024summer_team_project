@@ -5,6 +5,7 @@ import { Card, Row, Col, Button } from "react-bootstrap";
 import { useNavigate } from "react-router";
 import DietModal from "../../components/DietModal";
 import ExerciseModal from "../../components/ExerciseModal";
+import './css/TrainerMember.css'
 
 
 let member_num;
@@ -145,6 +146,7 @@ function Members() {
                         style={profileStyle} 
                       />
                       </Col>
+                      <div className="membercontent">
                       <Col style={{ paddingLeft: "50px"}}>
                         <p>이름: {item.name}</p>
                         <p>키: {item.member_height}</p>
@@ -153,14 +155,15 @@ function Members() {
                         <p>플랜: {item.plan}</p>
                         <p>주간플랜: {item.weeklyplan}</p>                        
                       </Col>
+                      </div>
 
                       {/* 새로운 채팅방 생성 버튼 */}
                       <Col style={{ display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'end' }}>
-                        <div className="button-container">
-                          <Button variant='primary' onClick={() => getAndPost(item.id)}>대화하기</Button>
-                          <Button onClick={() => handleExModal(item.id)}>운동일지</Button>
-                          <Button onClick={() => handleDiModal(item.id)}>식단목록</Button>
-                          <Button variant='danger' onClick={() => handleDelete(item.id)}>회원삭제</Button>                        
+                        <div className="link-container">
+                          <a href="#" onClick={() => getAndPost(item.id)} >대화하기</a>
+                          <a href="#" onClick={() => handleExModal(item.id)}>운동일지</a>
+                          <a href="#" onClick={() => handleDiModal(item.id)}>식단목록</a>
+                          <a href="#" onClick={() => handleDelete(item.id)}>회원삭제</a>                    
                         </div>
                       </Col>
 

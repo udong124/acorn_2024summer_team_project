@@ -112,20 +112,22 @@ const MyPage = () => {
                 <Form.Label></Form.Label>
                     <Form.Control ref={imageInput} style={{display:"none"}} type="file" name="image" accept="image/*"/>
                     </Form.Group>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
                   <div className="Trainerdrop-zone">
-                    <div>
+
                         <img className="TrainerProfile-image" style={profileStyle} src={imageSrc} alt="프로필 이미지"/>
-                    </div>
+
                   </div>
-                  <p className='TrainerProfile-name' style={{marginLeft:105}}>{trainerInfo.name}<a href={trainerInfo.trainer_insta} target="_blank" rel="noopener noreferrer" style={{marginLeft:30 }}><img
+                  <p className='TrainerProfile-name' >{trainerInfo.name} <img
                       src="/img/instagramlogo.png"
                       alt="Instagram Logo"
                       style={{ width: '40px', height: '40px' }} 
-                    /></a></p>
+                    /><a href={trainerInfo.trainer_insta} target="_blank" rel="noopener noreferrer"></a></p>
                     <p>
-                      {<a href={trainerInfo.gym_link} target="_blank" rel="noopener noreferrer" style={{marginLeft:90, justifyContent:"center", textAlign:"center", fontWeight:550, textDecoration:"none", color:"#328DF4"}}>
+                      {<a href={trainerInfo.gym_link} target="_blank" rel="noopener noreferrer" style={{textAlign:"center", fontWeight:550, textDecoration:"none", color:"#328DF4"}}>
                         {trainerInfo.gym_name}
                       </a>}</p>
+                      </div>
                 </Col>
                 <Col className='TrainerMypage-right TrainerMypage-info'>
                   <p style={{marginBottom:40}}><b style={{fontSize:20}}>아이디</b> <p style={{opacity:0.9}}>{trainerInfo.userName}</p></p>

@@ -21,18 +21,23 @@
   border-top-right-radius: 10px;
 };
 
+.TrainerMypage-row {
+  align-items: stretch; /* Ensure both sections are the same height */
+}
+
+
 .TrainerMypage-left {
   flex: 1;
   min-width: 350px; /* 최소 너비 증가 */
-  margin-right: 30px;
+  margin-right: 50px;
+  border-right: 2px solid #7c7c7c;
+  padding-right: 50px;
 }
 
 /* Right Section (Additional Info) */
 .TrainerMypage-right {
   flex: 2;
   padding-left: 30px;
-  border-left: 2px solid #7c7c7c;
-  padding-right: 30px;
 }
 
 /* Profile Picture Styling */
@@ -85,6 +90,5 @@
     border-right: none;
     padding-right: 0;
     margin-bottom: 30px; /* 여백 추가 */
-    
   }
 }
