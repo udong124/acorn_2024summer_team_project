@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Card, Row, Col, Button, Modal, Form } from "react-bootstrap";
 import TrainerMessageModal from '../../components/TrainerMessageModal';
 import { useSearchParams } from 'react-router-dom';
-import TrainerMessage from './css/TrainerMessage.css'
+import './css/TrainerMessage.css';
 
 const Message = () => {
   const [showModal, setShowModal] = useState(false);
@@ -68,15 +68,7 @@ const Message = () => {
   }, [showModal])
 
 
-  const profileStyle = {
-    border: `1px solid #ccc`,
-    margin: "24px",
-    width: "170px",
-    height: "170px",
-    borderRadius: "50%",
-    objectFit: "cover",
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.15)",
-  };
+
 
   // 날짜 변환 함수: 'YYYY-MM-DD HH:mm' 형식으로 변환
   const formatDate = (date) => {
@@ -121,22 +113,16 @@ const Message = () => {
                     {ownTopic.filter(item => item.topic !== null).map(item => (
                        <li
                        key={item.topic}
-                       style={{
-                         display: 'flex',
-                         justifyContent: 'space-between',
-                         alignItems: 'center',
-                         borderBottom: '1px solid #ccc',
-                         padding: '10px'
-                       }}>
+                       className='chat-list-item'>
                         <div onClick={() => handleMemberClick(item.topic)} style={{ display: 'flex', alignItems: 'center', flex: 1}}>
-                          <img src={item.profile ? "http://52.78.38.12:8080/upload/"+item.profile : "/img/none.png"} alt={`${item.name} 프로필`} style={profileStyle} 
+                          <img className="profileImage" src={item.profile ? "http://52.78.38.12:8080/upload/"+item.profile : "/img/none.png"} alt={`${item.name} 프로필`}  
                             onError={(e) => {
                             e.target.onerror = null;
                             e.target.src = "/img/none.png";}} />
-                          <div style={{marginLeft: "50px", paddingLeft: "50px", borderLeft: "2px solid #ccc"}}>
-                          <p style={{fontSize:28, marginBottom: 20, fontWeight: 550}}>{item.name}</p>
-                          <p style={{fontSize:19, marginBottom: 20, fontweight: 300, opacity:0.95}}>{item.content}</p>
-                          <p style={{fontSize:13, opacity:0.7}}>{formatDate(item.times)}</p>
+                          <div className='chat-list-item-text'>
+                          <p className="chat-member-name">{item.name}</p>
+                          <p className='chat-member-content'>{item.content}</p>
+                          <p className='chat-member-times'>{formatDate(item.times)}</p>
                           </div>
                         </div>
                       </li>
