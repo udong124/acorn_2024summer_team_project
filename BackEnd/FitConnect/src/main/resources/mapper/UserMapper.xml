@@ -27,8 +27,8 @@
 
 	<insert id="insert" parameterType="UserDto">
 		INSERT INTO user_info
-		(id, userName, password, name, email, role, regdate, provider)
-		VALUES(user_info_seq.NEXTVAL, #{userName}, #{password}, #{name}, #{email}, #{role}, SYSDATE, #{provider})
+		(id, userName, password, name, email, role, regdate, provider<if test="profile != null">, profile</if>)
+		VALUES(user_info_seq.NEXTVAL, #{userName}, #{password}, #{name}, #{email}, #{role}, SYSDATE, #{provider}<if test="profile != null">, #{profile}</if>)
 	</insert>
 
 	<select id="getData" parameterType="string" resultType="UserDto">

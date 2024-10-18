@@ -93,23 +93,44 @@ public class UserController {
 		return "Bearer+"+token;
 	}
 	
-   /**********************************************************************
-    * <PRE> * 메소드 정보 *
-    * 1. MethodName   : signup
-    * 2. ClassName      : UserController
-    * 3. 작성자         : minji
-    * 4. 작성일         : 2024. 9. 28. 오후 6:03:35
-    * 5. 설명         : 새로운 사용자를 등록하는 메소드. 비밀번호를 암호화 하여 DB에 저장, 성공 여부 반환.
-    * </PRE>
-    *       @return Map<String,Object>
-    *       @param dto
-   **********************************************************************/
-	@PostMapping("/user")
-	public Map<String, Object> signup(@RequestBody UserDto dto) {
+	/**********************************************************************
+	* <PRE> * 메소드 정보 *
+	* 1. MethodName   : signup
+	* 2. ClassName      : UserController
+	* 3. 작성자         : minji
+	* 4. 작성일         : 2024. 9. 28. 오후 6:03:35
+	* 5. 설명         : 새로운 사용자를 등록하는 메소드. 비밀번호를 암호화 하여 DB에 저장, 성공 여부 반환.
+	* </PRE>
+	*       @return Map<String,Object>
+	*       @param dto
+	**********************************************************************/
+	@PostMapping(value="/user", consumes = {MediaType. APPLICATION_JSON_VALUE, MediaType. MULTIPART_FORM_DATA_VALUE})
+	public Map<String, Object> signup(UserDto dto) {
+		Map<String, Object> map=new HashMap<>();
+		if(dto.getImage() != null) {
+		MultipartFile image = dto.getImage();
+		
+		String profile=UUID.randomUUID().toString();
+		//저장할 파일의 전체 경로 구성하기 
+		String filePath=fileLocation+File.separator+profile;
+		System.out.println(filePath);
+		try {
+			//업로드된 파일을 이동시킬 목적지 File 객체
+			File f=new File(filePath);
+			image.transferTo(f);
+			
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+			dto.setProfile(profile);
+			map.put("imageSuccess", true);
+		}
+
 		String rawPassword = dto.getPassword();
 		String encPassword = passwordEncoder.encode(rawPassword);
 		dto.setPassword(encPassword);
-		Map<String, Object> map=new HashMap<>();
+
 		if(userDao.getData(dto.getUserName()) != null) {
 			map.put("isSuccess", false);
 			map.put("id", 0);
@@ -119,6 +140,7 @@ public class UserController {
 			int id = userDao.getData(dto.getUserName()).getId();
 			map.put("id", id);
 		}
+
 		return map;
 	}
 
