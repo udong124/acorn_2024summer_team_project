@@ -6,7 +6,6 @@ import axios from "axios";
 import profile from "../../assets/images/users/profile.png";
 
 import { decodeToken } from 'jsontokens';
-import start from "mqtt/bin/pub";
 
 function UserSignUp() {
  //폼에 입력한 내용을 상태값으로 관리
@@ -33,8 +32,7 @@ function UserSignUp() {
 
   const [previewImage, setPreviewImage] = useState(null);
 
-  const [isUsernameAvailable ,setIsUsernameAvailable] = useState(false)
-
+  const [isUsernameAvailable, setIsUsernameAvailable] = useState(null); // true: 사용 가능, false: 사용 불가
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -79,6 +77,24 @@ function UserSignUp() {
       ...formData,
       [name]: value
     });
+  };
+  const handleCheck = () => {
+    const userName = formData.userName;
+    axios.get(`/user/check/${userName}`)
+      .then(res => {
+        console.log(res);
+        // 사용 가능 여부에 따라 상태를 업데이트
+        if (res.data.canUse===true) {
+          setIsUsernameAvailable(true);
+        } else {
+          setIsUsernameAvailable(false);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        // 오류 발생 시 false로 설정할 수도 있습니다.
+        setIsUsernameAvailable(false);
+      });
   };
 
   const handleNext = () => {
@@ -210,26 +226,6 @@ function UserSignUp() {
       });
   };
 
-
-  const handleCheck = () => {
-    const userName = formData.userName;
-    axios.get(`/user/check/${userName}`)
-      .then(res => {
-        console.log(res);
-        // 사용 가능 여부에 따라 상태를 업데이트
-        if (res.data.canUse===true) {
-          setIsUsernameAvailable(true);
-        } else {
-          setIsUsernameAvailable(false);
-        }
-      })
-      .catch(error => {
-        console.log(error);
-        // 오류 발생 시 false로 설정할 수도 있습니다.
-        setIsUsernameAvailable(false);
-      });
-  };
-
   const imageContainerStyle = {
     width: "250px",
     height: "200px",
@@ -268,16 +264,17 @@ function UserSignUp() {
                       onChange={handleChange}
                       required
                     />
-                    <Button onClick={handleCheck}>중복 확인</Button>
-                      {isUsernameAvailable === true ? (
-                        <Form.Control.Feedback type="valid">
-                          사용 가능한 아이디 입니다
-                        </Form.Control.Feedback>
-                      ) :
-                      (
-                        <Form.Control.Feedback type="invalid">
-                          사용 불가능한 아이디 입니다
-                        </Form.Control.Feedback>
+                      <Button onClick={handleCheck} type="button">중복 확인</Button> {/* type="button" 추가 */}
+                      {isUsernameAvailable !== null && ( // null이 아닐 때만 피드백 메시지 표시
+                        isUsernameAvailable ? (
+                          <Form.Control.Feedback type="valid">
+                            사용 가능한 아이디 입니다
+                          </Form.Control.Feedback>
+                        ) : (
+                          <Form.Control.Feedback type="invalid">
+                            사용 불가능한 아이디 입니다
+                          </Form.Control.Feedback>
+                        )
                       )}
                   </Form.Group>
                   <Form.Group>
