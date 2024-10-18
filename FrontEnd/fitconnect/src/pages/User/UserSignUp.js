@@ -212,7 +212,7 @@ function UserSignUp() {
             localStorage.setItem("userName", formData.userName);
             localStorage.setItem("role", formData.role);
             localStorage.setItem("name", formData.name);
-
+            localStorage.removeItem('selectedTrainerName');
             setIsReady(true);
           })
           .catch(error => {
