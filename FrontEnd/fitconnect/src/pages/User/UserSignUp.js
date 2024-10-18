@@ -172,20 +172,19 @@ function UserSignUp() {
       return;
     }
 
-    // const formImage = new FormData();
-    //안 들어갈 경우 formImage 로 7개를 보내주기
-    // formImage.append("name", formData.name);
-    // formImage.append("email", formData.email);
-    // formImage.append("userName", formData.userName);
-    // formImage.append("password", formData.password);
-;
-    // formImage.append("role", formData.role);
-    // formImage.append("profile", formData.profile);
-    // formImage.append("provider", formData.provider);
+    const formImage = new FormData();
+
+    formImage.append("name", formData.name);
+    formImage.append("email", formData.email);
+    formImage.append("userName", formData.userName);
+    formImage.append("password", formData.password);
+    formImage.append("role", formData.role);
+    formImage.append("image", formData.image);
+    formImage.append("provider", formData.provider);
 
 
    // 입력한 회원정보를 전송하기
-    axios.post("/user", formData, {
+    axios.post("/user", formImage, {
       headers: { 
         "Content-Type": "multipart/form-data"
       }
@@ -201,28 +200,13 @@ function UserSignUp() {
           return;
         }
 
-        if(formData.image) {
-          //현재 선택한 파일을 form data 에 담아야한다 
-          formData.append("image", imageInput.current.files[0]);
-          console.log(imageInput.current.files[0])
-            .then((profileResponse) => {
-              if (profileResponse.data) {
-                console.log("프로필 이미지 등록 성공", profileResponse.data);
-              }
-            })
-            .catch((error) => {
-              if (error.response && error.response.data) {
-                console.error(
-                  "프로필 이미지 등록 실패:",
-                  error.response.data.message
-                );
-              } else {
-                console.error("프로필 이미지 등록 실패:", error.message);
-              }
-            });
-        }
-
-        axios.post("/auth", formData)
+        axios.post("/auth", {userName:formData.userName, password:formData.password},
+          {
+            headers: {
+              'Content-Type': 'application/json' // JSON 형식으로 전송
+            }
+          }
+        )
           .then((authResponse) => {
             const token = authResponse.data;
             localStorage.setItem("token", token);
@@ -271,22 +255,24 @@ function UserSignUp() {
             <Card.Body>
               {step === 1 && (
                 <Form onSubmit={handleSubmit}>
-                  <Form.Group>
-                    <Form.Label>아이디</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="아이디를 입력해 주세요"
-                      name="userName"
-                      onChange={handleChange}
-                      required
-                    />
-                      <Button onClick={handleCheck} type="button">중복 확인</Button> {/* type="button" 추가 */}
-                      <Form.Control.Feedback type="valid" style={{ display: isUsernameAvailable ? 'block' : 'none' }}>
-                        사용 가능한 아이디 입니다
-                      </Form.Control.Feedback>
-                      <Form.Control.Feedback type="invalid" style={{ display: isUsernameAvailable === false ? 'block' : 'none' }}>
-                        사용 불가능한 아이디 입니다
-                      </Form.Control.Feedback>
+                  <Form.Label>아이디</Form.Label>
+                  <Form.Group style={{ display: 'flex', alignItems: 'center' }}>
+                    <div style={{ flexGrow: 1 }}>
+                      <Form.Control
+                        type="text"
+                        placeholder="아이디를 입력해 주세요"
+                        name="userName"
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
+                    <Button onClick={handleCheck} type="button" style={{ marginLeft: '10px' }}>중복 확인</Button>
+                    <Form.Control.Feedback type="valid" style={{ display: isUsernameAvailable ? 'block' : 'none' }}>
+                      사용 가능한 아이디 입니다
+                    </Form.Control.Feedback>
+                    <Form.Control.Feedback type="invalid" style={{ display: isUsernameAvailable === false ? 'block' : 'none' }}>
+                      사용 불가능한 아이디 입니다
+                    </Form.Control.Feedback>
                   </Form.Group>
                   <Form.Group>
                     <Form.Label>비밀번호</Form.Label>
