@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef, useState } from "react";
 import { Row, Col, Card, Button, Form, Container } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
@@ -19,22 +20,15 @@ function UserSignUp() {
     role: "",
     profile: "",
     provider: "normal",
-    providerid: "",
+    providerid: ""
   });
   const [isReady, setIsReady] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [emailErrorMessage, setEmailErrorMessage] = useState("");
-  const [existUserName, setExistUserName] = useState(false);
   // 프로필 이미지 src 에 적용할 값을 state 로 관리 하기
   const [imageSrc, setImageSrc] = useState(null);
   // 이미지 input 요소의 참조값을 사용하기  위해
   const imageInput = useRef();
-
-  const [userInfo, setuserInfo] = useState({
-    name: "",
-    email: "",
-    image: ""
-  });
 
   const [previewImage, setPreviewImage] = useState(null);
 
@@ -82,10 +76,6 @@ function UserSignUp() {
       ...formData,
       [name]: value
     });
-    setuserInfo({
-      ...userInfo,
-      [name]: value
-    });
   };
 
   const handleNext = () => {
@@ -130,7 +120,7 @@ function UserSignUp() {
         setImageSrc(data);
       };
 
-      setuserInfo(prevInfo => ({
+      setFormData(prevInfo => ({
         ...prevInfo,
         image: image
       }));
@@ -145,37 +135,40 @@ function UserSignUp() {
       return;
     }
 
-    console.log(formData);
+    // const formImage = new FormData();
+    //안 들어갈 경우 formImage 로 7개를 보내주기
+    // formImage.append("name", formData.name);
+    // formImage.append("email", formData.email);
+    // formImage.append("userName", formData.userName);
+    // formImage.append("password", formData.password);
+;
+    // formImage.append("role", formData.role);
+    // formImage.append("profile", formData.profile);
+    // formImage.append("provider", formData.provider);
+
 
    // 입력한 회원정보를 전송하기
-    axios.post("/user", formData)
+    axios.post("/user", formData, {
+      headers: { 
+        "Content-Type": "multipart/form-data"
+      }
+    })
       .then(res => {
         if (res.data.isSuccess) {
           setFormData({
             ...formData,
             "id": res.data.id
           });
+          setIsReady(true);
         } else {
           console.log("존재하는 아이디입니다.");
           return;
         }
 
-        const formImage = new FormData();
-        formImage.append("name", userInfo.name);
-        formImage.append("email", userInfo.email);
-        formImage.append("userName", formData.userName);
-        
-
-        if(userInfo.image) {
+        if(formData.image) {
           //현재 선택한 파일을 form data 에 담아야한다 
-          formImage.append("image", imageInput.current.files[0]);
+          formData.append("image", imageInput.current.files[0]);
           console.log(imageInput.current.files[0])
-          axios.patch("/user/update/info", formImage, {
-            headers: { 
-              "Content-Type": "multipart/form-data" , 
-              "Authorization": localStorage.getItem('token')
-            }
-          })
             .then((profileResponse) => {
               if (profileResponse.data) {
                 console.log("프로필 이미지 등록 성공", profileResponse.data);
