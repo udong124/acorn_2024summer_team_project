@@ -145,7 +145,6 @@ const MyPageDetail = () => {
         headers:{"Content-Type":"multipart/form-data"}
       })
       .then(res=>{
-          console.log(res.data)
       })
       .catch(error=>{
           console.log(error)
@@ -153,13 +152,11 @@ const MyPageDetail = () => {
   
       axios.patch(`/member/update/info`, memberInfo)
       .then(res => {
-        console.log(res.data)
       })
       .catch(err => console.log(err));
 
       axios.patch(`/member/update/plan`, memberInfo)
       .then(res => {
-        console.log(res.data)
       })
       .catch(err => console.log(err));
   
@@ -207,7 +204,6 @@ const MyPageDetail = () => {
       console.error("키와 몸무게는 숫자여야 합니다.");
       return;
     }
-    console.log(memberInfo)
     localStorage.removeItem('memberInfo');
     localStorage.removeItem('updatedInfo');
     setIsReady(true);
@@ -235,7 +231,7 @@ const MyPageDetail = () => {
         )
       )
     }else{
-      console.log("취소됨")
+      alert("삭제 취소되었습니다")
     }
   }
 

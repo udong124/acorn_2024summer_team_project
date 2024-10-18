@@ -63,7 +63,6 @@ function MemberMessenger() {
 
   // 트레이너 info를 가져오기
   useEffect(() => {
-      console.log(member_num)
       const token = localStorage.getItem("token");
       if (token && token.startsWith("Bearer+")) {
         try {
@@ -85,7 +84,6 @@ function MemberMessenger() {
           }
         })
         .then((res) => {
-          console.log(res.data);
           if (res.data) {
             setTrainerInfo(res.data);
             //만일 등록된 프로필 이미지가 있다면
@@ -103,7 +101,6 @@ function MemberMessenger() {
               // 변경된 ascii 코드를 이용해서 dataUrl 을 구성한다
               const dataUrl = "data:image/svg+xml;base64," + encodedData;
               setImageSrc(dataUrl);
-              console.log(dataUrl);
             }
           } else {
             setTrainerInfo(null);
@@ -115,13 +112,11 @@ function MemberMessenger() {
 
   useEffect(()=>{
     if(member_num){ //member_num 이 설정되면 실행
-      console.log(member_num);
       axios
         .get(`/messenger`, {
           params: { member_num: member_num },
         })
         .then((res) => {
-          console.log(res.data);
           setChatRoom(res.data);
         })
         .catch((error) => console.log(error));
@@ -133,7 +128,6 @@ function MemberMessenger() {
   const handleChatClick = (member_num) => {
     axios.get(`/messenger`, { params: { member_num } })  
       .then(res => {
-        console.log(res.data.topic)
         axios.get(`/messenger/detail/${res.data.topic}`)
         .then(detailRes =>{
           //대화 메세지가 있는지 여부
@@ -144,7 +138,6 @@ function MemberMessenger() {
               content: "채팅방이 개설되었습니다.",
               send_type: "ADMIN",
             };
-            console.log(firstMessage)
             setTopicManage(firstMessage)
 
             // 채팅방 생성 post 요청하기
@@ -154,7 +147,6 @@ function MemberMessenger() {
               }
             })
             .then(response => {
-              console.log( response.data);
               setTopicManage(null)
             })
             .catch(error => {

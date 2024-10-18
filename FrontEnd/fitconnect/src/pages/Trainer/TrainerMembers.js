@@ -67,7 +67,6 @@ function Members() {
             });
           }else{
             navigate("/trainer/message?selectedTopic="+res.data.topic)
-            console.log("/trainer/message?selectedTopic="+res.data.topic)
           }
       })
       .catch(err => {

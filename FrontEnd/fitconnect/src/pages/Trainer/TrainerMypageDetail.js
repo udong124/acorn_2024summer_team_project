@@ -107,7 +107,6 @@ const MyPageDetail = () => {
         headers:{"Content-Type":"multipart/form-data"}
       })
       .then(res=>{
-          console.log(res.data)
       })
       .catch(error=>{
           console.log(error)
@@ -115,13 +114,11 @@ const MyPageDetail = () => {
   
       axios.patch(`/trainer/update/info`, trainerInfo)
       .then(res => {
-        console.log(res.data)
       })
       .catch(err => console.log(err));
 
       axios.patch(`/trainer/update/gyminfo`, trainerInfo)
       .then(res => {
-        console.log(res.data)
       })
       .catch(err => console.log(err));
   
@@ -208,7 +205,7 @@ const MyPageDetail = () => {
         )
       )
     }else{
-      console.log("취소됨")
+      alert("삭제 취소되었습니다")
     }
   }
 

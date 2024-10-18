@@ -88,7 +88,6 @@ function UserSignUp() {
     const userName = formData.userName;
     axios.get(`/user/check/${userName}`)
       .then(res => {
-        console.log(res);
         if (res.data.canUse === true) {
           setIsUsernameAvailable(true);
           setErrorMessage(""); // 이전 에러 메시지 초기화

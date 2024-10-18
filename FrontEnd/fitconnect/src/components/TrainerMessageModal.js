@@ -66,7 +66,6 @@ const MessageModal = ({ showModal, setShowModal, topic}) => {
   useEffect(()=>{
     if(decodedMessage != "") {
       setMessages(prevMessages => [...prevMessages, decodedMessage]); // 새로운 메시지를 추가
-      console.log("디코드메세지",decodedMessage)
       setDecodedMessage("")
     }
   }, [decodedMessage])
@@ -104,8 +103,6 @@ const MessageModal = ({ showModal, setShowModal, topic}) => {
 
   useEffect(()=>{
     if(message.content != "") {
-      // 메시지를 전송하기 전에 필드 상태 확인
-      console.log("Sending message:", message);
       scrollToBottom();
 
       // MQTT로 메시지 전송
@@ -118,15 +115,12 @@ const MessageModal = ({ showModal, setShowModal, topic}) => {
 
   useEffect(()=>{
     if(message.content !== "" && isReady){
-      console.log("여기는 뭐담겼냐",message)
       axios.post("/messenger/detail", message, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       })
         .then(res => {
-          console.log("Message sent successfully:", res.data);
-          // setMessages(prevMessages => [...prevMessages, message])
           setIsReady(false);
         
           // 메시지 필드 초기화

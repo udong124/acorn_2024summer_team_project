@@ -39,15 +39,12 @@ const CalendarComponent = () => {
   useEffect(() => {
     axios.get('/membercalendar')
       .then(res => {
-        console.log("응답: ")
-        console.log(res.data)
         setCalendarData(res.data);
       })
       .catch(error => console.log(error));
   }, [token]);
   
   useEffect(()=>{
-    console.log(calendarData)
     calendarData.forEach(event => {
       if(event.memo != null) {
         const mcalendarEvent = {
@@ -93,7 +90,6 @@ const CalendarComponent = () => {
   }, [calendarData])
 
   useEffect(()=>{
-    console.log(calendarEvents);
     setShowEvents(calendarEvents);
   }, [calendarEvents])
 

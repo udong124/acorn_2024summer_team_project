@@ -27,7 +27,6 @@ const Message = () => {
           content: item.content || '표시할 내용이 없습니다',
           times: item.times || '표시할 시간이 없습니다'
         }));
-        console.log("가져온데이터", res.data)
         setMembers(updatedMembers);
       })
       .catch(err => console.log(err));

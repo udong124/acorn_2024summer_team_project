@@ -24,8 +24,8 @@ let name = null;
 if (localStorage.token) {
   // 토큰을 디코딩 ( 앞에 7 자리를 제거한 , Bearer+ 를 제거한 문자열을 디코딩)
   const result = decodeToken(localStorage.token.substring(7));
-  console.log("토큰을 디코딩한 결과 확인해 보기");
-  console.log(result);
+  // console.log("토큰을 디코딩한 결과 확인해 보기");
+  // console.log(result);
   
   // expire 되는 시간이 초 단위로 저장되어 있으므로 1000 을 곱해서 ms 초 단위로 만든다
   const expTime = result.payload.exp * 1000;

@@ -52,7 +52,6 @@ function ExerciseModal({ exerciseModal, setExerciseModal, member_num, name }) {
             console.error(`exercise Journal 요청 실패`, error);
         })
 
-        console.log(exercisejournal)
     }, [formattedDate, exerciseModal]);
 
 

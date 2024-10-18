@@ -81,7 +81,6 @@ const TrainerId = () => {
   useEffect(() => {
     if (isReady && member_num !== null && selectedTrainer !== null) {
       const formData = {member_num: member_num, trainer_num: selectedTrainer.id};
-      console.log(formData);
 
       axios
         .patch("/member/update/trainer", formData)
