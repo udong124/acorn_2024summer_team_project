@@ -156,9 +156,7 @@ useEffect(() => {
     border: "2px solid #bbb", // 일정 카드 외곽선 두께 조정
     borderRadius: "10px",
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-    overflowY: "auto",  // 세로 스크롤 활성화
-    overflowX: "hidden", // 가로 스크롤 비활성화
-    maxHeight: "300px",  // 최대 높이 설정 (필요에 따라 조정)
+
 
   };
 
@@ -171,6 +169,9 @@ useEffect(() => {
     flexDirection: "column",      // 세로 방향으로 배치
     alignItems: "center",         // 수평 가운데 정렬
     justifyContent: "center",     // 수직 가운데 정렬
+    overflowY: "auto",  // 세로 스크롤 활성화
+    overflowX: "hidden", // 가로 스크롤 비활성화
+    maxHeight: "300px",  // 최대 높이 설정 (필요에 따라 조정)
 
   };
 
@@ -238,7 +239,8 @@ useEffect(() => {
                               </Row>
                             ))
                           ) : (
-                            <Row style={eventCardBodyStyle}>
+                            
+                            <Row>
                               <p>오늘의 일정이 없습니다.</p>
                             </Row>
                           )}
@@ -253,7 +255,7 @@ useEffect(() => {
             </Card.Body>
             <Card.Body>
               <Row>
-                <Col sm={12} lg={6}>
+                <Col sm={12} md={12} lg={6}>
                   <Card style={profileCardStyle}>
                     <Form.Group>
                       <Form.Control ref={imageInput} style={{ display: "none" }} type="file" name="image" accept="image/*" />
@@ -282,7 +284,7 @@ useEffect(() => {
                   </Card>
                 </Col>
 
-                <Col sm={12} lg={6}>
+                <Col sm={12} md={12} lg={6}>
                   <Card style={{ maxHeight: '600px', overflowY: 'auto', overflowX: 'hidden', backgroundColor: '#ffffff', padding: '10px', border: '2px solid #ccc', borderRadius: '10px' }}>
                     <Message />
                   </Card>

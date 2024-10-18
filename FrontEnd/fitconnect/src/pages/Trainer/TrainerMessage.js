@@ -71,11 +71,13 @@ const Message = () => {
   const profileStyle = {
     border: `1px solid #ccc`,
     margin: "24px",
-    width: "170px",
-    height: "170px",
+    width: "150px",
     borderRadius: "50%",
     objectFit: "cover",
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.15)",
+    maxWidth: "100%", // 부모 요소에 맞게 최대 너비 조정
+    height: "auto", // 비율을 유지하면서 높이를 자동으로 조정
+
   };
 
   // 날짜 변환 함수: 'YYYY-MM-DD HH:mm' 형식으로 변환
@@ -133,7 +135,7 @@ const Message = () => {
                             onError={(e) => {
                             e.target.onerror = null;
                             e.target.src = "/img/none.png";}} />
-                          <div style={{marginLeft: "50px", paddingLeft: "50px", borderLeft: "2px solid #ccc"}}>
+                          <div style={{ paddingLeft: "50px", borderLeft: "2px solid #ccc"}}>
                           <p style={{fontSize:28, marginBottom: 20, fontWeight: 550}}>{item.name}</p>
                           <p style={{fontSize:19, marginBottom: 20, fontweight: 300, opacity:0.95}}>{item.content}</p>
                           <p style={{fontSize:13, opacity:0.7}}>{formatDate(item.times)}</p>
