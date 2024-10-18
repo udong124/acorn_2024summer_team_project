@@ -224,7 +224,7 @@ const CalendarComponent = () => {
                 eventClick={handleEventClick} // 이벤트 클릭 시 호출되는 핸들러
                 eventContent={renderEventContent}
                 expandRows={true} // 행 확장을 활성화하여 모든 이벤트 표시
-                dayMaxEventRows={false} // 최대 이벤트 행 수를 비활성화
+                dayMaxEventRows={true} // 최대 이벤트 행 수를 비활성화
                 dayMaxEvents={false} // 최대 이벤트 수를 비활성화
               />
             </Card.Body>

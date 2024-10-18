@@ -82,18 +82,18 @@ const Header = () => {
       expanded={isOpen}
     >
       <div className="d-flex align-items-center">
-        <div style={{marginLeft: 60}}>
-          <Logo />
-        </div>
 
         
         {/* 로그인 페이지에서는 이 버튼이 나타나지 않도록 조건부 렌더링 */}
         {!isAuthPage && userName && (
-          <Button variant="dark" className="d-lg-none" onClick={showMobilemenu}>
+          <Button style={{}} variant="dark" className="d-lg-none" onClick={showMobilemenu}>
             <i className="bi bi-list"></i>
           </Button>
         )}
-        {navbarBrand}
+
+      <div style={{marginLeft: 60}}>
+         <Logo />
+      </div>
 
       </div>
 

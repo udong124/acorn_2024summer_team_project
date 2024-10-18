@@ -21,7 +21,7 @@
     overflow: auto;
     top: 0;
     z-index: 10;
-    margin-left: -$sidebarWidth;
+    margin-left: -$sidebarWidth;  
     transition: 0.2s ease-in;
     &.showSidebar {
       margin-left: 0px;
