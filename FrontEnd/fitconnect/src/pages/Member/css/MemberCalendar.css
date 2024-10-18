@@ -8,7 +8,6 @@
   .fc{
   margin: auto;
   display: flex;
-  
   }
   
   .fc-day a {
@@ -72,6 +71,8 @@
   font-weight: 500;
   font-size: 28px;
   }
+
+  
   
   /* 요일의 높이 */
   .fc-theme-standard th {
@@ -114,6 +115,17 @@
   font-weight: 500;
   font-size: 14px;
   }
+
+
+  
+  .fc-toolbar-title {
+    flex-grow: 1;  /* Make the title take up all available space */
+    text-align: left;  /* Center align the title */
+    font-weight: bold; /* You can customize the font weight here */
+    display: flex;
+    justify-content: left;
+    align-items: left;
+  }
   
   /* modal창 외부화면 */
   .calendar modal {
@@ -152,4 +164,28 @@
   
   #modalCloseBtn:hover {
   cursor: pointer;
+  }
+
+  .fullcalendar-wrapper {
+    width: 100%;               /* Ensure full width */
+    height: 100%;              /* Ensure the height fills the parent container */
+    max-width: 1200px;         /* Optional: Limit max width for larger screens */
+    margin: 0 auto;            /* Center the calendar horizontally */
+    padding: 10px;             /* Optional: Add padding */
+    box-sizing: border-box;    /* Ensure padding does not affect width */
+  }
+  
+  .fc {
+    font-size: 1rem;           /* Set default font size */
+    min-height: 600px;
+  }
+  
+  @media (max-width: 768px) {
+    .fc {
+      font-size: 0.85rem;      /* Reduce font size for smaller screens */
+    }
+    
+    .fullcalendar-wrapper {
+      padding: 5px;            /* Reduce padding on smaller screens */
+    }
   }
