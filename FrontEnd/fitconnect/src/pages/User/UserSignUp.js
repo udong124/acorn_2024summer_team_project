@@ -35,22 +35,28 @@ function UserSignUp() {
   const [isUsernameAvailable, setIsUsernameAvailable] = useState(null); // true: 사용 가능, false: 사용 불가
   const navigate = useNavigate();
 
+  useEffect(()=>{
+    localStorage.removeItem('token');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('role');
+    localStorage.removeItem('name');
+    localStorage.removeItem('selectedTrainerName');
+  }, [])
+
   useEffect(() => {
-    if (formData.id !== 0 && localStorage.getItem("token") !== "" && isReady) {
+    if (formData.id !== 0 && localStorage.getItem("token") !== null && isReady) {
       if (formData.role === "TRAINER") {
         navigate("/trainersignup", {
           state: {
             trainer_num: formData.id
           }
         });
-        window.location.reload()
       } else if (formData.role === "MEMBER") {
         navigate("/membersignup", {
           state: {
             member_num: formData.id
           }
         });
-        window.location.reload()
       } else if (formData.role === "ADMIN") {
         const token = localStorage.getItem('token');
         if (token) {
@@ -178,7 +184,6 @@ function UserSignUp() {
             ...formData,
             "id": res.data.id
           });
-          setIsReady(true);
         } else {
           console.log("존재하는 아이디입니다.");
           return;
@@ -212,7 +217,6 @@ function UserSignUp() {
             localStorage.setItem("userName", formData.userName);
             localStorage.setItem("role", formData.role);
             localStorage.setItem("name", formData.name);
-            localStorage.removeItem('selectedTrainerName');
 
             setIsReady(true);
           })

@@ -43,7 +43,6 @@ const TrainerSignUp = () => {
           localStorage.setItem("userName", payload?.userName)
           localStorage.setItem("name", payload?.name)
           navigate(`/trainer`);
-
         }
       })
       .catch(error => {

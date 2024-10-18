@@ -22,7 +22,7 @@ const MemberSignUp = () => {
   const { member_num } = location.state;
 
   useEffect(() => {
-    setToken(localStorage.getItem("token"));
+    setToken(localStorage.token);
     setFormData(prevData => ({
       ...prevData,
       member_num: member_num
@@ -39,6 +39,7 @@ const MemberSignUp = () => {
       })
       .then((response) => {
         if(response.data.isSuccess){
+
           const token = localStorage.getItem('token');
           const { payload } = decodeToken(token.substring(7));
 
@@ -46,9 +47,6 @@ const MemberSignUp = () => {
           localStorage.setItem("userName", payload?.userName)
           localStorage.setItem("name", payload?.name)
           navigate("/trainerid");
-        
-          navigate("/trainerid")
-          
         }
       })
       .catch((error) => {
