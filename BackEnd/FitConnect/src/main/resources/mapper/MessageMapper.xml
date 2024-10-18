@@ -21,6 +21,7 @@
 		JOIN chat_message cm ON cr.topic = cm.topic
 		WHERE cr.trainer_num = #{trainer_num}
 		GROUP BY cr.member_num, cr.topic, ui.name, ui.profile, cm.content
+		ORDER BY times DESC
 	</select>
 	<select id="getMsgAll" resultType="messageDto" parameterType="string">
 		SELECT message_id, topic, content, send_type, to_char(times, 'YYYY-MM-DD HH24:MI:SS:FF3') as times
