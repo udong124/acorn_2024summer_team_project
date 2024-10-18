@@ -65,12 +65,10 @@ const TrainerId = () => {
       setFilteredTrainers(trainerList);
       return;
     }
-    //검색어조건(헬스장이름, 트레이너인스타에 따라)
+    //검색어조건(헬스장이름, 트레이너이름에 따라)
     const filteredList = trainerList.filter((trainer) => {
       if (searchCondition === "gym_name") {
         return trainer.gym_name && trainer.gym_name.toLowerCase().includes(keyword);
-      } else if (searchCondition === "trainer_insta") {
-        return trainer.gym_insta && trainer.trainer_insta.toLowerCase().includes(keyword);
       }else if (searchCondition === "name") {
         return trainer.name && trainer.name.toLowerCase().includes(keyword);
       }
@@ -150,9 +148,6 @@ const TrainerId = () => {
                       >
                         <option value="name">트레이너 이름</option>
                         <option value="gym_name">헬스장 이름</option>
-                        <option value="trainer_insta">
-                          트레이너 인스타그램
-                        </option>
                       </Form.Select>
                     </Form.Group>
                   </Col>
@@ -196,10 +191,10 @@ const TrainerId = () => {
                       <h4>선택된 트레이너</h4>
                       <p>이름: {selectedTrainer.name}</p>
                       <p>이메일: {selectedTrainer.email}</p>
-                      <p>인스타그램: <Link to="/{selectedTrainer.trainer_insta}">{selectedTrainer.trainer_insta}</Link></p>
+                      <p>인스타그램: <Link to={selectedTrainer.trainer_insta}>{selectedTrainer.name} 인스타그램 링크</Link></p>
                       <p>자기소개: {selectedTrainer.trainer_intro}</p>
                       <p>헬스장: {selectedTrainer.gym_name}</p>
-                      <p>헬스장 링크: <Link to="/{selectedTrainer.gym_link}">{selectedTrainer.gym_link}</Link></p>
+                      <p>헬스장 링크: <Link to={selectedTrainer.gym_link}>{selectedTrainer.gym_name} 링크</Link></p>
                     </Col>
                   </Row>
                   <Button
