@@ -188,42 +188,28 @@
   
   @media (max-width: 768px) {
     .fc {
-      font-size: 0.85rem;      /* Reduce font size for smaller screens */
+      font-size: 0.8rem;      /* Reduce font size for smaller screens */
     }
     
     .fullcalendar-wrapper {
       padding: 5px;            /* Reduce padding on smaller screens */
     }
 
-    /* Responsive adjustments for smaller screens */
-@media (max-width: 768px) {
-  .fc-toolbar-title {
-    font-size: 1rem; /* Decrease title font size on smaller screens */
-  }
 
-  .fc-toolbar .fc-button {
-    font-size: 0.85rem; /* Decrease button font size on smaller screens */
-    padding: 3px 6px; /* Reduce padding for buttons */
-  }
-
-  .fc-toolbar .fc-button .fc-icon {
-    font-size: 0.85rem; /* Adjust the size of icons within the buttons */
-  }
-}
 
 /* Extra small screens (e.g. mobile phones) */
-@media (max-width: 576px) {
+@media (max-width: 768px) {
   .fc-toolbar-title {
-    font-size: 0.85rem; /* Further decrease title font size */
+    font-size: 0.3rem; /* Further decrease title font size */
   }
 
   .fc-toolbar .fc-button {
-    font-size: 0.75rem; /* Further decrease button font size */
+    font-size: 0.3rem; /* Further decrease button font size */
     padding: 2px 5px; /* Further reduce padding */
   }
 
   .fc-toolbar .fc-button .fc-icon {
-    font-size: 0.75rem; /* Further adjust icon size */
+    font-size: 0.3rem; /* Further adjust icon size */
   }
 }
    

@@ -275,12 +275,10 @@ useEffect(() => {
                       style={{ width: '40px', height: '40px' }} 
                     /></a>
                     </p>
-                    <p style={profileTextStyle}>헬스장이름: {trainerInfo.gym_name}</p>
                     <p>
-                      <a href={trainerInfo.gym_link} target="_blank" rel="noopener noreferrer" style={profileLinkStyle}>
-                        헬스장 위치
-                      </a>
-                    </p>
+                      {<a href={trainerInfo.gym_link} target="_blank" rel="noopener noreferrer" style={{justifyContent:"center", textAlign:"center", fontWeight:550, textDecoration:"none", color:"#328DF4"}}>
+                        {trainerInfo.gym_name}
+                      </a>}</p>
                   </Card>
                 </Col>
 
