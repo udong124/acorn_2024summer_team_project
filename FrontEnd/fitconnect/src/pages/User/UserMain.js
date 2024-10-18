@@ -17,6 +17,7 @@ function UserStartPage() {
     localStorage.setItem("token", "")
     localStorage.setItem("userName", "")
     localStorage.setItem("role", "")
+    localStorage.setItem("name", "")
   }, [])
 
   return (

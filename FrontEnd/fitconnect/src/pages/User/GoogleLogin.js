@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
-import { decodeToken } from "jsontokens";
 import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap';
 
 
@@ -26,7 +25,6 @@ const GoogleLogin = () => {
       axios
       .patch("/user/update/role", { id, role: selectedRole })
       .then((res) => {
-        console.log(res.data)
         setStep(2)
       })
       .catch((error) => {

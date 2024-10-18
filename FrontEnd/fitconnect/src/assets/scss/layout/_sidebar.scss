@@ -1,15 +1,16 @@
 .sidebarArea {
   flex-shrink: 0;
   width: $sidebarWidth;
-  background-color: $sidebarColor;
+  background-color: #f8f9fa;
   .sidenav-bg:hover {
-    background-color: $gray-100;
+    background-color: rgb(197, 197, 197);
     border-radius: $border-radius;
   }
   .sidenav-bg .active {
-    background-color: $info;
+    background-color: rgb(197, 197, 197);
     border-radius: $border-radius;
-    color: white;
+    color: black;
+    font-weight: bold;
   }
 }
 
@@ -19,8 +20,8 @@
     height: 100%;
     overflow: auto;
     top: 0;
-    z-index: 1;
-    margin-left: -$sidebarWidth;
+    z-index: 10;
+    margin-left: -$sidebarWidth;  
     transition: 0.2s ease-in;
     &.showSidebar {
       margin-left: 0px;

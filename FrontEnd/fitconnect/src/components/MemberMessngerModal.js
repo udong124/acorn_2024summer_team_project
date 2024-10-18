@@ -4,9 +4,9 @@ import mqtt from 'mqtt';
 import { Modal, Button, Form } from 'react-bootstrap';
 import ChatMessage from './ChatMessage';
 
-const MessageModal = ({ showModal, setShowModal, topic}) => {
+const MemberMessengerModal = ({ showModal, setShowModal, topic }) => {
   const [message, setMessage] = useState({
-    send_type: "TRAINER",  // 기본값 설정
+    send_type: "USER",  // 기본값 설정
     content: "",        // 메시지 내용
     topic: topic || ""  // props에서 받은 topic 값
   });
@@ -21,7 +21,7 @@ const MessageModal = ({ showModal, setShowModal, topic}) => {
   const client = mqtt.connect('ws://52.78.38.12:9002'); // mqtt 연결 설정 코드
 
   const [isReady, setIsReady] = useState(false);
-  const [memberName, setMemberName] = useState();
+  const [trainerName, setTrainerName] = useState();
 
   // 메시지 목록을 새로고침하는 함수
   const refresh = () => {
@@ -37,26 +37,24 @@ const MessageModal = ({ showModal, setShowModal, topic}) => {
     }
   };
 
-  
-  //멤버 이름 표시해주는 함수
-  const getMemberName = () =>{
-    axios.get(`/messenger/list`)
-    .then(res =>{
-      const member = res.data.find(item => item.topic === topic);
-      if(member) {
-        setMemberName(member.name)
-      } else {
-        console.log("멤버이름이 없습니다.")
-        }
-  })
+
+  //트레이너 이름 표시해주는 함수
+  const getTrainerName = () =>{
+    axios.get(`/member/trainer`, {
+      headers: {
+        Authorization: localStorage.getItem('token')
+      }
+    })
+    .then(res =>
+      setTrainerName(res.data.name)
+    )
     .catch(err =>console.log(err))
   }
-
 
   useEffect(() => {
     if (topic) {
       client.subscribe(topic); 
-      getMemberName();
+      getTrainerName()
       client.on('message', (topic, message) => {
         setDecodedMessage(JSON.parse(decoder.decode(new Uint8Array(message))));
       });
@@ -72,14 +70,18 @@ const MessageModal = ({ showModal, setShowModal, topic}) => {
 
   // `topic`이 변경될 때마다 message.topic을 업데이트
   useEffect(() => {
-    refresh();
+    refresh()
     setMessage(prevMessage => ({
       ...prevMessage,
       topic: topic // topic을 업데이트
     }));
   }, [topic]);
 
-  
+ useEffect(()=>{
+  refresh()
+ }, [showModal])
+
+
   //메세지 전송을 눌렀을때 스크롤 처리
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
@@ -87,22 +89,19 @@ const MessageModal = ({ showModal, setShowModal, topic}) => {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, showModal]);
 
 
-  // 양식 제출이 일어났을 때 실행되는 핸들러
+ // 양식 제출이 일어났을 때 실행되는 핸들러
   const sendMessageHandle = (e) => {
     e.preventDefault();
-    setMessage({ ...message, 
-      content: content,
-      topic: topic,
-      times: new Date().toISOString()
-    })
+    setMessage({ ...message, content: content, times: new Date().toISOString()})
     e.target.content.value = "";
   };
 
   useEffect(()=>{
     if(message.content != "") {
+      // 메시지를 전송하기 전에 필드 상태 확인
       scrollToBottom();
 
       // MQTT로 메시지 전송
@@ -122,12 +121,15 @@ const MessageModal = ({ showModal, setShowModal, topic}) => {
       })
         .then(res => {
           setIsReady(false);
+          
         
           // 메시지 필드 초기화
-          setMessage(prevMessage => ({
-            ...prevMessage,
-            content: "" // 전송 후 content 초기화
-          }));
+          setMessage({
+            send_type: "USER",  // send_type 유지
+            content: "",        // 전송 후 content만 초기화
+            topic: topic        // topic 유지
+          });
+          setContent("")
         })
         .catch(error => {
           console.error("Error sending message:", error);
@@ -142,7 +144,7 @@ const MessageModal = ({ showModal, setShowModal, topic}) => {
           }
         });
     }
-  }, [message, isReady])
+  }, [message.content, message.topic , isReady])
 
   const handleChange = (e) => {
     setContent(e.target.value);
@@ -163,7 +165,6 @@ const MessageModal = ({ showModal, setShowModal, topic}) => {
     setDeleteMode(prevState => !prevState); 
   };
 
-  
   // 날짜 변환 함수: 'YYYY-MM-DD HH:mm' 형식으로 변환
   const formatDate = (date) => {
     const d = new Date(date);
@@ -174,9 +175,9 @@ const MessageModal = ({ showModal, setShowModal, topic}) => {
     return `${month}-${day} ${hours}:${minutes}`;
   };
 
-  const handleClose = () =>{
+  const handleClose =() =>{
     setMessages([]);
-    setShowModal(false);
+    setShowModal(false)
     client.end()
   }
 
@@ -185,16 +186,16 @@ const MessageModal = ({ showModal, setShowModal, topic}) => {
       setMessages([]);
       setShowModal(false);
     }}>
-      <Modal.Header closeButton={handleClose}>
-        <Modal.Title>{memberName}</Modal.Title>
+      <Modal.Header closeButton>
+        <Modal.Title>{trainerName}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <div style={{ height: '400px', lineHeight: 'normal', overflowY: 'scroll', border: '1px solid #ccc', padding: '10px'}}>
+        <div style={{ height: '400px', overflowY: 'scroll', border: '1px solid #ccc', padding: '10px' }}>
           {messages.map((msg, index) => (
-            <div style={{flex:1}} key={msg.message_id}>
+            <div key={msg.message_id}>
               <ChatMessage message={msg.content} isOwnMessage={msg.send_type === message.send_type} isCenter={msg.send_type === "ADMIN"} times={msg.times ? formatDate(msg.times) : 'No time available'} />
               {/* 삭제 모드일 때만 삭제 버튼을 보여줌 */}
-              {deleteMode && msg.send_type === "TRAINER" && (
+              {deleteMode && msg.send_type === "USER" && (
                 <Button 
                   variant="danger" 
                   onClick={() => deleteMessage(msg.message_id)} 
@@ -233,10 +234,10 @@ const MessageModal = ({ showModal, setShowModal, topic}) => {
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={() => {handleClose()}}>Close</Button>
+        <Button variant="secondary" onClick={handleClose}>Close</Button>
       </Modal.Footer>
     </Modal>
   );
 };
 
-export default MessageModal;
+export default MemberMessengerModal;

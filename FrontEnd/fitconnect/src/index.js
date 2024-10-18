@@ -18,13 +18,14 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 // token이 존재한다면 token에서 값을 읽어와서 저장할 변수 만들기
 let userName = null;
 let userRole = null;
+let name = null;
 
 // 만일 토큰이 존재한다면
 if (localStorage.token) {
   // 토큰을 디코딩 ( 앞에 7 자리를 제거한 , Bearer+ 를 제거한 문자열을 디코딩)
   const result = decodeToken(localStorage.token.substring(7));
-  console.log("토큰을 디코딩한 결과 확인해 보기");
-  console.log(result);
+  // console.log("토큰을 디코딩한 결과 확인해 보기");
+  // console.log(result);
   
   // expire 되는 시간이 초 단위로 저장되어 있으므로 1000 을 곱해서 ms 초 단위로 만든다
   const expTime = result.payload.exp * 1000;
@@ -45,13 +46,18 @@ if (localStorage.token) {
 }
 
 // Redux 초기 상태 설정
-const initialState = {
-  userName: userName,
-  role: userRole
+const preloadedState = {
+  user: 
+  {userName: userName,
+  role: userRole,
+  name: name},
+  modal: {
+
+  }
 };
 
 // Redux 스토어 생성
-const store = createStore(rootReducer, initialState);
+const store = createStore(rootReducer, preloadedState);
 
 // React 애플리케이션 렌더링
 root.render(

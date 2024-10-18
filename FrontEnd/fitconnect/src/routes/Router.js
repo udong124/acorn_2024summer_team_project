@@ -53,7 +53,7 @@ const Routes = [
       { path: "/member/calendar", element: <ProtectedRoute allowedRoles={['MEMBER']}><MemberCalendar /></ProtectedRoute> },
       { path: "/member/dietjournal", element: <ProtectedRoute allowedRoles={['MEMBER']}><MemberDietJournal /></ProtectedRoute> },
       { path: "/member/dietadd", element: <ProtectedRoute allowedRoles={['MEMBER']}><MemberDietAdd /></ProtectedRoute> },
-      { path: "/member/exercise", element: <ProtectedRoute allowedRoles={['MEMBER']}><MemberExercise /></ProtectedRoute> },
+      { path: "/member/exercisejournal", element: <ProtectedRoute allowedRoles={['MEMBER']}><MemberExercise /></ProtectedRoute> },
       { path: "/member/exerciseadd", element: <ProtectedRoute allowedRoles={['MEMBER']}><MemberExerciseAdd /></ProtectedRoute> },
 
       // 트레이너 관련 경로

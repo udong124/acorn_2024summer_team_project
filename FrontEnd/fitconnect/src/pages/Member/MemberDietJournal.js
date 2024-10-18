@@ -7,10 +7,8 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 function MemberDietJournal(){
-  const [member_num, setMemberNum] = useState(null)
-  const [m_calendar_id, setMCalendarId] = useState(null)
-  const [d_journal_id, setDJournalId] = useState(null)
 
+  const [m_calendar_id, setMCalendarId] = useState(0);
   const [formData,setFormData] = useState([])
   const [totalCarbs, setTotalCarbs] = useState(0)
   const [totalProtein, setTotalProtein] = useState(0)
@@ -21,60 +19,55 @@ function MemberDietJournal(){
   
   const navigate = useNavigate()
   const location = useLocation()
-  const queryParams = new URLSearchParams(location.search)
+  const { regdate }= location.state || {};
+  const [formattedDate, setFormattedDate] = useState();
 
+  // 오늘 날짜
   const today = new Date()
   const localDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
-  const initialDateStr = queryParams.get("date") ? queryParams.get("date") : localDate
+
+  // location 넘어올 경우 날짜
+  const initialDateStr = regdate ? regdate : localDate;
   const initialDate = new Date(initialDateStr)
   const [selectedDate, setSelectedDate] = useState(initialDate);
 
   const [breakfastData, setBreakfastData] = useState([]);
   const [lunchData, setLunchData] = useState([]);
   const [dinnerData, setDinnerData] = useState([]);
-  
+
+  useEffect(() => {
+    //selectedDate에서 년월일 추출하는 식
+    const date = new Date(selectedDate);
+    const year = date.getFullYear();
+    const month = ("0" + (date.getMonth() + 1)).slice(-2); // 월을 두 자리 숫자로 만들기
+    const day = ("0" + date.getDate()).slice(-2);
+    setFormattedDate(`${year}-${month}-${day}`);
+  }, [selectedDate])
+
+
   useEffect(()=>{
-    axios.get('/membercalendar')
-    .then(res=>{
-      console.log("총괄", res)
-      const formattedSelectedDate = selectedDate.toISOString().split("T")[0];
-      console.log("오늘 날짜 (formattedSelectedDate):", formattedSelectedDate);
-      const filteredData = res.data.filter(item => {
-        return item.regdate.split(" ")[0] === formattedSelectedDate && item.memo === "식단";
-      });
-      console.log("필터링된 데이터 (오늘 날짜와 일치하는 항목):", filteredData);
-
-      const mCalendarIds = filteredData.map(item => item.m_calendar_id);
-      console.log("m_calendar_id 배열:", mCalendarIds);
-
-      let mergedData = [];
-      let counter = 0; 
-      mCalendarIds.forEach((m_calendar_id, index) => {
-        axios.get(`/dietjournal/${m_calendar_id}`)
-          .then(res=>{
-            mergedData = mergedData.concat(res.data.list || []);
-            counter++;
-            if (counter === mCalendarIds.length) {
-              console.log("모든 요청 완료, 병합된 데이터:", mergedData);
-              setMergedData(mergedData);
-            }
-          })
-          .catch(error => {
-            console.error(`Diet Journal API 요청 실패 (m_calendar_id: ${m_calendar_id}):`, error);
-          });
+    if(formattedDate){ // formatteedDate 가 설정된 후에만 실행
+      setMergedData([])
+      axios.get(`/dietjournal/date/${formattedDate}`, {
+        headers: {
+          Authorization: localStorage.getItem('token')
+        }
       })
-      
-      console.log(`캘린더아이디 확인 : ${m_calendar_id}`)
-      console.log(`멤버아이디 확인 : ${member_num}`)
-    }).catch(error=> console.log(error))
-  }, [selectedDate]);
+      .then(res=>{
+        const newMCalendarId = res.data.list[0]?.m_calendar_id; // 옵셔널 체이닝으로 안전하게 접근
+        setMCalendarId(newMCalendarId);
+        setMergedData(res.data.list || []) 
 
-  const getDietByType = (type) => {
-    return formData.filter(data => data.diet_type === type)
-  }
+      })
+      .catch(error => {
+        console.error(`Diet Journal API 요청 실패:`, error);
+      });
+    }
+  }, [formattedDate]);
+
   
   useEffect(() => {
-    if (mergedData.length > 0) {
+    if (mergedData != null) {
       const morningItems = mergedData.filter(item => item.diet_type === "아침");
       const lunchItems = mergedData.filter(item => item.diet_type === "점심");
       const dinnerItems = mergedData.filter(item => item.diet_type === "저녁");
@@ -100,28 +93,26 @@ function MemberDietJournal(){
       setLunchData(lunchItems);
       setDinnerData(dinnerItems);
 
-      console.log("아침 항목의 개수:", morningItems.length);
-      console.log("점심 항목의 개수:", lunchItems.length);
-      console.log("저녁 항목의 개수:", dinnerItems.length);
     }
   }, [mergedData]);
 
   const handleDateChange = (date)=>{
      setSelectedDate(date)
      const formattedDate = date.toISOString().split("T")[0]
-     queryParams.set("date",formattedDate)
-     navigate(`?date=${formattedDate}`, { replace: true })
+     navigate(`/member/dietjournal`, {
+      state: {
+        regdate: formattedDate
+      }})
   }
 
   const handleAllDelete=()=>{
+    
     axios.delete(`/dietjournal/all/${m_calendar_id}`)
     .then(res=>{
       if(res.data.isSuccess){
         alert("삭제 완료되었습니다.")
-        navigate('/member/calendar')
-      }else{
-        alert("식단 삭제 실패")
-      }
+        navigate(`/dietjournal`, 0)
+    }
     })
     .catch(error=>{
       console.log(error)
@@ -130,11 +121,23 @@ function MemberDietJournal(){
   }  
 
   const handleReserve = () =>{
-    console.log(selectedDate)
-    const formattedDate2 = `${selectedDate.getFullYear()}-${String(selectedDate.getMonth() + 1).padStart(2, '0')}-${String(selectedDate.getDate()).padStart(2, '0')}`;
-    console.log(formattedDate2);
-    navigate(`/member/dietadd/?date=${formattedDate2}`)
-  }
+    navigate(`/member/dietadd`, {
+      state: {
+        regdate: formattedDate
+      }
+  })
+}
+  
+  const graphCarbs = (totalCarbs/500) * 100 // 한국 성인 남성 탄수화물 섭취량 약 304g
+  const graphProtein = (totalProtein/120) * 100 // 성인 기준 체중 kg 당 0.73g 단백질 섭취
+  const graphFat = (totalFat/100) * 100 // 한국인 평균 지방 섭취량 53.9g 
+  const graphKcal = (totalKcal / 4000) * 100 // 한국인 성인 남성 평균 2500kcal~3600kcal 섭취
+
+  // 메인페이지에서 아침,점심,저녁 카드가 아래로 쌓이게 할 설정
+  const width = location.pathname === "/member" ? 12 : 4
+  //메인페이지에서 reserve / Delete 버튼을 보이지않게 하기 위한 설정
+  const styleNone = location.pathname === "/member" ? {display:"none"} : {display:"flex"}
+  const styleNone2 = location.pathname === "/member/dietjournal" ? {display:"none"} : {display:"flex"}
 
   return (
     <>
@@ -143,75 +146,86 @@ function MemberDietJournal(){
         <Col>
           <Card>
             <Card.Header as="h6" className="border-bottom p-3 mb-0">
-              <h1>{selectedDate.toLocaleDateString('ko-KR')}의 식단</h1>
-              <div style={{ marginBottom: "20px" }}>
-                      <DatePicker
-                      selected={selectedDate}
-                      onChange={handleDateChange}
-                      dateFormat="yyyy년 MM월 dd일"
-                      placeholderText="날짜를 선택하세요"
-                      />
-              </div>
+              <p style={{fontSize: "1.5em", fontWeight: "bold"}}>{selectedDate.toLocaleDateString('ko-KR')}의 식단</p>
+              { mergedData.length === 0 && (
+                  <p>해당 일자의 식단 일지를 등록해 주세요
+                  <Button onClick={handleReserve} style={styleNone2}>
+                  등록
+                  </Button>
+                  </p>
+              )}
+
+                <DatePicker
+                  selected={selectedDate}
+                  onChange={handleDateChange}
+                  dateFormat="yyyy년 MM월 dd일"
+                  placeholderText="날짜를 선택하세요"
+                  style={{ width: "80%", boxSizing: "border-box" }} 
+                />
             </Card.Header>
           </Card>
         </Col>
       </Row>
       <Row>
-        <Col xs={24} md={12}>
+        <Col md={12}>
             <Card>
-            <Card.Header as="h6" className="border-bottom p-3 mb-0">
+            <Card.Header as="h6" className="border-bottom p-3 mb-0" style={styleNone}>
             <div className="d-flex justify-content-end mb-3">
-              <Button onClick={handleReserve} variant="secondary" className="me-2">reserve</Button>
-              <Button onClick={handleAllDelete} variant="secondary">Delete</Button>
+              <Button onClick={handleReserve} variant="secondary" className="me-2">등록하기</Button>
+              <Button onClick={handleAllDelete} variant="secondary">삭제하기</Button>
             </div>
             </Card.Header>
             <Card.Body className="">
             <div>
               <Row className="align-items-center">
-                <Col xs={1}>
-                <span>탄수화물</span>
+                <Col xs={4}>
+                <span>탄수화물</span><br/>
+                <span style={{fontSize: "10px", color: "grey"}}>기준: 500g</span>
                 </Col>
                 <Col>
-                <ProgressBar striped variant="success" animated now={40} style={{height:'30px'}} />
+                <ProgressBar striped variant="success" animated now={graphCarbs} style={{height:'30px'}} />
                 </Col>
                 <Col xs="auto">
-                <span>{totalCarbs}</span>
+                <span>{graphCarbs.toFixed(1)}%</span>
                 </Col>
               </Row>
                 <br/>
                 <Row className="align-items-center">
-                <Col xs={1}>
-                  <span>단백질</span>
+                <Col xs={4}>
+                  <span>단백질</span><br/>
+                  <span style={{fontSize: "10px", color: "grey"}}>기준: 120g</span>
                 </Col>
                 <Col>
-                <ProgressBar striped variant="info" animated now={20} style={{height:'30px'}}/>
+                <ProgressBar striped variant="info" animated now={graphProtein} style={{height:'30px'}}/>
                 </Col>
                 <Col xs="auto">
-                <span>{totalProtein}</span>
+                <span>{graphProtein.toFixed(1)}%</span>
                 </Col>
               </Row>
                 <br/>
                 <Row className="align-items-center">
-                <Col xs={1}>
-                  <span>지방</span>
+                <Col xs={4}>
+                  <span>지방</span><br/>
+                  <span style={{fontSize: "10px", color: "grey"}}>기준: 100g</span>
                 </Col>
                 <Col>
-                <ProgressBar striped variant="warning" animated now={60} style={{height:'30px'}}/>
+                <ProgressBar striped variant="warning" animated now={graphFat} style={{height:'30px'}}/>
                 </Col>
                 <Col xs="auto">
-                  <span>{totalFat}</span>
+                  <span>{graphFat.toFixed(1)}%</span>
                 </Col>
               </Row>
                 <br/>
                 <Row className="align-items-center">
-                <Col xs={1}>
-                  <span>칼로리</span>
+                <Col xs={4}>
+                  <span>칼로리</span><br/>
+                  <span style={{fontSize: "10px", color: "grey"}}>기준: 4000g</span>
                 </Col>
                 <Col>
-                <ProgressBar striped variant="danger" animated now={80} style={{height:'30px'}}/>
+                <ProgressBar striped variant="danger" animated now={graphKcal} style={{height:'30px'}}/>
                 </Col>
                 <Col xs="auto">
-                  <span>{totalKcal}</span>
+                  <span>{graphKcal.toFixed(1)}%</span>
                 </Col>
               </Row>
             </div>
@@ -222,58 +236,58 @@ function MemberDietJournal(){
      </div>
      <div>
       <Row className="g-3">
-            <Col xs={12} md={4}>
+            <Col xs={12} sm={12} md={width}>
               <Card>
                 <Card.Header as="h6" className="border-bottom p-3 mb-0 d-flex justify-content-between align-items-center">
                   아침
                 </Card.Header>
                 <Card.Body>
                 <ul>
-              {breakfastData.map((item, index) => (
-                <li key={index}>
-                  {item.food} -  {item.foodCount} g- {item.calories} kcal
-                </li>
-              ))}
-            </ul>
+                  {breakfastData.map((item, index) => (
+                    <li key={index}>
+                      {item.food} -  {item.foodCount} g- {item.calories} kcal
+                    </li>
+                  ))}
+                </ul>
                 </Card.Body>
               </Card>
             </Col>
       
-            <Col xs={12} md={4}>
+            <Col xs={12} sm={12} md={width}>
               <Card>
                 <Card.Header as="h6" className="border-bottom p-3 mb-0 d-flex justify-content-between align-items-center">
                   점심
                 </Card.Header>
                 <Card.Body>
                 <ul>
-              {lunchData.map((item, index) => (
-                <li key={index}>
-                  {item.food} -  {item.foodCount} g- {item.calories} kcal
-                </li>
-              ))}
-            </ul>
+                  {lunchData.map((item, index) => (
+                    <li key={index}>
+                      {item.food} -  {item.foodCount} g- {item.calories} kcal
+                    </li>
+                  ))}
+                </ul>
                 </Card.Body>
               </Card>
             </Col>
     
-            <Col xs={12} md={4}>
+            <Col  xs={12} sm={12} md={width}>
               <Card>
                 <Card.Header as="h6" className="border-bottom p-3 mb-0 d-flex justify-content-between align-items-center">
                   저녁
                 </Card.Header>
                 <Card.Body>
                 <ul>
-              {dinnerData.map((item, index) => (
-                <li key={index}>
-                  {item.food} -  {item.foodCount} g- {item.calories} kcal
-                </li>
-              ))}
-            </ul>
-                </Card.Body>
-              </Card>
-            </Col>
-      </Row>
-    </div>
+                  {dinnerData.map((item, index) => (
+                    <li key={index}>
+                      {item.food} -  {item.foodCount} g- {item.calories} kcal
+                    </li>
+                  ))}
+                </ul>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      </div>
      </>
   )
 }

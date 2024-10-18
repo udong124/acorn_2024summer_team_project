@@ -138,8 +138,7 @@ function Calendar() {
       })
       .catch(err => console.log(err));
   };
- 
-    const ownTopic = Array.from(new Map(events.map(item=> [item.member_num, item])).values());
+
 
   const renderEventContent = (eventInfo) => {
     return (
@@ -154,7 +153,7 @@ function Calendar() {
       <Row>
         <Col>
           <Card>
-            <Card.Header as="h6" className="border-bottom p-3 mb-0">
+            <Card.Header className="Header">
               Calendar
             </Card.Header>
             <Card.Body>
@@ -182,7 +181,7 @@ function Calendar() {
                 eventClick={handleEventClick} // 이벤트 클릭 시 호출되는 핸들러
                 eventContent={renderEventContent}
                 expandRows={true} // 행 확장을 활성화하여 모든 이벤트 표시
-                dayMaxEventRows={false} // 최대 이벤트 행 수를 비활성화
+                dayMaxEventRows={true} // 최대 이벤트 행 수를 비활성화
                 dayMaxEvents={false} // 최대 이벤트 수를 비활성화
               />
 
@@ -194,7 +193,7 @@ function Calendar() {
                 <Modal.Body>
                   <Form>
                     <Form.Group controlId="formEventMemberNum">
-                      <Form.Label>회원 번호</Form.Label>
+                      <Form.Label>회원 이름</Form.Label>
                       <Form.Select
                         value={newEvent.member_num}
                         onChange={(e) => setNewEvent({ ...newEvent, member_num: e.target.value })}

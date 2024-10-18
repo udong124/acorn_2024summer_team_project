@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Form, Container, Card, Row, Col } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { decodeToken } from "jsontokens";
 
 const MemberSignUp = () => {
 
@@ -21,7 +22,7 @@ const MemberSignUp = () => {
   const { member_num } = location.state;
 
   useEffect(() => {
-    setToken(localStorage.getItem("token"));
+    setToken(localStorage.token);
     setFormData(prevData => ({
       ...prevData,
       member_num: member_num
@@ -38,7 +39,14 @@ const MemberSignUp = () => {
       })
       .then((response) => {
         if(response.data.isSuccess){
-          navigate("/member"); 
+
+          const token = localStorage.getItem('token');
+          const { payload } = decodeToken(token.substring(7));
+
+          localStorage.setItem("role", "MEMBER")
+          localStorage.setItem("userName", payload?.userName)
+          localStorage.setItem("name", payload?.name)
+          navigate("/trainerid");
         }
       })
       .catch((error) => {
@@ -77,7 +85,7 @@ const MemberSignUp = () => {
       <Col>
          <Card>
           <Card.Header as="h6" className="border-bottom p-3 mb-0">
-            <h4> 회원 기본 설정 </h4>
+          <p style={{fontSize: "1.5em", fontWeight: "bold"}}> 회원 기본 설정 </p>
           </Card.Header>
           <Card.Body className="">
           <Form onSubmit={handleSubmit}>

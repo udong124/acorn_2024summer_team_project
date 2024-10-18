@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Form, Container, Row, Col, Card } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { decodeToken } from 'jsontokens';
 
 const TrainerSignUp = () => {
   const [formData, setFormData] = useState({
@@ -35,7 +36,13 @@ const TrainerSignUp = () => {
       })
       .then(response => {
         if(response.data.isSuccess){
-          navigate(`/trainer`); 
+          const token = localStorage.getItem('token');
+          const { payload } = decodeToken(token.substring(7));
+          
+          localStorage.setItem("role", "TRAINER")
+          localStorage.setItem("userName", payload?.userName)
+          localStorage.setItem("name", payload?.name)
+          navigate(`/trainer`);
         }
       })
       .catch(error => {
@@ -69,7 +76,7 @@ const TrainerSignUp = () => {
       <Col>
          <Card>
           <Card.Header as="h6" className="border-bottom p-3 mb-0">
-            <h4 > 트레이너 기본 설정 </h4>
+          <p style={{fontSize: "1.5em", fontWeight: "bold"}}> 트레이너 기본 설정 </p>
           </Card.Header>
           <Card.Body className="">
           <Form onSubmit={handleSubmit}>

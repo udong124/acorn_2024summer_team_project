@@ -33,14 +33,13 @@ const MyPage = () => {
   const dropZoneStyle={
     minHeight:"250px",
     minWidth:"250px",
-    border:"3px solid #cecece",
     borderRadius:"10px",
     display:"flex",
     justifyContent:"center",
     alignItems:"center"
   }
   const profileStyle={
-    width: "200px",
+    maxWidth: "200px",
     height: "200px",
     border: "1px solid #cecece",
     borderRadius: "50%"
@@ -55,7 +54,11 @@ const MyPage = () => {
 
   // 본인정보를 가져오는 axios.get 요청
   useEffect(() => {
-    axios.get(`/user`)
+    axios.get(`/user`, {
+      headers: {
+        Authorization: localStorage.getItem('token')
+      }
+    })
     .then(res => {
       setMemberInfo(prevInfo => ({
         ...prevInfo,
@@ -73,10 +76,13 @@ const MyPage = () => {
         // 변경된 ascii 코드를 이용해서 dataUrl 을 구성한다 
         const dataUrl = "data:image/svg+xml;base64," + encodedData;
         setImageSrc(dataUrl)
-        console.log(dataUrl)
       }
 
-      axios.get(`/member`)
+      axios.get(`/member`, {
+        headers: {
+          Authorization: localStorage.getItem('token')
+        }
+      })
       .then(res => { 
         setMemberInfo(prevInfo => ({
           ...prevInfo,
@@ -88,6 +94,8 @@ const MyPage = () => {
     .catch(err => console.log(err));
   }, []);
 
+  
+
   return (
     <>
       <svg ref={personSvg} style={profileStyle2}  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
@@ -97,16 +105,15 @@ const MyPage = () => {
       <Container>
       <Row>
       <Col>
-         <Card>
+         <Card sm={6} mb={6}>
           <Card.Header as="h6" className="border-bottom p-3 mb-0">
-            <h1>Mypage</h1>
+            <p style={{fontSize: "2em", fontWeight: "bold"}}>Mypage</p>
           </Card.Header>
           <Card.Body className="">
             
               <Row>
                 <Col>
                   <Form.Group>
-                    <Form.Label>프로필 이미지 </Form.Label>
                     <Form.Control ref={imageInput} style={{display:"none"}} type="file" name="image" accept="image/*"/>
                   </Form.Group>
                   <div className="mb-3">
@@ -115,7 +122,7 @@ const MyPage = () => {
                     </div>
                   </div>
                 </Col>
-                <Col>
+                <Col sm={6} mb={6}>
                     <p>이름: {memberInfo.name}</p>
                     <p>생성일: {memberInfo.regdate}</p>
                     <p>아이디: {memberInfo.userName}</p>
@@ -127,8 +134,7 @@ const MyPage = () => {
                     <p>주간 목표: {memberInfo.weeklyplan}</p>
                 </Col>
               </Row>
-              <Button type="submit"  onClick={()=> navigate('/member/mypagedetail')}>회원정보수정</Button>
-          
+              <Button type="submit"  onClick={()=> navigate('/member/mypagedetail')}>회원정보수정</Button>     
             </Card.Body>
           </Card>
         </Col>

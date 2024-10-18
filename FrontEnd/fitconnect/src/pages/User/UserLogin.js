@@ -23,14 +23,15 @@ const UserLogin = () => {
 
       // 토큰에서 payload 정보 얻어오기
       const { payload } = decodeToken(google_token.substring(7));
-      console.log("토큰 안의 payload 확인:", payload); 
   
       const userRole = payload?.userRole;
       const decodedUserName = payload?.userName; 
+      const name = payload?.name;
   
-      if (userRole && decodedUserName) {
+      if (userRole && decodedUserName && name) {
         localStorage.setItem("role", userRole);
         localStorage.setItem("userName", decodedUserName);
+        localStorage.setItem("name", name);
   
         // 로그인 성공 알림
         alert(`${decodedUserName} 님 로그인 되었습니다.`);
@@ -45,7 +46,6 @@ const UserLogin = () => {
 
   useEffect(()=>{
     if(isReady) {
-      console.log(userName + " " + password)
       axios
       .post("/auth", { userName, password })
       .then((response) => {
@@ -55,14 +55,16 @@ const UserLogin = () => {
 
           // 토큰에서 payload 정보 얻어오기
           const { payload } = decodeToken(token.substring(7));
-          console.log("토큰 안의 payload 확인:", payload); 
+
 
           const userRole = payload?.userRole;
           const decodedUserName = payload?.userName; 
+          const name = payload?.name;
 
-          if (userRole && decodedUserName) {
+          if (userRole && decodedUserName && name) {
             localStorage.setItem("role", userRole);
             localStorage.setItem("userName", decodedUserName);
+            localStorage.setItem("name", name)
 
             // 로그인 성공 알림
             alert(`${decodedUserName} 님 로그인 되었습니다.`);
@@ -81,9 +83,10 @@ const UserLogin = () => {
           "로그인 실패: 아이디 또는 비밀번호가 틀렸습니다.";
         setErrorMessage(errorMsg);
         console.error("로그인 실패:", errorMsg);
+        setIsReady(false)
       });
     }
-  }, [userName, password, isReady])
+  }, [isReady])
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -116,7 +119,7 @@ const UserLogin = () => {
           <Card>
             <Card.Header as="h6" className="border-bottom p-3 mb-0">
               <div>
-                <h1>로그인</h1>
+                <p style={{fontSize: "2em", fontWeight: "bold"}}>로그인</p>
                 <p>로그인하여 FitConnect를 이용해보세요.</p>
               </div>
             </Card.Header>

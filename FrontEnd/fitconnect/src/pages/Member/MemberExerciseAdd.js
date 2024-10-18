@@ -11,13 +11,17 @@ function MemberExerciseAdd() {
 
   const navigate = useNavigate()
   const location = useLocation()
-  const queryParams = new URLSearchParams(location.search)
+  const { regdate }= location.state || {};
     
-  const today = new Date()
-  const localDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
-  const initialDateStr = queryParams.get("date") ? queryParams.get("date") : localDate
-  const initialDate = new Date(initialDateStr)
+  // 오늘 날짜
+  const today = new Date();
+  const localDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+  
+  // location 넘어올 경우 날짜
+  const initialDateStr = regdate ? regdate : localDate;
+  const initialDate = new Date(initialDateStr);
   const [selectedDate, setSelectedDate] = useState(initialDate);
+  const [formattedDate, setFormattedDate] = useState();
 
   const [exerciseCategory, setExerciseCategory] = useState("all");
   const [exerciseData, setExerciseData] = useState([]);
@@ -31,10 +35,14 @@ function MemberExerciseAdd() {
 
   const token = localStorage.getItem('token')
 
-  const [m_calendar_id, setMCalendarId] = useState(null);
-  const [m_calendar_id_max, setMCalendarIdMax] = useState(null);
-
-  const [member_num1, setMemberNum] = useState(null);
+  useEffect(() => {
+    //selectedDate에서 년월일 추출하는 식
+    const date = new Date(selectedDate);
+    const year = date.getFullYear();
+    const month = ("0" + (date.getMonth() + 1)).slice(-2); // 월을 두 자리 숫자로 만들기
+    const day = ("0" + date.getDate()).slice(-2);
+    setFormattedDate(`${year}-${month}-${day}`);
+  }, [selectedDate, exerciseCategory])
 
   useEffect(() => {
     const category = exerciseCategory === "all" ? `` : `/${exerciseCategory}`;
@@ -47,51 +55,11 @@ function MemberExerciseAdd() {
         setExerciseData(validExerciseData)
       })
       .catch((error) => { console.error("운동목록 불러오기 실패", error) });
-  }, [token, exerciseCategory]);
+  }, [selectedDate, exerciseCategory]);
 
   const handleChange = (e) => {
     setSearch(e.target.value);
   };
-
-  useEffect(() => {
-    axios.get('/membercalendar')
-      .then(res => {
-        const getMaxCalendarId = (data) => {
-          if (!data || data.length === 0) {
-            return null;
-          }
-          return Math.max(...data.map(event => event.m_calendar_id));
-        };
-              
-        const maxCalendarId = getMaxCalendarId(res.data) + 1;
-        setMCalendarIdMax(maxCalendarId);
-        setMCalendarId(res.data.m_calendar_id)
-      })
-      .catch(error => console.log(error));
-
-    axios.get(`/membercalendar`)
-      .then(res => {
-        const formattedSelectedDate = selectedDate.toISOString().split("T")[0];
-        const temp_member_num = res.data[0]?.member_num || null;
-        setMemberNum(temp_member_num)
-        const filteredData = res.data.filter(item => {
-          return item.regdate.split(" ")[0] === formattedSelectedDate && item.memo === "운동";
-        });
-        const mCalendarIds = filteredData.map(item => item.m_calendar_id);
-        let mergedData = [];
-        mCalendarIds.forEach(m_calendar_id => {
-          axios.get(`/exercisejournal/${m_calendar_id}`)
-            .then(res => {
-              mergedData = mergedData.concat(res.data.exerJournalList || []);
-              setSelectExercise([...mergedData]);
-            })
-            .catch(error => {
-              console.error(`exercise Journal API 요청 실패 (m_calendar_id: ${m_calendar_id}):`, error);
-            });
-        })
-      })
-      .catch(error => console.log(error));
-  }, [selectedDate])
 
   const exerciseSearch = Array.isArray(exerciseData) 
     ? exerciseData.filter((data) =>
@@ -137,61 +105,47 @@ function MemberExerciseAdd() {
 
   const handleDateChange = (date) => {
     setSelectedDate(date)
-    const formattedDate = date.toISOString().split("T")[0]
-    navigate(`/member/exerciseadd?date=${formattedDate}`, { replace: true });
-    window.location.reload();
+    navigate(`/member/exerciseadd`, {
+      state: {
+        regdate: formattedDate
+      }
+    })
   }
 
   const handleSubmit = () => {
-    const requestData = selectExercise.map(exercise => {
+    const requestData = selectExercise.map((exercise, index) => {
       return {
-        m_calendar_id: m_calendar_id_max,
-        exercise_name: exercise.name,
-        exercise_id: parseInt(exercise.exercise_id, 10),
-        exercise_set: parseInt(exercise.exercise_set, 10),
-        exercise_count: parseInt(exercise.exercise_count, 10),
-        exercise_order: exercise.exercise_order !== undefined ? parseInt(exercise.exercise_order, 10) : 0,
-        exercise_weight: parseFloat(exercise.exercise_weight, 10),
+        exercise_id: exercise.exercise_id,
+        exercise_set: exercise.exercise_set,
+        exercise_count: exercise.exercise_count,
+        exercise_weight: exercise.exercise_weight,
+        exercise_order: index +1
       };
     });
 
     const exercise_add_to_calendar = {
-      member_num: member_num1,
-      m_calendar_id: m_calendar_id_max,
       memo: "운동",
       regdate: selectedDate.toISOString().split("T")[0],
     };
-
-    axios.post('/membercalendar', exercise_add_to_calendar)
-      .then((res) => {
-        console.log("calend", res)
-      })
-      .catch(error => {
-        console.log(error);
-        alert("저장 에러");
-      });
                 
-    axios.post("/exercisejournal", requestData, {})
+    axios.post(`/exercisejournal/date/${exercise_add_to_calendar.regdate}`, requestData, {
+      headers: {
+        'Content-Type': 'application/json' // JSON 형식으로 전송
+      }
+    })
       .then((res) => {
-        if (res.status === 200 && res.data.isSuccess) {
-          console.log("운동 추가 및 수정 완료");
-        } else {
-          console.error("응답 실패:", res.data);
-          alert("저장에 실패했습니다.");
-        }
+        alert("운동 일지가 추가 되었습니다.")
+        navigate(`/member/exercisejournal`, {
+          state: {
+            regdate: exercise_add_to_calendar.regdate
+          }
+        })
+
       })
       .catch((error) => {
         console.error("에러 발생:", error);
-        if (error.response) {
-          console.error("응답 데이터:", error.response.data);
-          console.error("응답 상태 코드:", error.response.status);
-          console.error("응답 헤더:", error.response.headers);
-          alert(`에러 발생: ${JSON.stringify(error.response.data)}`);
-        } else {
-          console.error("에러 메시지:", error.message);
-          alert(`에러 발생: ${error.message}`);
-        }
       });
+
   };  
 
   return (
@@ -225,7 +179,7 @@ function MemberExerciseAdd() {
                   <Dropdown.Item onClick={() => setExerciseCategory("all")}>전체</Dropdown.Item>
                   <Dropdown.Item onClick={() => setExerciseCategory("back")}>등</Dropdown.Item>
                   <Dropdown.Item onClick={() => setExerciseCategory("chest")}>가슴</Dropdown.Item>
-                  <Dropdown.Item onClick={() => setExerciseCategory("shoulger")}>어깨</Dropdown.Item>
+                  <Dropdown.Item onClick={() => setExerciseCategory("shoulder")}>어깨</Dropdown.Item>
                   <Dropdown.Item onClick={() => setExerciseCategory("lower")}>하체</Dropdown.Item>
                   <Dropdown.Item onClick={() => setExerciseCategory("core")}>코어</Dropdown.Item>
                   <Dropdown.Item onClick={() => setExerciseCategory("arm")}>팔</Dropdown.Item>
@@ -290,15 +244,15 @@ function MemberExerciseAdd() {
                               >
                                 <td>{data.exercise_name}</td>
                                 <td>
-                                  <Form.Control name="exercise_weight" type="number" value={data.exercise_weight || ""} placeholder="무게"
+                                  <Form.Control min="1" name="exercise_weight" type="number" value={data.exercise_weight || ""} placeholder="무게"
                                     onChange={(e) => handleInputChange(e, data.e_journal_id, "exercise_weight")}/>
                                 </td>
                                 <td>
-                                  <Form.Control name="exercise_count" type="number" value={data.exercise_count || ""} placeholder="횟수"
+                                  <Form.Control min="1" name="exercise_count" type="number" value={data.exercise_count || ""} placeholder="횟수"
                                     onChange={(e) => handleInputChange(e, data.e_journal_id, "exercise_count")}/>
                                 </td>
                                 <td>
-                                  <Form.Control name="exercise_set" type="number" value={data.exercise_set || ""} placeholder="세트"
+                                  <Form.Control min="1" name="exercise_set" type="number" value={data.exercise_set || ""} placeholder="세트"
                                     onChange={(e) => handleInputChange(e, data.e_journal_id, "exercise_set")}/>
                                 </td>
                                 <td>{index + 1}</td>
@@ -343,3 +297,4 @@ function MemberExerciseAdd() {
 }
 
 export default MemberExerciseAdd;
+
