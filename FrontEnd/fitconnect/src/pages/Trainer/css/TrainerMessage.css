@@ -18,7 +18,7 @@
   opacity: 0.8;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-};
+}
   
   .chatroom li {
     display: flex;
@@ -42,23 +42,8 @@
     cursor: pointer;
   }
   
-  /* 이미지 */
-  .chatroom img {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-right: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  }
-  
-  /* content */
-  .chatroom p {
-    margin: 0;
-    color: #333;
-    font-size: 14px;
-  }
-  
+
+
 
   
   .modal {
@@ -66,6 +51,109 @@
     justify-content: center;
     align-items: center;
   }
+
+  /* General Styles */
+.chat-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+  padding: 10px;
+}
+
+.chat-list-item-content {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+/* Profile Image Style */
+.profileImage {
+  border: 1px solid #ccc;
+  margin: 24px;
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Text Styles */
+.chat-list-item-text {
+  margin-left: 50px;
+  padding-left: 50px;
+  border-left: 2px solid #ccc;
+}
+
+.chat-member-name {
+  font-size: 28px;
+  margin-bottom: 20px;
+  font-weight: 550;
+}
+
+.chat-member-content {
+  font-size: 19px;
+  margin-bottom: 20px;
+  font-weight: 300;
+  opacity: 0.95;
+}
+
+.chat-member-times {
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .profileImage {
+    width: 100px;
+    height: 100px;
+  }
+
+  .chat-list-item-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .chat-member-name {
+    font-size: 22px;
+  }
+
+  .chat-member-content {
+    font-size: 16px;
+  }
+
+  .chat-member-times {
+    font-size: 11px;
+  }
+
+  .chat-list-item-text {
+    margin-left: 0;
+    padding-left: 0;
+    border-left: none;
+  }
+}
+
+@media (max-width: 576px) {
+  .profileImage {
+    width: 80px;
+    height: 80px;
+  }
+
+  .chat-member-name {
+    font-size: 20px;
+  }
+
+  .chat-member-content {
+    font-size: 14px;
+  }
+
+  .chat-member-times {
+    font-size: 10px;
+  }
+}
+
+ 
  
   .button-container {
     display: flex;
