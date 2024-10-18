@@ -4,9 +4,10 @@
 	<sql id="column">
 		exercise_id, exercise_name, exercise_category, exercise_info, exercise_image 
 	</sql>
+
 	<select id="getAll" resultType="exerciseListDto">
 		SELECT <include refid="column"/>
-		From exerciseList
+		FROM exerciseList
 		ORDER BY exercise_id ASC
 	</select>
 	<select id="getDetail" resultType="exerciseListDto" parameterType="int">
@@ -22,6 +23,6 @@
 	<insert id="insertList" parameterType="exerciseListDto">
 		INSERT INTO exerciselist
 		(exercise_id, exercise_name, exercise_category, exercise_info, exercise_image)
-		VALUES(#{exercise_id}, #{exercise_name}, #{exercise_category}, #{exercise_info}, #{exercise_image})
+		VALUES(exercise_id_seq.NEXTVAL, #{exercise_name}, #{exercise_category}, #{exercise_info}, #{exercise_image})
 	</insert>
 </mapper>

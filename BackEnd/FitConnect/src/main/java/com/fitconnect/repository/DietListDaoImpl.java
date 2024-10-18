@@ -21,15 +21,26 @@ public class DietListDaoImpl implements DietListDao{
 	}
 
 	@Override
-	public void insert(DietListDto dto) {
+	public boolean insert(DietListDto dto) {
 		
-		session.insert("dietList.insert", dto);
+		int result = session.insert("dietList.insert", dto);
+		if(result > 0) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 
 	@Override
-	public void ManagerInsert(DietListDto dto) {
-		
-		session.insert("dietList.ManagerInsert", dto);
+
+	public boolean managerInsert(DietListDto dto) {
+
+		int result = session.insert("dietList.managerInsert", dto);
+		if(result > 0) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 
 }

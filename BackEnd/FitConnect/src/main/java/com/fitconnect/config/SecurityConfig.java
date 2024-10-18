@@ -61,7 +61,6 @@ public class SecurityConfig {
 	        )
 	        .oauth2Login(oauth2 -> 
 	            oauth2
-//	                .loginPage("/auth")
 	                .userInfoEndpoint()
 	                .userService(principalOauth2UserService)
 	                .and()

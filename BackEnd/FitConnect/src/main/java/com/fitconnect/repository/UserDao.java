@@ -4,9 +4,10 @@ import com.fitconnect.dto.UserDto;
 
 public interface UserDao {
 	public UserDto getData(String userName);
-	public void insert(UserDto dto);
-	public void updateRole(UserDto dto);
-	public void updatePwd(UserDto dto);
-	public void updateInfo(UserDto dto);
-	public void delete(String userName);
+	public UserDto getDataByNum(int id);
+	public boolean insert(UserDto dto);
+	public boolean updateRole(UserDto dto);
+	public boolean updatePwd(UserDto dto);
+	public boolean updateInfo(UserDto dto);
+	public boolean delete(String userName);
 }

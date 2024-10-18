@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Message">
+	
+	
+	<insert id="insertChat" parameterType="chatRoomDto">
+		INSERT INTO chat_room (chat_id, member_num, trainer_num, topic)
+		VALUES (chat_id_seq.NEXTVAL, #{member_num}, #{trainer_num}, TO_CHAR('topic_'||chat_id_seq.CURRVAL))
+
+	</insert>
+	<select id="getChatRoom" resultType="chatRoomDto" parameterType="int">
+		SELECT chat_id, member_num, trainer_num, topic
+		FROM chat_room
+		WHERE member_num=#{member_num}
+	</select>
+	
+	<select id="getChatAll" resultType="chatRoomDto" parameterType="int">
+		SELECT cr.member_num, cr.topic, ui.name, ui.profile, cm.content, MAX(to_char(cm.times, 'YYYY-MM-DD HH24:MI:SS:FF3')) as times
+		FROM chat_room cr
+		JOIN USER_INFO ui ON cr.member_num = ui.id
+		JOIN chat_message cm ON cr.topic = cm.topic
+		WHERE cr.trainer_num = #{trainer_num}
+		GROUP BY cr.member_num, cr.topic, ui.name, ui.profile, cm.content
+	</select>
+	<select id="getMsgAll" resultType="messageDto" parameterType="string">
+		SELECT message_id, topic, content, send_type, to_char(times, 'YYYY-MM-DD HH24:MI:SS:FF3') as times
+		FROM chat_message 
+		WHERE topic=#{topic}
+		ORDER BY times ASC
+	</select>
+	<insert id="insertMsg" parameterType="messageDto">
+		INSERT INTO chat_message
+		(message_id, topic, content, send_type, times)
+		VALUES (message_id_seq.NEXTVAL, #{topic}, #{content}, #{send_type}, SYSTIMESTAMP)
+	</insert>
+	<delete id="deleteMsg" parameterType="int">
+		DELETE FROM chat_message
+		WHERE message_id=#{message_id}
+	</delete>
+	<delete id="deleteChat" parameterType="string">
+		DELETE FROM chat_room WHERE topic = #{topic}
+	</delete>
+	<delete id="deleteMsgAll" parameterType="string">
+		DELETE FROM chat_message WHERE topic = #{topic}
+	</delete>
+	<delete id="deleteTrainerChat" parameterType="int">
+		DELETE
+		FROM
+			(SELECT cr.*, cm.*
+			FROM chat_room cr, chat_message cm
+			WHERE cr.topic=cm.topic
+			AND cr.trainer_num=#{trainer_num})
+	</delete>
+	
+</mapper>

@@ -9,9 +9,9 @@
 	<select id="getExerJournalList" resultType="exerciseJournalDto" parameterType="int">
 		SELECT ej.e_journal_id, ej.m_calendar_id, ej.exercise_id, ej.exercise_order,
 			 ej.exercise_set, ej.exercise_count, ej.exercise_weight,  el.exercise_name, el.exercise_image
-		FROM exercisejournal ej, exerciselist el
-		WHERE ej.exercise_id=ej.exercise_id
-		AND m_calendar_id=#{m_calendar_id}
+		FROM exercisejournal ej 
+		JOIN exerciselist el ON ej.exercise_id=el.exercise_id
+		WHERE ej.m_calendar_id=#{m_calendar_id}
 		
 				
 	</select>
@@ -25,7 +25,7 @@
 	<insert id="insert" parameterType="exerciseJournalDto">
 		INSERT INTO exercisejournal
 		(e_journal_id, m_calendar_id, exercise_id, exercise_order, exercise_set, exercise_count, exercise_weight)
-		VALUES(#{e_journal_id},#{m_calendar_id}, #{exercise_id}, #{exercise_order}, #{exercise_set}, #{exercise_count}, #{exercise_weight})
+		VALUES(e_journal_id_seq.NEXTVAL ,#{m_calendar_id}, #{exercise_id}, #{exercise_order}, #{exercise_set}, #{exercise_count}, #{exercise_weight})
 		
 	</insert>
 	<update id="update" parameterType="exerciseJournalDto">

@@ -59,9 +59,3 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService{
 		return new PrincipalDetails(dto, oauth2User.getAttributes());
 	}
 }
-/*
-	DELETE FROM user_info
-	WHERE id = 6;
-	
-	commit;
-*/

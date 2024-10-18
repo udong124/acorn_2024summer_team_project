@@ -8,8 +8,10 @@ import com.fitconnect.dto.DietJournalDto;
 
 public interface DietJournalService {
 	public List<DietJournalDto> getList(DietJournalDto dto);
-	public void insert(List<DietJournalDto> dietjournalList);
-	public void update(DietJournalDto dto);
-	public void delete(int d_journal_id);
-	public void deleteAll(int m_calendar_id);
+	public boolean insert(List<DietJournalDto> dietjournalList);
+	public boolean update(DietJournalDto dto);
+	public boolean delete(int d_journal_id);
+	
+	public boolean deleteAll(int m_calendar_id);
+	public boolean deleteAllByDate(String regdate);
 }

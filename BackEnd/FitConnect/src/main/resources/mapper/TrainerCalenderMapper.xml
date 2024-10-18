@@ -9,21 +9,21 @@
 	</sql>
 
 	<select id="getList" resultType="trainerCalendarDto" parameterType="int">
-		SELECT tc.t_calendar_id, tc.member_num, tc.trainer_num, TO_CHAR(regdate, 'YYYY-MM-DD HH24:MI') as regdate, ui.name
+		SELECT tc.t_calendar_id, tc.member_num, tc.trainer_num, TO_CHAR(tc.regdate, 'YYYY-MM-DD HH24:MI') as regdate, ui.name
 		FROM trainercalendar tc, user_info ui
 		WHERE tc.member_num=ui.id
 		AND trainer_num=#{user_id}
 	</select>
 	<select id="getSchedule" resultType="trainerCalendarDto" parameterType="int">
-		SELECT tc.t_calendar_id, tc.member_num, tc.trainer_num, TO_CHAR(regdate, 'YYYY-MM-DD HH24:MI') as regdate, ui.name
+		SELECT tc.t_calendar_id, tc.member_num, tc.trainer_num, TO_CHAR(tc.regdate, 'YYYY-MM-DD HH24:MI') as regdate, ui.name
 		FROM trainercalendar tc, user_info ui
 		WHERE tc.member_num=ui.id
 		AND t_calendar_id=#{t_calendar_id}
 	</select>
 	<insert id="insert" parameterType="trainerCalendarDto">
 		INSERT INTO trainercalendar
-		(t_calendar_id, member_num, regdate)
-		VALUES(#{t_calendar_id}, #{member_num}, TO_DATE(#{regdate}, 'YYYY-MM-DD HH24:MI'))
+		(t_calendar_id, trainer_num, member_num, regdate)
+		VALUES(t_calendar_id_seq.NEXTVAL, #{trainer_num}, #{member_num}, TO_DATE(#{regdate}, 'YYYY-MM-DD HH24:MI'))
 	</insert>
 	<update id="update" parameterType="trainerCalendarDto">
 		UPDATE trainercalendar
@@ -47,7 +47,7 @@
 	</select>
 	<select id="getMemberAll" resultType="memberDto" parameterType="int" >
 		SELECT mi.member_num, ui.name
-		FROM memberinfo mi, user_info ui
+		FROM member_info mi, user_info ui
 		WHERE mi.member_num = ui.id
 		and trainer_num=#{user_id}
 		ORDER BY name ASC
@@ -58,4 +58,25 @@
 		SET trainer_num=null
 		WHERE member_num=#{member_num}
 	</update>
+	
+	
+	<select id="getExerJournal" parameterType="exerciseJournalDto" resultType="exerciseJournalDto">
+		SELECT
+			mi.member_num,
+			ej.e_journal_id, 
+			ej.m_calendar_id, 
+			ej.exercise_id, 
+			ej.exercise_order,
+			ej.exercise_set, 
+			ej.exercise_count, 
+			ej.exercise_weight,  
+			el.exercise_name
+		FROM
+			exercisejournal ej
+			JOIN exerciselist el ON ej.exercise_id=el.exercise_id
+			JOIN membercalendar mi ON mi.m_calendar_id = ej.m_calendar_id
+		WHERE ej.m_calendar_id = #{ m_calendar_id} AND member_num = #{ member_num}
+	
+	</select>
+	
 </mapper>
