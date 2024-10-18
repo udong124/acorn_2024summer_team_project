@@ -103,8 +103,7 @@ const Header = () => {
           <Button
             variant="danger"
             size="sm"
-            className="d-sm-block d-md-none"
-            onClick={Handletoggle}
+            onClick={handleLogout}
           >
             <img src="/img/logout2.png" alt="" style={{width:18, height:18}}/>
           </Button>
