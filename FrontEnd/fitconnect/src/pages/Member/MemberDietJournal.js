@@ -111,7 +111,7 @@ function MemberDietJournal(){
     .then(res=>{
       if(res.data.isSuccess){
         alert("삭제 완료되었습니다.")
-        navigate(`/dietjournal`, 0)
+        navigate(0)
     }
     })
     .catch(error=>{
