@@ -41,13 +41,13 @@ const MyPageDetail = () => {
   const [trainerName, setTrainerName] = useState("");
 
   useEffect(() => {
-    const storedTrainerName = localStorage.getItem('selectedTrainerName');
-    if (storedTrainerName && storedTrainerName !== "") {
-      setTrainerName(storedTrainerName);
-    } else {
-      setTrainerName(null);
-    }
-  }, []);
+    axios.get(`/member/trainer`)
+    .then(res=>{
+      setTrainerName(res.data.name)
+    })
+    .catch(error=>console.log(error))
+ 
+  }, [trainerName]);
 
   const handleNavigate = (path) => {
     localStorage.setItem('memberInfo', JSON.stringify(memberInfo));  // 페이지 이동 전에 반드시 저장
