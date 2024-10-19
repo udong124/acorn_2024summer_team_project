@@ -333,15 +333,19 @@ const MyPageDetail = () => {
                     </Form.Group>
                   </Col>
                 </Row>
-                <Button variant="primary" type="submit">
-                  저장
-                </Button>
-                <Button variant="secondary" onClick={() => navigate("/trainer/mypage")}>
-                  취소
-                </Button>
-                <Button variant="danger" style={{ marginLeft: 950 }} onClick={handleDelete}>
-                  회원탈퇴
-                </Button>
+                  <div className="d-flex justify-content-between">
+                    <div>
+                      <Button variant="primary" type="submit">
+                        저장
+                      </Button>
+                      <Button variant="secondary" onClick={() => navigate("/trainer/mypage")}>
+                        취소
+                      </Button>
+                    </div>
+                    <Button variant="danger" onClick={handleDelete} className="ms-auto">
+                      회원탈퇴
+                    </Button>
+                  </div>
               </Form>
             </Card.Body>
           </Card>

@@ -41,7 +41,6 @@ const MyPage = () => {
     height: "200px",
     border: "1px solid #cecece",
     borderRadius: "50%",
-    marginLeft: "60px",
     display: "none"
   }
 
