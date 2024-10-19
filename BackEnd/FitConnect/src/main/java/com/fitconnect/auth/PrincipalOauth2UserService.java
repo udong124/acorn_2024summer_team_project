@@ -36,7 +36,6 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService{
 		String password = userName;
 		String name = oauth2User.getAttribute("name");
 		String email = oauth2User.getAttribute("email");
-		String profile = oauth2User.getAttribute("picture");
 		String role = "USER";
 
 		UserDto dto = dao.getData(userName);
@@ -47,7 +46,6 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService{
 					.password(password)
 					.name(name)
 					.email(email)
-					.profile(profile)
 					.role(role)
 					.provider(provider)
 					.providerid(providerid)
