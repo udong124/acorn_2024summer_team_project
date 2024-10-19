@@ -62,7 +62,7 @@ function MemberExercise() {
         axios.delete(`/exercisejournal/calendar/${m_calendar_id}`)
             .then(res => {
                 alert("운동일지가 삭제되었습니다.")
-                navigate(`/member/exercisejournal`, 0)
+                navigate(0)
         
             })
             .catch(error => { console.log(error); alert("삭제실패") });
@@ -79,7 +79,10 @@ function MemberExercise() {
     const handleDateChange = (date) => {
         setSelectedDate(date);
         const formattedDate = date.toISOString().split("T")[0]
-        navigate(0)
+        navigate(`/member/exercisejournal`, {
+            state: {
+              regdate: formattedDate
+            }})
 
     };
 
