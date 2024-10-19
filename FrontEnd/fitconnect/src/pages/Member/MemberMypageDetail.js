@@ -47,7 +47,7 @@ const MyPageDetail = () => {
     })
     .catch(error=>console.log(error))
  
-  }, [trainerName]);
+  }, []);
 
   const handleNavigate = (path) => {
     localStorage.setItem('memberInfo', JSON.stringify(memberInfo));  // 페이지 이동 전에 반드시 저장

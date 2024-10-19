@@ -32,7 +32,7 @@ function Members() {
 
     useEffect(() => {
       getMembers();
-    }, []);
+    }, [members]);
   
 
   // 반복문으로 출력한 id(member_num) 값으로 topic값 가져오기
