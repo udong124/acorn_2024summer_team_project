@@ -154,7 +154,7 @@ function Calendar() {
         <Col>
           <Card>
             <Card.Header className="Header">
-              Calendar
+              캘린더
             </Card.Header>
             <Card.Body>
               <FullCalendar

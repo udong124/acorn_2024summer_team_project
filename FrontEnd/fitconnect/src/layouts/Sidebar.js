@@ -4,6 +4,9 @@ import user1 from "../assets/images/users/user4.jpg";
 import probg from "../assets/images/bg/download.jpg";
 import { FcAutomatic, FcCalendar, FcConferenceCall, FcGenericSortingDesc, FcHome, FcIphone, FcMenu, FcShop, FcSportsMode, FcViewDetails } from "react-icons/fc";
 import { useRef } from "react";
+import { AiOutlineCalendar, AiOutlineFileAdd, AiOutlineHome, AiOutlineMessage, AiOutlineShop, AiOutlineTeam, AiOutlineUser } from "react-icons/ai";
+import { GiRunningShoe } from "react-icons/gi";
+import { IoFastFoodOutline } from "react-icons/io5";
 
 const Sidebar = () => {
   const showMobilemenu = () => {
@@ -22,22 +25,22 @@ const Sidebar = () => {
   if (!isAuthPage && location.pathname.startsWith("/member") && localStorage.getItem("role") == "MEMBER") {
     // 멤버 관련 경로일 때 보여줄 메뉴 설정
     navigation = [
-      { title: "메인 페이지", href: "/member", icon: <FcGenericSortingDesc /> },
-      { title: "캘린더", href: "/member/calendar", icon: <FcCalendar /> },
-      { title: "식단 일지", href: "/member/dietjournal", icon: <FcShop /> },
-      { title: "식단 등록", href: "/member/dietadd", icon: <FcViewDetails /> },
-      { title: "운동 일지", href: "/member/exercisejournal", icon: <FcSportsMode /> },
-      { title: "운동 등록", href: "/member/exerciseadd", icon: <FcViewDetails /> },
-      { title: "마이페이지", href: "/member/mypage", icon: <FcHome /> },
+      { title: "메인 페이지", href: "/member", icon: <AiOutlineHome /> },
+      { title: "캘린더", href: "/member/calendar", icon: <AiOutlineCalendar /> },
+      { title: "식단 일지", href: "/member/dietjournal", icon: <IoFastFoodOutline />},
+      { title: "식단 등록", href: "/member/dietadd", icon: <AiOutlineFileAdd /> },
+      { title: "운동 일지", href: "/member/exercisejournal", icon: <GiRunningShoe /> },
+      { title: "운동 등록", href: "/member/exerciseadd", icon: <AiOutlineFileAdd />},
+      { title: "마이페이지", href: "/member/mypage", icon: <AiOutlineUser />},
     ];
   } else if (!isAuthPage && location.pathname.startsWith("/tr") && localStorage.getItem("role") == "TRAINER" ) {
     // 트레이너 관련 경로일 때 보여줄 메뉴 설정
     navigation = [
-      { title: "메인 페이지", href: "/trainer", icon: <FcGenericSortingDesc /> },
-      { title: "회원목록", href: "/trainer/members", icon: <FcConferenceCall />},
-      { title: "캘린더", href: "/trainer/calendar", icon: <FcCalendar /> },
-      { title: "메신저", href: "/trainer/message", icon: <FcIphone /> },
-      { title: "마이페이지", href: "/trainer/mypage", icon: <FcHome /> },
+      { title: "메인 페이지", href: "/trainer", icon: <AiOutlineHome /> },
+      { title: "회원목록", href: "/trainer/members", icon: <AiOutlineTeam />},
+      { title: "캘린더", href: "/trainer/calendar", icon: <AiOutlineCalendar /> },
+      { title: "메신저", href: "/trainer/message", icon: <AiOutlineMessage /> },
+      { title: "마이페이지", href: "/trainer/mypage", icon: <AiOutlineUser /> },
     ];
   }
 

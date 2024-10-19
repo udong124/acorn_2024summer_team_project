@@ -145,8 +145,8 @@ function MemberDietJournal(){
       <Row>
         <Col>
           <Card>
-            <Card.Header as="h6" className="border-bottom p-3 mb-0">
-              <p style={{fontSize: "1.5em", fontWeight: "bold"}}>{selectedDate.toLocaleDateString('ko-KR')}의 식단</p>
+            <Card.Header  className="Header">
+              <h3 style={{marginBottom:15}}>{selectedDate.toLocaleDateString('ko-KR')}의 식단</h3>
               { mergedData.length === 0 && (
                   <p>해당 일자의 식단 일지를 등록해 주세요
                   <Button onClick={handleReserve} style={styleNone2}>

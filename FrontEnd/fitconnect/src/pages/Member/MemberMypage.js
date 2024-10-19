@@ -106,8 +106,8 @@ const MyPage = () => {
       <Row>
       <Col>
          <Card sm={6} mb={6}>
-          <Card.Header as="h6" className="border-bottom p-3 mb-0">
-            <p style={{fontSize: "2em", fontWeight: "bold"}}>Mypage</p>
+          <Card.Header className="Header">
+            Mypage
           </Card.Header>
           <Card.Body className="">
             

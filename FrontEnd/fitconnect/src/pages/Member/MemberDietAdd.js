@@ -6,7 +6,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Checkbox, Radio } from "antd";
 import DietListAddModal from "../../components/DietListAddModal";
-//import DietListAddModal from "../../components/DietListAddModal";
+import "./css/MemberDietAdd.css"
 
 function MemberDietJournalAdd() {
     const [dietType, setDietType] = useState("");
@@ -150,8 +150,8 @@ function MemberDietJournalAdd() {
             <Row>
                 <Col>
                     <Card>
-                        <Card.Header as="h6" className="border-bottom p-3 mb-0">
-                            <h2>{selectedDate.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })}의 식단 추가</h2>
+                        <Card.Header as="h6" className="Header">
+                            <h3 style={{marginBottom:15}}>{selectedDate.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })}의 식단 추가</h3>
                             <div style={{ marginBottom: "20px" }}>
                                 <DatePicker
                                     selected={selectedDate}
@@ -167,7 +167,7 @@ function MemberDietJournalAdd() {
             <Row>
                 <Col xs={12} md={6}>
                     <Card>
-                        <Card.Header as="h6" className="border-bottom p-3 mb-0">식단선택</Card.Header>
+                        <Card.Header as="h6" className="Header">식단선택</Card.Header>
                             <Card.Body>
                                 <Form>
                                     <div className="d-flex" >
@@ -178,7 +178,7 @@ function MemberDietJournalAdd() {
                                 </Form>
                             <InputGroup className="mb-3">
                                 <Form.Control onChange={handleChange} placeholder="식단검색" type="text" />
-                                <Button onClick={handleClickAdd}>식단 추가</Button>
+                                <Button style={{zIndex:0}}onClick={handleClickAdd}>식단 추가</Button>
                             </InputGroup>
                             
                             <Button className="mb-3"  onClick={()=>{setShowModal(true)}}>음식 추가</Button>
@@ -226,7 +226,7 @@ function MemberDietJournalAdd() {
                 </Col>
                 <Col xs={12} md={6}>
                     <Card>
-                        <Card.Header as="h6" className="border-bottom p-3 mb-0">
+                        <Card.Header as="h6" className="Header">
                             추가한 식단목록
                         </Card.Header>
                         <Card.Body>

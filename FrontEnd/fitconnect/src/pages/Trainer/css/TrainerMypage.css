@@ -9,17 +9,26 @@
 }
 
 .Header {
-  background-color: rgba(170, 170, 170, 0.527);
+  background-color: #131212;;
   border-Bottom: 2px solid #ccc;
   text-align: center;
-  font-weight: bold;
+  font-weight: 650;
   font-size: 20px;
-  padding: 10px;
-  color: black;
-  opacity: 0.8;
+  padding: 15px;
+  color: rgb(241, 238, 238);
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+  font-family: 'Pretendard-Regular';
 };
+
+
+@font-face {
+  font-family: 'Pretendard-Regular';
+  src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+
 
 .TrainerMypage-row {
   align-items: stretch; /* Ensure both sections are the same height */

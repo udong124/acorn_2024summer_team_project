@@ -137,17 +137,6 @@ useEffect(() => {
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.15)",
   };
 
-  const cardHeaderStyle = {
-    backgroundColor: "#e6e6e6",
-    borderBottom: "2px solid #ccc", // 헤더 아래 구분선
-    textAlign: "center",
-    fontWeight: "bold",
-    fontSize: "20px",
-    padding: "10px",
-    color: "#333",
-    borderTopLeftRadius: "10px",
-    borderTopRightRadius: "10px",
-  };
 
   const eventCardStyle = {
     height: "150px",
@@ -205,7 +194,7 @@ useEffect(() => {
       <Row>
         <Col lg={12}>
           <Card>
-            <Card.Header style={cardHeaderStyle}>
+            <Card.Header className="Header">
               MainPage
             </Card.Header>
             <Card.Body>

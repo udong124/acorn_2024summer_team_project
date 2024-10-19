@@ -209,7 +209,7 @@ const CalendarComponent = () => {
       <Row>
         <Col>
           <Card>
-            <Card.Header as="h6" className="border-bottom p-3 mb-0">
+            <Card.Header as="h6" className="Header">
               Calendar
             </Card.Header>
             <Card.Body>

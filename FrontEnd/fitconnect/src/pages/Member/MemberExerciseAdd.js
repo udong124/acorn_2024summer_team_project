@@ -153,9 +153,9 @@ function MemberExerciseAdd() {
       <Row>
         <Col>
           <Card>
-            <Card.Header as="h6" className="border-bottom p-3 mb-0">
-              <h2>{selectedDate.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })}의 운동 추가</h2>
-              <div style={{ marginBottom: "20px" }}>
+            <Card.Header className="Header">
+              <h3 style={{ marginBottom: "15px" }}>{selectedDate.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })}의 운동 추가</h3>
+              <div>
                 <DatePicker
                   selected={selectedDate}
                   onChange={handleDateChange}
@@ -170,8 +170,8 @@ function MemberExerciseAdd() {
       <Row>
         <Col md={6} lg={5}>
           <Card>
-            <Card.Header as="h6" className="border-bottom p-3 mb-0">
-              운동 추가하기
+            <Card.Header className="Header">
+              운동 목록
             </Card.Header>
             <Card.Body>
               <InputGroup className="mb-3">
@@ -211,7 +211,7 @@ function MemberExerciseAdd() {
 
         <Col md={7} lg={6}>
           <Card>
-            <Card.Header as="h6" className="border-bottom p-3 mb-0">
+            <Card.Header className="Header">
               선택한 운동목록
             </Card.Header>
             <Card.Body>

@@ -127,6 +127,9 @@ const Starter = () => {
       <Row>
       <Col>
          <Card>
+         <Card.Header className="Header">
+              MainPage
+            </Card.Header>
           <Card.Body className="">
               <Row>
                 <Col>
