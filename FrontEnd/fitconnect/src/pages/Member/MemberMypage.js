@@ -112,7 +112,7 @@ const MyPage = () => {
           <Card.Body className="">
             
               <Row>
-                <Col>
+                <Col sm={12} mb={12} lg={6}>
                   <Form.Group>
                     <Form.Control ref={imageInput} style={{display:"none"}} type="file" name="image" accept="image/*"/>
                   </Form.Group>
@@ -122,7 +122,7 @@ const MyPage = () => {
                     </div>
                   </div>
                 </Col>
-                <Col sm={6} mb={6}>
+                <Col sm={12} mb={12} lg={6}>
                     <p>이름: {memberInfo.name}</p>
                     <p>생성일: {memberInfo.regdate}</p>
                     <p>아이디: {memberInfo.userName}</p>

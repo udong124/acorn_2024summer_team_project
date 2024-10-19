@@ -251,7 +251,7 @@ const MyPageDetail = () => {
               </svg>
               <Form onSubmit={handleSubmit}>
                 <Row>
-                  <Col className='leftside'>
+                  <Col md={12} lg={6} className='leftside'>
                     <Form.Group>
                       <Form.Label>프로필사진 ( click or drag-drop to Edit ) </Form.Label>
                       <Form.Control onChange={handleImageChange} ref={imageInput} style={{display:"none"}} type="file" name="image" accept="image/*" />
@@ -298,7 +298,7 @@ const MyPageDetail = () => {
                       </InputGroup>
                     </Form.Group>
                   </Col>
-                  <Col className='rightside'>
+                  <Col md={12} lg={6}  className='rightside'>
                     <Form.Group controlId="formId">
                       <Form.Label>아이디</Form.Label>
                       <Form.Control
