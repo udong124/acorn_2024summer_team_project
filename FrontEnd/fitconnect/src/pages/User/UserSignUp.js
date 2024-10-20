@@ -57,22 +57,7 @@ function UserSignUp() {
             member_num: formData.id
           }
         });
-      } else if (formData.role === "ADMIN") {
-        const token = localStorage.getItem('token');
-        if (token) {
-          try {
-            const { payload } = decodeToken(token.substring(7));
-            const adminNum = payload?.id;
-            navigate("/", {
-              state: {
-                admin_num: adminNum
-              }
-            });
-          } catch (error) {
-            console.error("토큰 디코딩 중 오류:", error);
-          }
-        }
-      }
+      } 
     }
   }, [formData, localStorage, isReady, navigate]);
 
@@ -381,7 +366,6 @@ function UserSignUp() {
                       <option value="">사용자 선택</option>
                       <option value="MEMBER">회원용</option>
                       <option value="TRAINER">트레이너용</option>
-                      <option value="ADMIN">관리자용</option>
                     </Form.Control>
                   </Form.Group>
                   <Button
