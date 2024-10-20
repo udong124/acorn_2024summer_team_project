@@ -20,8 +20,24 @@
     color: rgb(147, 147, 167);
 }
 
+.membercontent {
+  flex: 1; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@font-face {
+  font-family: 'HakgyoansimDunggeunmisoTTF-B';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/HakgyoansimDunggeunmisoTTF-B.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
 .membercontent p{
-    font-family: 'nanumsquare';
+    font-family: 'BMJUA';
+    justify-content: center;
+    border-left: #ccc;
 }
 
 .row-container {
@@ -31,20 +47,25 @@
     border-bottom: 1px solid #ccc;
     padding: 30px;
     width: 100%; /* Ensure full width of the container */
+    flex-Wrap: 'wrap';
+    gap: '20px';
   }
 
   .profile-column {
-    width: 20%; /* Adjust as necessary */
+    flex: 0 0 15%; /* Set a fixed width for the profile image */
     display: flex;
     align-items: center;
     justify-content: center;
+    min-width: 200px; /* Ensures that the column does not shrink too much */
+
   }
+
+  .post-it-container {
+    flex: 0 0 20%; /* Fixed width for post-it style section */
+    min-width: 200px; /* Ensure a minimum width */
+}
   
-  .membercontent {
-    width: 50%; /* Ensure the same width for content */
-    padding-left: 50px;
-  }
-  
+
 
 
 

@@ -9,7 +9,8 @@
 }
 
 .Header {
-  background-color: #131212;;
+  background-color: #0203099b;;
+  /* #1e1f27f5 */
   border-Bottom: 2px solid #ccc;
   text-align: center;
   font-weight: 650;
@@ -18,8 +19,10 @@
   color: rgb(241, 238, 238);
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  font-family: 'Pretendard-Regular';
+  font-family: 'NanumSquareNeoLight';
 };
+
+
 
 
 @font-face {
@@ -46,7 +49,6 @@
 /* Right Section (Additional Info) */
 .TrainerMypage-right {
   flex: 2;
-  padding-left: 30px;
 }
 
 /* Profile Picture Styling */

@@ -106,6 +106,23 @@ function Members() {
     objectFit: "cover"
   }
 
+  const postItStyle = {
+    backgroundColor: "#575757", // Yellow sticky note color
+    borderRadius: "8px", // Rounded corners to mimic paper edges
+    padding: "20px", // Adds space around the content
+    boxShadow: "2px 4px 8px rgba(0, 0, 0, 0.2)", // Shadow for lifted effect
+    transform: "rotate(-2deg)", // Slight rotation for a casual look
+    maxWidth: "200px", // Limits the width to resemble a note size
+    marginBottom: "10px", // Adds spacing between notes
+    fontFamily: 'nanumsquare', // Basic font for simplicity
+    color: "#CCC", // Dark text for contrast
+    fontWeight: "650",
+    justifyContent:"center", 
+    alignItems: 'center',
+    marginLeft: "100px"
+  };
+  
+
 
 
   const handleExModal = (id)=>{
@@ -139,7 +156,7 @@ function Members() {
                     padding: '10px'
                   }}>
                     
-                    <Col  style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Col  style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '80px' }}>
                       <img 
                         src={item.profile && item.profile !== null ? "http://52.78.38.12:8080/upload/" + item.profile : '/img/none.png'} 
                         alt={`${item.name} 프로필`} 
@@ -147,15 +164,18 @@ function Members() {
                       />
                       </Col>
                       <div className="membercontent">
-                      <Col style={{ paddingLeft: "50px"}}>
+                      <Col style={{justifyContent:"center", alignItems: 'center', marginLeft:'30px'}}>
                         <p>이름: {item.name}</p>
                         <p>키: {item.member_height}</p>
                         <p>몸무게: {item.member_weight}</p>
                         <p>성별: {item.member_gender}</p>
-                        <p>플랜: {item.plan}</p>
-                        <p>주간플랜: {item.weeklyplan}</p>                        
+                        <p>최종플랜: {item.plan}</p>              
                       </Col>
                       </div>
+                      <Col style={postItStyle}>
+                        <p><b>✏️ weeklyplan</b></p>
+                        <p>{item.weeklyplan}</p>    
+                      </Col>
 
                       {/* 새로운 채팅방 생성 버튼 */}
                       <Col style={{ display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'end' }}>

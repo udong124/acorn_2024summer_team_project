@@ -34,14 +34,15 @@ const MyPage = () => {
     height: "200px",
     border: "1px solid #cecece",
     borderRadius: "50%",
-    marginLeft: "60px"
+    justifyContent: "center"
   }
   const profileStyle2={
     width: "200px",
     height: "200px",
     border: "1px solid #cecece",
     borderRadius: "50%",
-    display: "none"
+    display: "none",
+    justifyContent: "center"    
   }
 
   // 본인정보를 가져오는 axios.get 요청
@@ -92,7 +93,7 @@ const MyPage = () => {
 
   return (
     <>
-      <Container className='TrainerMypage-container'>
+      <Container className='TrainerMypage-container' style={{fontFamily:'nanumsquare', fontWeight:700}}>
       <Row>
       <Col>
          <Card>
@@ -124,7 +125,7 @@ const MyPage = () => {
                       alt="Instagram Logo"
                       style={{ width: '40px', height: '40px' }} 
                     />
-                      </a></p>
+                      </a> </p>
                     <p>
                       {<a href={trainerInfo.gym_link} target="_blank" rel="noopener noreferrer" style={{textAlign:"center", fontWeight:550, textDecoration:"none", color:"#328DF4"}}>
                         {trainerInfo.gym_name}

@@ -29,9 +29,7 @@
   .fc .fc-toolbar.fc-header-toolbar {
   margin: 0;
   padding: 0 10px;
-  /*background-color: #76c3c5;*/
-  background-color: #242323;
-  opacity: 70%;
+  background-color: #1e1f27f5;
   height: 80px;
   font-size: 13px;
   line-height: 20px;

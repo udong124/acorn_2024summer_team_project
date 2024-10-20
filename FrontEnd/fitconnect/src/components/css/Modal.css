@@ -1,3 +1,7 @@
 .modal-backdrop {
     background-color: rgba(0, 0, 0, 0.3); /* Adjust opacity as needed */
   }
+.modal{
+  font-Family:'nanumsquare';
+  font-weight:700;
+}

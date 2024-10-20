@@ -184,9 +184,38 @@ useEffect(() => {
     fontWeight: "bold",
   };
 
+  const cardContentStyle = {
+    display: 'flex',
+    flexDirection: 'column', 
+    fontWeight: 'bold',
+    padding: '20px',
+    gap: '10px', 
+    justifyContent:'center',
+  };
+  
+  const linkStyle = {
+    fontWeight: 550,
+    textDecoration: "none",
+    color: "#328DF4",
+    justifyContent: "center",
+    textAlign: "center",
+  };
+
+  const introStyle = {
+    border: "3px solid #ddd", 
+    borderRadius: "8px", 
+    padding: "15px", 
+    backgroundColor: "#f9f9f9", 
+    fontStyle: "italic", 
+    color: "#555", 
+    boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)", 
+    maxWidth: "100%", 
+    textAlign: "center", 
+  };
+
 
   return (
-    <div className="home">
+    <div className="home" style={{fontFamily:'nanumsquare', fontWeight:700}}>
       <svg ref={personSvg} style={profileStyle}  xmlns="http://www.w3.org/2000/svg" display="none" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
         <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
         <path fillRule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
@@ -195,7 +224,7 @@ useEffect(() => {
         <Col lg={12}>
           <Card>
             <Card.Header className="Header">
-              MainPage
+              메인페이지
             </Card.Header>
             <Card.Body>
               <p><b>일정</b></p>
@@ -218,7 +247,7 @@ useEffect(() => {
                       <Col sm={6} md={6} lg={3} className='leftside' style={{ margin: 0, padding: "10px" }} key={index}>
                         <Card style={eventCardStyle}>
                           <Card.Header style={{ textAlign: "center", fontWeight: "bold", color: "#444" }}>
-                            {currentDate.getFullYear()}년 {currentDate.getMonth() + 1}월 {currentDate.getDate()}일
+                            <b>{currentDate.getFullYear()}년 {currentDate.getMonth() + 1}월 {currentDate.getDate()}일</b>
                           </Card.Header>
                           <Card.Body style={eventCardBodyStyle}>
                             {eventsForDate.length > 0 ? (
@@ -230,7 +259,7 @@ useEffect(() => {
                           ) : (
                             
                             <Row>
-                              <p>오늘의 일정이 없습니다.</p>
+                              오늘의 일정이 없습니다.
                             </Row>
                           )}
                           </Card.Body>
@@ -252,27 +281,29 @@ useEffect(() => {
                     <div style={dropZoneStyle}>
                       <img style={profileStyle} src={imageSrc} alt="프로필 이미지" />
                     </div>
-                    <p style={profileTextStyle}>이름: {trainerInfo.name}</p>
-                    <p style={profileTextStyle}>소갯글: {trainerInfo.trainer_intro}</p>
-                    <p style={profileTextStyle}>아이디: {trainerInfo.userName}</p>
-                    <p style={profileTextStyle}>이메일: {trainerInfo.email}</p>
-                    <p style={profileTextStyle}>생성일: {trainerInfo.regdate}</p>
-                    <p>
-                    <a href={trainerInfo.trainer_insta} target="_blank" rel="noopener noreferrer"><img
+                    <div style={cardContentStyle}>                   
+                    <p style={profileTextStyle}><strong style={{fontSize:20}}>{trainerInfo.name}</strong>  <a href={trainerInfo.trainer_insta} target="_blank" rel="noopener noreferrer"><img
                       src="/img/instagramlogo.png"
                       alt="Instagram Logo"
                       style={{ width: '40px', height: '40px' }} 
                     /></a>
-                    </p>
-                    <p>
-                      {<a href={trainerInfo.gym_link} target="_blank" rel="noopener noreferrer" style={{justifyContent:"center", textAlign:"center", fontWeight:550, textDecoration:"none", color:"#328DF4"}}>
+                    {<a href={trainerInfo.gym_link} target="_blank" rel="noopener noreferrer" style={{justifyContent:"center", textAlign:"center", fontWeight:550, textDecoration:"none", color:"#328DF4"}}>
                         {trainerInfo.gym_name}
-                      </a>}</p>
+                      </a>}
+                    </p>
+                    <p style={profileTextStyle}>아이디: {trainerInfo.userName}</p>
+                    <p style={profileTextStyle}>이메일: {trainerInfo.email}</p>
+                    <p style={profileTextStyle}>생성일: {trainerInfo.regdate}</p>
+                    <br/>
+                    <div style={introStyle}>
+                      <p style={profileTextStyle}> {trainerInfo.trainer_intro}</p>
+                    </div>
+                      </div>
                   </Card>
                 </Col>
 
                 <Col sm={12} md={12} lg={6}>
-                  <Card style={{ maxHeight: '600px', overflowY: 'auto', overflowX: 'hidden', backgroundColor: '#ffffff', padding: '10px', border: '2px solid #ccc', borderRadius: '10px' }}>
+                  <Card style={{ maxHeight: '600px',   overflowY: 'auto', overflowX: 'hidden', backgroundColor: '#ffffff', padding: '10px', border: '2px solid #ccc', borderRadius: '10px'}}>
                     <Message />
                   </Card>
                 </Col>

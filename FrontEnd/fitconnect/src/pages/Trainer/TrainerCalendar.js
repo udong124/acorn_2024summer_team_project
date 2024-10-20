@@ -149,7 +149,7 @@ function Calendar() {
   };
 
   return (
-    <div className="fullcalendar-wrapper">
+    <div className="fullcalendar-wrapper" style={{fontFamily:'nanumsquare', fontWeight:800}}>
       <Row>
         <Col>
           <Card>
