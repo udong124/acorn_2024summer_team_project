@@ -104,10 +104,10 @@ function MemberDietJournalAdd() {
         updatedFormData[index] = {
             ...updatedFormData[index],
             foodcount,
-            calories: Math.round((dietListSearch[index]?.calories * foodcount) / 100),
-            carbs: Math.round((dietListSearch[index]?.carbs * foodcount) / 100),
-            protein: Math.round((dietListSearch[index]?.protein * foodcount) / 100),
-            fat: Math.round((dietListSearch[index]?.fat * foodcount) / 100),
+            calories: Number(((dietListSearch[index]?.calories * foodcount) / 100).toFixed(1)),
+            carbs: Number(((dietListSearch[index]?.carbs * foodcount) / 100).toFixed(1)),
+            protein: Number(((dietListSearch[index]?.protein * foodcount) / 100).toFixed(1)),
+            fat: Number(((dietListSearch[index]?.fat * foodcount) / 100).toFixed(1)),
         };
         setFormData(updatedFormData);
     };
