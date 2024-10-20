@@ -156,9 +156,6 @@ const MemberTrainerList = () => {
                       >
                         <option value="name">트레이너 이름</option>
                         <option value="gym_name">헬스장 이름</option>
-                        <option value="trainer_insta">
-                          트레이너 인스타그램
-                        </option>
                       </Form.Select>
                     </Form.Group>
                   </Col>
