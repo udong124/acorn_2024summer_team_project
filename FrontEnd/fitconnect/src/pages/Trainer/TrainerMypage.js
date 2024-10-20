@@ -117,11 +117,14 @@ const MyPage = () => {
                         <img className="TrainerProfile-image" style={profileStyle} src={imageSrc} alt="프로필 이미지"/>
 
                   </div>
-                  <p className='TrainerProfile-name' >{trainerInfo.name} <img
+                  <p className='TrainerProfile-name' >{trainerInfo.name} 
+                    <a href={trainerInfo.trainer_insta} target="_blank" rel="noopener noreferrer">
+                    <img
                       src="/img/instagramlogo.png"
                       alt="Instagram Logo"
                       style={{ width: '40px', height: '40px' }} 
-                    /><a href={trainerInfo.trainer_insta} target="_blank" rel="noopener noreferrer"></a></p>
+                    />
+                      </a></p>
                     <p>
                       {<a href={trainerInfo.gym_link} target="_blank" rel="noopener noreferrer" style={{textAlign:"center", fontWeight:550, textDecoration:"none", color:"#328DF4"}}>
                         {trainerInfo.gym_name}
