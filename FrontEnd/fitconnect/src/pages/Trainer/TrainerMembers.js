@@ -2,10 +2,10 @@ import axios from "axios";
 import mqtt from "mqtt";
 import { useEffect, useState } from "react";
 import { Card, Row, Col, Button } from "react-bootstrap";
-import { useNavigate } from "react-router";
 import DietModal from "../../components/DietModal";
 import ExerciseModal from "../../components/ExerciseModal";
 import './css/TrainerMember.css'
+import { useNavigate } from 'react-router-dom';
 
 
 let member_num;
