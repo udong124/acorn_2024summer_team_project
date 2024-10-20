@@ -24,6 +24,29 @@
     font-family: 'nanumsquare';
 }
 
+.row-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    padding: 30px;
+    width: 100%; /* Ensure full width of the container */
+  }
+
+  .profile-column {
+    width: 20%; /* Adjust as necessary */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .membercontent {
+    width: 50%; /* Ensure the same width for content */
+    padding-left: 50px;
+  }
+  
+
+
 
 
 @font-face {

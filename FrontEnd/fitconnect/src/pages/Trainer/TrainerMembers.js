@@ -107,6 +107,7 @@ function Members() {
   }
 
 
+
   const handleExModal = (id)=>{
     member_num=id
     setExerciseModal(true)
@@ -138,7 +139,7 @@ function Members() {
                     padding: '10px'
                   }}>
                     
-                    <Col  style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+                    <Col  style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       <img 
                         src={item.profile && item.profile !== null ? "http://52.78.38.12:8080/upload/" + item.profile : '/img/none.png'} 
                         alt={`${item.name} 프로필`} 
