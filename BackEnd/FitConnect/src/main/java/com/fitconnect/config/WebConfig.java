@@ -17,13 +17,15 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         // 루트 경로와 모든 서브 경로를 index.html로 포워딩
-        registry.addViewController("/{spring:[a-zA-Z0-9-_]+}")
-                .setViewName("forward:/index.html");
+    	registry.addViewController("/{spring:[a-zA-Z0-9-_]+}")
+        .setViewName("forward:/index.html");
 
-        registry.addViewController("/**/{spring:[a-zA-Z0-9-_]+}")
-                .setViewName("forward:/index.html");
+		registry.addViewController("/{spring:[a-zA-Z0-9-_]+}/**")
+		        .setViewName("forward:/index.html");
+		
+		registry.addViewController("/{spring:[a-zA-Z0-9-_]+}/**")
+		        .setViewName("forward:/index.html");
 
-        registry.addViewController("/{spring:[a-zA-Z0-9-_]+}/**{spring:?!(\\.js|\\.css|\\.png|\\.jpg|\\.jpeg|\\.gif)$}")
-                .setViewName("forward:/index.html");
+
     }
 }
