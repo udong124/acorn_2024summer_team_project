@@ -29,6 +29,13 @@ const MyPageDetail = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const storedTrainerName = localStorage.getItem('selectedTrainerName'); // 로컬 스토리지에서 트레이너 이름 가져오기
+    if (storedTrainerName) {
+      setTrainerName(storedTrainerName);
+    }
+  }, []);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     const updatedInfo = { ...memberInfo, [name]: value };
@@ -37,6 +44,7 @@ const MyPageDetail = () => {
     // 데이터를 즉시 저장
     localStorage.setItem('memberInfo', JSON.stringify(updatedInfo));  
   };
+
 
   const [trainerName, setTrainerName] = useState("");
 

@@ -19,6 +19,15 @@ const TrainerId = () => {
  
   const navigate = useNavigate();
 
+
+  // 트레이너 선택 시 이름 저장->trainer_num 대신 트레이너이름을 멤버페이지에 넣어주기 위해
+  const handleSelectTrainer = (trainer) => {
+    setSelectedTrainer(trainer);
+    localStorage.setItem('selectedTrainerName', trainer.name); // 트레이너 이름을 로컬 스토리지에 저장
+    // 페이지 상단으로 이동
+    
+  };
+
   const profileStyle={
     width: "180px",
     height: "180px",
@@ -229,7 +238,7 @@ const TrainerId = () => {
                           <Card.Title>이름: {trainer.name}</Card.Title>
                           <Card.Text>헬스장: {trainer.gym_name}</Card.Text>
                           <Button
-                            onClick={() => setSelectedTrainer(trainer)}
+                            onClick={() => handleSelectTrainer(trainer)}
                             className="w-100 btn-secondary"
                           >
                             선택
