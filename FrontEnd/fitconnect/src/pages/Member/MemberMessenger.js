@@ -61,14 +61,7 @@ function MemberMessenger() {
     borderRadius: "50%",
     display: "none",
   };
-  // Add a media query to handle smaller screen sizes
-const profileStyleSmallScreen = {
-  maxWidth: "40%", // Smaller maxWidth for small screens
-  border: "1px solid #cecece",
-  borderRadius: "50%",
-  width: "100%", // Ensures it adapts to smaller containers
-  height: "auto",
-};
+
 
   // 트레이너 info를 가져오기
   useEffect(() => {
@@ -272,17 +265,18 @@ const profileStyleSmallScreen = {
                     onClick={handleFindTrainer}
                     style={{
                       fontSize: "18px",
-                      border: "1px solid #007bff", 
+                      border: "2px solid #007bff", 
                       borderRadius: "8px", 
                       boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)", 
                       padding: "15px", 
-                      cursor: "pointer" 
+                      cursor: "pointer", 
+                      fontWeight: 'bold'
                     }}
                   >
                     <img
                       src={searchicon}
                       alt="검색 아이콘"
-                      style={{ width: "130px", height: "150px" }}
+                      style={{ width: "130px", height: "130px" }}
                     />
                     <p>트레이너 찾기</p>
                   </Button>

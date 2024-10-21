@@ -132,7 +132,7 @@ function DietModal({ dietModal, setDietModal, member_num, name }){
                 style={{ width: "80%", boxSizing: "border-box" }} 
             />
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{fontFamily:'nanumsquare', fontWeight:700}}>
           {mergedData.length === 0 ? (
             <div className="text-center">
                 <p>등록된 일지가 없습니다.</p>
@@ -196,7 +196,7 @@ function DietModal({ dietModal, setDietModal, member_num, name }){
           <Modal.Footer className="d-flex justify-content-center">
             {mergedData.length === 0 ? (
               <div className="w-100 text-center">
-                  <h3>등록된 일지가 없습니다.</h3>
+                  <p>등록된 일지가 없습니다.</p>
               </div>
             ) : (
               <div>

@@ -29,8 +29,8 @@ function UserStartPage() {
         </video>
         <div className={cx("overlay")}>
           <div className={cx("button-container")}>
-            <Button onClick={() => navigate('/login')}>로그인</Button>
-            <Button onClick={() => navigate('/signup')}>회원가입</Button>
+            <Button style={{fontFamily:'nanumsquare', fontWeight:700}} onClick={() => navigate('/login')}>로그인</Button>
+            <Button style={{fontFamily:'nanumsquare', fontWeight:700}} onClick={() => navigate('/signup')}>회원가입</Button>
           </div>
         </div>
       </div>

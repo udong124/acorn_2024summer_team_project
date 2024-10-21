@@ -72,7 +72,7 @@ function DietListAddModal({ showModal, setShowModal }) {
             <Modal.Header>
                 <Modal.Title>식단추가</Modal.Title>
             </Modal.Header>
-            <Modal.Body>
+            <Modal.Body style={{fontFamily:'nanumsquare', fontWeight:700}}>
                 <Table bordered>
                     <thead>
                         <tr>

@@ -165,10 +165,8 @@ function Members() {
                       </Col>
                       <div className="membercontent">
                       <Col style={{justifyContent:"center", alignItems: 'center', marginLeft:'30px'}}>
-                        <p>이름: {item.name}</p>
-                        <p>키: {item.member_height}</p>
-                        <p>몸무게: {item.member_weight}</p>
-                        <p>성별: {item.member_gender}</p>
+                        <p style={{fontSize:25}}> {item.name}</p> 
+                        <p>{item.member_height} cm / {item.member_weight} kg / {item.member_gender} </p>
                         <p>최종플랜: {item.plan}</p>              
                       </Col>
                       </div>

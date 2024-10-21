@@ -19,8 +19,15 @@
   color: rgb(241, 238, 238);
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  font-family: 'NanumSquareNeoLight';
+  font-family: 'Pretendard-Regular';
 };
+
+@font-face {
+  font-family: 'Pretendard-Regular';
+  src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
 
 
 

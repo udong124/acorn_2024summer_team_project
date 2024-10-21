@@ -148,10 +148,7 @@ function MemberDietJournal(){
             <Card.Header  className="Header">
               <h3 style={{marginBottom:15}}>{selectedDate.toLocaleDateString('ko-KR')}의 식단</h3>
               { mergedData.length === 0 && (
-                  <p>해당 일자의 식단 일지를 등록해 주세요
-                  <Button onClick={handleReserve} style={styleNone2}>
-                  등록
-                  </Button>
+                  <p>해당 일자의 식단 일지를 <a onClick={handleReserve} style={{ color: "#0EB4fc", fontWeight: "bold", textDecoration: "underline", cursor: "pointer" }}>등록</a>해 주세요
                   </p>
               )}
 
@@ -170,9 +167,9 @@ function MemberDietJournal(){
         <Col md={12}>
             <Card>
             <Card.Header as="h6" className="border-bottom p-3 mb-0" style={styleNone}>
-            <div className="d-flex justify-content-end mb-3">
-              <Button onClick={handleReserve} variant="secondary" className="me-2">등록하기</Button>
-              <Button onClick={handleAllDelete} variant="secondary">삭제하기</Button>
+            <div className="d-flex justify-content-end mb-3" >
+              <Button onClick={handleReserve}  className="me-2">등록하기</Button>
+              <Button onClick={handleAllDelete} variant="danger">삭제하기</Button>
             </div>
             </Card.Header>
             <Card.Body className="">

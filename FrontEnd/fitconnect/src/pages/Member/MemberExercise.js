@@ -98,10 +98,7 @@ function MemberExercise() {
                     <Card.Header className="Header">
                         <h3 style={{marginBottom:15}}>{selectedDate.toLocaleDateString('ko-KR')}의 운동</h3>                 
                         { exercisejournal.length === 0 && (
-                            <p>해당 일자의 운동 일지를 등록해 주세요
-                            <Button onClick={handleReserve} style={styleNone2}>
-                            등록
-                            </Button>
+                            <p>해당 일자의 운동 일지를 <a onClick={handleReserve} style={{ color: "#0EB4fc", fontWeight: "bold", textDecoration: "underline", cursor: "pointer" }}>등록</a>해 주세요 
                             </p>
                         )}
 

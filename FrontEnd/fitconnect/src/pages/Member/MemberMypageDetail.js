@@ -357,7 +357,7 @@ const MyPageDetail = () => {
                       <Form.Text className="text-muted">성별은 수정할 수 없습니다.</Form.Text>
                     </Form.Group>
                     <Form.Group controlId="formPlan">
-                      <Form.Label>목표</Form.Label>
+                      <Form.Label>최종 목표</Form.Label>
                       <Form.Control
                         as="textarea"
                         name="plan"

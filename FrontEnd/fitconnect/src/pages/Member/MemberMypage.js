@@ -130,7 +130,7 @@ const MyPage = () => {
                     <p>키: {memberInfo.member_height}</p>
                     <p>몸무게: {memberInfo.member_weight}</p>
                     <p>성별: {memberInfo.member_gender}</p>
-                    <p>목표: {memberInfo.plan}</p>
+                    <p>최종 목표: {memberInfo.plan}</p>
                     <p>주간 목표: {memberInfo.weeklyplan}</p>
                 </Col>
               </Row>

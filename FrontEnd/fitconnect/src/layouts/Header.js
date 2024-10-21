@@ -121,7 +121,7 @@ const Header = () => {
             <Button
             className="logout-button"
             variant="danger"
-            style={{ zIndex: 0, position: 'relative', marginRight:"150px"}} // 인라인 스타일로 z-index 적용
+            style={{ zIndex: 0, position: 'relative', marginRight:"50px"}} // 인라인 스타일로 z-index 적용
             onClick={handleLogout}
             >
               <img src="/img/logout2.png" alt="" style={{width:18, height:18}}/>

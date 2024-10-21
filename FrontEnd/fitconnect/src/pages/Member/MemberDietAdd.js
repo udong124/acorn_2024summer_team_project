@@ -171,8 +171,8 @@ function MemberDietJournalAdd() {
                             <Card.Body>
                                 <Form>
                                     <div className="d-flex" style={{ fontWeight:700}} >
-                                        <Form.Check onChange={() => setDietType('아침')} type="radio" label="아침" name="meal"/>
-                                        <Form.Check onChange={() => setDietType('점심')} type="radio" label="점심" name="meal"/>
+                                        <Form.Check onChange={() => setDietType('아침')} type="radio" label="아침" name="meal" style={{marginRight:10}}/> 
+                                        <Form.Check onChange={() => setDietType('점심')} type="radio" label="점심" name="meal" style={{marginRight:10}}/>
                                         <Form.Check onChange={() => setDietType('저녁')} type="radio" label="저녁" name="meal"/>                                    
                                     </div>
                                 </Form>

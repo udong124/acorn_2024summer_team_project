@@ -20,11 +20,12 @@ const TrainerId = () => {
   const navigate = useNavigate();
 
   const profileStyle={
-    width: "200px",
-    height: "200px",
+    width: "180px",
+    height: "180px",
     border: "1px solid #cecece",
     borderRadius: "50%",
-    objectFit: "cover"
+    objectFit: "cover",
+    margin:20
   }
 
   //트레이너리스트를 가져오기
@@ -129,7 +130,7 @@ const TrainerId = () => {
     };
 
   return (
-    <Container>
+    <Container style={{fontFamily:'nanumsquare', fontWeight:700}}>
       <Row>
         <Col>
           <Card>
@@ -224,7 +225,7 @@ const TrainerId = () => {
                         />
                       </Col>
                       <Col md={8}>
-                        <Card.Body>
+                        <Card.Body style={{marginTop:40}}>
                           <Card.Title>이름: {trainer.name}</Card.Title>
                           <Card.Text>헬스장: {trainer.gym_name}</Card.Text>
                           <Button
