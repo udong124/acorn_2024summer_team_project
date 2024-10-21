@@ -74,9 +74,11 @@ function MemberDietJournal(){
 
       const carbsAll = morningItems.reduce((sum, data) => sum + data.carbs, 0)
                     + lunchItems.reduce((sum, data) => sum + data.carbs, 0)
+                    + dinnerItems.reduce((sum, data) => sum + data.carbs, 0)
       setTotalCarbs(carbsAll)
       const proteinAll = morningItems.reduce((sum, data) => sum + data.protein, 0)
       + lunchItems.reduce((sum, data) => sum + data.protein, 0)
+      + dinnerItems.reduce((sum, data) => sum + data.protein, 0)
       setTotalProtein(proteinAll)
   
       const fatAll = morningItems.reduce((sum, data) => sum + data.fat, 0)
