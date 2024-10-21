@@ -53,11 +53,7 @@ public class UserController {
 	
 	@Value("${file.location}")
 	private String fileLocation;
-	
-	@GetMapping("/")
-	public String home() {
-		return "home";
-	}
+
 	
 	/**********************************************************************
     * <PRE> * 메소드 정보 *
