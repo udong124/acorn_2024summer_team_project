@@ -23,6 +23,11 @@ const MemberTrainerList = () => {
   const handleSelectTrainer = (trainer) => {
     setSelectedTrainer(trainer);
     localStorage.setItem('selectedTrainerName', trainer.name); // 트레이너 이름을 로컬 스토리지에 저장
+    // 페이지 상단으로 이동
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // 부드러운 스크롤 효과
+    });
   };
 
   

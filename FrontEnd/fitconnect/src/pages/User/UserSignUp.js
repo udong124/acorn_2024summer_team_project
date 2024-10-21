@@ -163,8 +163,12 @@ function UserSignUp() {
     formImage.append("userName", formData.userName);
     formImage.append("password", formData.password);
     formImage.append("role", formData.role);
-    formImage.append("image", formData.image);
+    
     formImage.append("provider", formData.provider);
+
+    if(formData.image){
+      formImage.append("image", formData.image);
+    }
 
 
    // 입력한 회원정보를 전송하기
