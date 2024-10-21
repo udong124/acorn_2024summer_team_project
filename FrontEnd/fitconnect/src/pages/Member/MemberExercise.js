@@ -99,18 +99,20 @@ function MemberExercise() {
                         <h3 style={{marginBottom:15}}>{selectedDate.toLocaleDateString('ko-KR')}의 운동</h3>                 
                         { exercisejournal.length === 0 && (
                             <p>해당 일자의 운동 일지를 등록해 주세요
-                            <Button onClick={handleReserve} style={styleNone2}>
-                            등록
-                            </Button>
+                           
                             </p>
                         )}
-
-                        <DatePicker
-                            selected={selectedDate}
-                            onChange={handleDateChange}
-                            dateFormat="yyyy년 MM월 dd일"
-                            placeholderText="날짜를 선택하세요"
-                        />
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                            <DatePicker
+                                selected={selectedDate}
+                                onChange={handleDateChange}
+                                dateFormat="yyyy년 MM월 dd일"
+                                placeholderText="날짜를 선택하세요"
+                            />
+                            <Button variant="dark"  onClick={handleReserve} style={styleNone2}>
+                                등록
+                            </Button>
+                        </div>
 
                     </Card.Header>
 
