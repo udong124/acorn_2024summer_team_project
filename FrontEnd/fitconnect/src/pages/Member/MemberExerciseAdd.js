@@ -173,7 +173,7 @@ function MemberExerciseAdd() {
             <Card.Header className="Header">
               운동 목록
             </Card.Header>
-            <Card.Body>
+            <Card.Body style={{fontFamily:'nanumsquare', fontWeight:700}}>
               <InputGroup className="mb-3">
                 <DropdownButton variant="outline-secondary" title={exerciseCategory} id="input-group-dropdown-1">
                   <Dropdown.Item onClick={() => setExerciseCategory("all")}>전체</Dropdown.Item>
@@ -219,7 +219,7 @@ function MemberExerciseAdd() {
                 <Droppable droppableId="exerciseList">
                   {(provided) => (
                     <Table bordered {...provided.droppableProps} ref={provided.innerRef}>
-                      <thead className="text-center">
+                      <thead className="text-center" style={{fontFamily:'nanumsquare', fontWeight:700}}>
                         <tr>
                           <th style={{ width: "30%" }}>운동명</th>
                           <th style={{ width: "15%" }}>무게</th>
@@ -229,7 +229,7 @@ function MemberExerciseAdd() {
                           <th style={{ width: "15%" }}>삭제 여부</th>
                         </tr>
                       </thead>
-                      <tbody className="text-center">
+                      <tbody className="text-center" style={{fontFamily:'nanumsquare', fontWeight:700}}>
                         {selectExercise.map((data, index) => (
                           <Draggable key={data.e_journal_id} draggableId={data.e_journal_id} index={index}>
                             {(provided, snapshot) => (
@@ -272,7 +272,7 @@ function MemberExerciseAdd() {
                   )}
                 </Droppable>
               </DragDropContext>
-              <Button onClick={handleSubmit}>저장</Button>
+              <Button style={{fontFamily:'nanumsquare', fontWeight:700}} onClick={handleSubmit}>저장</Button>
             </Card.Body>
           </Card>
         </Col>

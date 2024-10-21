@@ -107,7 +107,7 @@ const MyPage = () => {
       <Col>
          <Card sm={6} mb={6}>
           <Card.Header className="Header">
-            Mypage
+            마이페이지
           </Card.Header>
           <Card.Body className="">
             
@@ -122,7 +122,7 @@ const MyPage = () => {
                     </div>
                   </div>
                 </Col>
-                <Col sm={12} mb={12} lg={6}>
+                <Col sm={12} mb={12} lg={6} style={{fontFamily:'nanumsquare', fontWeight:700}}>
                     <p>이름: {memberInfo.name}</p>
                     <p>생성일: {memberInfo.regdate}</p>
                     <p>아이디: {memberInfo.userName}</p>

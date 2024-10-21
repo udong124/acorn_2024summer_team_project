@@ -210,7 +210,7 @@ const CalendarComponent = () => {
         <Col>
           <Card>
             <Card.Header as="h6" className="Header">
-              Calendar
+              캘린더
             </Card.Header>
             <Card.Body>
             <FullCalendar

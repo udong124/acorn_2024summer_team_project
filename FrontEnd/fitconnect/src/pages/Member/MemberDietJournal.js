@@ -140,7 +140,7 @@ function MemberDietJournal(){
   const styleNone2 = location.pathname === "/member/dietjournal" ? {display:"none"} : {display:"flex"}
 
   return (
-    <>
+    <div style={{fontFamily:'nanumsquare', fontWeight:700}}>
     <div>
       <Row>
         <Col>
@@ -288,7 +288,7 @@ function MemberDietJournal(){
           </Col>
         </Row>
       </div>
-     </>
+     </div>
   )
 }
 

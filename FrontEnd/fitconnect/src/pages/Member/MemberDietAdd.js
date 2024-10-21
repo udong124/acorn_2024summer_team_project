@@ -170,7 +170,7 @@ function MemberDietJournalAdd() {
                         <Card.Header as="h6" className="Header">식단선택</Card.Header>
                             <Card.Body>
                                 <Form>
-                                    <div className="d-flex" >
+                                    <div className="d-flex" style={{ fontWeight:700}} >
                                         <Form.Check onChange={() => setDietType('아침')} type="radio" label="아침" name="meal"/>
                                         <Form.Check onChange={() => setDietType('점심')} type="radio" label="점심" name="meal"/>
                                         <Form.Check onChange={() => setDietType('저녁')} type="radio" label="저녁" name="meal"/>                                    
@@ -194,7 +194,7 @@ function MemberDietJournalAdd() {
                                         <th>무게 (g)</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody style={{fontFamily:'nanumsquare', fontWeight:700}}>
                                     {dietListSearch.map((data, index) => (
                                         <tr key={data.diet_id}
                                             onClick={() => setSelectedRowIndex(index)}
@@ -230,8 +230,8 @@ function MemberDietJournalAdd() {
                             추가한 식단목록
                         </Card.Header>
                         <Card.Body>
-                            <Table bordered>
-                                <thead>
+                            <Table bordered >
+                                <thead style={{fontFamily:'nanumsquare', fontWeight:700}}>
                                     <tr>
                                         <th>번호</th>
                                         <th>언제</th>
@@ -244,7 +244,7 @@ function MemberDietJournalAdd() {
                                         <th>삭제</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody style={{fontFamily:'nanumsquare', fontWeight:700}}>
                                     {select.map((data, index) => (
                                         <tr key={data.diet_id || index}>
                                             <td>{index + 1}</td>

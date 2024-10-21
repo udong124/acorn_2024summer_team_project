@@ -31,7 +31,9 @@ const MemberTrainerList = () => {
     height: "200px",
     border: "1px solid #cecece",
     borderRadius: "50%",
-    objectFit: "cover"
+    objectFit: "cover",
+    marginLeft: 30,
+    marginTop: 30
   };
 
   //트레이너리스트를 가져오기
@@ -138,7 +140,7 @@ const MemberTrainerList = () => {
     };
 
   return (
-    <Container>
+    <Container style={{fontFamily:'nanumsquare'}}>
       <Row>
         <Col>
           <Card>
@@ -233,7 +235,7 @@ const MemberTrainerList = () => {
                         />
                       </Col>
                       <Col md={8}>
-                        <Card.Body>
+                        <Card.Body style={{marginTop:50, marginLeft:10}}>
                           <Card.Title>이름: {trainer.name}</Card.Title>
                           <Card.Text>헬스장: {trainer.gym_name}</Card.Text>
                           <Button

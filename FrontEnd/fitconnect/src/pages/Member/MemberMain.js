@@ -106,7 +106,7 @@ const Starter = () => {
   }, []);
 
   return (
-    <div>
+    <div style={{fontFamily:'nanumsquare', fontWeight:700}}>
       {/***Table ***/}
       <Row>
         <Col lg={12}>
@@ -128,7 +128,7 @@ const Starter = () => {
       <Col>
          <Card>
          <Card.Header className="Header">
-              MainPage
+              메인페이지
             </Card.Header>
           <Card.Body className="">
               <Row>

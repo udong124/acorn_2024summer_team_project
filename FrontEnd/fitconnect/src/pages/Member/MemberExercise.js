@@ -120,7 +120,7 @@ function MemberExercise() {
             <Col md={48} lg={40}>
                 <Card>
                     <Card.Header as="h6" className="border-bottom p-3 mb-0" style={styleNone}>
-                        <div className="d-flex justify-content-end mb-3">
+                        <div className="d-flex justify-content-end mb-3" style={{fontFamily:'nanumsquare', fontWeight:700}}>
                             <Button onClick={handleReserve} variant="secondary" className="me-2">등록하기</Button>
                             <Button onClick={handleDeleteAll} variant="secondary">전체 삭제</Button>
                         </div>
@@ -128,7 +128,7 @@ function MemberExercise() {
 
                     <Card.Body>
                         <Table bordered>
-                            <thead className="text-center">
+                            <thead className="text-center" style={{fontFamily:'nanumsquare', fontWeight:700}}>
                                 <tr>
                                     <th>운동명</th>
                                     <th>무게</th>
@@ -137,7 +137,7 @@ function MemberExercise() {
                                     <th>순서</th>
                                 </tr>
                             </thead>
-                            <tbody className="text-center">
+                            <tbody className="text-center" style={{fontFamily:'nanumsquare', fontWeight:700}}>
                                 {(exercisejournal !== undefined) && exercisejournal.map(item => (
                                         <tr key={item.exercise_id}>
                                             <td>{item.exercise_name}</td>

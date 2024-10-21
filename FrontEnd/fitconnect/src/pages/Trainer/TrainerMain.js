@@ -205,12 +205,10 @@ useEffect(() => {
     border: "3px solid #ddd", 
     borderRadius: "8px", 
     padding: "15px", 
-    backgroundColor: "#f9f9f9", 
-    fontStyle: "italic", 
+    backgroundColor: "#f9f9f9",  
     color: "#555", 
     boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)", 
     maxWidth: "100%", 
-    textAlign: "center", 
   };
 
 
