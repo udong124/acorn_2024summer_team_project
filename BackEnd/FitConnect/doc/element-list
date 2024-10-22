@@ -1,0 +1,11 @@
+com.fitconnect
+com.fitconnect.auth
+com.fitconnect.config
+com.fitconnect.controller
+com.fitconnect.dto
+com.fitconnect.exception
+com.fitconnect.filter
+com.fitconnect.handler
+com.fitconnect.repository
+com.fitconnect.service
+com.fitconnect.util

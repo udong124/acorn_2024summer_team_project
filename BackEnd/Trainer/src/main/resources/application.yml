@@ -21,3 +21,10 @@ mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.fitconnect.**
   
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    tags-sorter: alpha
+    disable-swagger-default-url: 'true'
+    path: /swagger-ui.html

@@ -1,0 +1,181 @@
+/*
+.chatroom {
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
+  
+*/
+
+@font-face {
+  font-family: 'BMJUA';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+  
+  .chatroom li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    background-color: white;
+    border-style: groove;
+    border-width: 1px;
+    border-color: rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    font-family: 'BMJUA';
+  }
+  
+  /* hover */
+  .chatroom li:hover {
+    background-color: #ccc;
+    transform: translateY(-8px);
+    cursor: pointer;
+  }
+  
+
+
+
+  
+  .modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* General Styles */
+.chat-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+  padding: 10px;
+}
+
+.chat-list-item-content {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+/* Profile Image Style */
+.profileImage {
+  border: 1px solid #ccc;
+  margin: 24px;
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Text Styles */
+.chat-list-item-text {
+  margin-left: 50px;
+  padding-left: 50px;
+  border-left: 1.5px solid #717070;
+}
+
+.chat-member-name {
+  font-size: 32px;
+  margin-bottom: 20px;
+  font-weight: 550;
+}
+
+.chat-member-content {
+  font-size: 22px;
+  margin-bottom: 20px;
+  font-weight: 300;
+  font-weight: 420;
+}
+
+.chat-member-times {
+  font-size: 15px;
+  opacity: 0.7;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .profileImage {
+    width: 100px;
+    height: 100px;
+  }
+
+  .chat-list-item-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .chat-member-name {
+    font-size: 22px;
+  }
+
+  .chat-member-content {
+    font-size: 16px;
+  }
+
+  .chat-member-times {
+    font-size: 11px;
+  }
+
+  .chat-list-item-text {
+    margin-left: 0;
+    padding-left: 0;
+    border-left: none;
+  }
+}
+
+@media (max-width: 576px) {
+  .profileImage {
+    width: 80px;
+    height: 80px;
+  }
+
+  .chat-member-name {
+    font-size: 20px;
+  }
+
+  .chat-member-content {
+    font-size: 14px;
+  }
+
+  .chat-member-times {
+    font-size: 10px;
+  }
+}
+
+ 
+ 
+  .button-container {
+    display: flex;
+    flex-direction: column; /* 기본적으로 세로로 나열 */
+    gap: 10px; /* 버튼 간의 간격 */
+    align-items: flex-end; /* 오른쪽 끝에 정렬 */
+  }
+  
+  @media (max-width: 768px) { /* 화면 너비가 768px 이하일 경우 */
+    .button-container {
+      flex-direction: row; /* 가로로 나열 */
+      justify-content: flex-end; /* 오른쪽 정렬 */
+    }
+  }
+
+  .row-container {
+    display: flex;
+    flex-wrap: wrap; /* 요소가 넘칠 경우 다음 줄로 감싸도록 설정 */
+  }
+  
+  @media (max-width: 768px) { /* 화면 너비가 768px 이하일 경우 */
+    .row-container {
+      flex-direction: column; /* 세로로 나열 */
+    }
+  
+    .button-container {
+      align-items: flex-start; /* 버튼을 왼쪽 정렬 */
+    }
+  }

@@ -1,23 +1,46 @@
-server:
-  port: 9999
-  servlet:
-    context-path: /fitconnect
-    session:
-      tracking-modes: cookie
-
-# DB 접속 정보와 파일 업로드 설정
 spring:
+  profiles:
+    group:
+      local: local
+      server: server
+default:
+  string: default property
+  
+---
+spring:
+  config:
+    import: "classpath:custom-${spring.profiles.active}.properties"
+    activate:
+      on-profile: local
+      
   datasource:
     driver-class-name: oracle.jdbc.OracleDriver
     url: jdbc:oracle:thin:@localhost:1521:xe
     username: scott
     password: tiger
+server:
+  port: 8888
   servlet:
-    multipart:
-      max-file-size: 50MB
-      max-request-size: 100MB
-# mybatis 설정
-mybatis:
-  mapper-locations: classpath:mapper/*.xml
-  type-aliases-package: com.fitconnect.**
-  
+#    context-path: /fitconnect
+    session:
+      tracking-modes: cookie
+---
+spring:
+  config:
+    import: "classpath:custom-${spring.profiles.active}.properties"
+    activate:
+      on-profile: server
+      
+  datasource:
+    driver-class-name: oracle.jdbc.OracleDriver
+    url: jdbc:oracle:thin:@52.78.38.12:1521:xe?oracle.jdbc.timezoneAsRegion=false
+    username: scott
+    password: tiger1234!
+server:
+  port: 8080
+  servlet:
+#    context-path: /fitconnect
+    session:
+      tracking-modes: cookie
+---
+      

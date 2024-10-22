@@ -1,0 +1,112 @@
+
+
+/* Row Layout */
+.TrainerMypage-row {
+  padding: 30px;
+  display: flex;
+  justify-content: space-between;
+  gap: 30px; /* 요소 사이 여백 추가 */
+}
+
+.Header {
+  background-color: #0203099b;;
+  /* #1e1f27f5 */
+  border-Bottom: 2px solid #ccc;
+  text-align: center;
+  font-weight: 650;
+  font-size: 20px;
+  padding: 15px;
+  color: rgb(241, 238, 238);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  font-family: 'Pretendard-Regular';
+};
+
+@font-face {
+  font-family: 'Pretendard-Regular';
+  src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+
+
+@font-face {
+  font-family: 'Pretendard-Regular';
+  src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+.TrainerMypage-row {
+  align-items: stretch; /* Ensure both sections are the same height */
+}
+
+
+.TrainerMypage-left {
+  flex: 1;
+  min-width: 350px; /* 최소 너비 증가 */
+  margin-right: 50px;
+  border-right: 2px solid #7c7c7c;
+  padding-right: 50px;
+}
+
+/* Right Section (Additional Info) */
+.TrainerMypage-right {
+  flex: 2;
+}
+
+/* Profile Picture Styling */
+.Trainerdrop-zone {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 250px; /* 크기 확대 */
+  height: 250px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+
+
+/* Name Styling */
+.TrainerProfile-name {
+  font-size: 1.6em; /* 폰트 크기 확대 */
+  font-weight: bold;
+  margin: 15px 0;
+}
+
+
+
+
+/* Additional Info Section */
+.TrainerMypage-info p {
+  margin: 10px 0;
+  color: #333;
+}
+
+.TrainerMypage-info a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.TrainerMypage-info a:hover {
+  text-decoration: underline;
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .TrainerMypage-row {
+    flex-direction: column;
+  }
+
+  .TrainerMypage-left {
+    border-right: none;
+    padding-right: 0;
+    margin-bottom: 30px; /* 여백 추가 */
+  }
+}

@@ -1,16 +1,10 @@
-// App.css 적용하기 (내부 css)
-import './App.css'
+import { useRoutes } from "react-router-dom";
+import routes from "./routes/Router";
 
-//함수형 component
-function App() {
+const App = () => {
+  const routing = useRoutes(routes);
 
-  return (
-    <div className="container">
-      <h1>인덱스 페이지 입니다</h1>
-      
-    </div>
-  );
-}
+  return <div className="dark">{routing}</div>;
+};
 
-//외부에서 App.js 를 import 하면 App 함수를 사용할수 있다. (src/index.js)
 export default App;

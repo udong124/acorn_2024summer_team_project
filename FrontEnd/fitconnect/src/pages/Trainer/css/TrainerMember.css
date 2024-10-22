@@ -1,0 +1,88 @@
+.link-container {
+    display: flex;
+    flex-direction: column; /* 기본적으로 세로로 나열 */
+    gap: 10px; /* 버튼 간의 간격 */
+    align-items: flex-end; /* 오른쪽 끝에 정렬 */
+  }
+.link-container a{
+    text-decoration: none;
+    color: rgb(85, 84, 84);
+    text-align: center;
+    justify-content: center;
+    padding: 10px;
+    border-bottom: 1px solid rgb(85, 84, 84);
+    font-family: 'nanumsquare';
+    margin-right: 40px;
+    font-weight: 550;
+    
+}
+.link-container a:hover{
+    color: rgb(147, 147, 167);
+}
+
+.membercontent {
+  flex: 1; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@font-face {
+  font-family: 'HakgyoansimDunggeunmisoTTF-B';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/HakgyoansimDunggeunmisoTTF-B.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
+.membercontent p{
+    font-family: 'BMJUA';
+    justify-content: center;
+    border-left: #ccc;
+    font-size: 18px;
+}
+
+.row-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    padding: 30px;
+    width: 100%; /* Ensure full width of the container */
+    flex-Wrap: 'wrap';
+    gap: '20px';
+  }
+
+  .profile-column {
+    flex: 0 0 15%; /* Set a fixed width for the profile image */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 200px; /* Ensures that the column does not shrink too much */
+
+  }
+
+  .post-it-container {
+    flex: 0 0 20%; /* Fixed width for post-it style section */
+    min-width: 200px; /* Ensure a minimum width */
+}
+  
+
+
+
+
+
+@font-face {
+    font-family: 'Tenada';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2210-2@1.0/Tenada.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'S-CoreDream-3Light';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@import url('https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css');
