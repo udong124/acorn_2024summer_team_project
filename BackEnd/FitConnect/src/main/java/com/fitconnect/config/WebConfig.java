@@ -11,13 +11,13 @@ public class WebConfig implements WebMvcConfigurer {
 	@Override
     public void addViewControllers(ViewControllerRegistry registry) {
         // API가 아닌 SPA 경로 요청만 index.html로 포워드
-        registry.addViewController("/{spring:[a-zA-Z0-9-_]+}")
-                .setViewName("forward:/index.html");
-        registry.addViewController("/**/{spring:[a-zA-Z0-9-_]+}")
-                .setViewName("forward:/index.html");
-        registry.addViewController("/{spring:[a-zA-Z0-9-_]+}/**{spring:[a-zA-Z0-9-_]+}")
-                .setViewName("forward:/index.html");
-    }
+		 registry.addViewController("/{path:[a-zA-Z0-9-_]+}")
+         .setViewName("forward:/index.html");
+ 
+		 // 여러 경로로 구성된 요청 처리
+		 registry.addViewController("/{path:[a-zA-Z0-9-_]+}/**")
+		         .setViewName("forward:/index.html");
+		}
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
