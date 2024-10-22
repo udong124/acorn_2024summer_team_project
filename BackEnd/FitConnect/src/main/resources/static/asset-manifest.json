@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.57928c5e.css",
-    "main.js": "/static/js/main.438452d5.js",
+    "main.js": "/static/js/main.ed3edaef.js",
     "static/js/488.e028a2b0.chunk.js": "/static/js/488.e028a2b0.chunk.js",
     "static/media/bootstrap-icons.woff?": "/static/media/bootstrap-icons.4753c5ba57962b4d7bf8.woff",
     "static/media/bootstrap-icons.woff2?": "/static/media/bootstrap-icons.6d63d0501e5ed7b79dab.woff2",
@@ -19,11 +19,11 @@
     "static/media/FitConnectLogo.svg": "/static/media/FitConnectLogo.a207c9564df76f54f65c3c2672188e63.svg",
     "index.html": "/index.html",
     "main.57928c5e.css.map": "/static/css/main.57928c5e.css.map",
-    "main.438452d5.js.map": "/static/js/main.438452d5.js.map",
+    "main.ed3edaef.js.map": "/static/js/main.ed3edaef.js.map",
     "488.e028a2b0.chunk.js.map": "/static/js/488.e028a2b0.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.57928c5e.css",
-    "static/js/main.438452d5.js"
+    "static/js/main.ed3edaef.js"
   ]
 }
