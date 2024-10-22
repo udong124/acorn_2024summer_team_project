@@ -24,28 +24,53 @@ public class MemberDaoImpl implements MemberDao{
 	}
 
 	@Override
-	public void insert(MemberDto dto) {
-		session.insert("member.insert", dto);
+	public boolean insert(MemberDto dto) {
+		int rowCount = session.insert("member.insert", dto);
+		if(rowCount>0) {
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 	@Override
-	public void updateInfo(MemberDto dto) {
-		session.update("member.updateInfo", dto);
+	public boolean updateInfo(MemberDto dto) {
+		int rowCount = session.update("member.updateInfo", dto);
+		if(rowCount>0) {
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 	@Override
-	public void updatePlan(MemberDto dto) {
-		session.update("member.updatePlan", dto);
+	public boolean updatePlan(MemberDto dto) {
+		int rowCount = session.update("member.updatePlan", dto);
+		if(rowCount>0) {
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 	@Override
-	public void updateTrainer(MemberDto dto) {
-		session.update("member.updateTrainer", dto);
+	public boolean updateTrainer(MemberDto dto) {
+		int rowCount = session.update("member.updateTrainer", dto);
+		if(rowCount>0) {
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 	@Override
-	public void delete(int member_num) {
-		session.delete("member.delete", member_num);
+	public boolean delete(int member_num) {
+		int rowCount = session.delete("member.delete", member_num);
+		if(rowCount>0) {
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 }

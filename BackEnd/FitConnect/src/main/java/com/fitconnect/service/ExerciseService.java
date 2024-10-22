@@ -19,6 +19,8 @@ public interface ExerciseService {
 	public boolean deleteExer(ExerciseJournalDto dto);
 	// 특정 날짜 내 운동 기록 전체 삭제
 	public boolean deleteExerAll(int m_calendar_id);
+	
+	public boolean deleteExerAllByDate(String regdate);
 	// 운동 기록 수정
 	public boolean update(ExerciseJournalDto dto);
 	

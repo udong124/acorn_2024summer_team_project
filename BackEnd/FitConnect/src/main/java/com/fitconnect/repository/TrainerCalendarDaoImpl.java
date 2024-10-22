@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.fitconnect.dto.DietJournalDto;
 import com.fitconnect.dto.ExerciseJournalDto;
 import com.fitconnect.dto.MemberDto;
 import com.fitconnect.dto.TrainerCalendarDto;
@@ -79,6 +80,16 @@ public class TrainerCalendarDaoImpl implements TrainerCalendarDao {
 			return false;
 		}
 		
+	}
+
+	@Override
+	public List<DietJournalDto> getDietJournal(DietJournalDto dto) {
+		return session.selectList("dietjournal.getList", dto);
+	}
+
+	@Override
+	public List<ExerciseJournalDto> getExerJournal(ExerciseJournalDto dto) {
+		return session.selectList("TrainerCalendar.getExerJournal", dto);
 	}
 
 

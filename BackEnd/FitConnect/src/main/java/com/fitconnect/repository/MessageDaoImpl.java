@@ -71,10 +71,13 @@ public class MessageDaoImpl implements MessageDao {
 
 	//채팅방 삭제(나가기)
 	@Override
-	public void deleteChat(String topic) {
-		session.delete("Message.deleteChat", topic);
-		
-		
+	public boolean deleteChat(String topic) {
+		int rowCount=session.delete("Message.deleteChat", topic);
+		if(rowCount>0) {
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 	@Override
@@ -88,9 +91,13 @@ public class MessageDaoImpl implements MessageDao {
 	}
 
 	@Override
-	public void deleteMsgAll(String topic) {
-		session.delete("Message.deleteMsgAll", topic);
-		
+	public boolean deleteMsgAll(String topic) {
+		int rowCount=session.delete("Message.deleteMsgAll", topic);
+		if(rowCount>0) {
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 

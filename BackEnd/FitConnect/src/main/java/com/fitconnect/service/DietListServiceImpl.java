@@ -17,20 +17,23 @@ public class DietListServiceImpl implements DietListService{
 	
 	@Override
 	public List<DietListDto> getList(DietListDto dto) {
+		// 사용자가 검색한 키워드에 해당하는 음식만 조회할 수 있도록 dto 에 getKeyword 를 담아준다.
 		dto.setKeyword(dto.getKeyword());
 		return dao.getList(dto);
 	}
 
 	@Override
-	public void insert(DietListDto dto) {
+	public boolean insert(DietListDto dto) {
 		
-		dao.insert(dto);
+		boolean isSuccess = dao.insert(dto);
+		return isSuccess;
 	}
 
 	@Override
-	public void ManagerInsert(DietListDto dto) {
+	public boolean managerInsert(DietListDto dto) {
 		
-		dao.ManagerInsert(dto);
+		boolean isSuccess =dao.managerInsert(dto);
+		return isSuccess;
 	}
 
 }

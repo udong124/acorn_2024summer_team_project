@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MemberCalendar">
+
+	<select id="getList" resultType="MemberCalendarDto">
+		SELECT m_calendar_id, member_num, regdate, memo
+		FROM membercalendar
+		WHERE member_num = #{ member_num}
+		ORDER BY m_calendar_id desc
+	</select>
+
+	<select id="getData" parameterType="MemberCalendarDto" resultType="MemberCalendarDto">
+		SELECT m_calendar_id, member_num, regdate, memo
+		FROM membercalendar
+		WHERE m_calendar_id = #{ m_calendar_id} AND member_num = #{ member_num}
+	</select>
+	
+	<select id="getDataByDate" parameterType="MemberCalendarDto" resultType="MemberCalendarDto">
+		SELECT m_calendar_id, member_num, regdate, memo
+		FROM membercalendar
+		WHERE regdate = TO_DATE(#{ regdate}, 'YYYY-MM-DD') AND member_num = #{ member_num}
+	</select>
+	
+	<insert id="insert" parameterType="MemberCalendarDto">
+		INSERT INTO membercalendar (m_calendar_id, member_num, regdate, memo)
+		VALUES (m_calendar_id_seq.NEXTVAL, #{ member_num}, TO_DATE(#{regdate}, 'YYYY-MM-DD'), #{ memo})
+	</insert>
+	
+	<update id="update" parameterType="MemberCalendarDto">
+		UPDATE 
+			(SELECT member_num, m_calendar_id, memo
+			 FROM membercalendar
+			 WHERE member_num = #{member_num})
+		SET memo = #{memo}
+		WHERE m_calendar_id = #{m_calendar_id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		DELETE FROM 
+			(SELECT member_num, m_calendar_id
+			 FROM membercalendar
+			 WHERE member_num = #{member_num})
+		WHERE m_calendar_id = #{m_calendar_id}
+	</delete>
+	
+	<select id="getMcalendaridToDto" parameterType="String" resultType="MemberCalendarDto">
+		SELECT m_calendar_id
+		FROM membercalendar
+		where regdate = TO_DATE(#{ regdate}, 'YYYY-MM-DD')
+	</select>
+	
+	<select id="getMcalendaridToInt" parameterType="String" resultType="int">
+		SELECT m_calendar_id
+		FROM membercalendar
+		where regdate = TO_DATE(#{ regdate}, 'YYYY-MM-DD')
+	</select>
+	
+</mapper>

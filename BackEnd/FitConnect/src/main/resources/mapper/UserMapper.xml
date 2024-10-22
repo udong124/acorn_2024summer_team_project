@@ -22,13 +22,13 @@
 	<update id="updateRole" parameterType="UserDto">
 		UPDATE user_info
 		SET role=#{role}
-		WHERE userName=#{userName}
+		WHERE id=#{id}
 	</update>
 
 	<insert id="insert" parameterType="UserDto">
 		INSERT INTO user_info
-		(id, userName, password, name, email, role, regdate, provider)
-		VALUES(user_info_seq.NEXTVAL, #{userName}, #{password}, #{name}, #{email}, #{role}, SYSDATE, #{provider})
+		(id, userName, password, name, email, role, regdate, provider<if test="profile != null">, profile</if>)
+		VALUES(user_info_seq.NEXTVAL, #{userName}, #{password}, #{name}, #{email}, #{role}, SYSDATE, #{provider}<if test="profile != null">, #{profile}</if>)
 	</insert>
 
 	<select id="getData" parameterType="string" resultType="UserDto">
@@ -36,5 +36,12 @@
 		FROM user_info
 		WHERE userName=#{userName}
 	</select>
+
+	<select id="getDataByNum" parameterType="int" resultType="UserDto">
+		SELECT id, userName, password, name, email, role, profile, regdate, provider, providerid
+		FROM user_info
+		WHERE id=#{id}
+	</select>
+
 
 </mapper>

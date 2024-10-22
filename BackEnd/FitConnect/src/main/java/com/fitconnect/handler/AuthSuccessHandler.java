@@ -39,11 +39,27 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
     	String userName = authentication.getName();
     	UserDto dto = dao.getData(userName);
     	int id = dto.getId();
-		String jwtToken="Bearer+"+jwtUtil.generateToken(userName, id);
+    	String role = dto.getRole();
+    	String name = dto.getName();
+		String jwtToken="Bearer+"+jwtUtil.generateToken(userName, id, role, name);
 //		response.addHeader(jwtName, jwtToken);
-		response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        response.getWriter().write("{\"token\": \"" + jwtToken + "\"}");
-        response.getWriter().flush();
+//		response.setContentType("application/json");
+//		response.setCharacterEncoding("UTF-8");
+//      response.getWriter().write("{\"token\": \"" + jwtToken + "\"}");
+//      response.getWriter().flush();
+
+		//URL 에 토큰을 포함하는 방식		
+	    String redirectUrl;
+	    if ("USER".equals(role)) {
+	        redirectUrl = "http://52.78.38.12:8080/googlelogin?token=" + jwtToken + "&id=" + id + "&role=" + role;
+	    } else if ("TRAINER".equals(role)) {
+	        redirectUrl = "http://52.78.38.12:8080/login?token=" + jwtToken + "&role=" + role;
+	    } else if ("MEMBER".equals(role)) {
+	        redirectUrl = "http://52.78.38.12:8080/login?token=" + jwtToken + "&role=" + role;
+	    } else {
+	        redirectUrl = "http://52.78.38.12:8080/";
+	    }
+	    
+        response.sendRedirect(redirectUrl);
     }
 }
