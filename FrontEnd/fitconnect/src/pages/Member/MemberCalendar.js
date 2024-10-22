@@ -174,18 +174,26 @@ const CalendarComponent = () => {
   };
 
   const handleDeleteEvent = () => {
-    if (selectedEvent && selectedEvent.id) {
-      axios.delete(`/membercalendar/${selectedEvent.id}`) 
-        .then((res) => {
-          if (res.data.isSuccess) { 
+    if (selectedEvent) {
+      axios.put(`/membercalendar/${selectedEvent.id}`, {
+        m_calendar_id: selectedEvent.id,
+        memo: "",
+      })
+        .then(res => {
+          res.data.m_calendar_id = selectedEvent.id
+          if (res.data.m_calendar_id) {
+            const updatedEvents = showEvents.map(event =>
+              event.id === selectedEvent.id ? { ...event, title: newEventTitle } : event
+            );
+            setShowEvents(updatedEvents);
             handleClose();
           }
         })
         .catch(error => {
           console.log(error);
-          alert("삭제 중 오류가 발생했습니다: " + error.message);
+          alert("삭제 에러");
         });
-    }
+    } 
   };
 
   const renderEventContent = (eventInfo) => {
@@ -201,8 +209,8 @@ const CalendarComponent = () => {
       <Row>
         <Col>
           <Card>
-            <Card.Header as="h6" className="border-bottom p-3 mb-0">
-              Calendar
+            <Card.Header as="h6" className="Header">
+              캘린더
             </Card.Header>
             <Card.Body>
             <FullCalendar

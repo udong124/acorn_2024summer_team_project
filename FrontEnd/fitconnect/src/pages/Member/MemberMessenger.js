@@ -50,16 +50,18 @@ function MemberMessenger() {
     alignItems: "center",
   };
   const profileStyle = {
-    maxWidth: "70%",
+    maxWidth: "55%",
     border: "1px solid #cecece",
     borderRadius: "50%",
+    height: "auto",
   };
   const profileStyle2 = {
-    maxWidth: "70%",
+    maxWidth: "55%",
     border: "1px solid #cecece",
     borderRadius: "50%",
     display: "none",
   };
+
 
   // 트레이너 info를 가져오기
   useEffect(() => {
@@ -168,12 +170,23 @@ function MemberMessenger() {
     navigate("/member/trainerlist"); //트레이너등록 페이지로 이동
   };
 
+  
+  const introStyle = {
+    border: "3px solid #ddd", 
+    borderRadius: "8px", 
+    padding: "15px", 
+    backgroundColor: "#f9f9f9", 
+    color: "#555", 
+    boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)", 
+    maxWidth: "100%", 
+  };
+
   return (
     <Row>
       <Col lg={12}>
         <Card>
           <Card.Header as="h6" className="border-bottom p-3 mb-0">
-            <p style={{fontSize: "1.5em", fontWeight: "bold"}}>담당 트레이너</p>
+            <p style={{fontSize: "1.5em", fontWeight: "bold", textAlign:'center' }}>담당 트레이너</p>
           </Card.Header>
         </Card>
             <svg
@@ -221,8 +234,13 @@ function MemberMessenger() {
                       alt="Instagram Logo"
                       style={{ width: '40px', height: '40px' }} 
                     /></a></Form.Label>
-                  </Form.Group>
+                  </Form.Group> 
                   <Form.Group>
+                    <Form.Text>헬스장이름</Form.Text>
+                    <br/>
+                    <Form.Label><a href={trainerInfo.gym_link}>{trainerInfo.gym_name}</a></Form.Label>
+                  </Form.Group>
+                    <Form.Group>
                     <Form.Text>이메일</Form.Text>
                     <br/>
                     <Form.Label>{trainerInfo.email}</Form.Label>
@@ -230,20 +248,10 @@ function MemberMessenger() {
                   <Form.Group>
                     <Form.Text>소갯글</Form.Text>
                     <br/>
-                    <Form.Label>{trainerInfo.trainer_intro}</Form.Label>
-                  </Form.Group>
-                  <Form.Group>
-                    <Form.Text>헬스장이름</Form.Text>
-                    <br/>
-                    <Form.Label>{trainerInfo.gym_name}</Form.Label>
-                  </Form.Group>
-                  
-                  <Form.Group>
-                    <Form.Text>헬스장위치</Form.Text>
-                    <br/>
-                    <Form.Label><a href={trainerInfo.gym_link}>네이버 지도</a></Form.Label>
+                    <Form.Label style={introStyle}>{trainerInfo.trainer_intro}</Form.Label>
                   </Form.Group>
                 </div>
+                  <br/>
 
 
                 <Button onClick={() => handleChatClick(member_num)}>대화하기</Button>
@@ -251,23 +259,24 @@ function MemberMessenger() {
             ) : (
               // 트레이너 정보가 없을 때 '트레이너 찾기' 버튼과 검색 아이콘이 보이게끔
               <>
-                <div style={{ textAlign: "center", marginBottom: "20px" }}>
+                <div style={{ textAlign: "center", marginBottom: "20px", fontFamily:'nanumsquare', fontWeight:700}}>
                   <Button
                     variant="light"
                     onClick={handleFindTrainer}
                     style={{
                       fontSize: "18px",
-                      border: "1px solid #007bff", 
+                      border: "2px solid #007bff", 
                       borderRadius: "8px", 
                       boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)", 
                       padding: "15px", 
-                      cursor: "pointer" 
+                      cursor: "pointer", 
+                      fontWeight: 'bold'
                     }}
                   >
                     <img
                       src={searchicon}
                       alt="검색 아이콘"
-                      style={{ width: "130px", height: "150px" }}
+                      style={{ width: "130px", height: "130px" }}
                     />
                     <p>트레이너 찾기</p>
                   </Button>

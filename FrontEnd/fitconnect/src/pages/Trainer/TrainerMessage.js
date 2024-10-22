@@ -103,7 +103,7 @@ const Message = () => {
           <Col>
             <Card>
               <Card.Header className="Header">
-                MQTT Chat
+                메신저
               </Card.Header>
               <Card.Body className="">
                 <div className="chatroom">

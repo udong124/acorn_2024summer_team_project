@@ -29,6 +29,13 @@ const MyPageDetail = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const storedTrainerName = localStorage.getItem('selectedTrainerName'); // 로컬 스토리지에서 트레이너 이름 가져오기
+    if (storedTrainerName) {
+      setTrainerName(storedTrainerName);
+    }
+  }, []);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     const updatedInfo = { ...memberInfo, [name]: value };
@@ -38,15 +45,16 @@ const MyPageDetail = () => {
     localStorage.setItem('memberInfo', JSON.stringify(updatedInfo));  
   };
 
+
   const [trainerName, setTrainerName] = useState("");
 
   useEffect(() => {
-    const storedTrainerName = localStorage.getItem('selectedTrainerName');
-    if (storedTrainerName && storedTrainerName !== "") {
-      setTrainerName(storedTrainerName);
-    } else {
-      setTrainerName(null);
-    }
+    axios.get(`/member/trainer`)
+    .then(res=>{
+      setTrainerName(res.data.name)
+    })
+    .catch(error=>console.log(error))
+ 
   }, []);
 
   const handleNavigate = (path) => {
@@ -237,7 +245,7 @@ const MyPageDetail = () => {
 
 
   return (
-    <Container>
+    <Container style={{fontFamily:'nanumsquare', fontWeight:700}}>
       <Row>
         <Col>
           <Card>
@@ -251,7 +259,7 @@ const MyPageDetail = () => {
               </svg>
               <Form onSubmit={handleSubmit}>
                 <Row>
-                  <Col className='leftside'>
+                  <Col md={12} lg={6} className='leftside'>
                     <Form.Group>
                       <Form.Label>프로필사진 ( click or drag-drop to Edit ) </Form.Label>
                       <Form.Control onChange={handleImageChange} ref={imageInput} style={{display:"none"}} type="file" name="image" accept="image/*" />
@@ -298,7 +306,7 @@ const MyPageDetail = () => {
                       </InputGroup>
                     </Form.Group>
                   </Col>
-                  <Col className='rightside'>
+                  <Col md={12} lg={6}  className='rightside'>
                     <Form.Group controlId="formId">
                       <Form.Label>아이디</Form.Label>
                       <Form.Control
@@ -357,7 +365,7 @@ const MyPageDetail = () => {
                       <Form.Text className="text-muted">성별은 수정할 수 없습니다.</Form.Text>
                     </Form.Group>
                     <Form.Group controlId="formPlan">
-                      <Form.Label>목표</Form.Label>
+                      <Form.Label>최종 목표</Form.Label>
                       <Form.Control
                         as="textarea"
                         name="plan"

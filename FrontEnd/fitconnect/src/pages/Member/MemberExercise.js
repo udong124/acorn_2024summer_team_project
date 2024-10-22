@@ -62,7 +62,7 @@ function MemberExercise() {
         axios.delete(`/exercisejournal/calendar/${m_calendar_id}`)
             .then(res => {
                 alert("운동일지가 삭제되었습니다.")
-                navigate(`/member/exercisejournal`, 0)
+                navigate(0)
         
             })
             .catch(error => { console.log(error); alert("삭제실패") });
@@ -82,8 +82,7 @@ function MemberExercise() {
         navigate(`/member/exercisejournal`, {
             state: {
               regdate: formattedDate
-            }
-        })
+            }})
 
     };
 
@@ -96,23 +95,24 @@ function MemberExercise() {
         <Row>
             <Col>
                 <Card>
-                    <Card.Header as="h6" className="border-bottom p-3 mb-0">
-                        <p style={{fontSize: "1.5em", fontWeight: "bold"}}>{selectedDate.toLocaleDateString('ko-KR')}의 운동                        
-                        </p>
+                    <Card.Header className="Header">
+                        <h3 style={{marginBottom:15}}>{selectedDate.toLocaleDateString('ko-KR')}의 운동</h3>                 
                         { exercisejournal.length === 0 && (
                             <p>해당 일자의 운동 일지를 등록해 주세요
-                            <Button onClick={handleReserve} style={styleNone2}>
-                            등록
-                            </Button>
+                           
                             </p>
                         )}
-
-                        <DatePicker
-                            selected={selectedDate}
-                            onChange={handleDateChange}
-                            dateFormat="yyyy년 MM월 dd일"
-                            placeholderText="날짜를 선택하세요"
-                        />
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <DatePicker
+                                selected={selectedDate}
+                                onChange={handleDateChange}
+                                dateFormat="yyyy년 MM월 dd일"
+                                placeholderText="날짜를 선택하세요"
+                            />
+                            <Button variant="dark"  onClick={handleReserve} style={styleNone2}>
+                                등록
+                            </Button>
+                        </div>
 
                     </Card.Header>
 
@@ -122,7 +122,7 @@ function MemberExercise() {
             <Col md={48} lg={40}>
                 <Card>
                     <Card.Header as="h6" className="border-bottom p-3 mb-0" style={styleNone}>
-                        <div className="d-flex justify-content-end mb-3">
+                        <div className="d-flex justify-content-end mb-3" style={{fontFamily:'nanumsquare', fontWeight:700}}>
                             <Button onClick={handleReserve} variant="secondary" className="me-2">등록하기</Button>
                             <Button onClick={handleDeleteAll} variant="secondary">전체 삭제</Button>
                         </div>
@@ -130,7 +130,7 @@ function MemberExercise() {
 
                     <Card.Body>
                         <Table bordered>
-                            <thead className="text-center">
+                            <thead className="text-center" style={{fontFamily:'nanumsquare', fontWeight:700}}>
                                 <tr>
                                     <th>운동명</th>
                                     <th>무게</th>
@@ -139,7 +139,7 @@ function MemberExercise() {
                                     <th>순서</th>
                                 </tr>
                             </thead>
-                            <tbody className="text-center">
+                            <tbody className="text-center" style={{fontFamily:'nanumsquare', fontWeight:700}}>
                                 {(exercisejournal !== undefined) && exercisejournal.map(item => (
                                         <tr key={item.exercise_id}>
                                             <td>{item.exercise_name}</td>

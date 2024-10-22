@@ -57,22 +57,7 @@ function UserSignUp() {
             member_num: formData.id
           }
         });
-      } else if (formData.role === "ADMIN") {
-        const token = localStorage.getItem('token');
-        if (token) {
-          try {
-            const { payload } = decodeToken(token.substring(7));
-            const adminNum = payload?.id;
-            navigate("/", {
-              state: {
-                admin_num: adminNum
-              }
-            });
-          } catch (error) {
-            console.error("토큰 디코딩 중 오류:", error);
-          }
-        }
-      }
+      } 
     }
   }, [formData, localStorage, isReady, navigate]);
 
@@ -178,8 +163,12 @@ function UserSignUp() {
     formImage.append("userName", formData.userName);
     formImage.append("password", formData.password);
     formImage.append("role", formData.role);
-    formImage.append("image", formData.image);
+    
     formImage.append("provider", formData.provider);
+
+    if(formData.image){
+      formImage.append("image", formData.image);
+    }
 
 
    // 입력한 회원정보를 전송하기
@@ -244,7 +233,7 @@ function UserSignUp() {
   };
 
   return (
-    <Container>
+    <Container style={{fontFamily:'nanumsquare' , fontWeight:700}}>
       <Row>
         <Col>
           <Card>
@@ -381,7 +370,6 @@ function UserSignUp() {
                       <option value="">사용자 선택</option>
                       <option value="MEMBER">회원용</option>
                       <option value="TRAINER">트레이너용</option>
-                      <option value="ADMIN">관리자용</option>
                     </Form.Control>
                   </Form.Group>
                   <Button

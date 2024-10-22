@@ -186,10 +186,10 @@ const MessageModal = ({ showModal, setShowModal, topic}) => {
       setShowModal(false);
     }}>
       <Modal.Header closeButton={handleClose}>
-        <Modal.Title>{memberName}</Modal.Title>
+        <Modal.Title style={{fontFamily:'nanumsquare', fontWeight:700}}>{memberName}</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        <div style={{ height: '400px', lineHeight: 'normal', overflowY: 'scroll', border: '1px solid #ccc', padding: '10px'}}>
+      <Modal.Body style={{fontFamily:'nanumsquare', fontWeight:700}}>
+        <div style={{ height: '400px', lineHeight: 'normal', overflowY: 'scroll', border: '1px solid #ccc', padding: '10px' }}>
           {messages.map((msg, index) => (
             <div style={{flex:1}} key={msg.message_id}>
               <ChatMessage message={msg.content} isOwnMessage={msg.send_type === message.send_type} isCenter={msg.send_type === "ADMIN"} times={msg.times ? formatDate(msg.times) : 'No time available'} />
@@ -204,7 +204,7 @@ const MessageModal = ({ showModal, setShowModal, topic}) => {
                     marginLeft: '400px',
                     marginTop: '5px',
                     marginBottom : '5px',
-                    display: 'block'    // 버튼을 블록 요소로 설정하여 아래에 표시
+                    display: 'block',    // 버튼을 블록 요소로 설정하여 아래에 표시
                   }}>
                   X
                 </Button>
@@ -218,7 +218,7 @@ const MessageModal = ({ showModal, setShowModal, topic}) => {
         <Button 
           variant={deleteMode ? "secondary" : "warning"} 
           onClick={toggleDeleteMode} 
-          style={{marginTop: '5px' ,marginBottom: '5px', padding:'10px'}}>
+          style={{marginTop: '5px' ,marginBottom: '5px', padding:'10px', fontFamily:'nanumsquare', fontWeight:700}}>
           {deleteMode ? "삭제 취소" : "메세지 삭제"}
         </Button>
 

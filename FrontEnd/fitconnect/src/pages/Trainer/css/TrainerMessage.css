@@ -14,19 +14,6 @@
   font-style: normal;
 }
 
-.Header {
-  background-color: rgba(170, 170, 170, 0.527);
-  border-Bottom: 2px solid #ccc;
-  text-align: center;
-  font-weight: bold;
-  font-size: 20px;
-  padding: 20px;
-  color: black;
-  opacity: 0.8;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  font-family: 'BMJUA';
-}
   
   .chatroom li {
     display: flex;
@@ -41,11 +28,12 @@
     margin-bottom: 15px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s ease, transform 0.3s ease;
+    font-family: 'BMJUA';
   }
   
   /* hover */
   .chatroom li:hover {
-    background-color: #f1f1f1;
+    background-color: #ccc;
     transform: translateY(-8px);
     cursor: pointer;
   }
@@ -90,24 +78,24 @@
 .chat-list-item-text {
   margin-left: 50px;
   padding-left: 50px;
-  border-left: 2px solid #ccc;
+  border-left: 1.5px solid #717070;
 }
 
 .chat-member-name {
-  font-size: 28px;
+  font-size: 32px;
   margin-bottom: 20px;
   font-weight: 550;
 }
 
 .chat-member-content {
-  font-size: 17px;
+  font-size: 22px;
   margin-bottom: 20px;
   font-weight: 300;
   font-weight: 420;
 }
 
 .chat-member-times {
-  font-size: 13px;
+  font-size: 15px;
   opacity: 0.7;
 }
 

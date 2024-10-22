@@ -23,6 +23,11 @@ const MemberTrainerList = () => {
   const handleSelectTrainer = (trainer) => {
     setSelectedTrainer(trainer);
     localStorage.setItem('selectedTrainerName', trainer.name); // 트레이너 이름을 로컬 스토리지에 저장
+    // 페이지 상단으로 이동
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // 부드러운 스크롤 효과
+    });
   };
 
   
@@ -31,7 +36,9 @@ const MemberTrainerList = () => {
     height: "200px",
     border: "1px solid #cecece",
     borderRadius: "50%",
-    objectFit: "cover"
+    objectFit: "cover",
+    marginLeft: 30,
+    marginTop: 30
   };
 
   //트레이너리스트를 가져오기
@@ -138,7 +145,7 @@ const MemberTrainerList = () => {
     };
 
   return (
-    <Container>
+    <Container style={{fontFamily:'nanumsquare'}}>
       <Row>
         <Col>
           <Card>
@@ -156,9 +163,6 @@ const MemberTrainerList = () => {
                       >
                         <option value="name">트레이너 이름</option>
                         <option value="gym_name">헬스장 이름</option>
-                        <option value="trainer_insta">
-                          트레이너 인스타그램
-                        </option>
                       </Form.Select>
                     </Form.Group>
                   </Col>
@@ -236,7 +240,7 @@ const MemberTrainerList = () => {
                         />
                       </Col>
                       <Col md={8}>
-                        <Card.Body>
+                        <Card.Body style={{marginTop:50, marginLeft:10}}>
                           <Card.Title>이름: {trainer.name}</Card.Title>
                           <Card.Text>헬스장: {trainer.gym_name}</Card.Text>
                           <Button

@@ -74,9 +74,11 @@ function MemberDietJournal(){
 
       const carbsAll = morningItems.reduce((sum, data) => sum + data.carbs, 0)
                     + lunchItems.reduce((sum, data) => sum + data.carbs, 0)
+                    + dinnerItems.reduce((sum, data) => sum + data.carbs, 0)
       setTotalCarbs(carbsAll)
       const proteinAll = morningItems.reduce((sum, data) => sum + data.protein, 0)
       + lunchItems.reduce((sum, data) => sum + data.protein, 0)
+      + dinnerItems.reduce((sum, data) => sum + data.protein, 0)
       setTotalProtein(proteinAll)
   
       const fatAll = morningItems.reduce((sum, data) => sum + data.fat, 0)
@@ -111,7 +113,7 @@ function MemberDietJournal(){
     .then(res=>{
       if(res.data.isSuccess){
         alert("삭제 완료되었습니다.")
-        navigate(`/dietjournal`, 0)
+        navigate(0)
     }
     })
     .catch(error=>{
@@ -140,28 +142,30 @@ function MemberDietJournal(){
   const styleNone2 = location.pathname === "/member/dietjournal" ? {display:"none"} : {display:"flex"}
 
   return (
-    <>
+    <div style={{fontFamily:'nanumsquare', fontWeight:700}}>
     <div>
       <Row>
         <Col>
           <Card>
-            <Card.Header as="h6" className="border-bottom p-3 mb-0">
-              <p style={{fontSize: "1.5em", fontWeight: "bold"}}>{selectedDate.toLocaleDateString('ko-KR')}의 식단</p>
+            <Card.Header  className="Header">
+              <h3 style={{marginBottom:15}}>{selectedDate.toLocaleDateString('ko-KR')}의 식단</h3>
               { mergedData.length === 0 && (
                   <p>해당 일자의 식단 일지를 등록해 주세요
-                  <Button onClick={handleReserve} style={styleNone2}>
-                  등록
-                  </Button>
+
                   </p>
               )}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <DatePicker
+                      selected={selectedDate}
+                      onChange={handleDateChange}
+                      dateFormat="yyyy년 MM월 dd일"
+                      placeholderText="날짜를 선택하세요"
+                  />
+                  <Button variant="dark" onClick={handleReserve} style={styleNone2}>
+                      등록
+                  </Button>
+              </div>
 
-                <DatePicker
-                  selected={selectedDate}
-                  onChange={handleDateChange}
-                  dateFormat="yyyy년 MM월 dd일"
-                  placeholderText="날짜를 선택하세요"
-                  style={{ width: "80%", boxSizing: "border-box" }} 
-                />
             </Card.Header>
           </Card>
         </Col>
@@ -170,9 +174,9 @@ function MemberDietJournal(){
         <Col md={12}>
             <Card>
             <Card.Header as="h6" className="border-bottom p-3 mb-0" style={styleNone}>
-            <div className="d-flex justify-content-end mb-3">
-              <Button onClick={handleReserve} variant="secondary" className="me-2">등록하기</Button>
-              <Button onClick={handleAllDelete} variant="secondary">삭제하기</Button>
+            <div className="d-flex justify-content-end mb-3" >
+              <Button onClick={handleReserve}  className="me-2">등록하기</Button>
+              <Button onClick={handleAllDelete} variant="danger">삭제하기</Button>
             </div>
             </Card.Header>
             <Card.Body className="">
@@ -288,7 +292,7 @@ function MemberDietJournal(){
           </Col>
         </Row>
       </div>
-     </>
+     </div>
   )
 }
 

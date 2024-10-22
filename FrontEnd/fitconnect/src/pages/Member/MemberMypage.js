@@ -106,13 +106,13 @@ const MyPage = () => {
       <Row>
       <Col>
          <Card sm={6} mb={6}>
-          <Card.Header as="h6" className="border-bottom p-3 mb-0">
-            <p style={{fontSize: "2em", fontWeight: "bold"}}>Mypage</p>
+          <Card.Header className="Header">
+            마이페이지
           </Card.Header>
           <Card.Body className="">
             
               <Row>
-                <Col>
+                <Col sm={12} mb={12} lg={6}>
                   <Form.Group>
                     <Form.Control ref={imageInput} style={{display:"none"}} type="file" name="image" accept="image/*"/>
                   </Form.Group>
@@ -122,7 +122,7 @@ const MyPage = () => {
                     </div>
                   </div>
                 </Col>
-                <Col sm={6} mb={6}>
+                <Col sm={12} mb={12} lg={6} style={{fontFamily:'nanumsquare', fontWeight:700}}>
                     <p>이름: {memberInfo.name}</p>
                     <p>생성일: {memberInfo.regdate}</p>
                     <p>아이디: {memberInfo.userName}</p>
@@ -130,7 +130,7 @@ const MyPage = () => {
                     <p>키: {memberInfo.member_height}</p>
                     <p>몸무게: {memberInfo.member_weight}</p>
                     <p>성별: {memberInfo.member_gender}</p>
-                    <p>목표: {memberInfo.plan}</p>
+                    <p>최종 목표: {memberInfo.plan}</p>
                     <p>주간 목표: {memberInfo.weeklyplan}</p>
                 </Col>
               </Row>

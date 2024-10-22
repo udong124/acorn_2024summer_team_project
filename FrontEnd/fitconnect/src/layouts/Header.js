@@ -91,8 +91,8 @@ const Header = () => {
           </Button>
         )}
 
-      <div style={{marginLeft: 60}}>
-         <Logo />
+      <div style={{marginLeft: 80}}>
+         <Logo ></Logo>
       </div>
 
       </div>
@@ -116,16 +116,17 @@ const Header = () => {
 
         {/* 로그인 여부에 따라 로그인,로그아웃 버튼 표시 */}
         { !isAuthPage && userName ? (
-          <>
-            <span style={{ color: "#fff", marginRight:"20px", fontFamily:"MJUA" }}>{localStorage.getItem("name")} 님 로그인 중</span>
+          <div className="d-flex align-items-center justify-content-end" style={{flex: 1}}>
+            <span style={{ color: "#fff", marginRight:"30px", fontFamily:'NanumSquare' }}>{localStorage.getItem("name")} 님 로그인 중</span>
             <Button
+            className="logout-button"
             variant="danger"
-            style={{ zIndex: 0, position: 'relative', marginRight:"100px"}} // 인라인 스타일로 z-index 적용
+            style={{ zIndex: 0, position: 'relative', marginRight:"50px"}} // 인라인 스타일로 z-index 적용
             onClick={handleLogout}
             >
               <img src="/img/logout2.png" alt="" style={{width:18, height:18}}/>
             </Button>
-          </>
+          </div>
         ) : ""}
         { !isAuthPage && userName ? (
           <Dropdown show={dropdownOpen} onToggle={toggle}>

@@ -1,18 +1,47 @@
 .sidebarArea {
   flex-shrink: 0;
   width: $sidebarWidth;
-  background-color: #f8f9fa;
+  background-color: #272b2f; /* 원하는 배경색으로 설정 */
   .sidenav-bg:hover {
-    background-color: rgb(197, 197, 197);
+    
     border-radius: $border-radius;
   }
   .sidenav-bg .active {
-    background-color: rgb(197, 197, 197);
+    
     border-radius: $border-radius;
-    color: black;
-    font-weight: bold;
+    color: white;
+    font-weight: 1000;
   }
 }
+
+/* Sidebar.css 또는 해당 스타일 파일에 추가 */
+.sidebarNav .nav-link {
+  font-family: 'NanumSquareNeoLight';
+  font-size: 16px; /* 글자 크기를 조정 */
+  color: white;
+  font-weight: 650;
+  padding: 15px 20px; /* 상하좌우 여백 */
+  transition: background-color 0.3s ease, color 0.3s ease; /* 애니메이션 효과 */
+}
+
+/* 아이콘의 두께와 크기를 조정 */
+.sidebarNav .nav-link i,
+.sidebarNav .nav-link svg {
+  font-size: 1.2rem; /* 아이콘 크기를 조정 */
+  font-weight: bold; /* 아이콘 두께를 굵게 */
+}
+
+
+
+
+
+@font-face {
+  font-family: 'NanumSquareNeoLight';
+  src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-aLt.eot);
+  src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-aLt.eot?#iefix) format("embedded-opentype"), url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-aLt.woff) format("woff"), url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-aLt.ttf) format("truetype");
+}
+
+
 
 @include media-breakpoint-down(lg) {
   .sidebarArea {

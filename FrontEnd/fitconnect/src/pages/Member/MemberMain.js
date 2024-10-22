@@ -106,7 +106,7 @@ const Starter = () => {
   }, []);
 
   return (
-    <div>
+    <div style={{fontFamily:'nanumsquare', fontWeight:700}}>
       {/***Table ***/}
       <Row>
         <Col lg={12}>
@@ -127,6 +127,9 @@ const Starter = () => {
       <Row>
       <Col>
          <Card>
+         <Card.Header className="Header">
+              메인페이지
+            </Card.Header>
           <Card.Body className="">
               <Row>
                 <Col>
@@ -140,22 +143,22 @@ const Starter = () => {
                   </div>
                 </Col>
                 <Col>
-                  <div>
+                  <div style={{fontSize:18, marginLeft:30}}>
                     <Form.Group>
                       <Form.Text>이름</Form.Text>
                       <br/>
                       <Form.Label>{memberInfo.name}</Form.Label>
                     </Form.Group>
                     <Form.Group>
-                      <Form.Text>키 : </Form.Text>
-                      <Form.Label>{memberInfo.member_height}</Form.Label>
-                      <Form.Text>    몸무게 : </Form.Text>
-                      <Form.Label>{memberInfo.member_weight}</Form.Label>
-                      <Form.Text>    성별 : </Form.Text>
+                      <Form.Text></Form.Text>
+                      <Form.Label>{memberInfo.member_height} cm /</Form.Label>
+                      <Form.Text>  </Form.Text>
+                      <Form.Label>{memberInfo.member_weight} kg / </Form.Label>
+                      <Form.Text> </Form.Text>
                       <Form.Label>{memberInfo.member_gender}</Form.Label>
                     </Form.Group>
                     <Form.Group>
-                      <Form.Text>목표</Form.Text>
+                      <Form.Text>최종 목표</Form.Text>
                       <br/>
                       <Form.Label>{memberInfo.plan}</Form.Label>
                     </Form.Group>

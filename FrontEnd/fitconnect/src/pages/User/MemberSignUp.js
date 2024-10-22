@@ -80,7 +80,7 @@ const MemberSignUp = () => {
   };
 
   return (
-    <Container>
+    <Container style={{fontFamily:'nanumsquare' , fontWeight:700}}>
     <Row>
       <Col>
          <Card>

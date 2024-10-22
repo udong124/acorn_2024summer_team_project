@@ -6,7 +6,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Checkbox, Radio } from "antd";
 import DietListAddModal from "../../components/DietListAddModal";
-//import DietListAddModal from "../../components/DietListAddModal";
+import "./css/MemberDietAdd.css"
 
 function MemberDietJournalAdd() {
     const [dietType, setDietType] = useState("");
@@ -104,10 +104,10 @@ function MemberDietJournalAdd() {
         updatedFormData[index] = {
             ...updatedFormData[index],
             foodcount,
-            calories: Math.round((dietListSearch[index]?.calories * foodcount) / 100),
-            carbs: Math.round((dietListSearch[index]?.carbs * foodcount) / 100),
-            protein: Math.round((dietListSearch[index]?.protein * foodcount) / 100),
-            fat: Math.round((dietListSearch[index]?.fat * foodcount) / 100),
+            calories: Number(((dietListSearch[index]?.calories * foodcount) / 100).toFixed(1)),
+            carbs: Number(((dietListSearch[index]?.carbs * foodcount) / 100).toFixed(1)),
+            protein: Number(((dietListSearch[index]?.protein * foodcount) / 100).toFixed(1)),
+            fat: Number(((dietListSearch[index]?.fat * foodcount) / 100).toFixed(1)),
         };
         setFormData(updatedFormData);
     };
@@ -150,8 +150,8 @@ function MemberDietJournalAdd() {
             <Row>
                 <Col>
                     <Card>
-                        <Card.Header as="h6" className="border-bottom p-3 mb-0">
-                            <h2>{selectedDate.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })}의 식단 추가</h2>
+                        <Card.Header as="h6" className="Header">
+                            <h3 style={{marginBottom:15}}>{selectedDate.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })}의 식단 추가</h3>
                             <div style={{ marginBottom: "20px" }}>
                                 <DatePicker
                                     selected={selectedDate}
@@ -167,18 +167,18 @@ function MemberDietJournalAdd() {
             <Row>
                 <Col xs={12} md={6}>
                     <Card>
-                        <Card.Header as="h6" className="border-bottom p-3 mb-0">식단선택</Card.Header>
+                        <Card.Header as="h6" className="Header">식단선택</Card.Header>
                             <Card.Body>
                                 <Form>
-                                    <div className="d-flex" >
-                                        <Form.Check onChange={() => setDietType('아침')} type="radio" label="아침" name="meal"/>
-                                        <Form.Check onChange={() => setDietType('점심')} type="radio" label="점심" name="meal"/>
+                                    <div className="d-flex" style={{ fontWeight:700}} >
+                                        <Form.Check onChange={() => setDietType('아침')} type="radio" label="아침" name="meal" style={{marginRight:10}}/> 
+                                        <Form.Check onChange={() => setDietType('점심')} type="radio" label="점심" name="meal" style={{marginRight:10}}/>
                                         <Form.Check onChange={() => setDietType('저녁')} type="radio" label="저녁" name="meal"/>                                    
                                     </div>
                                 </Form>
                             <InputGroup className="mb-3">
                                 <Form.Control onChange={handleChange} placeholder="식단검색" type="text" />
-                                <Button onClick={handleClickAdd}>식단 추가</Button>
+                                <Button style={{zIndex:0}}onClick={handleClickAdd}>식단 추가</Button>
                             </InputGroup>
                             
                             <Button className="mb-3"  onClick={()=>{setShowModal(true)}}>음식 추가</Button>
@@ -194,7 +194,7 @@ function MemberDietJournalAdd() {
                                         <th>무게 (g)</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody style={{fontFamily:'nanumsquare', fontWeight:700}}>
                                     {dietListSearch.map((data, index) => (
                                         <tr key={data.diet_id}
                                             onClick={() => setSelectedRowIndex(index)}
@@ -226,12 +226,12 @@ function MemberDietJournalAdd() {
                 </Col>
                 <Col xs={12} md={6}>
                     <Card>
-                        <Card.Header as="h6" className="border-bottom p-3 mb-0">
+                        <Card.Header as="h6" className="Header">
                             추가한 식단목록
                         </Card.Header>
                         <Card.Body>
-                            <Table bordered>
-                                <thead>
+                            <Table bordered >
+                                <thead style={{fontFamily:'nanumsquare', fontWeight:700}}>
                                     <tr>
                                         <th>번호</th>
                                         <th>언제</th>
@@ -244,7 +244,7 @@ function MemberDietJournalAdd() {
                                         <th>삭제</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody style={{fontFamily:'nanumsquare', fontWeight:700}}>
                                     {select.map((data, index) => (
                                         <tr key={data.diet_id || index}>
                                             <td>{index + 1}</td>
