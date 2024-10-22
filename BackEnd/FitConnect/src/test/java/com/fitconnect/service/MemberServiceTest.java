@@ -94,7 +94,7 @@ public class MemberServiceTest {
     }
     
     @Test
-    public void testDeleteTrainer() {
+    public void testDeleteMember() {
         String userName = "testUser";
         UserDto userDto = new UserDto();
         userDto.setId(1);
